@@ -1,0 +1,33 @@
+{
+  "name": "via-clipboard-core-ts",
+  "description": "Viamo Clipboard Code in TypeScript",
+  "version": "1.0.0",
+  "main": "index.js",
+  "types": "lib/index.d.ts",
+  "author": "bzabos <b.zabos@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+   "test": "jest --config jestconfig.json",
+   "build": "tsc",
+   "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+   "lint": "tslint -p tsconfig.json",
+   "prepare": "yarn build",
+   "prepublishOnly": "yarn test && yarn lint",
+   "preversion": "yarn lint",
+   "version": "yarn format && git add -A src",
+   "postversion": "git push && git push --tags"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "devDependencies": {
+    "@types/jest": "^24.0.11",
+    "jest": "^24.5.0",
+    "prettier": "^1.16.4",
+    "ts-jest": "^24.0.1",
+    "tslint": "^5.14.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.4.1"
+  }
+}
