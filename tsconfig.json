@@ -1,11 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2015",
     "module": "commonjs",
     "declaration": true,
     "outDir": "./lib",
-    "strict": true
+    "strict": true,
+    "allowJs": true
   },
-  "include": ["src"],
+  "include": [
+    "src",
+    "node_modules/typescript/lib/lib.es2015.promise.d.ts"
+  ],
   "exclude": ["node_modules", "**/__tests__/*"]
 }
