@@ -1,0 +1,9 @@
+# empty interaction
+- uuid: 1c7317fc-b644-4da4-b1ff-1807ce55c17e
+  blockId: 164f04f7-3daf-420b-9a5b-0d3b16144ec5
+  details: {selectedExitId: b9485293-90a6-456e-9291-81de5e3a4a89}
+
+# block exit selected
+- uuid: a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
+  blockId: cb1b04a3-6447-4e33-a449-a6e3107e7531
+  details: {selectedExitId: 36b2c0ee-bcba-463c-aeab-9f9c8fb990df}

@@ -1,0 +1,42 @@
+# single flow, empty interactions, absent cursor
+- flows:
+    - 957a8923-428a-420f-8053-d23927e0eea0
+  firstFlowId: 957a8923-428a-420f-8053-d23927e0eea0
+  interactions: []
+  cursor: null # [block-interaction, prompt]
+
+# multi-flow, empty interactions, absent cursor
+- flows:
+    - 711b1ff7-d16f-4ed9-8524-054afa4049a5
+    - 957a8923-428a-420f-8053-d23927e0eea0
+  firstFlowId: 711b1ff7-d16f-4ed9-8524-054afa4049a5
+  interactions: []
+  cursor: null # [block-interaction, prompt]
+
+# multi-flow, multi-interaction, cursor on block without exits (last block)
+- flows:
+    - 711b1ff7-d16f-4ed9-8524-054afa4049a5
+    - 957a8923-428a-420f-8053-d23927e0eea0
+  firstFlowId: 711b1ff7-d16f-4ed9-8524-054afa4049a5
+  interactions:
+    - a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
+    - 1c7317fc-b644-4da4-b1ff-1807ce55c17e
+  cursor: [1c7317fc-b644-4da4-b1ff-1807ce55c17e, null]
+
+# multi-flow, single-interaction, cursor on block with exits
+- flows:
+    - 711b1ff7-d16f-4ed9-8524-054afa4049a5
+    - 957a8923-428a-420f-8053-d23927e0eea0
+  firstFlowId: 711b1ff7-d16f-4ed9-8524-054afa4049a5
+  interactions:
+    - a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
+  cursor: [a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e, null]
+
+# multi-flow, single-interaction, cursor on Core\RunFlow block with exits
+- flows:
+    - 711b1ff7-d16f-4ed9-8524-054afa4049a5
+    - 957a8923-428a-420f-8053-d23927e0eea0
+  firstFlowId: 711b1ff7-d16f-4ed9-8524-054afa4049a5
+  interactions:
+    - a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
+  cursor: [a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e, null]

@@ -1,15 +1,28 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "composite": true,
+    "declarationMap": true,
     "module": "commonjs",
+    "target": "es2018",
+    "noImplicitReturns": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
     "declaration": true,
-    "outDir": "./lib",
-    "strict": true,
-    "allowJs": true
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": false,
+    "importHelpers": true,
+    "noUnusedLocals": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "removeComments": true,
+    "esModuleInterop": true,
+    "types": ["jest", "node", "lodash"],
+    "lib": ["es2018"],
+    "rootDir": "src",
+    "outDir": "lib"
   },
-  "include": [
-    "src",
-    "node_modules/typescript/lib/lib.es2015.promise.d.ts"
-  ],
-  "exclude": ["node_modules", "**/__tests__/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.test.ts"]
 }
