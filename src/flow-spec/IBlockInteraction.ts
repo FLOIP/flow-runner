@@ -4,6 +4,7 @@
 export default interface IBlockInteraction {
   uuid: string//UUID64
   blockId: string//UUID32
+  flowId: string//UUID32
   entryAt: Date // todo: should this instead be string?
   exitAt: Date | null // todo: should this instead be string?
   hasResponse: boolean

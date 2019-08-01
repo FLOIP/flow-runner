@@ -23,3 +23,7 @@ export default interface IContext {
   nestedFlowBlockInteractionStack: string[]
   cursor: CursorType | null
 }
+
+export interface IContextInputRequired extends IContext{
+  cursor: CursorInputRequiredType
+}
