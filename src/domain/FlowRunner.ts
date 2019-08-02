@@ -1,5 +1,7 @@
-import IBlock from "../flow-spec/IBlock"
+import IBlock, {findBlockExitWith} from "../flow-spec/IBlock"
 import IContext, {
+  findBlockOnActiveFlowWith,
+  findInteractionWith, getActiveFlowFrom, getActiveFlowIdFrom,
   IContextInputRequired, IContextWithCursor,
   RichCursorInputRequiredType,
   RichCursorType
@@ -10,8 +12,6 @@ import IBlockExit from "../flow-spec/IBlockExit"
 import {find, first, last} from 'lodash'
 import uuid from 'uuid'
 import MessageBlockRunner from "./runners/MessageBlockRunner";
-import IFlow from "../flow-spec/IFlow";
-import RunFlowConfig from "../model/block/RunFlowConfig";
 
 /**
  * todo: remaining pieces
@@ -69,7 +69,12 @@ export default class {
 
       if (block.type === 'Core\\RunFlowBlock') {
         /*[interactionUuid, prompt] = */this.navigateTo(block, ctx)
-        block = this.stepInto(block, ctx) // todo: do we need to connect selected exits here?
+
+
+        // todo: do we need to connect selected exits here?
+
+
+        block = this.stepInto(block, ctx)
       }
 
       if (!block) {
@@ -86,13 +91,13 @@ export default class {
 
   createRichCursorInputRequiredFrom(ctx: IContextInputRequired): RichCursorInputRequiredType {
     const {cursor} = ctx
-    return [this.findInteractionWith(cursor[0], ctx), cursor[1]]
+    return [findInteractionWith(cursor[0], ctx), cursor[1]]
   }
 
   resumeFrom(ctx: IContextWithCursor) {
     const
-        interaction = this.findInteractionWith(ctx.cursor[0], ctx),
-        block = this.findBlockOnActiveFlowWith(interaction.blockId, ctx)
+        interaction = findInteractionWith(ctx.cursor[0], ctx),
+        block = findBlockOnActiveFlowWith(interaction.blockId, ctx)
 
     /*const exit = */this.resumeOneBlock(block, ctx as IContextInputRequired)
     return this.runUntilInputRequiredFrom(ctx)
@@ -146,10 +151,10 @@ export default class {
 
   navigateTo(block: IBlock, ctx: IContext) {
     const
-        flowId = this.getActiveFlowIdFrom(ctx),
+        flowId = getActiveFlowIdFrom(ctx),
         originInteractionId = last(ctx.nestedFlowBlockInteractionStack) || null,
         originInteraction = originInteractionId
-            ? this.findInteractionWith(originInteractionId, ctx)
+            ? findInteractionWith(originInteractionId, ctx)
             : null
 
     const [interaction, prompt] = this.startOneBlock(
@@ -188,7 +193,7 @@ export default class {
 
     ctx.nestedFlowBlockInteractionStack.push(lastInteraction.uuid)
 
-    return first(this.getActiveFlowFrom(ctx).blocks) || null
+    return first(getActiveFlowFrom(ctx).blocks) || null
   }
 
   /**
@@ -205,7 +210,7 @@ export default class {
   stepOut(ctx: IContext): IBlock | null {
     const
         lastInteractionId = ctx.nestedFlowBlockInteractionStack.pop(),
-        interaction = this.findInteractionWith(lastInteractionId || '', ctx)
+        interaction = findInteractionWith(lastInteractionId || '', ctx)
 
     // todo: how does selectedExitId get set for last/this block(s) ???
 
@@ -214,14 +219,14 @@ export default class {
 
   findNextBlockOnActiveFlowFor(ctx: IContext): IBlock | null {//cursor: RichCursorType | null, flow: IFlow): IBlock | null {
     const
-        flow = this.getActiveFlowFrom(ctx),
+        flow = getActiveFlowFrom(ctx),
         {cursor} = ctx
 
     if (!cursor) {
-      return flow.blocks[0]
+      return first(flow.blocks) || null
     }
 
-    const interaction = this.findInteractionWith(cursor[0], ctx)
+    const interaction = findInteractionWith(cursor[0], ctx)
     return this.findNextBlockFrom(interaction, ctx)
   }
 
@@ -231,78 +236,10 @@ export default class {
     }
 
     const
-        block = this.findBlockOnActiveFlowWith(interaction.blockId, ctx),
-        {destination_block} = this.findBlockExitWith(interaction.details.selectedExitId, block),
-        {blocks} = this.getActiveFlowFrom(ctx)
+        block = findBlockOnActiveFlowWith(interaction.blockId, ctx),
+        {destination_block} = findBlockExitWith(interaction.details.selectedExitId, block),
+        {blocks} = getActiveFlowFrom(ctx)
 
     return find(blocks, {uuid: destination_block}) || null
-  }
-
-  findBlockExitWith(uuid: string, block: IBlock) {
-    const exit = find(block.exits, {uuid})
-    if (!exit) {
-      throw new Error('Unable to find block exit for active interaction')
-    }
-
-    return exit
-  }
-
-  findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction {
-    const interaction = find(interactions, {uuid})
-    if (!interaction) {
-      throw new Error('Unable to find interaction on context')
-    }
-
-    return interaction
-  }
-
-  findFlowWith(uuid: string, {flows}: IContext): IFlow {
-    const flow = find(flows, {uuid})
-    if (!flow) {
-      throw new Error('Unable to find active flow on context')
-    }
-
-    return flow
-  }
-
-  findBlockWith(uuid: string, {blocks}: IFlow): IBlock {
-    const block = find(blocks, {uuid})
-    if (!block) {
-      throw new Error('Unable to find block on provided flow')
-    }
-
-    return block
-  }
-
-  findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock {
-    return this.findBlockWith(uuid, this.getActiveFlowFrom(ctx))
-  }
-
-  findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext) {
-    const
-        flow = this.findFlowWith(interaction.flowId, ctx),
-        runFlowBlock = this.findBlockWith(interaction.flowId, flow)
-
-    const flowId = (runFlowBlock.config as RunFlowConfig).flow_id
-    if (!flowId) {
-      throw new Error('Unable to find nested flowId on Core\\RunFlowBlock')
-    }
-
-    return flowId
-  }
-
-  getActiveFlowIdFrom(ctx: IContext): string {
-    const {firstFlowId, nestedFlowBlockInteractionStack} = ctx
-
-    if (!nestedFlowBlockInteractionStack.length) {
-      return firstFlowId
-    }
-
-    const interaction = this.findInteractionWith(last(nestedFlowBlockInteractionStack) || '', ctx)
-    return this.findNestedFlowIdFor(interaction, ctx)
-  }
-
-  getActiveFlowFrom(ctx: IContext): IFlow {
-    return this.findFlowWith(this.getActiveFlowIdFrom(ctx), ctx)
   }
 }

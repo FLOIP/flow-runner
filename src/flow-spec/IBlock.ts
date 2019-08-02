@@ -1,5 +1,6 @@
 // import UUID32 from "../model/UUID32";
 import IBlockExit from "./IBlockExit";
+import {find} from 'lodash'
 
 export default interface IBlock {
   uuid: string//UUID32
@@ -9,4 +10,14 @@ export default interface IBlock {
   type: string // todo: dyamic enum based upon capabilities?
   config: object
   exits: IBlockExit[]
+}
+
+
+export function findBlockExitWith(uuid: string, block: IBlock) {
+  const exit = find(block.exits, {uuid})
+  if (!exit) {
+    throw new Error('Unable to find exit on block')
+  }
+
+  return exit
 }
