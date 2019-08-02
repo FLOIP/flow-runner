@@ -1,8 +1,11 @@
 import IBlock, {findBlockExitWith} from "../flow-spec/IBlock"
 import IContext, {
   findBlockOnActiveFlowWith,
-  findInteractionWith, getActiveFlowFrom, getActiveFlowIdFrom,
-  IContextInputRequired, IContextWithCursor,
+  findInteractionWith,
+  getActiveFlowFrom,
+  getActiveFlowIdFrom,
+  IContextInputRequired,
+  IContextWithCursor,
   RichCursorInputRequiredType,
   RichCursorType
 } from "../flow-spec/IContext"
@@ -69,11 +72,6 @@ export default class {
 
       if (block.type === 'Core\\RunFlowBlock') {
         /*[interactionUuid, prompt] = */this.navigateTo(block, ctx)
-
-
-        // todo: do we need to connect selected exits here?
-
-
         block = this.stepInto(block, ctx)
       }
 
@@ -106,7 +104,7 @@ export default class {
   startOneBlock(block: IBlock, flowId: string, originFlowId: string | null, originBlockInteractionId: string | null): RichCursorType {
     const
         runner = this.createBlockRunnerFor(block),
-        interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId),
+        interaction = this._createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId),
         prompt = runner.start(interaction)
 
     return [interaction, prompt]
@@ -126,7 +124,7 @@ export default class {
     return new MessageBlockRunner(block)
   }
 
-  createBlockInteractionFor(
+  _createBlockInteractionFor(
       {uuid: blockId}: IBlock,
       flowId: string,
       originFlowId: string | null = null,
@@ -140,7 +138,7 @@ export default class {
       exitAt: null,
       hasResponse: false,
       value: null,
-      details: {selectedExitId: null}, // todo: when does this get set for nested flows?
+      details: {selectedExitId: null},
       type: null, // (?) -- awaiting response from @george + @mark on this
 
       // Nested flows:
@@ -149,10 +147,23 @@ export default class {
     }
   }
 
+  _createBlockExitFor({uuid: destination_block}: IBlock): IBlockExit {
+    return {
+      uuid: uuid.v4(),
+      destination_block,
+      config: {},
+      label: '',
+      semantic_label: '',
+      tag: '',
+      test: ''
+    }
+  }
+
   navigateTo(block: IBlock, ctx: IContext) {
     const
+        {interactions, nestedFlowBlockInteractionIdStack} = ctx,
         flowId = getActiveFlowIdFrom(ctx),
-        originInteractionId = last(ctx.nestedFlowBlockInteractionStack) || null,
+        originInteractionId = last(nestedFlowBlockInteractionIdStack) || null,
         originInteraction = originInteractionId
             ? findInteractionWith(originInteractionId, ctx)
             : null
@@ -163,42 +174,55 @@ export default class {
         originInteraction && originInteraction.flowId,
         originInteractionId)
 
-    // append interaction for block to @interactions
-    ctx.interactions.push(interaction)
-    // update cursor to reflect new interaction's id and prompt (when prompt provided, null when absent)
+    const lastInteraction = last(interactions)
+    if (lastInteraction) {
+      interaction.exitAt = new Date
+    }
+
+    interactions.push(interaction)
+
     return ctx.cursor = [interaction.uuid, prompt]
   }
 
   /**
-   * Stepping into is the act of moving into a child tree.
-   * However, we can't move into a child tree without a cursor indicating we've moved.
+   * Stepping into is the act of moving into a child flow.
+   * However, we can't move into a child flow without a cursor indicating we've moved.
    * `stepInto()` needs to be the thing that discovers ya from xa (via first on flow in flows list)
    * Then generating a cursor that indicates where we are.
    * ?? -> xa ->>> ya -> yb ->>> xb
    *
    * todo: would it be possible for stepping into and out of be handled by the RunFlow itself?
-   * todo: Does this push cursor into an out-of-sync state? --- yaa
-   *       it does: b/c we could step into, but then never have an interaction for that step
-   *       aka: should `stepInto()` + `stepOut()` handle `navigateTo()` ? The tricky bit is then we need to go ahead
-   *       and re-discover the block attached to block interaction on the cursor */
-  stepInto(runTreeBlock: IBlock, ctx: IContext): IBlock | null {
-    if (runTreeBlock.type !== 'Core\\RunFlow') {
+   *       Eg. these are esentially RunFlowRunner's .start() + .resume() equivalents */
+  stepInto(runFlowBlock: IBlock, ctx: IContext): IBlock | null {
+    if (runFlowBlock.type !== 'Core\\RunFlow') {
       throw new Error('Unable to step into a non-Core\\RunFlow block type')
     }
 
-    const lastInteraction = last(ctx.interactions)
-    if (!lastInteraction) {
+    const runFlowInteraction = last(ctx.interactions)
+    if (!runFlowInteraction) {
       throw new Error('Unable to step into Core\\RunFlow that hasn\'t yet been started')
     }
 
-    ctx.nestedFlowBlockInteractionStack.push(lastInteraction.uuid)
+    ctx.nestedFlowBlockInteractionIdStack.push(runFlowInteraction.uuid)
 
-    return first(getActiveFlowFrom(ctx).blocks) || null
+    const firstNestedBlock = first(getActiveFlowFrom(ctx).blocks) || null
+    if (!firstNestedBlock) {
+      return null
+    }
+
+    if (runFlowBlock.exits.length === 1) {
+      // todo: how does clipboard-web do this? Seems problematic if we were to ever refetch this flow
+      runFlowBlock.exits.push(this._createBlockExitFor(firstNestedBlock))
+    }
+
+    runFlowInteraction.details.selectedExitId = (last(runFlowBlock.exits) as IBlockExit).uuid
+
+    return firstNestedBlock
   }
 
   /**
-   * Stepping out is the act of moving back into parent tree.
-   * However, we can't move up into parent tree without a cursor indicating we've moved.
+   * Stepping out is the act of moving back into parent flow.
+   * However, we can't move up into parent flow without a cursor indicating we've moved.
    * `stepOut()` needs to be the things that discovers xb from xa (via nfbistack)
    * Then generating a cursor that indicates where we are.
    * ?? -> xa ->>> ya -> yb ->>> xb
@@ -208,13 +232,21 @@ export default class {
    * to next block; when stepping IN, we need an explicit navigation to inject RunFlow in between
    * the two Flows. */
   stepOut(ctx: IContext): IBlock | null {
+    const {interactions, nestedFlowBlockInteractionIdStack} = ctx
+
+    if (!nestedFlowBlockInteractionIdStack.length) {
+      return null
+    }
+
     const
-        lastInteractionId = ctx.nestedFlowBlockInteractionStack.pop(),
-        interaction = findInteractionWith(lastInteractionId || '', ctx)
+        lastParentInteractionId = nestedFlowBlockInteractionIdStack.pop() as string,
+        {blockId: lastRunFlowBlockId} = findInteractionWith(lastParentInteractionId, ctx),
+        lastRunFlowBlock = findBlockOnActiveFlowWith(lastRunFlowBlockId, ctx),
+        {uuid: runFlowBlockFirstExitId, destination_block} = first(lastRunFlowBlock.exits) as IBlockExit
 
-    // todo: how does selectedExitId get set for last/this block(s) ???
+    (last(interactions) as IBlockInteraction).details.selectedExitId = runFlowBlockFirstExitId
 
-    return this.findNextBlockFrom(interaction, ctx)
+    return findBlockOnActiveFlowWith(destination_block, ctx)
   }
 
   findNextBlockOnActiveFlowFor(ctx: IContext): IBlock | null {//cursor: RichCursorType | null, flow: IFlow): IBlock | null {

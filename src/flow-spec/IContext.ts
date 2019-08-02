@@ -24,7 +24,7 @@ export default interface IContext {
   contact: IContact
   session: ISession
   sessionVars: object
-  nestedFlowBlockInteractionStack: string[]
+  nestedFlowBlockInteractionIdStack: string[]
   cursor: CursorType | null
 }
 
@@ -72,13 +72,13 @@ export function findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContex
 }
 
 export function getActiveFlowIdFrom(ctx: IContext): string {
-  const {firstFlowId, nestedFlowBlockInteractionStack} = ctx
+  const {firstFlowId, nestedFlowBlockInteractionIdStack} = ctx
 
-  if (!nestedFlowBlockInteractionStack.length) {
+  if (!nestedFlowBlockInteractionIdStack.length) {
     return firstFlowId
   }
 
-  const interaction = findInteractionWith(last(nestedFlowBlockInteractionStack) || '', ctx)
+  const interaction = findInteractionWith(last(nestedFlowBlockInteractionIdStack) || '', ctx)
   return findNestedFlowIdFor(interaction, ctx)
 }
 
