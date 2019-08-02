@@ -1,0 +1,169 @@
+defaults:
+  - &defaults/exit
+    semantic_label: ''
+    label: ''
+    config: {}
+    tag: ''
+    test: ''
+
+  - &defaults/block
+    name: My first block
+    label: ''
+    config: {}
+    exits: []
+    semantic_label: ''
+
+  - &defaults/blocks/Message
+    <<: *defaults/block
+    type: MobilePrimitives\Message
+
+  - &defaults/blocks/RunFlow
+    <<: *defaults/block
+    type: Core\RunFlow
+
+  - &defaults/intx
+    entryAt: 2020-10-10
+    exitAt:
+    hasResponse: false
+    value:
+    details:
+      selectedExitId:
+    type:
+    originBlockInteractionId:
+    originFlowId:
+
+  - &defaults/flow
+    blocks: []
+    interaction_timeout: 5
+    label: My first label
+    languages: [en]
+    last_modified: 2020-10-10
+    name: My first flow
+    platform_metadata: {}
+    supported_modes: [text]
+
+  - &defaults/context
+    contact:
+      id: 1
+    session:
+      id: 1,
+      deliveryStatus: IN_PROGRESS
+    sessionVars: {}
+    nestedFlowBlockInteractionIdStack: []
+
+block_exits:
+  - &exit/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
+    <<: *defaults/exit
+    uuid: &exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df 36b2c0ee-bcba-463c-aeab-9f9c8fb990df
+    destination_block: 164f04f7-3daf-420b-9a5b-0d3b16144ec5
+
+  - &exit/->void/b9485293-90a6-456e-9291-81de5e3a4a89
+    <<: *defaults/exit
+    uuid: &exitId/->void/b9485293-90a6-456e-9291-81de5e3a4a89 b9485293-90a6-456e-9291-81de5e3a4a89
+    destination_block:
+
+blocks:
+  - &block/Message->(void)/42e635ea-bc57-4c68-a8d6-20f648968bec
+    <<: *defaults/blocks/Message
+    uuid: &blockId/Message->(void)/42e635ea-bc57-4c68-a8d6-20f648968bec 42e635ea-bc57-4c68-a8d6-20f648968bec
+    exits:
+      - *exit/->void/b9485293-90a6-456e-9291-81de5e3a4a89
+
+  - &block/Message->(Message)/cb1b04a3-6447-4e33-a449-a6e3107e7531
+    <<: *defaults/blocks/Message
+    uuid: &blockId/Message->(Message)/cb1b04a3-6447-4e33-a449-a6e3107e7531 cb1b04a3-6447-4e33-a449-a6e3107e7531
+    exits:
+      - *exit/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
+
+  - &block/Message->(void)/164f04f7-3daf-420b-9a5b-0d3b16144ec5
+    <<: *defaults/blocks/Message
+    uuid: &blockId/Message->(void)/164f04f7-3daf-420b-9a5b-0d3b16144ec5 164f04f7-3daf-420b-9a5b-0d3b16144ec5
+    exits:
+      - *exit/->void/b9485293-90a6-456e-9291-81de5e3a4a89
+
+  - &block/RunFlow->()/efec92a9-a4b1-482c-b448-3901b84c0cd1
+    <<: *defaults/blocks/RunFlow
+    uuid: &blockId/RunFlow->()/efec92a9-a4b1-482c-b448-3901b84c0cd1 efec92a9-a4b1-482c-b448-3901b84c0cd1
+    type: Core\RunFlow
+    exits:
+#        - *0b53b1bf-3203-44ae-bc62-20dcd5c3ce4f
+
+block_interactions:
+  - &intx/Message->void/1c7317fc-b644-4da4-b1ff-1807ce55c17e
+    <<: *defaults/intx
+    uuid: &intxId/Message->void/1c7317fc-b644-4da4-b1ff-1807ce55c17e 1c7317fc-b644-4da4-b1ff-1807ce55c17e
+    blockId: *blockId/Message->(void)/164f04f7-3daf-420b-9a5b-0d3b16144ec5
+    details:
+      selectedExitId: *exitId/->void/b9485293-90a6-456e-9291-81de5e3a4a89
+
+  - &intx/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
+    <<: *defaults/intx
+    uuid: &intxId/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
+    blockId: *blockId/Message->(Message)/cb1b04a3-6447-4e33-a449-a6e3107e7531
+    details:
+      selectedExitId: *exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
+
+flows:
+  - &flow/(Message)/957a8923-428a-420f-8053-d23927e0eea0
+    <<: *defaults/flow
+    uuid: &flowId/(Message)/957a8923-428a-420f-8053-d23927e0eea0 957a8923-428a-420f-8053-d23927e0eea0
+    blocks:
+      - *block/Message->(void)/42e635ea-bc57-4c68-a8d6-20f648968bec
+
+  - &flow/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+    <<: *defaults/flow
+    uuid: &flowId/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5 711b1ff7-d16f-4ed9-8524-054afa4049a5
+    blocks:
+      - *block/Message->(Message)/cb1b04a3-6447-4e33-a449-a6e3107e7531
+      - *block/Message->(void)/164f04f7-3daf-420b-9a5b-0d3b16144ec5
+
+cursors: []
+
+contexts:
+  # single flow, empty interactions, absent cursor
+  - <<: *defaults/context
+    flows:
+      - *flow/(Message)/957a8923-428a-420f-8053-d23927e0eea0
+    firstFlowId: *flowId/(Message)/957a8923-428a-420f-8053-d23927e0eea0
+    interactions: []
+    cursor: null # [block-interaction, prompt]
+
+  # multi-flow, empty interactions, absent cursor
+  - <<: *defaults/context
+    flows:
+      - *flow/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+      - *flow/(Message)/957a8923-428a-420f-8053-d23927e0eea0
+    firstFlowId: *flowId/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+    interactions: []
+    cursor: null # [block-interaction, prompt]
+
+  # multi-flow, multi-interaction, cursor on block without exits (last block)
+  - <<: *defaults/context
+    flows:
+      - *flow/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+      - *flow/(Message)/957a8923-428a-420f-8053-d23927e0eea0
+    firstFlowId: *flowId/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+    interactions:
+      - *intx/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
+      - *intx/Message->void/1c7317fc-b644-4da4-b1ff-1807ce55c17e
+    cursor: [*intxId/Message->void/1c7317fc-b644-4da4-b1ff-1807ce55c17e, null]
+
+  # multi-flow, single-interaction, cursor on block with exits
+  - <<: *defaults/context
+    flows:
+      - *flow/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+      - *flow/(Message)/957a8923-428a-420f-8053-d23927e0eea0
+    firstFlowId: *flowId/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+    interactions:
+      - *intx/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
+    cursor: [*intxId/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e, null]
+
+  # multi-flow, single-interaction, cursor on Core\RunFlow block with exits
+  - <<: *defaults/context
+    flows:
+      - *flow/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+      - *flow/(Message)/957a8923-428a-420f-8053-d23927e0eea0
+    firstFlowId: *flowId/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+    interactions:
+      - *intx/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
+    cursor: [*intxId/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e, null]
