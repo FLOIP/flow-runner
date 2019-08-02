@@ -14,11 +14,9 @@ import IBlockInteraction from "../flow-spec/IBlockInteraction"
 import IBlockExit from "../flow-spec/IBlockExit"
 import {find, first, last} from 'lodash'
 import uuid from 'uuid'
-import MessageBlockRunner from "./runners/MessageBlockRunner";
 
 /**
  * todo: remaining pieces
- *       - provide block runner factory store
  *       - build out numeric prompt
  *       - complete message block runner
  *       - complete run-flow-block runner
@@ -28,7 +26,8 @@ import MessageBlockRunner from "./runners/MessageBlockRunner";
 
 export default class {
   constructor(
-      public context: IContext) {}
+      public context: IContext,
+      public runnerFactoryStore: Map<string, {(block: IBlock): IBlockRunner}>) {}
 
   /**
    * We want to call start when we don't have a prompt needing work to be done. */
@@ -116,12 +115,12 @@ export default class {
   }
 
   createBlockRunnerFor(block: IBlock): IBlockRunner {
-    // todo raise exception when runner for this block is absent
+    const factory = this.runnerFactoryStore.get(block.type)
+    if (!factory) {
+      throw new Error(`Unable to find factory for block type: ${block.type}`)
+    }
 
-    // todo: how do we define capabilities + available runners? likely provide a FactoryStore<{(block: IBlock) => IBlockRunner}>
-    // const factory = this.runners.get(block.type)
-    // return factory(block)
-    return new MessageBlockRunner(block)
+    return factory(block)
   }
 
   _createBlockInteractionFor(
