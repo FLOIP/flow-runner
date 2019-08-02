@@ -24,6 +24,10 @@ export default interface IContext {
   cursor: CursorType | null
 }
 
-export interface IContextInputRequired extends IContext{
+export interface IContextWithCursor extends IContext {
+  cursor: CursorType
+}
+
+export interface IContextInputRequired extends IContext {
   cursor: CursorInputRequiredType
 }

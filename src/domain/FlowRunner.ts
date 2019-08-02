@@ -1,13 +1,13 @@
 import IBlock from "../flow-spec/IBlock"
 import IContext, {
-  IContextInputRequired,
+  IContextInputRequired, IContextWithCursor,
   RichCursorInputRequiredType,
   RichCursorType
 } from "../flow-spec/IContext"
 import IBlockRunner from "./runners/IBlockRunner"
 import IBlockInteraction from "../flow-spec/IBlockInteraction"
 import IBlockExit from "../flow-spec/IBlockExit"
-import {find, last} from 'lodash'
+import {find, first, last} from 'lodash'
 import uuid from 'uuid'
 import MessageBlockRunner from "./runners/MessageBlockRunner";
 import IFlow from "../flow-spec/IFlow";
@@ -27,16 +27,27 @@ export default class {
   constructor(
       public context: IContext) {}
 
+  /**
+   * We want to call start when we don't have a prompt needing work to be done. */
   start(): RichCursorInputRequiredType | null {
     return this.runUntilInputRequiredFrom(this.context)
   }
 
+  /**
+   * We want to call resume when we have a prompt needing work to be wrapped up on it.
+   *
+   * I'm wondering if these need to be treated differently. The concern is that resume _assumes_ a particular state;
+   * eg. cursor with a prompt requiring input
+   *
+   * The issue is that we may, in fact, end up needing to resume from a state where a particular block
+   *    got itself into an invalid state and _crashed_, in which case, we'd still want the ability to pick up
+   *    where we'd left off. */
   resume() {
-    return this.resumeFrom(this.context)
+    return this.resumeFrom(this.context as IContextWithCursor)
   }
 
   runUntilInputRequiredFrom(ctx: IContext): RichCursorInputRequiredType | null {
-    // todo: convert cursor to an object instead of tuple
+    // todo: convert cursor to an object instead of tuple; since we don't have named tuples, a dictionary would be more intuitive
 
     let block: IBlock | null
 
@@ -74,37 +85,16 @@ export default class {
   }
 
   createRichCursorInputRequiredFrom(ctx: IContextInputRequired): RichCursorInputRequiredType {
-    const
-        {cursor} = ctx,
-        interaction = this.getCursorInteractionFrom(ctx)
-
-    if (!interaction) {
-      throw new Error('Unable to find interaction for cursor')
-    }
-
-    return [interaction, cursor[1]]
+    const {cursor} = ctx
+    return [this.findInteractionWith(cursor[0], ctx), cursor[1]]
   }
 
-  /**
-   * todo: this must be an anti-pattern --- why am I needing to repeat these same guards all over the place? shouldn't I be able to orchestrate in such a way that it's guarded on the way in and then we can forget about it?
-   *       can we add a type for: (a) ctx that HAS a cursor + (b) something lke: ctx.interactions must have uuid of cursor's interaction uuid?
-   */
-  resumeFrom(ctx: IContext) {
-    if (!ctx.cursor) {
-      throw new Error('Unable to resume from unstarted state.')
-    }
+  resumeFrom(ctx: IContextWithCursor) {
+    const
+        interaction = this.findInteractionWith(ctx.cursor[0], ctx),
+        block = this.findBlockOnActiveFlowWith(interaction.blockId, ctx)
 
-    const interaction = this.getCursorInteractionFrom(ctx)
-    if (!interaction) {
-      throw new Error('Unable to find interaction for cursor')
-    }
-
-    const block = this.findBlockOnActiveFlowWith(interaction.blockId, ctx)
-    if (!block) {
-      throw new Error('Unable to find block for interaction')
-    }
-
-    /*const exit = */this.resumeOneBlock(block, ctx)
+    /*const exit = */this.resumeOneBlock(block, ctx as IContextInputRequired)
     return this.runUntilInputRequiredFrom(ctx)
   }
 
@@ -117,18 +107,9 @@ export default class {
     return [interaction, prompt]
   }
 
-  resumeOneBlock(block: IBlock, ctx: IContext): IBlockExit {
-    if (!ctx.cursor) {
-      throw new Error('Unable to resume from unstarted state.')
-    }
-
-    const interaction = this.getCursorInteractionFrom(ctx)
-    if (!interaction) {
-      throw new Error('Unable to find interaction for cursor')
-    }
-
+  resumeOneBlock(block: IBlock, ctx: IContextInputRequired): IBlockExit {
     return this.createBlockRunnerFor(block)
-        .resume([interaction, ctx.cursor[1]]) // todo: resume() needs to set "prompt.isSubmitted"
+        .resume(this.createRichCursorInputRequiredFrom(ctx)) // todo: resume() needs to set "prompt.isSubmitted"
   }
 
   createBlockRunnerFor(block: IBlock): IBlockRunner {
@@ -142,7 +123,8 @@ export default class {
 
   createBlockInteractionFor(
       {uuid: blockId}: IBlock,
-      flowId: string, originFlowId: string | null = null,
+      flowId: string,
+      originFlowId: string | null = null,
       originBlockInteractionId: string | null = null): IBlockInteraction {
 
     return {
@@ -170,10 +152,6 @@ export default class {
             ? this.findInteractionWith(originInteractionId, ctx)
             : null
 
-    if (originInteractionId && !originInteraction) {
-      throw new Error('Unable to find interaction for nested flow')
-    }
-
     const [interaction, prompt] = this.startOneBlock(
         block,
         flowId,
@@ -197,9 +175,8 @@ export default class {
    * todo: Does this push cursor into an out-of-sync state? --- yaa
    *       it does: b/c we could step into, but then never have an interaction for that step
    *       aka: should `stepInto()` + `stepOut()` handle `navigateTo()` ? The tricky bit is then we need to go ahead
-   *       and re-discover the block attached to block interaction on the cursor
-   */
-  stepInto(runTreeBlock: IBlock, ctx: IContext) {
+   *       and re-discover the block attached to block interaction on the cursor */
+  stepInto(runTreeBlock: IBlock, ctx: IContext): IBlock | null {
     if (runTreeBlock.type !== 'Core\\RunFlow') {
       throw new Error('Unable to step into a non-Core\\RunFlow block type')
     }
@@ -211,7 +188,7 @@ export default class {
 
     ctx.nestedFlowBlockInteractionStack.push(lastInteraction.uuid)
 
-    return this.findFirstBlockOnActiveFlowFor(ctx)
+    return first(this.getActiveFlowFrom(ctx).blocks) || null
   }
 
   /**
@@ -224,16 +201,11 @@ export default class {
    * Does this push cursor into an out-of-sync state?
    * Not when stepping out, because when stepping out, we're connecting previous RunFlow output
    * to next block; when stepping IN, we need an explicit navigation to inject RunFlow in between
-   * the two Flows.
-   */
+   * the two Flows. */
   stepOut(ctx: IContext): IBlock | null {
     const
         lastInteractionId = ctx.nestedFlowBlockInteractionStack.pop(),
         interaction = this.findInteractionWith(lastInteractionId || '', ctx)
-
-    if (!interaction) {
-      throw new Error('Unable to find interaction on context')
-    }
 
     // todo: how does selectedExitId get set for last/this block(s) ???
 
@@ -241,81 +213,82 @@ export default class {
   }
 
   findNextBlockOnActiveFlowFor(ctx: IContext): IBlock | null {//cursor: RichCursorType | null, flow: IFlow): IBlock | null {
-    const flow = this.getActiveFlowFrom(ctx)
-    if (!flow) {
-      throw new Error('Unable to find active flow on context')
-    }
+    const
+        flow = this.getActiveFlowFrom(ctx),
+        {cursor} = ctx
 
-    const {cursor} = ctx
     if (!cursor) {
       return flow.blocks[0]
     }
 
-    const interaction = this.getCursorInteractionFrom(ctx)
-    if (!interaction) {
-      throw new Error(`Unable to find interaction for cursor: ${JSON.stringify({cursor: ctx.cursor, interactions: ctx.interactions}, null, 2)}`)
-    }
-
+    const interaction = this.findInteractionWith(cursor[0], ctx)
     return this.findNextBlockFrom(interaction, ctx)
   }
 
-  findNextBlockFrom(interaction: IBlockInteraction, ctx: IContext) {
-    const block = this.findBlockOnActiveFlowWith(interaction.blockId, ctx)
-    if (!block) {
-      throw new Error('Unable to find block on active flow')
-    }
-
+  findNextBlockFrom(interaction: IBlockInteraction, ctx: IContext): IBlock | null {
     if (!interaction.details.selectedExitId) {
       throw new Error('Unable to navigate past incomplete interaction; did you forget to call runner.resume()?') // eg. prompt.isFulfilled() === false || !called block.resume()
     }
 
-    const exit = find(block.exits, {uuid: interaction.details.selectedExitId})
+    const
+        block = this.findBlockOnActiveFlowWith(interaction.blockId, ctx),
+        {destination_block} = this.findBlockExitWith(interaction.details.selectedExitId, block),
+        {blocks} = this.getActiveFlowFrom(ctx)
+
+    return find(blocks, {uuid: destination_block}) || null
+  }
+
+  findBlockExitWith(uuid: string, block: IBlock) {
+    const exit = find(block.exits, {uuid})
     if (!exit) {
       throw new Error('Unable to find block exit for active interaction')
     }
 
-    return this.findBlockOnActiveFlowWith(exit.destination_block, ctx) || null
+    return exit
   }
 
-  findFirstBlockOnActiveFlowFor(ctx: IContext) {
-    const flow = this.getActiveFlowFrom(ctx)
+  findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction {
+    const interaction = find(interactions, {uuid})
+    if (!interaction) {
+      throw new Error('Unable to find interaction on context')
+    }
+
+    return interaction
+  }
+
+  findFlowWith(uuid: string, {flows}: IContext): IFlow {
+    const flow = find(flows, {uuid})
     if (!flow) {
       throw new Error('Unable to find active flow on context')
     }
 
-    return flow.blocks[0]
-  }
-
-  findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction | null {
-    return find(interactions, {uuid}) || null
-  }
-
-  getCursorInteractionFrom(ctx: IContext): IBlockInteraction | null {
-    const {cursor} = ctx
-    return cursor
-        ? this.findInteractionWith(cursor[0], ctx)
-        : null
-  }
-
-  findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock | null {
-    const flow = this.getActiveFlowFrom(ctx)
     return flow
-        ? find(flow.blocks, {uuid}) || null
-        : null
+  }
+
+  findBlockWith(uuid: string, {blocks}: IFlow): IBlock {
+    const block = find(blocks, {uuid})
+    if (!block) {
+      throw new Error('Unable to find block on provided flow')
+    }
+
+    return block
+  }
+
+  findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock {
+    return this.findBlockWith(uuid, this.getActiveFlowFrom(ctx))
   }
 
   findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext) {
-    const flow = find(ctx.flows, {uuid: interaction.flowId}) || null
-    if (!flow) {
-      throw new Error('Unable to find active flow on context')
+    const
+        flow = this.findFlowWith(interaction.flowId, ctx),
+        runFlowBlock = this.findBlockWith(interaction.flowId, flow)
+
+    const flowId = (runFlowBlock.config as RunFlowConfig).flow_id
+    if (!flowId) {
+      throw new Error('Unable to find nested flowId on Core\\RunFlowBlock')
     }
 
-    const runFlowBlock = find(flow.blocks, {uuid: interaction.flowId}) || null
-    if (!runFlowBlock) {
-      throw new Error('Unable to find run flow block on parent flow')
-    }
-
-    return (runFlowBlock.config as RunFlowConfig).flow_id
+    return flowId
   }
 
   getActiveFlowIdFrom(ctx: IContext): string {
@@ -326,15 +299,10 @@ export default class {
     }
 
     const interaction = this.findInteractionWith(last(nestedFlowBlockInteractionStack) || '', ctx)
-    if (!interaction) {
-      throw new Error('Unable to find interaction for nested flow')
-    }
-
     return this.findNestedFlowIdFor(interaction, ctx)
   }
 
-  getActiveFlowFrom(ctx: IContext): IFlow | null {
-    const uuid = this.getActiveFlowIdFrom(ctx)
-    return find(ctx.flows, {uuid}) || null
+  getActiveFlowFrom(ctx: IContext): IFlow {
+    return this.findFlowWith(this.getActiveFlowIdFrom(ctx), ctx)
   }
 }
