@@ -1,7 +1,7 @@
 import {last} from 'lodash'
 import {read} from 'yaml-import'
 import IDataset from "../IDataset";
-import FlowRunner from "../../src/domain/FlowRunner";
+import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockRunner from "../../src/domain/runners/IBlockRunner";
 import IBlock from "../../src/flow-spec/IBlock";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
@@ -11,7 +11,7 @@ import IPrompt from "../../src/flow-spec/IPrompt";
 import {PromptExpectationsType} from "../../src/domain/prompt/BasePrompt";
 
 
-describe('navigateTo', () => {
+describe('FlowRunner/navigateTo', () => {
   let dataset: IDataset
 
   beforeEach(() => {
@@ -22,7 +22,7 @@ describe('navigateTo', () => {
     const
         ctx = dataset.contexts[0],
         block = ctx.flows[0].blocks[0],
-        runner = new FlowRunner(ctx, new Map<string, { (block: IBlock): IBlockRunner }>([
+        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
           ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
 
     expect(ctx.interactions.length).toBe(0)
@@ -35,7 +35,7 @@ describe('navigateTo', () => {
       const
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
-          runner = new FlowRunner(ctx, new Map<string, { (block: IBlock): IBlockRunner }>([
+          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
             ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
 
       expect(ctx.cursor).toBeFalsy()
@@ -48,7 +48,7 @@ describe('navigateTo', () => {
       const
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
-          runner = new FlowRunner(ctx, new Map<string, { (block: IBlock): IBlockRunner }>([
+          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
             ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
 
       const
@@ -64,7 +64,7 @@ describe('navigateTo', () => {
       const
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
-          runner = new FlowRunner(ctx, new Map<string, { (block: IBlock): IBlockRunner }>([
+          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
             ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
 
       const [interactionId,] = runner.navigateTo(block, ctx)
@@ -77,7 +77,7 @@ describe('navigateTo', () => {
           block = ctx.flows[0].blocks[0],
           messageBlockRunner = createStaticMessageBlockRunnerFor(block),
 
-          runner = new FlowRunner(ctx, new Map<string, { (block: IBlock): IBlockRunner }>([
+          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
             ['MobilePrimitives\\Message', block => messageBlockRunner]])),
 
           startSpy = jest.spyOn(messageBlockRunner, 'start')
@@ -95,7 +95,7 @@ describe('navigateTo', () => {
       const
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
-          runner = new FlowRunner(ctx, new Map<string, { (block: IBlock): IBlockRunner }>([
+          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
             ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
 
       const [, prompt] = runner.navigateTo(block, ctx)

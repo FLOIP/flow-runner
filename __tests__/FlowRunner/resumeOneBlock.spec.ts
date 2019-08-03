@@ -1,14 +1,12 @@
 import {read} from 'yaml-import'
 import IDataset from "../IDataset";
-import FlowRunner from "../../src/domain/FlowRunner";
-import IBlockRunner from "../../src/domain/runners/IBlockRunner";
-import IBlock from "../../src/flow-spec/IBlock";
+import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
 import {IContextInputRequired, RichCursorInputRequiredType} from "../../src/flow-spec/IContext";
 import NumericPrompt from "../../src/domain/prompt/NumericPrompt";
 
 
-describe('resumeOneBlock', () => {
+describe('FlowRunner/resumeOneBlock', () => {
   let dataset: IDataset
 
   beforeEach(() => {
@@ -21,7 +19,7 @@ describe('resumeOneBlock', () => {
         flow = ctx.flows[0],
         block = flow.blocks[0],
         expectedExit = block.exits[0],
-        runner = new FlowRunner(ctx, new Map<string, { (block: IBlock): IBlockRunner }>([
+        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
           ['MobilePrimitives\\Message', block => ({
             block,
             start: (interaction: IBlockInteraction) => null,

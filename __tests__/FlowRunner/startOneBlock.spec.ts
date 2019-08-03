@@ -1,14 +1,12 @@
 import {read} from 'yaml-import'
 import IDataset from "../IDataset";
-import FlowRunner from "../../src/domain/FlowRunner";
-import IBlockRunner from "../../src/domain/runners/IBlockRunner";
-import IBlock from "../../src/flow-spec/IBlock";
+import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
 import {RichCursorInputRequiredType} from "../../src/flow-spec/IContext";
 import NumericPrompt from "../../src/domain/prompt/NumericPrompt";
 
 
-describe('startOneBlock', () => {
+describe('FlowRunner/startOneBlock', () => {
   let dataset: IDataset
 
   beforeEach(() => {
@@ -20,7 +18,7 @@ describe('startOneBlock', () => {
         ctx = dataset.contexts[0],
         flow = ctx.flows[0],
         block = flow.blocks[0],
-        runner = new FlowRunner(ctx, new Map<string, { (block: IBlock): IBlockRunner }>([
+        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
           ['MobilePrimitives\\Message', block => ({
             block,
             start: (interaction: IBlockInteraction) => null,
@@ -39,7 +37,7 @@ describe('startOneBlock', () => {
         ctx = dataset.contexts[0],
         flow = ctx.flows[0],
         block = flow.blocks[0],
-        runner = new FlowRunner(ctx, new Map<string, { (block: IBlock): IBlockRunner }>([
+        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
           ['MobilePrimitives\\Message', block => ({
             block,
             start: (interaction: IBlockInteraction) => expectedPrompt = new NumericPrompt(block.uuid, interaction.uuid, null),
@@ -56,7 +54,7 @@ describe('startOneBlock', () => {
         ctx = dataset.contexts[0],
         flow = ctx.flows[0],
         block = flow.blocks[0],
-        runner = new FlowRunner(ctx, new Map<string, { (block: IBlock): IBlockRunner }>([
+        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
           ['MobilePrimitives\\Message', block => ({
             block,
             start: (interaction: IBlockInteraction) => null,

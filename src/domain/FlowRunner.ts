@@ -14,20 +14,24 @@ import IBlockInteraction from "../flow-spec/IBlockInteraction"
 import IBlockExit from "../flow-spec/IBlockExit"
 import {find, first, last} from 'lodash'
 import uuid from 'uuid'
+import IFlowRunner, {IBlockRunnerFactoryStore} from "./IFlowRunner";
 
 /**
  * todo: remaining pieces
  *       - build out numeric prompt
  *       - complete message block runner
  *       - complete run-flow-block runner
- *       - simplify test datasets???
  *       - usage documentation
  */
 
-export default class {
+export class BlockRunnerFactoryStore
+    extends Map<string, {(block: IBlock): IBlockRunner}>
+    implements IBlockRunnerFactoryStore {}
+
+export default class FlowRunner implements IFlowRunner {
   constructor(
       public context: IContext,
-      public runnerFactoryStore: Map<string, {(block: IBlock): IBlockRunner}>) {}
+      public runnerFactoryStore: IBlockRunnerFactoryStore) {}
 
   /**
    * We want to call start when we don't have a prompt needing work to be done. */

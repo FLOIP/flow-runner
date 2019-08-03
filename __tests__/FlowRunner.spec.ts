@@ -1,8 +1,6 @@
 import {read} from 'yaml-import'
 import IDataset from "./IDataset";
-import FlowRunner from "../src/domain/FlowRunner";
-import IBlockRunner from "../src/domain/runners/IBlockRunner";
-import IBlock from "../src/flow-spec/IBlock";
+import FlowRunner, {BlockRunnerFactoryStore} from "../src/domain/FlowRunner";
 import MessageBlockRunner from "../src/domain/runners/MessageBlockRunner";
 
 
@@ -16,7 +14,7 @@ describe('FlowRunner', () => {
   it('should be available', () => {
     const runner = new FlowRunner(
         dataset.contexts[0],
-        new Map<string, {(block: IBlock): IBlockRunner}>([
+        new BlockRunnerFactoryStore([
           ['MobilePrimitives\\Message', block => new MessageBlockRunner(block)],
         ]))
 
