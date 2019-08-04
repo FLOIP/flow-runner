@@ -5,11 +5,11 @@ import IBlockInteraction from "../src/flow-spec/IBlockInteraction";
 import IContext from "../src/flow-spec/IContext";
 
 export default interface IDataset {
-  defaults: object
-  flows: IFlow[]
-  blocks: IBlock[]
-  block_exits: IBlockExit[]
-  block_interactions: IBlockInteraction[]
   contexts: IContext[]
-  cursors: []
+  _defaults: object
+  _flows: IFlow[]
+  _blocks: IBlock[]
+  _block_exits: IBlockExit[]
+  _block_interactions: IBlockInteraction[]
+  _cursors: []
 }

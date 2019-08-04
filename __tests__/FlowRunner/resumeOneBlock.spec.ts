@@ -15,11 +15,10 @@ describe('FlowRunner/resumeOneBlock', () => {
 
   it('should return exit provided by block runner\'s resume()', () => {
     const
-        ctx = dataset.contexts[2] as IContextInputRequired,
-        flow = ctx.flows[0],
-        block = flow.blocks[0],
+        ctx = dataset.contexts[1] as IContextInputRequired,
+        block = ctx.flows[1].blocks[0],
         expectedExit = block.exits[0],
-        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
+        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([ // todo: reuse fixture from navigateTo().spec
           ['MobilePrimitives\\Message', block => ({
             block,
             start: (interaction: IBlockInteraction) => null,
@@ -27,7 +26,7 @@ describe('FlowRunner/resumeOneBlock', () => {
           })],
         ]))
 
-    ctx.cursor[1] = new NumericPrompt(block.uuid, ctx.cursor[0], null)
+    ctx.cursor[1] = new NumericPrompt(block.uuid, ctx.cursor[0], null) // setup b/c we don't yet have a 100% serializable prompt
 
     const exit = runner.resumeOneBlock(block, ctx)
     expect(exit).toBe(expectedExit)

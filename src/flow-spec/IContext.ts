@@ -39,7 +39,7 @@ export interface IContextInputRequired extends IContext {
 export function findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction {
   const interaction = find(interactions, {uuid})
   if (!interaction) {
-    throw new Error('Unable to find interaction on context')
+    throw new Error(`Unable to find interaction on context: ${uuid} in ${interactions.map(i => i.uuid)}`)
   }
 
   return interaction
@@ -48,7 +48,7 @@ export function findInteractionWith(uuid: string, {interactions}: IContext): IBl
 export function findFlowWith(uuid: string, {flows}: IContext): IFlow {
   const flow = find(flows, {uuid})
   if (!flow) {
-    throw new Error('Unable to find flow on context')
+    throw new Error(`Unable to find flow on context: ${uuid} in ${flows.map(f => f.uuid)}`)
   }
 
   return flow
@@ -61,7 +61,7 @@ export function findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock {
 export function findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext) {
   const
       flow = findFlowWith(interaction.flowId, ctx),
-      runFlowBlock = findBlockWith(interaction.flowId, flow)
+      runFlowBlock = findBlockWith(interaction.blockId, flow)
 
   const flowId = (runFlowBlock.config as RunFlowConfig).flow_id
   if (!flowId) {

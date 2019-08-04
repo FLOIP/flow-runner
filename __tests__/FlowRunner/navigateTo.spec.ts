@@ -5,11 +5,12 @@ import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockRunner from "../../src/domain/runners/IBlockRunner";
 import IBlock from "../../src/flow-spec/IBlock";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
-import {RichCursorInputRequiredType} from "../../src/flow-spec/IContext";
+import {findInteractionWith, RichCursorInputRequiredType} from "../../src/flow-spec/IContext";
 import NumericPrompt from "../../src/domain/prompt/NumericPrompt";
 import IPrompt from "../../src/flow-spec/IPrompt";
 import {PromptExpectationsType} from "../../src/domain/prompt/BasePrompt";
 
+// todo: abstract some of the setup
 
 describe('FlowRunner/navigateTo', () => {
   let dataset: IDataset
@@ -60,7 +61,7 @@ describe('FlowRunner/navigateTo', () => {
       expect(ctx.cursor).toBe(cursor)
     })
 
-    it('should have interaction id from newly created+pushed interaction', () => {
+    it('should have interactionId from newly created+pushed interaction', () => {
       const
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
@@ -104,17 +105,138 @@ describe('FlowRunner/navigateTo', () => {
   })
 
   describe('interaction', () => {
-    it('should have flow id from root flow when not nested')
-    it('should have flow id from deepest nested flow when nested')
+    it('should have block provided', () => {
+      const
+          ctx = dataset.contexts[0],
+          block = ctx.flows[0].blocks[0],
+          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
+            ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
 
-    it('should have origin interaction id absent when on root flow')
-    it('should have origin interaction id from root flow when nested once')
-    it('should have origin interaction id from parent flow when nested > once')
+      expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(0)
+      runner.navigateTo(block, ctx)
+      expect(ctx.interactions[0].blockId).toBe(block.uuid)
+    })
 
-    it('should have block provided')
+    describe('flowId', () => {
+      it('should be from root flow when not nested', () => {
+        const
+            ctx = dataset.contexts[0],
+            block = ctx.flows[0].blocks[0],
+            runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
+              ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+
+        expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(0)
+        expect(ctx.firstFlowId).toBeTruthy()
+
+        runner.navigateTo(block, ctx)
+        expect(ctx.interactions[0].flowId).toBe(ctx.firstFlowId)
+      })
+
+      it('should be from nested flow when nested once', () => {
+        const
+            ctx = dataset.contexts[2], // RunFlow->(Message)->Message
+            block = ctx.flows[1].blocks[0], // todo: actually, ths needs to be the first block on the nested flow!
+            runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
+              ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+
+        expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
+        expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) || '', ctx).flowId)
+            .toBe(ctx.flows[0].uuid)
+
+        runner.navigateTo(block, ctx)
+
+        expect(ctx.interactions[1].flowId).toBe(ctx.flows[1].uuid)
+      })
+
+      it.todo('should be from deepest nested flow when deeply nested')
+    })
+
+    describe('originFlowId', () => {
+      it('should be absent when on root flow', () => {
+        const
+            ctx = dataset.contexts[0],
+            block = ctx.flows[0].blocks[0],
+            runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
+              ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+
+        expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(0)
+        expect(ctx.interactions.length).toBe(0)
+
+        runner.navigateTo(block, ctx)
+
+        expect(ctx.interactions[0].originFlowId).toBe(null)
+      })
+
+      it('should be from root flow when nested once', () => {
+        const
+            ctx = dataset.contexts[2], // RunFlow->(Message)->Message
+            block = ctx.flows[1].blocks[0],
+            runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
+              ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+
+        expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
+        expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) || '', ctx).flowId)
+            .toBe(ctx.flows[0].uuid)
+
+        runner.navigateTo(block, ctx)
+
+        expect(ctx.interactions[1].originFlowId).toBe(ctx.flows[0].uuid)
+      })
+
+      it.todo('should be from deepest nested flow when deeply nested')
+    })
+
+    describe('originInteractionId', () => {
+      it('should be absent when on root flow', () => {
+        const
+            ctx = dataset.contexts[0],
+            block = ctx.flows[0].blocks[0],
+            runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
+              ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+
+        expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(0)
+        expect(ctx.interactions.length).toBe(0)
+
+        runner.navigateTo(block, ctx)
+
+        expect(ctx.interactions[0].originBlockInteractionId).toBe(null)
+      })
+
+      it('should be from root flow\'s interaction when nested once', () => {
+        const
+            ctx = dataset.contexts[2], // RunFlow->(Message)->Message
+            block = ctx.flows[1].blocks[0],
+            runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
+              ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+
+        expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
+        expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) || '', ctx).flowId)
+            .toBe(ctx.flows[0].uuid)
+
+        runner.navigateTo(block, ctx)
+
+        expect(ctx.interactions[1].originBlockInteractionId).toBe(ctx.interactions[0].uuid)
+      })
+
+      it.todo('should be from deepest nested flow\'s interaction when deeply nested')
+    })
   })
 
-  it('should populate exitAt onto previous interaction when present')
+  describe('previous interaction', () => {
+    it('should populate exitAt onto it when prev present', () => {
+      const
+          ctx = dataset.contexts[1],
+          block = ctx.flows[1].blocks[0],
+          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
+            ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],])),
+          lastIntx = last(ctx.interactions) as IBlockInteraction
+
+      expect(ctx.interactions.length).toBeGreaterThan(0)
+      expect(lastIntx.exitAt).toBeNull()
+      runner.navigateTo(block, ctx)
+      expect(lastIntx.exitAt).toBeInstanceOf(Date)
+    })
+  })
 })
 
 

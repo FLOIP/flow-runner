@@ -1,4 +1,4 @@
-defaults:
+_defaults:
   - &defaults/exit
     semantic_label: ''
     label: ''
@@ -51,18 +51,32 @@ defaults:
     sessionVars: {}
     nestedFlowBlockInteractionIdStack: []
 
-block_exits:
+# @note Some Id references are hand-rolled identifiers.
+#       Pls ensure that refactoring has "search in comments" enabled.
+#       - `block_exit.destination_block`
+#       - `block<Core\RunFlow>.config.flow_id`
+#
+#       > It is an error for an alias node to use an anchor that does not previously occur in the document.
+#       > - https://yaml.org/spec/1.2/spec.html#id2786196
+
+_block_exits:
   - &exit/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
     <<: *defaults/exit
     uuid: &exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df 36b2c0ee-bcba-463c-aeab-9f9c8fb990df
-    destination_block: 164f04f7-3daf-420b-9a5b-0d3b16144ec5
+    destination_block: 164f04f7-3daf-420b-9a5b-0d3b16144ec5 # *blockId/Message->(void)/164f04f7-3daf-420b-9a5b-0d3b16144ec5
+
+  - &exit/->Message/5670b311-0895-43ba-acc4-07136cf64591
+    <<: *defaults/exit
+    uuid: &exitId/->Message/5670b311-0895-43ba-acc4-07136cf64591 5670b311-0895-43ba-acc4-07136cf64591
+    destination_block: cb1b04a3-6447-4e33-a449-a6e3107e7531 # *blockId/Message->(Message)/cb1b04a3-6447-4e33-a449-a6e3107e7531
 
   - &exit/->void/b9485293-90a6-456e-9291-81de5e3a4a89
     <<: *defaults/exit
     uuid: &exitId/->void/b9485293-90a6-456e-9291-81de5e3a4a89 b9485293-90a6-456e-9291-81de5e3a4a89
     destination_block:
 
-blocks:
+# todo: anchors for blocks may need to change a bit; it's difficult to differentiate between them (eg. Message vs. Message)
+_blocks:
   - &block/Message->(void)/42e635ea-bc57-4c68-a8d6-20f648968bec
     <<: *defaults/blocks/Message
     uuid: &blockId/Message->(void)/42e635ea-bc57-4c68-a8d6-20f648968bec 42e635ea-bc57-4c68-a8d6-20f648968bec
@@ -75,26 +89,62 @@ blocks:
     exits:
       - *exit/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
 
+  - &block/Message->(Message)/5e5d397a-a606-49e0-9a4d-8553a1af52aa
+    <<: *defaults/blocks/Message
+    uuid: &blockId/Message->(Message)/5e5d397a-a606-49e0-9a4d-8553a1af52aa 5e5d397a-a606-49e0-9a4d-8553a1af52aa
+    exits:
+      - *exit/->Message/5670b311-0895-43ba-acc4-07136cf64591
+
   - &block/Message->(void)/164f04f7-3daf-420b-9a5b-0d3b16144ec5
     <<: *defaults/blocks/Message
     uuid: &blockId/Message->(void)/164f04f7-3daf-420b-9a5b-0d3b16144ec5 164f04f7-3daf-420b-9a5b-0d3b16144ec5
     exits:
       - *exit/->void/b9485293-90a6-456e-9291-81de5e3a4a89
 
-  - &block/RunFlow->()/efec92a9-a4b1-482c-b448-3901b84c0cd1
+  - &block/RunFlow->(Message)/efec92a9-a4b1-482c-b448-3901b84c0cd1
     <<: *defaults/blocks/RunFlow
     uuid: &blockId/RunFlow->()/efec92a9-a4b1-482c-b448-3901b84c0cd1 efec92a9-a4b1-482c-b448-3901b84c0cd1
     type: Core\RunFlow
     exits:
-#        - *0b53b1bf-3203-44ae-bc62-20dcd5c3ce4f
+      - *exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
+    config:
+      flow_id: 957a8923-428a-420f-8053-d23927e0eea0 # *flowId/(Message)/957a8923-428a-420f-8053-d23927e0eea0
 
-block_interactions:
+_flows:
+  - &flow/(Message)/957a8923-428a-420f-8053-d23927e0eea0
+    <<: *defaults/flow
+    uuid: &flowId/(Message)/957a8923-428a-420f-8053-d23927e0eea0 957a8923-428a-420f-8053-d23927e0eea0
+    blocks:
+      - *block/Message->(void)/42e635ea-bc57-4c68-a8d6-20f648968bec
+
+  - &flow/(Message|Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+    <<: *defaults/flow
+    uuid: &flowId/(Message|Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5 711b1ff7-d16f-4ed9-8524-054afa4049a5
+    blocks:
+      - *block/Message->(Message)/5e5d397a-a606-49e0-9a4d-8553a1af52aa
+      - *block/Message->(Message)/cb1b04a3-6447-4e33-a449-a6e3107e7531
+      - *block/Message->(void)/164f04f7-3daf-420b-9a5b-0d3b16144ec5
+
+  - &flow/(RunFlow|Message)/028a055c-e988-4050-81a2-e11934bdbcad
+    <<: *defaults/flow
+    uuid: &flowId/(RunFlow|Message)/028a055c-e988-4050-81a2-e11934bdbcad 028a055c-e988-4050-81a2-e11934bdbcad
+    blocks:
+      - *block/RunFlow->(Message)/efec92a9-a4b1-482c-b448-3901b84c0cd1
+
+_block_interactions:
   - &intx/Message->void/1c7317fc-b644-4da4-b1ff-1807ce55c17e
     <<: *defaults/intx
     uuid: &intxId/Message->void/1c7317fc-b644-4da4-b1ff-1807ce55c17e 1c7317fc-b644-4da4-b1ff-1807ce55c17e
     blockId: *blockId/Message->(void)/164f04f7-3daf-420b-9a5b-0d3b16144ec5
     details:
       selectedExitId: *exitId/->void/b9485293-90a6-456e-9291-81de5e3a4a89
+
+  - &intx/Message->Message/09894745-38ba-456f-aab4-720b7d09d5b3
+    <<: *defaults/intx
+    uuid: &intxId/Message->Message/09894745-38ba-456f-aab4-720b7d09d5b3 09894745-38ba-456f-aab4-720b7d09d5b3
+    blockId: *blockId/Message->(Message)/5e5d397a-a606-49e0-9a4d-8553a1af52aa
+    details:
+      selectedExitId: *exitId/->Message/5670b311-0895-43ba-acc4-07136cf64591
 
   - &intx/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
     <<: *defaults/intx
@@ -103,21 +153,15 @@ block_interactions:
     details:
       selectedExitId: *exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
 
-flows:
-  - &flow/(Message)/957a8923-428a-420f-8053-d23927e0eea0
-    <<: *defaults/flow
-    uuid: &flowId/(Message)/957a8923-428a-420f-8053-d23927e0eea0 957a8923-428a-420f-8053-d23927e0eea0
-    blocks:
-      - *block/Message->(void)/42e635ea-bc57-4c68-a8d6-20f648968bec
+  - &intx/RunFlow->Message/15c15d39-b5e2-4386-b9b6-838bb81e7107
+    <<: *defaults/intx
+    uuid: &intxId/RunFlow->Message/15c15d39-b5e2-4386-b9b6-838bb81e7107 15c15d39-b5e2-4386-b9b6-838bb81e7107
+    blockId: *blockId/RunFlow->()/efec92a9-a4b1-482c-b448-3901b84c0cd1
+    flowId: *flowId/(RunFlow|Message)/028a055c-e988-4050-81a2-e11934bdbcad
+    details:
+      selectedExitId: *exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
 
-  - &flow/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
-    <<: *defaults/flow
-    uuid: &flowId/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5 711b1ff7-d16f-4ed9-8524-054afa4049a5
-    blocks:
-      - *block/Message->(Message)/cb1b04a3-6447-4e33-a449-a6e3107e7531
-      - *block/Message->(void)/164f04f7-3daf-420b-9a5b-0d3b16144ec5
-
-cursors: []
+_cursors: []
 
 contexts:
   # single flow, empty interactions, absent cursor
@@ -128,42 +172,25 @@ contexts:
     interactions: []
     cursor: null # [block-interaction, prompt]
 
-  # multi-flow, empty interactions, absent cursor
+  # multi-flow, single interaction, cursor on block with exit
   - <<: *defaults/context
     flows:
-      - *flow/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
       - *flow/(Message)/957a8923-428a-420f-8053-d23927e0eea0
-    firstFlowId: *flowId/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
-    interactions: []
-    cursor: null # [block-interaction, prompt]
-
-  # multi-flow, multi-interaction, cursor on block without exits (last block)
-  - <<: *defaults/context
-    flows:
-      - *flow/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
-      - *flow/(Message)/957a8923-428a-420f-8053-d23927e0eea0
-    firstFlowId: *flowId/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+      - *flow/(Message|Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+    firstFlowId: *flowId/(Message|Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
     interactions:
-      - *intx/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
-      - *intx/Message->void/1c7317fc-b644-4da4-b1ff-1807ce55c17e
-    cursor: [*intxId/Message->void/1c7317fc-b644-4da4-b1ff-1807ce55c17e, null]
-
-  # multi-flow, single-interaction, cursor on block with exits
-  - <<: *defaults/context
-    flows:
-      - *flow/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
-      - *flow/(Message)/957a8923-428a-420f-8053-d23927e0eea0
-    firstFlowId: *flowId/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
-    interactions:
+      - *intx/Message->Message/09894745-38ba-456f-aab4-720b7d09d5b3
       - *intx/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
     cursor: [*intxId/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e, null]
 
-  # multi-flow, single-interaction, cursor on Core\RunFlow block with exits
+  # multi-flow, single-interaction, cursor on Core\RunFlow block with no exit
   - <<: *defaults/context
     flows:
-      - *flow/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+      - *flow/(RunFlow|Message)/028a055c-e988-4050-81a2-e11934bdbcad
       - *flow/(Message)/957a8923-428a-420f-8053-d23927e0eea0
-    firstFlowId: *flowId/(Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+    firstFlowId: *flowId/(RunFlow|Message)/028a055c-e988-4050-81a2-e11934bdbcad
     interactions:
-      - *intx/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
-    cursor: [*intxId/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e, null]
+      - *intx/RunFlow->Message/15c15d39-b5e2-4386-b9b6-838bb81e7107
+    cursor: [*intxId/RunFlow->Message/15c15d39-b5e2-4386-b9b6-838bb81e7107, null]
+    nestedFlowBlockInteractionIdStack:
+      - *intxId/RunFlow->Message/15c15d39-b5e2-4386-b9b6-838bb81e7107

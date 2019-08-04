@@ -3,6 +3,10 @@
 import {PromptExpectationsType} from "../domain/prompt/BasePrompt";
 import PromptValidationException from "../domain/exceptions/PromptValidationException";
 
+// todo: we need a smart way to marshall this data type (aka. hydrate into this type)
+//       Maybe cursor only holds the data, and we access the cursor through the runner
+//       FlowRunner.getRichCursor() could look different than `{cursor}: IContext`
+
 export default interface IPrompt<PromptType extends PromptExpectationsType> { // todo: how do I type that validate need take in PromptType.type's type?
   blockId: string//UUID32
   blockInteractionId: string//UUID64
