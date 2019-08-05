@@ -7,6 +7,7 @@ import IPrompt from "./IPrompt";
 import IBlock from "./IBlock";
 import RunFlowConfig from "../model/block/RunFlowConfig";
 import {find, last} from 'lodash'
+import ValidationException from "../domain/exceptions/ValidationException";
 
 
 export type CursorType = [string, IPrompt<PromptExpectationsType> | null]
@@ -39,7 +40,7 @@ export interface IContextInputRequired extends IContext {
 export function findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction {
   const interaction = find(interactions, {uuid})
   if (!interaction) {
-    throw new Error(`Unable to find interaction on context: ${uuid} in ${interactions.map(i => i.uuid)}`)
+    throw new ValidationException(`Unable to find interaction on context: ${uuid} in ${interactions.map(i => i.uuid)}`)
   }
 
   return interaction
@@ -48,7 +49,7 @@ export function findInteractionWith(uuid: string, {interactions}: IContext): IBl
 export function findFlowWith(uuid: string, {flows}: IContext): IFlow {
   const flow = find(flows, {uuid})
   if (!flow) {
-    throw new Error(`Unable to find flow on context: ${uuid} in ${flows.map(f => f.uuid)}`)
+    throw new ValidationException(`Unable to find flow on context: ${uuid} in ${flows.map(f => f.uuid)}`)
   }
 
   return flow
@@ -65,7 +66,7 @@ export function findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContex
 
   const flowId = (runFlowBlock.config as RunFlowConfig).flow_id
   if (!flowId) {
-    throw new Error('Unable to find nested flowId on Core\\RunFlowBlock')
+    throw new ValidationException('Unable to find nested flowId on Core\\RunFlowBlock')
   }
 
   return flowId

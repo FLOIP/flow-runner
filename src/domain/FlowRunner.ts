@@ -15,6 +15,7 @@ import IBlockExit from "../flow-spec/IBlockExit"
 import {find, first, last} from 'lodash'
 import uuid from 'uuid'
 import IFlowRunner, {IBlockRunnerFactoryStore} from "./IFlowRunner";
+import ValidationException from "./exceptions/ValidationException";
 
 /**
  * todo: remaining pieces
@@ -126,7 +127,7 @@ export default class FlowRunner implements IFlowRunner {
   createBlockRunnerFor(block: IBlock): IBlockRunner {
     const factory = this.runnerFactoryStore.get(block.type)
     if (!factory) {
-      throw new Error(`Unable to find factory for block type: ${block.type}`)
+      throw new ValidationException(`Unable to find factory for block type: ${block.type}`)
     }
 
     return factory(block)
@@ -203,12 +204,12 @@ export default class FlowRunner implements IFlowRunner {
    *       Eg. these are esentially RunFlowRunner's .start() + .resume() equivalents */
   stepInto(runFlowBlock: IBlock, ctx: IContext): IBlock | null {
     if (runFlowBlock.type !== 'Core\\RunFlow') {
-      throw new Error('Unable to step into a non-Core\\RunFlow block type')
+      throw new ValidationException('Unable to step into a non-Core\\RunFlow block type')
     }
 
     const runFlowInteraction = last(ctx.interactions)
     if (!runFlowInteraction) {
-      throw new Error('Unable to step into Core\\RunFlow that hasn\'t yet been started')
+      throw new ValidationException('Unable to step into Core\\RunFlow that hasn\'t yet been started')
     }
 
     ctx.nestedFlowBlockInteractionIdStack.push(runFlowInteraction.uuid)
@@ -272,7 +273,7 @@ export default class FlowRunner implements IFlowRunner {
 
   findNextBlockFrom(interaction: IBlockInteraction, ctx: IContext): IBlock | null {
     if (!interaction.details.selectedExitId) {
-      throw new Error('Unable to navigate past incomplete interaction; did you forget to call runner.resume()?') // eg. prompt.isFulfilled() === false || !called block.resume()
+      throw new ValidationException('Unable to navigate past incomplete interaction; did you forget to call runner.resume()?') // eg. prompt.isFulfilled() === false || !called block.resume()
     }
 
     const

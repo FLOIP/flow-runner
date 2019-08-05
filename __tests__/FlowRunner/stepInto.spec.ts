@@ -1,16 +1,30 @@
-// import {read} from 'yaml-import'
-// import IDataset from "../IDataset";
+import {read} from 'yaml-import'
+import IDataset from "../IDataset";
+import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
+import ValidationException from "../../src/domain/exceptions/ValidationException";
 
 
 describe('FlowRunner/stepInto', () => {
-  // let dataset: IDataset
+  let dataset: IDataset
 
   beforeEach(() => {
-    // dataset = read('__tests__/dataset.yml')
+    dataset = read('__tests__/dataset.yml')
   })
 
-  it.todo('should raise when block type is not RunFlow')
+  it('should raise when block type is not RunFlow', () => {
+    const
+        ctx = dataset.contexts[0],
+        block = ctx.flows[0].blocks[0],
+        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+
+    expect(FlowRunner.prototype.stepInto.bind(runner, block, ctx))
+        .toThrow(ValidationException)
+    expect(FlowRunner.prototype.stepInto.bind(runner, block, ctx))
+        .toThrow('non-Core\\RunFlow')
+  })
+
   it.todo('should raise when last interaction doesn\'t match provided blockId -- aka only allow step ins during active interaction')
+
   it.todo('should push run flow interaction onto nest flow block intx stack')
 
   describe('returned block', () => {

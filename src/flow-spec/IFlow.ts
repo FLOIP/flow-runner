@@ -2,6 +2,7 @@
 import IBlock from "./IBlock";
 import {Mode} from "./Mode";
 import {find} from 'lodash'
+import ValidationException from "../domain/exceptions/ValidationException";
 
 
 export default interface IFlow {
@@ -19,7 +20,7 @@ export default interface IFlow {
 export function findBlockWith(uuid: string, {blocks}: IFlow): IBlock {
   const block = find(blocks, {uuid})
   if (!block) {
-    throw new Error('Unable to find block on flow')
+    throw new ValidationException('Unable to find block on flow')
   }
 
   return block
