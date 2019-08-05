@@ -179,7 +179,7 @@ export default class FlowRunner implements IFlowRunner {
 
     const lastInteraction = last(interactions)
     if (lastInteraction) {
-      interaction.exitAt = new Date
+      lastInteraction.exitAt = new Date
     }
 
     interactions.push(interaction)
