@@ -63,6 +63,11 @@ export default class FlowRunner implements IFlowRunner {
         return this.createRichCursorInputRequiredFrom(ctx as IContextInputRequired)
       }
 
+      // todo: do we want to always call resume here?
+      //       eg. start generates interaction + resume selects the exit and returns it
+      //       the idea being that the runner is then always responsible for validating assigning exits which
+      //       alleviates responsibility from block runner implementation
+
       block = this.findNextBlockOnActiveFlowFor(ctx)
 
       if (!block) {
@@ -230,10 +235,10 @@ export default class FlowRunner implements IFlowRunner {
    * Then generating a cursor that indicates where we are.
    * ?? -> xa ->>> ya -> yb ->>> xb
    *
-   * Does this push cursor into an out-of-sync state?
-   * Not when stepping out, because when stepping out, we're connecting previous RunFlow output
-   * to next block; when stepping IN, we need an explicit navigation to inject RunFlow in between
-   * the two Flows. */
+   * @note Does this push cursor into an out-of-sync state?
+   *       Not when stepping out, because when stepping out, we're connecting previous RunFlow output
+   *       to next block; when stepping IN, we need an explicit navigation to inject RunFlow in between
+   *       the two Flows. */
   stepOut(ctx: IContext): IBlock | null {
     const {interactions, nestedFlowBlockInteractionIdStack} = ctx
 

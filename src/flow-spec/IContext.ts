@@ -78,7 +78,7 @@ export function getActiveFlowIdFrom(ctx: IContext): string {
     return firstFlowId
   }
 
-  const interaction = findInteractionWith(last(nestedFlowBlockInteractionIdStack) || '', ctx)
+  const interaction = findInteractionWith(last(nestedFlowBlockInteractionIdStack) as string, ctx)
   return findNestedFlowIdFor(interaction, ctx)
 }
 

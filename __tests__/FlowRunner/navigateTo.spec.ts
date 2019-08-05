@@ -140,7 +140,7 @@ describe('FlowRunner/navigateTo', () => {
               ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
 
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
-        expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) || '', ctx).flowId)
+        expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) as string, ctx).flowId)
             .toBe(ctx.flows[0].uuid)
 
         runner.navigateTo(block, ctx)
@@ -175,7 +175,7 @@ describe('FlowRunner/navigateTo', () => {
               ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
 
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
-        expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) || '', ctx).flowId)
+        expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) as string, ctx).flowId)
             .toBe(ctx.flows[0].uuid)
 
         runner.navigateTo(block, ctx)
@@ -210,7 +210,7 @@ describe('FlowRunner/navigateTo', () => {
               ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
 
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
-        expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) || '', ctx).flowId)
+        expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) as string, ctx).flowId)
             .toBe(ctx.flows[0].uuid)
 
         runner.navigateTo(block, ctx)

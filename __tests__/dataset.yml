@@ -106,7 +106,7 @@ _blocks:
     uuid: &blockId/RunFlow->()/efec92a9-a4b1-482c-b448-3901b84c0cd1 efec92a9-a4b1-482c-b448-3901b84c0cd1
     type: Core\RunFlow
     exits:
-      - *exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
+      - *exit/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
     config:
       flow_id: 957a8923-428a-420f-8053-d23927e0eea0 # *flowId/(Message)/957a8923-428a-420f-8053-d23927e0eea0
 
@@ -130,6 +130,7 @@ _flows:
     uuid: &flowId/(RunFlow|Message)/028a055c-e988-4050-81a2-e11934bdbcad 028a055c-e988-4050-81a2-e11934bdbcad
     blocks:
       - *block/RunFlow->(Message)/efec92a9-a4b1-482c-b448-3901b84c0cd1
+      - *block/Message->(void)/164f04f7-3daf-420b-9a5b-0d3b16144ec5
 
 _block_interactions:
   - &intx/Message->void/1c7317fc-b644-4da4-b1ff-1807ce55c17e
