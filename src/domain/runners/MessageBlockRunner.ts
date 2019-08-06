@@ -3,7 +3,7 @@ import {RichCursorType} from "../../flow-spec/IContext";
 import IBlockRunner from "./IBlockRunner";
 import IBlock from "../../flow-spec/IBlock";
 import IBlockExit from "../../flow-spec/IBlockExit";
-// import BlockExit from "../../model/BlockExit";
+
 
 export default class implements IBlockRunner {
   constructor(
@@ -14,6 +14,9 @@ export default class implements IBlockRunner {
   }
 
   resume(cursor: RichCursorType): IBlockExit {
-    return {} as IBlockExit
+    const selectedExit = this.block.exits[0]
+    cursor[0].details.selectedExitId = selectedExit.uuid
+
+    return selectedExit
   }
 }
