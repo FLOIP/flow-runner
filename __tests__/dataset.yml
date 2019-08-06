@@ -110,6 +110,11 @@ _blocks:
     config:
       flow_id: 957a8923-428a-420f-8053-d23927e0eea0 # *flowId/(Message)/957a8923-428a-420f-8053-d23927e0eea0
 
+  - &block/RunFlow->(void)/fe809b0a-d4d5-45bd-941c-defb12237165
+    <<: *defaults/blocks/RunFlow
+    uuid: &blockId/RunFlow->()/fe809b0a-d4d5-45bd-941c-defb12237165 fe809b0a-d4d5-45bd-941c-defb12237165
+    type: Core\RunFlow
+
 _flows:
   - &flow/(Message)/957a8923-428a-420f-8053-d23927e0eea0
     <<: *defaults/flow

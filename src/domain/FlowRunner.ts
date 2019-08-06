@@ -212,6 +212,10 @@ export default class FlowRunner implements IFlowRunner {
       throw new ValidationException('Unable to step into Core\\RunFlow that hasn\'t yet been started')
     }
 
+    if (runFlowBlock.uuid !== runFlowInteraction.blockId) {
+      throw new ValidationException('Unable to step into Core\\RunFlow block that doesn\'t match last interaction')
+    }
+
     ctx.nestedFlowBlockInteractionIdStack.push(runFlowInteraction.uuid)
 
     const firstNestedBlock = first(getActiveFlowFrom(ctx).blocks) || null

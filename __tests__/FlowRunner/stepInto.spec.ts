@@ -23,9 +23,43 @@ describe('FlowRunner/stepInto', () => {
         .toThrow('non-Core\\RunFlow')
   })
 
-  it.todo('should raise when last interaction doesn\'t match provided blockId -- aka only allow step ins during active interaction')
+  it('should raise when last interaction doesn\'t match provided blockId (aka only allow step ins during active interaction)', () => {
+    const
+        ctx = dataset.contexts[2],
+        block = dataset._blocks[5], // dummy+empty RunFlow
+        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
 
-  it.todo('should push run flow interaction onto nest flow block intx stack')
+    expect(FlowRunner.prototype.stepInto.bind(runner, block, ctx))
+        .toThrow(ValidationException)
+    expect(FlowRunner.prototype.stepInto.bind(runner, block, ctx))
+        .toThrow('doesn\'t match last interaction')
+  })
+
+  it('should raise when interactions empty', () => {
+    const
+        ctx = dataset.contexts[2],
+        block = ctx.flows[0].blocks[0],
+        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+
+    ctx.interactions = [] // setup for empty interactions
+    expect(FlowRunner.prototype.stepInto.bind(runner, block, ctx))
+        .toThrow(ValidationException)
+    expect(FlowRunner.prototype.stepInto.bind(runner, block, ctx))
+        .toThrow('hasn\'t yet been started')
+  })
+
+  it('should push run flow interaction onto nested flow block intx stack', () => {
+    const
+        ctx = dataset.contexts[2],
+        block = ctx.flows[0].blocks[0],
+        runFlowBlockIntx = ctx.interactions[0],
+        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+
+    ctx.nestedFlowBlockInteractionIdStack = [] // setup for known nested flow state
+    runner.stepInto(block, ctx)
+    expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
+    expect(ctx.nestedFlowBlockInteractionIdStack[0]).toBe(runFlowBlockIntx.uuid)
+  })
 
   describe('returned block', () => {
     it.todo('should return null when first block absent on freshly nested flow')
