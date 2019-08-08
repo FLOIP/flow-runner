@@ -6,7 +6,7 @@ import {RichCursorInputRequiredType} from "../../src/flow-spec/IContext";
 import NumericPrompt from "../../src/domain/prompt/NumericPrompt";
 
 
-describe('FlowRunner/startOneBlock', () => {
+describe('FlowRunner/initializeOneBlock', () => {
   let dataset: IDataset
 
   beforeEach(() => {
@@ -21,12 +21,12 @@ describe('FlowRunner/startOneBlock', () => {
         runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
           ['MobilePrimitives\\Message', block => ({
             block,
-            start: (interaction: IBlockInteraction) => null,
-            resume: (cursor: RichCursorInputRequiredType) => block.exits[0]
+            initialize: (interaction: IBlockInteraction) => null,
+            run: (cursor: RichCursorInputRequiredType) => block.exits[0]
           })],
         ]))
 
-    const [, prompt] = runner.startOneBlock(block, flow.uuid, null, null)
+    const [, prompt] = runner.initializeOneBlock(block, flow.uuid, null, null)
     expect(prompt).toBeNull()
   })
 
@@ -40,12 +40,12 @@ describe('FlowRunner/startOneBlock', () => {
         runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
           ['MobilePrimitives\\Message', block => ({
             block,
-            start: (interaction: IBlockInteraction) => expectedPrompt = new NumericPrompt(block.uuid, interaction.uuid, null),
-            resume: (cursor: RichCursorInputRequiredType) => block.exits[0]
+            initialize: (interaction: IBlockInteraction) => expectedPrompt = new NumericPrompt(block.uuid, interaction.uuid, null),
+            run: (cursor: RichCursorInputRequiredType) => block.exits[0]
           })],
         ]))
 
-    const [, prompt] = runner.startOneBlock(block, flow.uuid, null, null)
+    const [, prompt] = runner.initializeOneBlock(block, flow.uuid, null, null)
     expect(prompt).toBe(expectedPrompt)
   })
 
@@ -57,12 +57,12 @@ describe('FlowRunner/startOneBlock', () => {
         runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
           ['MobilePrimitives\\Message', block => ({
             block,
-            start: (interaction: IBlockInteraction) => null,
-            resume: (cursor: RichCursorInputRequiredType) => block.exits[0] // todo: should we always call resume to get access to block exit? Is there a pattern here?
+            initialize: (interaction: IBlockInteraction) => null,
+            run: (cursor: RichCursorInputRequiredType) => block.exits[0] // todo: should we always call resume to get access to block exit? Is there a pattern here?
           })],
         ]))
 
-    const [interaction] = runner.startOneBlock(block, flow.uuid, null, null)
+    const [interaction] = runner.initializeOneBlock(block, flow.uuid, null, null)
     expect(interaction).toEqual(expect.objectContaining({blockId: block.uuid} as Partial<IBlockInteraction>))
     expect(interaction).toEqual(expect.objectContaining({flowId: flow.uuid} as Partial<IBlockInteraction>))
   })

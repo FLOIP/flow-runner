@@ -6,7 +6,7 @@ import {IContextInputRequired, RichCursorInputRequiredType} from "../../src/flow
 import NumericPrompt from "../../src/domain/prompt/NumericPrompt";
 
 
-describe('FlowRunner/resumeOneBlock', () => {
+describe('FlowRunner/runActiveBlockOn', () => {
   let dataset: IDataset
 
   beforeEach(() => {
@@ -21,14 +21,15 @@ describe('FlowRunner/resumeOneBlock', () => {
         runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([ // todo: reuse fixture from navigateTo().spec
           ['MobilePrimitives\\Message', block => ({
             block,
-            start: (interaction: IBlockInteraction) => null,
-            resume: (cursor: RichCursorInputRequiredType) => expectedExit
+            initialize: (interaction: IBlockInteraction) => null,
+            run: (cursor: RichCursorInputRequiredType) => expectedExit
           })],
         ]))
 
     ctx.cursor[1] = new NumericPrompt(block.uuid, ctx.cursor[0], null) // setup b/c we don't yet have a 100% serializable prompt
+    const richCursor = runner.hydrateRichCursorFrom(ctx)
 
-    const exit = runner.resumeOneBlock(block, ctx)
+    const exit = runner.runActiveBlockOn(richCursor, block)
     expect(exit).toBe(expectedExit)
   })
 })

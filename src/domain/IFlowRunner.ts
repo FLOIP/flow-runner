@@ -10,7 +10,7 @@ export default interface IFlowRunner {
 
   // new (context: IContext, runnerFactoryStore: IBlockRunnerFactoryStore): IFlowRunner
 
-  start(): RichCursorInputRequiredType | null
-  resume(): RichCursorInputRequiredType | null
+  initialize(): void
+  run(): RichCursorInputRequiredType | null
 
 }

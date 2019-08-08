@@ -8,6 +8,6 @@ import {RichCursorType} from "../../flow-spec/IContext";
 export default interface IBlockRunner {
   block: IBlock
 
-  start(interaction: IBlockInteraction): IPrompt<PromptExpectationsType> | null
-  resume(cursor: RichCursorType): IBlockExit
+  initialize(interaction: IBlockInteraction): IPrompt<PromptExpectationsType> | null
+  run(cursor: RichCursorType): IBlockExit
 }

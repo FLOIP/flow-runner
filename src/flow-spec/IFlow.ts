@@ -15,6 +15,9 @@ export default interface IFlow {
   supported_modes: Mode[] // enum
   languages: string[] // eunm for ISO 639-3 codes
   blocks: IBlock[]
+
+  firstBlockId: string,
+  exitBlockId: string | null
 }
 
 export function findBlockWith(uuid: string, {blocks}: IFlow): IBlock {

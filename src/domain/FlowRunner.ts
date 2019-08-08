@@ -1,10 +1,10 @@
 import IBlock, {findBlockExitWith} from "../flow-spec/IBlock"
 import IContext, {
+  CursorType,
   findBlockOnActiveFlowWith,
   findInteractionWith,
   getActiveFlowFrom,
   getActiveFlowIdFrom,
-  IContextInputRequired,
   IContextWithCursor,
   RichCursorInputRequiredType,
   RichCursorType
@@ -36,8 +36,23 @@ export default class FlowRunner implements IFlowRunner {
 
   /**
    * We want to call start when we don't have a prompt needing work to be done. */
-  start(): RichCursorInputRequiredType | null {
-    return this.runUntilInputRequiredFrom(this.context)
+  initialize(): void {
+    const block = this.findNextBlockOnActiveFlowFor(this.context)
+    if (!block) {
+      throw new ValidationException('Unable to initialize flow without blocks.')
+    }
+
+    // todo: set flow starting timestamp on context
+    // todo: set delivery status on context
+
+    this.navigateTo(block, this.context) // kick-start by navigating to first block
+  }
+
+  isInitialized(ctx: IContext): boolean {
+    // const {cursor, entryAt, exitAt} = ctx
+    // return cursor && entryAt && !exitAt
+
+    return !!ctx.cursor
   }
 
   /**
@@ -49,25 +64,34 @@ export default class FlowRunner implements IFlowRunner {
    * The issue is that we may, in fact, end up needing to resume from a state where a particular block
    *    got itself into an invalid state and _crashed_, in which case, we'd still want the ability to pick up
    *    where we'd left off. */
-  resume() {
-    return this.resumeFrom(this.context as IContextWithCursor)
+  run(): RichCursorInputRequiredType | null {
+    const {context: ctx} = this
+    if (!this.isInitialized(ctx)) {
+      this.initialize()
+    }
+
+    return this.runUntilInputRequiredFrom(ctx as IContextWithCursor)
   }
 
-  runUntilInputRequiredFrom(ctx: IContext): RichCursorInputRequiredType | null {
+  isInputRequireFor(ctx: IContext): boolean {
+    return (ctx.cursor
+        && ctx.cursor[1]
+        && !ctx.cursor[1].isSubmitted) as boolean
+  }
+
+  runUntilInputRequiredFrom(ctx: IContextWithCursor): RichCursorInputRequiredType | null {
     // todo: convert cursor to an object instead of tuple; since we don't have named tuples, a dictionary would be more intuitive
 
-    let block: IBlock | null
+    let richCursor: RichCursorType = this.hydrateRichCursorFrom(ctx),
+        block: IBlock | null = findBlockOnActiveFlowWith(richCursor[0].blockId, ctx)
 
     do {
-      if (ctx.cursor && ctx.cursor[1] && !ctx.cursor[1].isSubmitted) {
+      if (this.isInputRequireFor(ctx)) {
         console.log('Attempted to resume when prompt is not yet fulfilled; resurfacing same prompt instance.')
-        return this.createRichCursorInputRequiredFrom(ctx as IContextInputRequired)
+        return richCursor as RichCursorInputRequiredType
       }
 
-      // todo: do we want to always call resume here?
-      //       eg. start generates interaction + resume selects the exit and returns it
-      //       the idea being that the runner is then always responsible for validating assigning exits which
-      //       alleviates responsibility from block runner implementation
+      this.runActiveBlockOn(richCursor, block)
 
       block = this.findNextBlockOnActiveFlowFor(ctx)
 
@@ -80,7 +104,7 @@ export default class FlowRunner implements IFlowRunner {
       }
 
       if (block.type === 'Core\\RunFlowBlock') {
-        /*[interactionUuid, prompt] = */this.navigateTo(block, ctx)
+        richCursor = this.navigateTo(block, ctx)
         block = this.stepInto(block, ctx)
       }
 
@@ -88,40 +112,66 @@ export default class FlowRunner implements IFlowRunner {
         continue // bail-- we done.
       }
 
-      /*[interactionUuid, prompt] = */this.navigateTo(block, ctx)
+      richCursor = this.navigateTo(block, ctx)
 
     } while (block)
 
-    delete ctx.cursor
+    this.complete(ctx)
+
     return null
   }
 
-  createRichCursorInputRequiredFrom(ctx: IContextInputRequired): RichCursorInputRequiredType {
+  exitThrough(block: IBlock) {
+    // todo: generate link from current interaction to exit block (flow.exitBlockId)
+    // todo: raise if flow.exitBlockId not defined
+    // todo: set delivery status on context as INCOMPLETE
+  }
+
+  complete(ctx: IContext) {
+    // todo: set exitAt on context
+    // todo: set delivery status on context as COMPLETE
+
+    (last(ctx.interactions) as IBlockInteraction).exitAt = new Date
+    delete ctx.cursor
+  }
+
+  dehydrateCursor(richCursor: RichCursorType): CursorType {
+    return [richCursor[0].uuid, richCursor[1]]
+  }
+
+  hydrateRichCursorFrom(ctx: IContextWithCursor): RichCursorType {
+    /**
+     * todo: to properly facilitate json-ification of any given `ctx`, we'll want this to also hydrate
+     *       `cursor[1]<IPrompt>` from an underlying data structure here
+     * todo: to facilitate an alternate underlying data structure for Prompt, let's add
+     *       ```
+     *       runner.createPromptFromCursor(): IPrompt<PromptExpectationsType> | null
+     *       ```
+     *       - There is one additional complication with toggling between these two: We now need to type our PromptConfig?
+     *         As in, we'll likely want to return a config definition from our block runner, but have the instantiation
+     *         handled by the runner? Another site for type injection.
+     *       - Cursor would then hold a union type of the different config types we know of where config has a type
+     **/
     const {cursor} = ctx
     return [findInteractionWith(cursor[0], ctx), cursor[1]]
   }
 
-  resumeFrom(ctx: IContextWithCursor) {
-    const
-        interaction = findInteractionWith(ctx.cursor[0], ctx),
-        block = findBlockOnActiveFlowWith(interaction.blockId, ctx)
-
-    /*const exit = */this.resumeOneBlock(block, ctx as IContextInputRequired)
-    return this.runUntilInputRequiredFrom(ctx)
-  }
-
-  startOneBlock(block: IBlock, flowId: string, originFlowId: string | null, originBlockInteractionId: string | null): RichCursorType {
+  initializeOneBlock(block: IBlock, flowId: string, originFlowId: string | null, originBlockInteractionId: string | null): RichCursorType {
     const
         runner = this.createBlockRunnerFor(block),
         interaction = this._createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId),
-        prompt = runner.start(interaction)
+        prompt = runner.initialize(interaction)
 
     return [interaction, prompt]
   }
 
-  resumeOneBlock(block: IBlock, ctx: IContextInputRequired): IBlockExit {
-    return this.createBlockRunnerFor(block)
-        .resume(this.createRichCursorInputRequiredFrom(ctx)) // todo: resume() needs to set "prompt.isSubmitted"
+  runActiveBlockOn(richCursor: RichCursorType, block: IBlock): IBlockExit {
+    const exit = this.createBlockRunnerFor(block)
+        .run(richCursor) // todo: run() needs to set "prompt.isSubmitted"
+
+    richCursor[0].details.selectedExitId = exit.uuid
+
+    return exit
   }
 
   createBlockRunnerFor(block: IBlock): IBlockRunner {
@@ -168,7 +218,7 @@ export default class FlowRunner implements IFlowRunner {
     }
   }
 
-  navigateTo(block: IBlock, ctx: IContext) {
+  navigateTo(block: IBlock, ctx: IContext): RichCursorType {
     const
         {interactions, nestedFlowBlockInteractionIdStack} = ctx,
         flowId = getActiveFlowIdFrom(ctx),
@@ -177,7 +227,7 @@ export default class FlowRunner implements IFlowRunner {
             ? findInteractionWith(originInteractionId, ctx)
             : null
 
-    const [interaction, prompt] = this.startOneBlock(
+    const [interaction, prompt] = this.initializeOneBlock(
         block,
         flowId,
         originInteraction && originInteraction.flowId,
@@ -185,12 +235,13 @@ export default class FlowRunner implements IFlowRunner {
 
     const lastInteraction = last(interactions)
     if (lastInteraction) {
-      lastInteraction.exitAt = new Date
+      lastInteraction.exitAt = new Date // todo: exit doesn't get called on last block
     }
 
     interactions.push(interaction)
+    ctx.cursor = [interaction.uuid, prompt]
 
-    return ctx.cursor = [interaction.uuid, prompt]
+    return [interaction, prompt]
   }
 
   /**
@@ -218,7 +269,7 @@ export default class FlowRunner implements IFlowRunner {
 
     ctx.nestedFlowBlockInteractionIdStack.push(runFlowInteraction.uuid)
 
-    const firstNestedBlock = first(getActiveFlowFrom(ctx).blocks) || null
+    const firstNestedBlock = first(getActiveFlowFrom(ctx).blocks) || null // todo: use IFlow.firstBlockId
     if (!firstNestedBlock) {
       return null
     }
@@ -268,7 +319,7 @@ export default class FlowRunner implements IFlowRunner {
         {cursor} = ctx
 
     if (!cursor) {
-      return first(flow.blocks) || null
+      return first(flow.blocks) || null // todo: use IFlow.firstBlockId
     }
 
     const interaction = findInteractionWith(cursor[0], ctx)
@@ -277,7 +328,7 @@ export default class FlowRunner implements IFlowRunner {
 
   findNextBlockFrom(interaction: IBlockInteraction, ctx: IContext): IBlock | null {
     if (!interaction.details.selectedExitId) {
-      throw new ValidationException('Unable to navigate past incomplete interaction; did you forget to call runner.resume()?') // eg. prompt.isFulfilled() === false || !called block.resume()
+      throw new ValidationException('Unable to navigate past incomplete interaction; did you forget to call runner.run()?') // eg. prompt.isFulfilled() === false || !called block.run()
     }
 
     const

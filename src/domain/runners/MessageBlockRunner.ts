@@ -3,20 +3,19 @@ import {RichCursorType} from "../../flow-spec/IContext";
 import IBlockRunner from "./IBlockRunner";
 import IBlock from "../../flow-spec/IBlock";
 import IBlockExit from "../../flow-spec/IBlockExit";
+import IPrompt from "../../flow-spec/IPrompt";
+import {PromptExpectationsType} from "../prompt/BasePrompt";
 
 
-export default class implements IBlockRunner {
+export default class MessageBlockRunner implements IBlockRunner {
   constructor(
       public block: IBlock) {}
 
-  start(interaction: IBlockInteraction): null {
+  initialize(interaction: IBlockInteraction): IPrompt<PromptExpectationsType> | null {
     return null
   }
 
-  resume(cursor: RichCursorType): IBlockExit {
-    const selectedExit = this.block.exits[0]
-    cursor[0].details.selectedExitId = selectedExit.uuid
-
-    return selectedExit
+  run(cursor: RichCursorType): IBlockExit {
+    return this.block.exits[0]
   }
 }

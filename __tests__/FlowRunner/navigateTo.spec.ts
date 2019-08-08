@@ -40,9 +40,9 @@ describe('FlowRunner/navigateTo', () => {
             ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
 
       expect(ctx.cursor).toBeFalsy()
-      const cursor = runner.navigateTo(block, ctx)
-      expect(cursor).toBeTruthy()
-      expect(ctx.cursor).toBe(cursor)
+      const richCursor = runner.navigateTo(block, ctx)
+      expect(richCursor).toBeTruthy()
+      expect(ctx.cursor).toEqual(runner.dehydrateCursor(richCursor))
     })
 
     it('should overwrite on context when prev cursor present and return same instance', () => {
@@ -55,10 +55,11 @@ describe('FlowRunner/navigateTo', () => {
       const
           previousIntxId = 'some-fake-block-interaction-uuid',
           prevCursor = ctx.cursor = [previousIntxId, new NumericPrompt(block.uuid, previousIntxId, null)],
-          cursor = runner.navigateTo(block, ctx)
+          richCursor = runner.navigateTo(block, ctx),
+          cursor = runner.dehydrateCursor(richCursor)
 
-      expect(cursor).not.toBe(prevCursor)
-      expect(ctx.cursor).toBe(cursor)
+      expect(cursor).not.toEqual(prevCursor)
+      expect(ctx.cursor).toEqual(cursor)
     })
 
     it('should have interactionId from newly created+pushed interaction', () => {
@@ -69,7 +70,7 @@ describe('FlowRunner/navigateTo', () => {
             ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
 
       const [interactionId,] = runner.navigateTo(block, ctx)
-      expect(interactionId).toBe((last(ctx.interactions) as IBlockInteraction).uuid)
+      expect(interactionId).toBe((last(ctx.interactions) as IBlockInteraction))
     })
 
     it('should have prompt from runner when provided', () => {
@@ -81,7 +82,7 @@ describe('FlowRunner/navigateTo', () => {
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
             ['MobilePrimitives\\Message', block => messageBlockRunner]])),
 
-          startSpy = jest.spyOn(messageBlockRunner, 'start')
+          startSpy = jest.spyOn(messageBlockRunner, 'initialize')
               .mockImplementation((interaction: IBlockInteraction) =>
                   new NumericPrompt(block.uuid, interaction.uuid, null))
 
@@ -242,6 +243,6 @@ describe('FlowRunner/navigateTo', () => {
 
 const createStaticMessageBlockRunnerFor = (block: IBlock) => ({
   block,
-  start: (interaction: IBlockInteraction) => null,
-  resume: (cursor: RichCursorInputRequiredType) => block.exits[0]
+  initialize: (interaction: IBlockInteraction) => null,
+  run: (cursor: RichCursorInputRequiredType) => block.exits[0]
 } as IBlockRunner)
