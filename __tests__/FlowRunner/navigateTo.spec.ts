@@ -1,14 +1,13 @@
 import {last} from 'lodash'
 import {read} from 'yaml-import'
-import IDataset from "../IDataset";
+import IDataset from "../fixtures/IDataset";
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
-import IBlockRunner from "../../src/domain/runners/IBlockRunner";
-import IBlock from "../../src/flow-spec/IBlock";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
-import {findInteractionWith, RichCursorInputRequiredType} from "../../src/flow-spec/IContext";
+import {findInteractionWith} from "../../src/flow-spec/IContext";
 import NumericPrompt from "../../src/domain/prompt/NumericPrompt";
 import IPrompt from "../../src/flow-spec/IPrompt";
 import {PromptExpectationsType} from "../../src/domain/prompt/BasePrompt";
+import {createStaticMessageBlockRunnerFor} from "../fixtures/BlockRunner";
 
 // todo: abstract some of the setup
 
@@ -16,7 +15,7 @@ describe('FlowRunner/navigateTo', () => {
   let dataset: IDataset
 
   beforeEach(() => {
-    dataset = read('__tests__/dataset.yml')
+    dataset = read('__tests__/fixtures/dataset.yml')
   })
 
   it('should push an additional interaction onto context\'s interaction stack', () => {
@@ -239,10 +238,3 @@ describe('FlowRunner/navigateTo', () => {
     })
   })
 })
-
-
-const createStaticMessageBlockRunnerFor = (block: IBlock) => ({
-  block,
-  initialize: (interaction: IBlockInteraction) => null,
-  run: (cursor: RichCursorInputRequiredType) => block.exits[0]
-} as IBlockRunner)

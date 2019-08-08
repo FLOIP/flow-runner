@@ -1,5 +1,5 @@
 import {read} from 'yaml-import'
-import IDataset from "../IDataset";
+import IDataset from "../fixtures/IDataset";
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
 import {RichCursorInputRequiredType} from "../../src/flow-spec/IContext";
@@ -10,7 +10,7 @@ describe('FlowRunner/initializeOneBlock', () => {
   let dataset: IDataset
 
   beforeEach(() => {
-    dataset = read('__tests__/dataset.yml')
+    dataset = read('__tests__/fixtures/dataset.yml')
   })
 
   it('should return cursor with empty prompt when prompt not provided', () => {

@@ -1,5 +1,5 @@
 import {read} from 'yaml-import'
-import IDataset from "../IDataset"
+import IDataset from "../fixtures/IDataset"
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner"
 import {cloneDeep, last} from 'lodash'
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
@@ -8,7 +8,7 @@ describe('FlowRunner/stepOut', () => {
   let dataset: IDataset
 
   beforeEach(() => {
-    dataset = read('__tests__/dataset.yml') // todo: convert this out in favour of a `cloneDeep()` for performance
+    dataset = read('__tests__/fixtures/dataset.yml') // todo: convert this out in favour of a `cloneDeep()` for performance
   })
 
   describe('when not nested', () => {

@@ -36,7 +36,7 @@ export default class FlowRunner implements IFlowRunner {
 
   /**
    * We want to call start when we don't have a prompt needing work to be done. */
-  initialize(): void {
+  initialize(): RichCursorType | null {
     const block = this.findNextBlockOnActiveFlowFor(this.context)
     if (!block) {
       throw new ValidationException('Unable to initialize flow without blocks.')
@@ -45,7 +45,7 @@ export default class FlowRunner implements IFlowRunner {
     // todo: set flow starting timestamp on context
     // todo: set delivery status on context
 
-    this.navigateTo(block, this.context) // kick-start by navigating to first block
+    return this.navigateTo(block, this.context) // kick-start by navigating to first block
   }
 
   isInitialized(ctx: IContext): boolean {
@@ -67,7 +67,7 @@ export default class FlowRunner implements IFlowRunner {
   run(): RichCursorInputRequiredType | null {
     const {context: ctx} = this
     if (!this.isInitialized(ctx)) {
-      this.initialize()
+      /*const richCursor = */this.initialize()
     }
 
     return this.runUntilInputRequiredFrom(ctx as IContextWithCursor)
@@ -167,9 +167,13 @@ export default class FlowRunner implements IFlowRunner {
 
   runActiveBlockOn(richCursor: RichCursorType, block: IBlock): IBlockExit {
     const exit = this.createBlockRunnerFor(block)
-        .run(richCursor) // todo: run() needs to set "prompt.isSubmitted"
+        .run(richCursor)
 
     richCursor[0].details.selectedExitId = exit.uuid
+
+    if (richCursor[1]) {
+      richCursor[1].isSubmitted = true
+    }
 
     return exit
   }
@@ -235,7 +239,7 @@ export default class FlowRunner implements IFlowRunner {
 
     const lastInteraction = last(interactions)
     if (lastInteraction) {
-      lastInteraction.exitAt = new Date // todo: exit doesn't get called on last block
+      lastInteraction.exitAt = new Date
     }
 
     interactions.push(interaction)

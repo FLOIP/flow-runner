@@ -22,6 +22,7 @@ export default abstract class <PromptType extends PromptExpectationsType>
       public isResponseRequired: boolean = false,
       public isValid: boolean = false,
       public isSubmitted: boolean = false,) {
+      // todo: canPerformEarlyExit()
   }
 
   get value() {
