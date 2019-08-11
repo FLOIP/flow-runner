@@ -3,17 +3,19 @@ import {RichCursorType} from "../../flow-spec/IContext";
 import IBlockRunner from "./IBlockRunner";
 import IBlock from "../../flow-spec/IBlock";
 import IBlockExit from "../../flow-spec/IBlockExit";
-import IPrompt from "../../flow-spec/IPrompt";
-import {PromptExpectationsType} from "../prompt/BasePrompt";
-import ReviewalPrompt from "../prompt/ReviewalPrompt";
+import {IMessagePromptConfig} from "../prompt/IMessagePromptConfig";
+import IMessageBlockConfig from "../../model/block/IMessageBlockConfig";
 
 
 export default class implements IBlockRunner {
   constructor(
-      public block: IBlock) {}
+      public block: IBlock & {config: IMessageBlockConfig}) {}
 
-  initialize(interaction: IBlockInteraction): IPrompt<PromptExpectationsType> | null {
-    return new ReviewalPrompt(this.block.uuid, interaction.uuid, null)
+  initialize(interaction: IBlockInteraction): IMessagePromptConfig {
+    return {
+      kind: "Message",
+      isResponseRequired: false,
+    }
   }
 
   run(cursor: RichCursorType): IBlockExit {

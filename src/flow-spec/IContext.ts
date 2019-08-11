@@ -1,21 +1,21 @@
-import {PromptExpectationsType} from "../domain/prompt/BasePrompt"
+import {IPromptExpectationTypes} from "../domain/prompt/BasePrompt"
 import IContact from "./IContact";
 import IFlow, {findBlockWith} from "./IFlow";
 import ISession from "./ISession";
 import IBlockInteraction from "./IBlockInteraction";
-import IPrompt from "./IPrompt";
+import IPrompt from "../domain/prompt/IPrompt";
 import IBlock from "./IBlock";
-import RunFlowConfig from "../model/block/RunFlowConfig";
+import RunFlowBlockConfig from "../model/block/RunFlowBlockConfig";
 import {find, last} from 'lodash'
 import ValidationException from "../domain/exceptions/ValidationException";
 
 
-export type CursorType = [string, IPrompt<PromptExpectationsType> | null]
-export type CursorInputRequiredType = [string /*UUID64*/, IPrompt<PromptExpectationsType>]
+export type CursorType = [string, IPrompt<IPromptExpectationTypes> | null]
+export type CursorInputRequiredType = [string /*UUID64*/, IPrompt<IPromptExpectationTypes>]
 export type CursorNoInputRequiredType = [string, null]
 
-export type RichCursorType = [IBlockInteraction, IPrompt<PromptExpectationsType> | null]
-export type RichCursorInputRequiredType = [IBlockInteraction, IPrompt<PromptExpectationsType>]
+export type RichCursorType = [IBlockInteraction, IPrompt<IPromptExpectationTypes> | null]
+export type RichCursorInputRequiredType = [IBlockInteraction, IPrompt<IPromptExpectationTypes>]
 export type RichCursorNoInputRequiredType = [IBlockInteraction, null]
 
 export default interface IContext {
@@ -64,7 +64,7 @@ export function findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContex
       flow = findFlowWith(interaction.flowId, ctx),
       runFlowBlock = findBlockWith(interaction.blockId, flow)
 
-  const flowId = (runFlowBlock.config as RunFlowConfig).flow_id
+  const flowId = (runFlowBlock.config as RunFlowBlockConfig).flow_id
   if (!flowId) {
     throw new ValidationException('Unable to find nested flowId on Core\\RunFlowBlock')
   }

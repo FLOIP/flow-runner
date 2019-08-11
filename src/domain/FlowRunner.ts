@@ -16,11 +16,14 @@ import {find, first, last} from 'lodash'
 import uuid from 'uuid'
 import IFlowRunner, {IBlockRunnerFactoryStore} from "./IFlowRunner";
 import ValidationException from "./exceptions/ValidationException";
+import {IPromptConfig, PromptConfigTypes} from "./prompt/INumericPromptConfig";
+import IPrompt from "./prompt/IPrompt";
+import {IPromptExpectationTypes} from "./prompt/BasePrompt";
+import NumericPrompt from "./prompt/NumericPrompt";
 
 /**
  * todo: remaining pieces
  *       - build out numeric prompt
- *       - complete message block runner
  *       - complete run-flow-block runner
  *       - usage documentation
  */
@@ -29,7 +32,7 @@ export class BlockRunnerFactoryStore
     extends Map<string, {(block: IBlock): IBlockRunner}>
     implements IBlockRunnerFactoryStore {}
 
-export default class FlowRunner implements IFlowRunner {
+export default class implements IFlowRunner {
   constructor(
       public context: IContext,
       public runnerFactoryStore: IBlockRunnerFactoryStore) {}
@@ -73,7 +76,7 @@ export default class FlowRunner implements IFlowRunner {
     return this.runUntilInputRequiredFrom(ctx as IContextWithCursor)
   }
 
-  isInputRequireFor(ctx: IContext): boolean {
+  isInputRequiredFor(ctx: IContext)/*: ctx is RichCursorInputRequiredType*/ {
     return (ctx.cursor
         && ctx.cursor[1]
         && !ctx.cursor[1].isSubmitted) as boolean
@@ -86,7 +89,7 @@ export default class FlowRunner implements IFlowRunner {
         block: IBlock | null = findBlockOnActiveFlowWith(richCursor[0].blockId, ctx)
 
     do {
-      if (this.isInputRequireFor(ctx)) {
+      if (this.isInputRequiredFor(ctx)) {
         console.log('Attempted to resume when prompt is not yet fulfilled; resurfacing same prompt instance.')
         return richCursor as RichCursorInputRequiredType
       }
@@ -121,7 +124,7 @@ export default class FlowRunner implements IFlowRunner {
     return null
   }
 
-  exitThrough(block: IBlock) {
+  exitEarlyThrough(block: IBlock) {
     // todo: generate link from current interaction to exit block (flow.exitBlockId)
     // todo: raise if flow.exitBlockId not defined
     // todo: set delivery status on context as INCOMPLETE
@@ -145,9 +148,9 @@ export default class FlowRunner implements IFlowRunner {
      *       `cursor[1]<IPrompt>` from an underlying data structure here
      * todo: to facilitate an alternate underlying data structure for Prompt, let's add
      *       ```
-     *       runner.createPromptFromCursor(): IPrompt<PromptExpectationsType> | null
+     *       runner.createPromptFromCursor(): IPrompt<IPromptExpectationTypes> | null
      *       ```
-     *       - There is one additional complication with toggling between these two: We now need to type our PromptConfig?
+     *       - There is one additional complication with toggling between these two: We now need to type our IPromptConfig?
      *         As in, we'll likely want to return a config definition from our block runner, but have the instantiation
      *         handled by the runner? Another site for type injection.
      *       - Cursor would then hold a union type of the different config types we know of where config has a type
@@ -160,12 +163,19 @@ export default class FlowRunner implements IFlowRunner {
     const
         runner = this.createBlockRunnerFor(block),
         interaction = this._createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId),
-        prompt = runner.initialize(interaction)
+        promptConfig = runner.initialize(interaction),
+        prompt = this._createPromptFrom(promptConfig)
 
     return [interaction, prompt]
   }
 
   runActiveBlockOn(richCursor: RichCursorType, block: IBlock): IBlockExit {
+    // todo: write test to guard against already isSubmitted at this point
+
+    if (richCursor[1]) {
+      richCursor[0].value = richCursor[1].value
+    }
+
     const exit = this.createBlockRunnerFor(block)
         .run(richCursor)
 
@@ -180,7 +190,7 @@ export default class FlowRunner implements IFlowRunner {
 
   createBlockRunnerFor(block: IBlock): IBlockRunner {
     const factory = this.runnerFactoryStore.get(block.type)
-    if (!factory) {
+    if (!factory) { // todo: need to pass as no-op for beta
       throw new ValidationException(`Unable to find factory for block type: ${block.type}`)
     }
 
@@ -220,6 +230,10 @@ export default class FlowRunner implements IFlowRunner {
       tag: '',
       test: ''
     }
+  }
+
+  _createPromptFrom(config: IPromptExpectationTypes): IPrompt<IPromptExpectationTypes> {
+    return new NumericPrompt(block, interaction, config)
   }
 
   navigateTo(block: IBlock, ctx: IContext): RichCursorType {
@@ -332,7 +346,8 @@ export default class FlowRunner implements IFlowRunner {
 
   findNextBlockFrom(interaction: IBlockInteraction, ctx: IContext): IBlock | null {
     if (!interaction.details.selectedExitId) {
-      throw new ValidationException('Unable to navigate past incomplete interaction; did you forget to call runner.run()?') // eg. prompt.isFulfilled() === false || !called block.run()
+      // todo: maybe tighter check on this, like: prompt.isFulfilled() === false || !called block.run()
+      throw new ValidationException('Unable to navigate past incomplete interaction; did you forget to call runner.run()?')
     }
 
     const

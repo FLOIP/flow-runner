@@ -5,8 +5,8 @@ import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
 import {findInteractionWith} from "../../src/flow-spec/IContext";
 import NumericPrompt from "../../src/domain/prompt/NumericPrompt";
-import IPrompt from "../../src/flow-spec/IPrompt";
-import {PromptExpectationsType} from "../../src/domain/prompt/BasePrompt";
+import IPrompt from "../../src/domain/prompt/IPrompt";
+import {IPromptExpectationTypes} from "../../src/domain/prompt/BasePrompt";
 import {createStaticMessageBlockRunnerFor} from "../fixtures/BlockRunner";
 
 // todo: abstract some of the setup
@@ -87,7 +87,7 @@ describe('FlowRunner/navigateTo', () => {
 
       const
           [, prompt] = runner.navigateTo(block, ctx),
-          expectedPrompt: IPrompt<PromptExpectationsType> = startSpy.mock.results[0].value
+          expectedPrompt: IPrompt<IPromptExpectationTypes> = startSpy.mock.results[0].value
 
       expect(prompt).toBe(expectedPrompt)
     })
