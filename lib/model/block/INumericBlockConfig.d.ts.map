@@ -1,0 +1,1 @@
+{"version":3,"file":"INumericBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/INumericBlockConfig.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,WAAW,mBAAmB;IAC1C,MAAM,EAAE,MAAM,CAAA;IACd,cAAc,EAAE,MAAM,CAAA;IACtB,oBAAoB,EAAE,MAAM,CAAA;IAC5B,oBAAoB,EAAE,MAAM,CAAA;IAE5B,GAAG,EAAE;QACH,YAAY,EAAE,MAAM,CAAA;KACrB,CAAA;CACF"}

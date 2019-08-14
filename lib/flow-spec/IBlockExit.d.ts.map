@@ -1,0 +1,1 @@
+{"version":3,"file":"IBlockExit.d.ts","sourceRoot":"","sources":["../../src/flow-spec/IBlockExit.ts"],"names":[],"mappings":"AACA,MAAM,CAAC,OAAO,WAAW,UAAU;IACjC,IAAI,EAAE,MAAM,CAAA;IACZ,KAAK,EAAE,MAAM,CAAA;IACb,GAAG,EAAE,MAAM,CAAA;IACX,iBAAiB,EAAE,MAAM,CAAA;IACzB,cAAc,CAAC,EAAE,MAAM,CAAA;IACvB,IAAI,CAAC,EAAE,MAAM,CAAA;IACb,MAAM,EAAE,MAAM,CAAA;CACf"}
