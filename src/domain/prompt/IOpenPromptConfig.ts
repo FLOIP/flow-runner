@@ -1,5 +1,6 @@
-import {IPromptConfig} from "./BasePrompt";
+import {IPromptConfig} from "./IPrompt";
+import {KnownPrompts} from "./IPrompt";
 
-export interface IOpenPromptConfig extends IPromptConfig {
-  kind: 'Open'
+export interface IOpenPromptConfig extends IPromptConfig<string | null> {
+  kind: KnownPrompts.Open
 }

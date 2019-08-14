@@ -1,21 +1,20 @@
-import {IPromptExpectationTypes} from "../domain/prompt/BasePrompt"
 import IContact from "./IContact";
 import IFlow, {findBlockWith} from "./IFlow";
 import ISession from "./ISession";
 import IBlockInteraction from "./IBlockInteraction";
-import IPrompt from "../domain/prompt/IPrompt";
+import IPrompt, {IBasePromptConfig, IPromptConfig} from "../domain/prompt/IPrompt";
 import IBlock from "./IBlock";
 import RunFlowBlockConfig from "../model/block/RunFlowBlockConfig";
 import {find, last} from 'lodash'
 import ValidationException from "../domain/exceptions/ValidationException";
 
 
-export type CursorType = [string, IPrompt<IPromptExpectationTypes> | null]
-export type CursorInputRequiredType = [string /*UUID64*/, IPrompt<IPromptExpectationTypes>]
+export type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | null]
+export type CursorInputRequiredType = [string /*UUID64*/, IPromptConfig<any> & IBasePromptConfig]
 export type CursorNoInputRequiredType = [string, null]
 
-export type RichCursorType = [IBlockInteraction, IPrompt<IPromptExpectationTypes> | null]
-export type RichCursorInputRequiredType = [IBlockInteraction, IPrompt<IPromptExpectationTypes>]
+export type RichCursorType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig> | null]
+export type RichCursorInputRequiredType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig>]
 export type RichCursorNoInputRequiredType = [IBlockInteraction, null]
 
 export default interface IContext {

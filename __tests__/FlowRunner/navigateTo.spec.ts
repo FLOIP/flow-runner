@@ -3,11 +3,10 @@ import {read} from 'yaml-import'
 import IDataset from "../fixtures/IDataset";
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
-import {findInteractionWith} from "../../src/flow-spec/IContext";
-import NumericPrompt from "../../src/domain/prompt/NumericPrompt";
-import IPrompt from "../../src/domain/prompt/IPrompt";
-import {IPromptExpectationTypes} from "../../src/domain/prompt/BasePrompt";
+import {findInteractionWith, RichCursorType} from "../../src/flow-spec/IContext";
+import {IBasePromptConfig, KnownPrompts} from "../../src/domain/prompt/IPrompt";
 import {createStaticMessageBlockRunnerFor} from "../fixtures/BlockRunner";
+import {INumericPromptConfig} from "../../src/domain/prompt/INumericPromptConfig";
 
 // todo: abstract some of the setup
 
@@ -53,7 +52,15 @@ describe('FlowRunner/navigateTo', () => {
 
       const
           previousIntxId = 'some-fake-block-interaction-uuid',
-          prevCursor = ctx.cursor = [previousIntxId, new NumericPrompt(block.uuid, previousIntxId, null)],
+          promptConfig: INumericPromptConfig & IBasePromptConfig = {
+            kind: KnownPrompts.Numeric,
+            value: null,
+            isResponseRequired: false,
+            isSubmitted: false,
+            max: 999,
+            maxLength: 999,
+            min: 999,},
+          prevCursor = ctx.cursor = [previousIntxId, promptConfig],
           richCursor = runner.navigateTo(block, ctx),
           cursor = runner.dehydrateCursor(richCursor)
 
@@ -82,14 +89,21 @@ describe('FlowRunner/navigateTo', () => {
             ['MobilePrimitives\\Message', block => messageBlockRunner]])),
 
           startSpy = jest.spyOn(messageBlockRunner, 'initialize')
-              .mockImplementation((interaction: IBlockInteraction) =>
-                  new NumericPrompt(block.uuid, interaction.uuid, null))
+              .mockImplementation((interaction: IBlockInteraction): INumericPromptConfig & IBasePromptConfig => ({
+                kind: KnownPrompts.Numeric,
+                value: null,
+                isResponseRequired: false,
+                isSubmitted: false,
+                max: 999,
+                maxLength: 999,
+                min: 999,}))
 
       const
-          [, prompt] = runner.navigateTo(block, ctx),
-          expectedPrompt: IPrompt<IPromptExpectationTypes> = startSpy.mock.results[0].value
+          richCursor: RichCursorType = runner.navigateTo(block, ctx),
+          cursor = runner.dehydrateCursor(richCursor),
+          expectedPrompt: INumericPromptConfig & IBasePromptConfig = startSpy.mock.results[0].value
 
-      expect(prompt).toBe(expectedPrompt)
+      expect(cursor[1]).toBe(expectedPrompt)
     })
 
     it('should have null prompt from runner when null provided', () => {

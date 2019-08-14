@@ -5,7 +5,7 @@ import IBlock from "../../flow-spec/IBlock";
 import IBlockExit from "../../flow-spec/IBlockExit";
 import RunFlowBlockConfig from "../../model/block/RunFlowBlockConfig";
 
-export default class implements IBlockRunner {
+export default class RunFlowBlockRunner implements IBlockRunner {
   constructor(
       public block: IBlock & {config: RunFlowBlockConfig}) {}
 

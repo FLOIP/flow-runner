@@ -2,6 +2,8 @@ import {read} from 'yaml-import'
 import IDataset from "./fixtures/IDataset";
 import FlowRunner, {BlockRunnerFactoryStore} from "../src/domain/FlowRunner";
 import MessageBlockRunner from "../src/domain/runners/MessageBlockRunner";
+import IMessageBlockConfig from "../src/model/block/IMessageBlockConfig";
+import IBlock from "../src/flow-spec/IBlock";
 
 
 describe('FlowRunner', () => {
@@ -15,7 +17,8 @@ describe('FlowRunner', () => {
     const runner = new FlowRunner(
         dataset.contexts[0],
         new BlockRunnerFactoryStore([
-          ['MobilePrimitives\\Message', block => new MessageBlockRunner(block)],
+          // todo: how do we get proper typing here without needing to cast?
+          ['MobilePrimitives\\Message', block => new MessageBlockRunner(block as (IBlock & {config: IMessageBlockConfig}))],
         ]))
 
     expect(runner).toBeTruthy()

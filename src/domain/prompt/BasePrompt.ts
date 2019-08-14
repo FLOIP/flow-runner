@@ -1,48 +1,31 @@
 // import UUID32 from "../../model/UUID32"
 // import UUID64 from "../../model/UUID64"
-import IPrompt from "./IPrompt";
+import IPrompt, {IBasePromptConfig, IPromptConfig} from "./IPrompt";
 import PromptValidationException from "../exceptions/PromptValidationException";
 import IBlockInteraction from "../../flow-spec/IBlockInteraction";
-import {INumericPromptConfig} from "./INumericPromptConfig";
-import {IMessagePromptConfig} from "./IMessagePromptConfig";
-import {ISelectOnePromptConfig} from "./ISelectOnePromptConfig";
-import {IOpenPromptConfig} from "./IOpenPromptConfig";
+import IBlock from "../../flow-spec/IBlock";
+// import {KnownPrompts} from "./IPrompt";
 
+// export enum KnownPrompts {
+//   Message,
+//   Numeric,
+//   SelectOne,
+//   Open,
+// }
 
-export type IPromptExpectationTypes = string | number | string[] | number[] | null
-
-export interface IPromptConfig {
-  // todo: make `kind` extensible -- future prompt types need to modify this declaration in order to extend behaviour
-  kind: 'Message'
-      | 'Numeric'
-      | 'SelectOne'
-      | 'Open'
-  isResponseRequired: boolean
-  value: IPromptExpectationTypes
-}
-
-export type IPromptConfigTypes
-    = IMessagePromptConfig
-    & INumericPromptConfig
-    & ISelectOnePromptConfig
-    & IOpenPromptConfig
-
-export interface IBasePromptConfig {
-  isSubmitted: boolean
-}
 
 // type Validator = <PromptType>(val: PromptType) => boolean
 // type x = {<PromptType>(arg: PromptType): PromptType}
 
-export default abstract class <PromptExpectationType,
-                               PromptConfigType extends IPromptConfigTypes>
-    implements IPrompt<PromptExpectationType, PromptConfigType> {
+export default abstract class <PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig>
+    implements IPrompt<PromptConfigType> {
 
   error: PromptValidationException | null
+  isValid: boolean
 
   constructor(
       // todo: figure out a nice pattern for hydrating UUIDs
-      public block: string,//UUID32, // todo: migrate to a block to mitigate recreating structures around configuration
+      public block: IBlock,
       public interaction: IBlockInteraction,
       public config: PromptConfigType & IBasePromptConfig,) {
 
@@ -53,7 +36,7 @@ export default abstract class <PromptExpectationType,
     return this.config.value
   }
 
-  set value(val: PromptExpectationType) {
+  set value(val: PromptConfigType['value']) {
     try {
       this.validate(val)
     } catch (e) {
@@ -67,5 +50,5 @@ export default abstract class <PromptExpectationType,
     this.config.value = val
   }
 
-  abstract validate(val: PromptExpectationType): boolean
+  abstract validate(val: PromptConfigType['value']): boolean
 }

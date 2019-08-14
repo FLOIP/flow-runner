@@ -2,8 +2,9 @@ import {read} from 'yaml-import'
 import IDataset from "../fixtures/IDataset";
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
-import {RichCursorInputRequiredType} from "../../src/flow-spec/IContext";
-import NumericPrompt from "../../src/domain/prompt/NumericPrompt";
+import {RichCursorInputRequiredType, RichCursorType} from "../../src/flow-spec/IContext";
+import {IBasePromptConfig, KnownPrompts} from "../../src/domain/prompt/IPrompt";
+import {INumericPromptConfig} from "../../src/domain/prompt/INumericPromptConfig";
 
 
 describe('FlowRunner/initializeOneBlock', () => {
@@ -31,7 +32,7 @@ describe('FlowRunner/initializeOneBlock', () => {
   })
 
   it('should return cursor with prompt from runner when prompt provided', () => {
-    let expectedPrompt = null // todo: this should use a jest.SpyInstance
+    let expectedPrompt: (INumericPromptConfig & IBasePromptConfig) | null = null // todo: this should use a jest.SpyInstance
 
     const
         ctx = dataset.contexts[0],
@@ -40,13 +41,23 @@ describe('FlowRunner/initializeOneBlock', () => {
         runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
           ['MobilePrimitives\\Message', block => ({
             block,
-            initialize: (interaction: IBlockInteraction) => expectedPrompt = new NumericPrompt(block.uuid, interaction.uuid, null),
+            initialize: (interaction: IBlockInteraction): INumericPromptConfig & IBasePromptConfig => expectedPrompt = {
+              kind: KnownPrompts.Numeric,
+              value: null,
+              isResponseRequired: false,
+              isSubmitted: false,
+              max: 999,
+              maxLength: 999,
+              min: 999,},
             run: (cursor: RichCursorInputRequiredType) => block.exits[0]
           })],
         ]))
 
-    const [, prompt] = runner.initializeOneBlock(block, flow.uuid, null, null)
-    expect(prompt).toBe(expectedPrompt)
+    const
+        richCursor: RichCursorType = runner.initializeOneBlock(block, flow.uuid, null, null),
+        cursor = runner.dehydrateCursor(richCursor)
+
+    expect(cursor[1]).toBe(expectedPrompt)
   })
 
   it('should return cursor with interaction for block + flow', () => {

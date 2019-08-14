@@ -5,6 +5,7 @@ import IBlockExit from "../../flow-spec/IBlockExit";
 import {RichCursorInputRequiredType} from "../../flow-spec/IContext";
 import {IOpenPromptConfig} from "../prompt/IOpenPromptConfig";
 import IOpenResponseBlockConfig from "../../model/block/IOpenResponseBlockConfig";
+import {KnownPrompts} from "../prompt/IPrompt";
 
 export default class OpenResponseBlockRunner implements IBlockRunner {
   constructor(
@@ -12,8 +13,9 @@ export default class OpenResponseBlockRunner implements IBlockRunner {
 
   initialize(interaction: IBlockInteraction): IOpenPromptConfig {
     return {
-      kind: "Open",
+      kind: KnownPrompts.Open,
       isResponseRequired: true,
+      value: null,
     }
   }
 

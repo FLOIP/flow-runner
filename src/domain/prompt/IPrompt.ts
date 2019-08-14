@@ -3,21 +3,38 @@
 import PromptValidationException from "../exceptions/PromptValidationException";
 import IBlock from "../../flow-spec/IBlock";
 import IBlockInteraction from "../../flow-spec/IBlockInteraction";
-import {IBasePromptConfig, IPromptConfigTypes, IPromptExpectationTypes} from "./BasePrompt";
 
-// todo: we need a smart way to marshall this data type (aka. hydrate into this type)
-//       Maybe cursor only holds the data, and we access the cursor through the runner
-//       FlowRunner.getRichCursor() could look different than `{cursor}: IContext`
 
-export default interface IPrompt<PromptExpectationType, PromptConfigType extends IPromptConfigTypes> {
+export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
   block: IBlock
-  blockInteraction: IBlockInteraction
-  config: PromptConfigType & IBasePromptConfig
+  interaction: IBlockInteraction
+  config: PromptConfigType
 
   // todo: need to validate on instantiation?
-  value: IPromptExpectationTypes // when setting: (this.value = value) && this.validate() --- todo: should this property be reactive?
+  value: PromptConfigType['value'] // when setting: (this.value = value) && this.validate() --- todo: should this property be reactive?
   error: PromptValidationException | null
   isValid: boolean // !this.error
 
-  validate(val: PromptExpectationType): boolean // it will raise an exception when it's invalid
+  validate(val: PromptConfigType['value']): boolean // it will raise an exception when it's invalid
+}
+
+
+// export enum KnownPrompts {}
+export enum KnownPrompts {
+  Message,
+  Numeric,
+  SelectOne,
+  Open,
+}
+
+
+export interface IPromptConfig<ExpectationType> {
+  kind: KnownPrompts
+  isResponseRequired: boolean
+  value: ExpectationType
+}
+
+
+export interface IBasePromptConfig {
+  isSubmitted: boolean
 }

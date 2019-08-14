@@ -5,6 +5,7 @@ import IBlockInteraction from "../../flow-spec/IBlockInteraction";
 import IBlockExit from "../../flow-spec/IBlockExit";
 import {RichCursorInputRequiredType} from "../../flow-spec/IContext";
 import ISelectOneResponseBlockConfig from "../../model/block/ISelectOneResponseBlockConfig";
+import {KnownPrompts} from "../prompt/IPrompt";
 
 export default class SelectOneResponseBlockRunner implements IBlockRunner {
   constructor(
@@ -12,9 +13,10 @@ export default class SelectOneResponseBlockRunner implements IBlockRunner {
 
   initialize(interaction: IBlockInteraction): ISelectOnePromptConfig {
     return {
-      kind: "SelectOne",
+      kind: KnownPrompts.SelectOne,
       choices: Array.from(this.block.config.choices.keys()),
       isResponseRequired: true,
+      value: null,
     }
   }
 

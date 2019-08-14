@@ -2,7 +2,6 @@ import {read} from 'yaml-import'
 import IDataset from "../fixtures/IDataset";
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import {IContextInputRequired} from "../../src/flow-spec/IContext";
-import NumericPrompt from "../../src/domain/prompt/NumericPrompt";
 import {createStaticMessageBlockRunnerFor} from "../fixtures/BlockRunner";
 
 
@@ -21,10 +20,10 @@ describe('FlowRunner/runActiveBlockOn', () => {
         runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
           ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
 
-    ctx.cursor[1] = new NumericPrompt(block.uuid, ctx.cursor[0], null) // setup b/c we don't yet have a 100% serializable prompt
-    const richCursor = runner.hydrateRichCursorFrom(ctx)
+    const
+        richCursor = runner.hydrateRichCursorFrom(ctx),
+        exit = runner.runActiveBlockOn(richCursor, block)
 
-    const exit = runner.runActiveBlockOn(richCursor, block)
     expect(exit).toBe(expectedExit)
   })
 
@@ -33,13 +32,10 @@ describe('FlowRunner/runActiveBlockOn', () => {
         ctx = dataset.contexts[1] as IContextInputRequired,
         block = ctx.flows[1].blocks[0],
         runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-          ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],])),
-        prompt = new NumericPrompt(block.uuid, ctx.cursor[0], null)
+          ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
 
-    ctx.cursor[1] = prompt // setup b/c we don't yet have a 100% serializable prompt
-
-    expect(prompt.isSubmitted).toBeFalsy()
+    expect(ctx.cursor[1].isSubmitted).toBeFalsy()
     runner.runActiveBlockOn(runner.hydrateRichCursorFrom(ctx), block)
-    expect(prompt.isSubmitted).toBeTruthy()
+    expect(ctx.cursor[1].isSubmitted).toBeTruthy()
   })
 })

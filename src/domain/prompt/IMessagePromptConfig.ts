@@ -1,5 +1,6 @@
-import {IPromptConfig} from "./BasePrompt";
+import {IPromptConfig} from "./IPrompt";
+import {KnownPrompts} from "./IPrompt";
 
-export interface IMessagePromptConfig extends IPromptConfig {
-  kind: 'Message'
+export interface IMessagePromptConfig extends IPromptConfig<null> {
+  kind: KnownPrompts.Message
 }

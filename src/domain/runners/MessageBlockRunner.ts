@@ -5,16 +5,18 @@ import IBlock from "../../flow-spec/IBlock";
 import IBlockExit from "../../flow-spec/IBlockExit";
 import {IMessagePromptConfig} from "../prompt/IMessagePromptConfig";
 import IMessageBlockConfig from "../../model/block/IMessageBlockConfig";
+import {KnownPrompts} from "../prompt/IPrompt";
 
 
-export default class implements IBlockRunner {
+export default class MessageBlockRunner implements IBlockRunner {
   constructor(
       public block: IBlock & {config: IMessageBlockConfig}) {}
 
   initialize(interaction: IBlockInteraction): IMessagePromptConfig {
     return {
-      kind: "Message",
+      kind: KnownPrompts.Message,
       isResponseRequired: false,
+      value: null,
     }
   }
 

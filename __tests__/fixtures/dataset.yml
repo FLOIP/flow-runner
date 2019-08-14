@@ -187,7 +187,15 @@ contexts:
     interactions:
       - *intx/Message->Message/09894745-38ba-456f-aab4-720b7d09d5b3
       - *intx/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
-    cursor: [*intxId/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e, null]
+    cursor:
+      - *intxId/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
+      - kind: Numeric
+        isResponseRequired: true
+        value: null
+        isSubmitted: false
+        maxLength: 999
+        max: 999
+        min: 999
 
   # multi-flow, single-interaction, cursor on Core\RunFlow block with no exit
   - <<: *defaults/context

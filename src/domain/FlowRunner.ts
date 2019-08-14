@@ -16,10 +16,9 @@ import {find, first, last} from 'lodash'
 import uuid from 'uuid'
 import IFlowRunner, {IBlockRunnerFactoryStore} from "./IFlowRunner";
 import ValidationException from "./exceptions/ValidationException";
-import {IPromptConfig, PromptConfigTypes} from "./prompt/INumericPromptConfig";
-import IPrompt from "./prompt/IPrompt";
-import {IPromptExpectationTypes} from "./prompt/BasePrompt";
+import IPrompt, {IBasePromptConfig, IPromptConfig} from "./prompt/IPrompt";
 import NumericPrompt from "./prompt/NumericPrompt";
+import {INumericPromptConfig} from "./prompt/INumericPromptConfig";
 
 /**
  * todo: remaining pieces
@@ -139,7 +138,7 @@ export default class implements IFlowRunner {
   }
 
   dehydrateCursor(richCursor: RichCursorType): CursorType {
-    return [richCursor[0].uuid, richCursor[1]]
+    return [richCursor[0].uuid, richCursor[1] ? richCursor[1].config : null]
   }
 
   hydrateRichCursorFrom(ctx: IContextWithCursor): RichCursorType {
@@ -156,7 +155,7 @@ export default class implements IFlowRunner {
      *       - Cursor would then hold a union type of the different config types we know of where config has a type
      **/
     const {cursor} = ctx
-    return [findInteractionWith(cursor[0], ctx), cursor[1]]
+    return [findInteractionWith(cursor[0], ctx), this._createPromptFrom(cursor[1])]
   }
 
   initializeOneBlock(block: IBlock, flowId: string, originFlowId: string | null, originBlockInteractionId: string | null): RichCursorType {
@@ -182,7 +181,7 @@ export default class implements IFlowRunner {
     richCursor[0].details.selectedExitId = exit.uuid
 
     if (richCursor[1]) {
-      richCursor[1].isSubmitted = true
+      richCursor[1].config.isSubmitted = true
     }
 
     return exit
@@ -232,8 +231,15 @@ export default class implements IFlowRunner {
     }
   }
 
-  _createPromptFrom(config: IPromptExpectationTypes): IPrompt<IPromptExpectationTypes> {
-    return new NumericPrompt(block, interaction, config)
+  _createPromptFrom(config: IPromptConfig<any> | null): IPrompt<IPromptConfig<any> & IBasePromptConfig> | null {
+    if (!config) {
+      return null
+    }
+
+    return new NumericPrompt(
+        {} as IBlock,
+        {} as IBlockInteraction,
+        config as INumericPromptConfig & IBasePromptConfig)
   }
 
   navigateTo(block: IBlock, ctx: IContext): RichCursorType {
@@ -245,7 +251,7 @@ export default class implements IFlowRunner {
             ? findInteractionWith(originInteractionId, ctx)
             : null
 
-    const [interaction, prompt] = this.initializeOneBlock(
+    const richCursor = this.initializeOneBlock(
         block,
         flowId,
         originInteraction && originInteraction.flowId,
@@ -256,10 +262,10 @@ export default class implements IFlowRunner {
       lastInteraction.exitAt = new Date
     }
 
-    interactions.push(interaction)
-    ctx.cursor = [interaction.uuid, prompt]
+    interactions.push(richCursor[0])
+    ctx.cursor = this.dehydrateCursor(richCursor)
 
-    return [interaction, prompt]
+    return richCursor
   }
 
   /**
