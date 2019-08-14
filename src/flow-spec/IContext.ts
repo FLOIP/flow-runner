@@ -4,7 +4,7 @@ import ISession from "./ISession";
 import IBlockInteraction from "./IBlockInteraction";
 import IPrompt, {IBasePromptConfig, IPromptConfig} from "../domain/prompt/IPrompt";
 import IBlock from "./IBlock";
-import RunFlowBlockConfig from "../model/block/RunFlowBlockConfig";
+import IRunFlowBlockConfig from "../model/block/IRunFlowBlockConfig";
 import {find, last} from 'lodash'
 import ValidationException from "../domain/exceptions/ValidationException";
 
@@ -63,7 +63,7 @@ export function findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContex
       flow = findFlowWith(interaction.flowId, ctx),
       runFlowBlock = findBlockWith(interaction.blockId, flow)
 
-  const flowId = (runFlowBlock.config as RunFlowBlockConfig).flow_id
+  const flowId = (runFlowBlock.config as IRunFlowBlockConfig).flow_id
   if (!flowId) {
     throw new ValidationException('Unable to find nested flowId on Core\\RunFlowBlock')
   }

@@ -3,11 +3,11 @@ import {RichCursorType} from "../../flow-spec/IContext";
 import IBlockRunner from "./IBlockRunner";
 import IBlock from "../../flow-spec/IBlock";
 import IBlockExit from "../../flow-spec/IBlockExit";
-import RunFlowBlockConfig from "../../model/block/RunFlowBlockConfig";
+import IRunFlowBlockConfig from "../../model/block/IRunFlowBlockConfig";
 
 export default class RunFlowBlockRunner implements IBlockRunner {
   constructor(
-      public block: IBlock & {config: RunFlowBlockConfig}) {}
+      public block: IBlock & {config: IRunFlowBlockConfig}) {}
 
   initialize(interaction: IBlockInteraction): null {
     return null
