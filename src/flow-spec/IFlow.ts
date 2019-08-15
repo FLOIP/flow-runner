@@ -9,10 +9,10 @@ export default interface IFlow {
   uuid: string,// UUID32
   name: string,
   label?: string,
-  last_modified: Date, // UTC like: 2016-12-25 13:42:05.234598
-  interaction_timeout: number,
-  platform_metadata: object,
-  supported_modes: Mode[], // enum
+  lastModified: Date, // UTC like: 2016-12-25 13:42:05.234598
+  interactionTimeout: number,
+  platformMetadata: object,
+  supportedModes: Mode[], // enum
   languages: string[], // eunm for ISO 639-3 codes
   blocks: IBlock[],
 

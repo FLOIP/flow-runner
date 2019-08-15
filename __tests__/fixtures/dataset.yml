@@ -1,6 +1,6 @@
 _defaults:
   - &defaults/exit
-    semantic_label: ''
+    semanticLabel: ''
     label: ''
     config: {}
     tag: ''
@@ -11,7 +11,7 @@ _defaults:
     label: ''
     config: {}
     exits: []
-    semantic_label: ''
+    semanticLabel: ''
 
   - &defaults/blocks/Message
     <<: *defaults/block
@@ -34,13 +34,13 @@ _defaults:
 
   - &defaults/flow
     blocks: []
-    interaction_timeout: 5
+    interactionTimeout: 5
     label: My first label
     languages: [en]
-    last_modified: 2020-10-10
+    lastModified: 2020-10-10
     name: My first flow
-    platform_metadata: {}
-    supported_modes: [text]
+    platformMetadata: {}
+    supportedModes: [text]
 
   - &defaults/context
     contact:
