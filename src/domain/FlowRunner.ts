@@ -124,11 +124,11 @@ export default class implements IFlowRunner {
     return null
   }
 
-  exitEarlyThrough(block: IBlock) {
+  // exitEarlyThrough(block: IBlock) {
     // todo: generate link from current interaction to exit block (flow.exitBlockId)
     // todo: raise if flow.exitBlockId not defined
     // todo: set delivery status on context as INCOMPLETE
-  }
+  // }
 
   complete(ctx: IContext) {
     // todo: set exitAt on context

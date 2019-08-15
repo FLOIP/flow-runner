@@ -54,7 +54,7 @@ _defaults:
 # @note Some Id references are hand-rolled identifiers.
 #       Pls ensure that refactoring has "search in comments" enabled.
 #       - `block_exit.destinationBlock`
-#       - `block<Core\RunFlow>.config.flow_id`
+#       - `block<Core\RunFlow>.config.flowId`
 #
 #       > It is an error for an alias node to use an anchor that does not previously occur in the document.
 #       > - https://yaml.org/spec/1.2/spec.html#id2786196
@@ -63,17 +63,17 @@ _block_exits:
   - &exit/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
     <<: *defaults/exit
     uuid: &exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df 36b2c0ee-bcba-463c-aeab-9f9c8fb990df
-    destination_block: 164f04f7-3daf-420b-9a5b-0d3b16144ec5 # *blockId/Message->(void)/164f04f7-3daf-420b-9a5b-0d3b16144ec5
+    destinationBlock: 164f04f7-3daf-420b-9a5b-0d3b16144ec5 # *blockId/Message->(void)/164f04f7-3daf-420b-9a5b-0d3b16144ec5
 
   - &exit/->Message/5670b311-0895-43ba-acc4-07136cf64591
     <<: *defaults/exit
     uuid: &exitId/->Message/5670b311-0895-43ba-acc4-07136cf64591 5670b311-0895-43ba-acc4-07136cf64591
-    destination_block: cb1b04a3-6447-4e33-a449-a6e3107e7531 # *blockId/Message->(Message)/cb1b04a3-6447-4e33-a449-a6e3107e7531
+    destinationBlock: cb1b04a3-6447-4e33-a449-a6e3107e7531 # *blockId/Message->(Message)/cb1b04a3-6447-4e33-a449-a6e3107e7531
 
   - &exit/->void/b9485293-90a6-456e-9291-81de5e3a4a89
     <<: *defaults/exit
     uuid: &exitId/->void/b9485293-90a6-456e-9291-81de5e3a4a89 b9485293-90a6-456e-9291-81de5e3a4a89
-    destination_block:
+    destinationBlock:
 
 # todo: anchors for blocks may need to change a bit; it's difficult to differentiate between them (eg. Message vs. Message)
 _blocks:
@@ -108,7 +108,7 @@ _blocks:
     exits:
       - *exit/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
     config:
-      flow_id: 957a8923-428a-420f-8053-d23927e0eea0 # *flowId/(Message)/957a8923-428a-420f-8053-d23927e0eea0
+      flowId: 957a8923-428a-420f-8053-d23927e0eea0 # *flowId/(Message)/957a8923-428a-420f-8053-d23927e0eea0
 
   - &block/RunFlow->(void)/fe809b0a-d4d5-45bd-941c-defb12237165
     <<: *defaults/blocks/RunFlow

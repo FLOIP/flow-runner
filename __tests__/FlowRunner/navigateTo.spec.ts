@@ -86,10 +86,10 @@ describe('FlowRunner/navigateTo', () => {
           messageBlockRunner = createStaticMessageBlockRunnerFor(block),
 
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-            ['MobilePrimitives\\Message', block => messageBlockRunner]])),
+            ['MobilePrimitives\\Message', () => messageBlockRunner]])),
 
           startSpy = jest.spyOn(messageBlockRunner, 'initialize')
-              .mockImplementation((interaction: IBlockInteraction): INumericPromptConfig & IBasePromptConfig => ({
+              .mockImplementation((): INumericPromptConfig & IBasePromptConfig => ({
                 kind: KnownPrompts.Numeric,
                 value: null,
                 isResponseRequired: false,
@@ -114,7 +114,7 @@ describe('FlowRunner/navigateTo', () => {
             ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
 
       const [, prompt] = runner.navigateTo(block, ctx)
-      expect(prompt).toBeNull()
+      expect(prompt).toBeUndefined()
     })
   })
 
@@ -178,7 +178,7 @@ describe('FlowRunner/navigateTo', () => {
 
         runner.navigateTo(block, ctx)
 
-        expect(ctx.interactions[0].originFlowId).toBe(null)
+        expect(ctx.interactions[0].originFlowId).toBeUndefined()
       })
 
       it('should be from root flow when nested once', () => {
@@ -213,7 +213,7 @@ describe('FlowRunner/navigateTo', () => {
 
         runner.navigateTo(block, ctx)
 
-        expect(ctx.interactions[0].originBlockInteractionId).toBe(null)
+        expect(ctx.interactions[0].originBlockInteractionId).toBeUndefined()
       })
 
       it('should be from root flow\'s interaction when nested once', () => {

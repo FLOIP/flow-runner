@@ -18,7 +18,7 @@ describe('FlowRunner/stepOut', () => {
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
 
       expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(0)
-      expect(runner.stepOut(ctx)).toBeNull()
+      expect(runner.stepOut(ctx)).toBeUndefined()
     })
 
     it('should leave last interaction as it is', () => {
