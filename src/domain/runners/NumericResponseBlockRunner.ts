@@ -1,5 +1,4 @@
 import IBlockRunner from './IBlockRunner'
-import {RichCursorInputRequiredType} from '../../flow-spec/IContext'
 import IBlockExit from '../../flow-spec/IBlockExit'
 import {INumericPromptConfig} from '../prompt/INumericPromptConfig'
 import IBlock from '../../flow-spec/IBlock'
@@ -23,7 +22,7 @@ export default class NumericResponseBlockRunner implements IBlockRunner {
     }
   }
 
-  run(cursor: RichCursorInputRequiredType): IBlockExit {
+  run(): IBlockExit {
     // todo: what constitutes an error exit on web/android chanels?
 
     return this.block.exits[0]

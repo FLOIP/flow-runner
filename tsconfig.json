@@ -10,7 +10,6 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
-    "isolatedModules": true,
     "lib": [
       "es2018"
     ],
