@@ -1,9 +1,9 @@
-import IBlockExit from "./IBlockExit";
+import IBlockExit from './IBlockExit';
 export default interface IBlock {
     uuid: string;
     name: string;
     label?: string;
-    semantic_label?: string;
+    semanticLabel?: string;
     type: string;
     config: object;
     exits: IBlockExit[];

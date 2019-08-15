@@ -1,13 +1,13 @@
-import IContact from "./IContact";
-import IFlow from "./IFlow";
-import ISession from "./ISession";
-import IBlockInteraction from "./IBlockInteraction";
-import IPrompt, { IBasePromptConfig, IPromptConfig } from "../domain/prompt/IPrompt";
-import IBlock from "./IBlock";
+import IContact from './IContact';
+import IFlow from './IFlow';
+import ISession from './ISession';
+import IBlockInteraction from './IBlockInteraction';
+import IPrompt, { IBasePromptConfig, IPromptConfig } from '../domain/prompt/IPrompt';
+import IBlock from './IBlock';
 export declare type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | null];
 export declare type CursorInputRequiredType = [string, IPromptConfig<any> & IBasePromptConfig];
 export declare type CursorNoInputRequiredType = [string, null];
-export declare type RichCursorType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig> | null];
+export declare type RichCursorType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined];
 export declare type RichCursorInputRequiredType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig>];
 export declare type RichCursorNoInputRequiredType = [IBlockInteraction, null];
 export default interface IContext {
@@ -18,7 +18,7 @@ export default interface IContext {
     session: ISession;
     sessionVars: object;
     nestedFlowBlockInteractionIdStack: string[];
-    cursor: CursorType | null;
+    cursor?: CursorType;
 }
 export interface IContextWithCursor extends IContext {
     cursor: CursorType;

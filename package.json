@@ -1,11 +1,12 @@
 {
   "name": "via-clipboard-core-ts",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "index.js",
   "repository": "git@bitbucket.org:voto/flowrunner-core-ts.git",
   "author": "bzabos <b.zabos@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "build": "tsc --declaration",
     "test": "yarn tsc-test && yarn jest",
     "tsc-test": "tsc --project . --noEmit"
   },

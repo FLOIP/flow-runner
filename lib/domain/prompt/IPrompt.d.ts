@@ -1,6 +1,6 @@
-import PromptValidationException from "../exceptions/PromptValidationException";
-import IBlock from "../../flow-spec/IBlock";
-import IBlockInteraction from "../../flow-spec/IBlockInteraction";
+import PromptValidationException from '../exceptions/PromptValidationException';
+import IBlock from '../../flow-spec/IBlock';
+import IBlockInteraction from '../../flow-spec/IBlockInteraction';
 export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
     block: IBlock;
     interaction: IBlockInteraction;

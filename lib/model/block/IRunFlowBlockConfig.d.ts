@@ -1,4 +1,4 @@
 export default interface IRunFlowBlockConfig {
-    flow_id: string;
+    flowId: string;
 }
 //# sourceMappingURL=IRunFlowBlockConfig.d.ts.map
