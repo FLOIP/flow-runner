@@ -1,6 +1,6 @@
 {
   "name": "via-clipboard-core-ts",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "index.js",
   "repository": "git@bitbucket.org:voto/flowrunner-core-ts.git",
   "author": "bzabos <b.zabos@gmail.com>",
@@ -13,8 +13,7 @@
     "lodash": "^4.17.14",
     "path": "^0.12.7",
     "tslib": "^1.10.0",
-    "uuid": "^3.3.2",
-    "yaml-import": "^2.0.0"
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "2.0.0",
@@ -39,6 +38,7 @@
     "eslint-plugin-lodash-fp": "^2.2.0-a1",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.2",
+    "yaml-import": "^2.0.0"
   }
 }
