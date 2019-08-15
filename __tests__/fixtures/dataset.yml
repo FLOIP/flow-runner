@@ -53,7 +53,7 @@ _defaults:
 
 # @note Some Id references are hand-rolled identifiers.
 #       Pls ensure that refactoring has "search in comments" enabled.
-#       - `block_exit.destination_block`
+#       - `block_exit.destinationBlock`
 #       - `block<Core\RunFlow>.config.flow_id`
 #
 #       > It is an error for an alias node to use an anchor that does not previously occur in the document.

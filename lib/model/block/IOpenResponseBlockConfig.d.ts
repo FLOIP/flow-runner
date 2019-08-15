@@ -1,11 +1,11 @@
 export default interface IOpenResponseBlockConfig {
-    prompt: string;
-    'prompt-audio': string;
-    ivr: {
-        'max-duration-seconds': number;
-    };
-    text: {
-        'max-response-characters'?: number;
-    };
+  prompt: string;
+  promptAudio: string;
+  ivr: {
+    maxDurationSeconds: number;
+  };
+  text: {
+    maxResponseCharacters?: number;
+  };
 }
 //# sourceMappingURL=IOpenResponseBlockConfig.d.ts.map

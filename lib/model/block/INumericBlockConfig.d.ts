@@ -1,10 +1,10 @@
 export default interface INumericBlockConfig {
-    prompt: string;
-    'prompt-audio': string;
-    'validation-minimum': number;
-    'validation-maximum': number;
-    ivr: {
-        'max-digits': number;
-    };
+  prompt: string;
+  promptAudio: string;
+  validationMinimum: number;
+  validationMaximum: number;
+  ivr: {
+    maxDigits: number;
+  };
 }
 //# sourceMappingURL=INumericBlockConfig.d.ts.map

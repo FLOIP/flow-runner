@@ -1,23 +1,23 @@
-import IBlockRunner from "./IBlockRunner";
-import {RichCursorInputRequiredType} from "../../flow-spec/IContext";
-import IBlockExit from "../../flow-spec/IBlockExit";
-import IBlockInteraction from "../../flow-spec/IBlockInteraction";
-import {INumericPromptConfig} from "../prompt/INumericPromptConfig";
-import IBlock from "../../flow-spec/IBlock";
-import INumericBlockConfig from "../../model/block/INumericBlockConfig";
-import {KnownPrompts} from "../prompt/IPrompt";
+import IBlockRunner from './IBlockRunner'
+import {RichCursorInputRequiredType} from '../../flow-spec/IContext'
+import IBlockExit from '../../flow-spec/IBlockExit'
+import {INumericPromptConfig} from '../prompt/INumericPromptConfig'
+import IBlock from '../../flow-spec/IBlock'
+import INumericBlockConfig from '../../model/block/INumericBlockConfig'
+import {KnownPrompts} from '../prompt/IPrompt'
 
 export default class NumericResponseBlockRunner implements IBlockRunner {
   constructor(
-      public block: IBlock & {config: INumericBlockConfig}) {}
+    public block: IBlock & { config: INumericBlockConfig }) {
+  }
 
 
-  initialize(interaction: IBlockInteraction): INumericPromptConfig {
+  initialize(): INumericPromptConfig {
     return {
       kind: KnownPrompts.Numeric,
       maxLength: 0, // todo: is this viamo-specific and no longer necessary?
-      min: this.block.config["validation-minimum"],
-      max: this.block.config['validation-maximum'],
+      min: this.block.config.validationMinimum,
+      max: this.block.config.validationMaximum,
       isResponseRequired: false,
       value: null,
     }

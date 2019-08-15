@@ -1,8 +1,8 @@
 import {read} from 'yaml-import'
-import IDataset from "../fixtures/IDataset"
-import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner"
+import IDataset from '../fixtures/IDataset'
+import FlowRunner, {BlockRunnerFactoryStore} from '../../src/domain/FlowRunner'
 import {cloneDeep, last} from 'lodash'
-import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
+import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
 
 describe('FlowRunner/stepOut', () => {
   let dataset: IDataset
@@ -66,7 +66,7 @@ describe('FlowRunner/stepOut', () => {
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
 
       expect(ctx.nestedFlowBlockInteractionIdStack.length).toBeGreaterThan(0)
-      expect(lastRunFlowBlock.exits[0].destination_block).toBe(runFlowDestinationBlock.uuid)
+      expect(lastRunFlowBlock.exits[0].destinationBlock).toBe(runFlowDestinationBlock.uuid)
       const nextBlock = runner.stepOut(ctx)
       expect(nextBlock).toBe(runFlowDestinationBlock)
     })

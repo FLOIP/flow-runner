@@ -6,22 +6,39 @@
   "author": "bzabos <b.zabos@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest"
-  },
-  "devDependencies": {
-    "@types/jest": "^24.0.15",
-    "jest": "^24.8.0",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.5.2"
+    "test": "yarn tsc-test && yarn jest",
+    "tsc-test": "tsc --project . --noEmit"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.136",
-    "@types/node": "^12.6.8",
-    "@types/uuid": "^3.4.5",
     "lodash": "^4.17.14",
     "path": "^0.12.7",
     "tslib": "^1.10.0",
     "uuid": "^3.3.2",
     "yaml-import": "^2.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "2.0.0",
+    "@typescript-eslint/parser": "2.0.0",
+    "@typescript-eslint/typescript-estree": "2.0.0",
+    "@babel/core": "^7.5.0",
+    "@babel/runtime": "^7.5.1",
+    "@types/jest": "^24.0.15",
+    "@types/lodash": "^4.14.136",
+    "@types/node": "^12.6.8",
+    "@types/uuid": "^3.4.5",
+    "babel-eslint": "^10.0.2",
+    "babel-jest": "^24.8.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-airbnb-typescript": "^4.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.15.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-lodash": "^6.0.0",
+    "eslint-plugin-lodash-fp": "^2.2.0-a1",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.2"
   }
 }

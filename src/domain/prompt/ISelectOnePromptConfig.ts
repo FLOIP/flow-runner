@@ -1,7 +1,6 @@
-import {KnownPrompts} from "./IPrompt";
-import {IPromptConfig} from "./IPrompt";
+import {IPromptConfig, KnownPrompts} from './IPrompt'
 
 export interface ISelectOnePromptConfig extends IPromptConfig<string | null> {
-  kind: KnownPrompts.SelectOne
-  choices: string[]
+  kind: KnownPrompts.SelectOne,
+  choices: string[],
 }

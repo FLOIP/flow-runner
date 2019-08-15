@@ -1,12 +1,12 @@
 export default interface IOpenResponseBlockConfig {
-  prompt: string
-  'prompt-audio': string
+  prompt: string,
+  promptAudio: string,
 
   ivr: {
-    'max-duration-seconds': number
-  }
+    maxDurationSeconds: number,
+  },
 
   text: {
-    'max-response-characters'?: number
-  }
+    maxResponseCharacters?: number,
+  },
 }

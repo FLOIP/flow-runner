@@ -1,6 +1,6 @@
-import BasePrompt from "./BasePrompt";
-import {INumericPromptConfig} from "./INumericPromptConfig";
-import {IBasePromptConfig} from "./IPrompt";
+import BasePrompt from './BasePrompt'
+import {INumericPromptConfig} from './INumericPromptConfig'
+import {IBasePromptConfig} from './IPrompt'
 
 export default class extends BasePrompt<INumericPromptConfig & IBasePromptConfig> {
 

@@ -1,13 +1,14 @@
-import NotImplementedException from "../domain/exceptions/NotImplementedException"
+import NotImplementedException from '../domain/exceptions/NotImplementedException'
 
 export default class {
-    constructor(public val: number) {}
+  constructor(public val: number) {
+  }
 
-    toNumber(): number {
-        return this.val
-    }
+  toNumber(): number {
+    return this.val
+  }
 
-    toString() {
-        throw new NotImplementedException
-    }
+  toString() {
+    throw new NotImplementedException
+  }
 }
