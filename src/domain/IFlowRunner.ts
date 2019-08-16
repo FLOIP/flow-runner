@@ -12,5 +12,5 @@ export default interface IFlowRunner {
 
   initialize(): void,
 
-  run(): RichCursorInputRequiredType | null,
+  run(): RichCursorInputRequiredType | void,
 }

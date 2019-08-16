@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc --declaration",
+    "deploy": "# increase version && commit && tag && push",
     "test": "yarn tsc-test && yarn jest",
     "tsc-test": "tsc --project . --noEmit"
   },

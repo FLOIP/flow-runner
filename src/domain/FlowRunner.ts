@@ -17,15 +17,9 @@ import uuid from 'uuid'
 import IFlowRunner, {IBlockRunnerFactoryStore} from './IFlowRunner'
 import ValidationException from './exceptions/ValidationException'
 import IPrompt, {IBasePromptConfig, IPromptConfig} from './prompt/IPrompt'
-import NumericPrompt from './prompt/NumericPrompt'
-import {INumericPromptConfig} from './prompt/INumericPromptConfig'
+import MessagePrompt from './prompt/MessagePrompt'
+import {IMessagePromptConfig} from './prompt/IMessagePromptConfig'
 
-/**
- * todo: remaining pieces
- *       - build out numeric prompt
- *       - complete run-flow-block runner
- *       - usage documentation
- */
 
 export class BlockRunnerFactoryStore
   extends Map<string, { (block: IBlock): IBlockRunner }>
@@ -40,7 +34,7 @@ export default class implements IFlowRunner {
 
   /**
    * We want to call start when we don't have a prompt needing work to be done. */
-  initialize(): RichCursorType | null {
+  initialize(): RichCursorType | void {
     const block = this.findNextBlockOnActiveFlowFor(this.context)
     if (block == null) {
       throw new ValidationException('Unable to initialize flow without blocks.')
@@ -68,7 +62,7 @@ export default class implements IFlowRunner {
    * The issue is that we may, in fact, end up needing to resume from a state where a particular block
    *    got itself into an invalid state and _crashed_, in which case, we'd still want the ability to pick up
    *    where we'd left off. */
-  run(): RichCursorInputRequiredType | null {
+  run(): RichCursorInputRequiredType | void {
     const {context: ctx} = this
     if (!this.isInitialized(ctx)) {
       /* const richCursor = */
@@ -79,14 +73,16 @@ export default class implements IFlowRunner {
   }
 
   isInputRequiredFor(ctx: IContext): false | boolean /* : ctx is RichCursorInputRequiredType*/ {
-    return (ctx.cursor != null && ctx.cursor[1] != null && !ctx.cursor[1].isSubmitted)
+    return ctx.cursor != null
+      && ctx.cursor[1] != null
+      && ctx.cursor[1].value === undefined
   }
 
-  runUntilInputRequiredFrom(ctx: IContextWithCursor): RichCursorInputRequiredType | null {
+  runUntilInputRequiredFrom(ctx: IContextWithCursor): RichCursorInputRequiredType | void {
     /* todo: convert cursor to an object instead of tuple; since we don't have named tuples, a dictionary
         would be more intuitive */
     let richCursor: RichCursorType = this.hydrateRichCursorFrom(ctx)
-    let block: IBlock | undefined = findBlockOnActiveFlowWith(richCursor[0].blockId, ctx)
+    let block: IBlock | void = findBlockOnActiveFlowWith(richCursor[0].blockId, ctx)
 
     do {
       if (this.isInputRequiredFor(ctx)) {
@@ -120,8 +116,6 @@ export default class implements IFlowRunner {
     } while (block != null)
 
     this.complete(ctx)
-
-    return null
   }
 
   // exitEarlyThrough(block: IBlock) {
@@ -139,7 +133,7 @@ export default class implements IFlowRunner {
   }
 
   dehydrateCursor(richCursor: RichCursorType): CursorType {
-    return [richCursor[0].uuid, richCursor[1] != null ? richCursor[1].config : null]
+    return [richCursor[0].uuid, richCursor[1] != null ? richCursor[1].config : undefined]
   }
 
   hydrateRichCursorFrom(ctx: IContextWithCursor): RichCursorType {
@@ -156,7 +150,8 @@ export default class implements IFlowRunner {
      *       - Cursor would then hold a union type of the different config types we know of where config has a type
      **/
     const {cursor} = ctx
-    return [findInteractionWith(cursor[0], ctx), this.createPromptFrom(cursor[1])]
+    let interaction = findInteractionWith(cursor[0], ctx)
+    return [interaction, this.createPromptFrom(cursor[1], interaction)]
   }
 
   initializeOneBlock(
@@ -168,7 +163,7 @@ export default class implements IFlowRunner {
     const runner = this.createBlockRunnerFor(block)
     const interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
     const promptConfig = runner.initialize(interaction)
-    const prompt = this.createPromptFrom(promptConfig)
+    const prompt = this.createPromptFrom(promptConfig, interaction)
 
     return [interaction, prompt]
   }
@@ -323,8 +318,8 @@ export default class implements IFlowRunner {
   private createBlockInteractionFor(
     {uuid: blockId}: IBlock,
     flowId: string,
-    originFlowId: string | undefined = undefined,
-    originBlockInteractionId: string | undefined = undefined): IBlockInteraction {
+    originFlowId: string | undefined,
+    originBlockInteractionId: string | undefined): IBlockInteraction {
 
     return {
       uuid: uuid.v4(),
@@ -355,14 +350,13 @@ export default class implements IFlowRunner {
     }
   }
 
-  private createPromptFrom(config?: IPromptConfig<any> | null): IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined {
-    if (config == null) {
-      return undefined
+  private createPromptFrom(config?: IPromptConfig<any>, interaction?: IBlockInteraction):
+    IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined {
+
+    if (config == null || interaction == null) {
+      return
     }
 
-    return new NumericPrompt(
-      {} as IBlock,
-      {} as IBlockInteraction,
-      config as INumericPromptConfig & IBasePromptConfig)
+    return new MessagePrompt(config as IMessagePromptConfig & IBasePromptConfig, interaction.uuid)
   }
 }

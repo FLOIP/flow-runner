@@ -11,11 +11,5 @@ describe('FlowRunner/createBlockRunnerFor', () => {
   //   dataset = read('__tests__/fixtures/dataset.yml')
   // })
 
-  it.skip('should return a no-op IBlockRunner factory when block runner not found', () => {
-    // const
-    //     runner = new FlowRunner(dataset.contexts[0], new BlockRunnerFactoryStore),
-    //     block = {type: 'SomeRandomNonExistentBlockType'} as IBlock
-
-    // expect(runner.createBlockRunnerFor(block)).toBeInstanceOf(NoOpBlockRunnerFactoryThing)
-  })
+  it.todo('should return a no-op IBlockRunner factory when block runner not found')
 })

@@ -9,13 +9,13 @@ import {find, last} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
 
 
-export type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | null]
+export type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined]
 export type CursorInputRequiredType = [string /* UUID64*/, IPromptConfig<any> & IBasePromptConfig]
-export type CursorNoInputRequiredType = [string, null]
+export type CursorNoInputRequiredType = [string, undefined]
 
 export type RichCursorType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined]
 export type RichCursorInputRequiredType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig>]
-export type RichCursorNoInputRequiredType = [IBlockInteraction, null]
+export type RichCursorNoInputRequiredType = [IBlockInteraction, undefined]
 
 export default interface IContext {
   flows: IFlow[],
