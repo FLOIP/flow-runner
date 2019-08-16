@@ -1,9 +1,6 @@
 import PromptValidationException from '../exceptions/PromptValidationException';
-import IBlock from '../../flow-spec/IBlock';
-import IBlockInteraction from '../../flow-spec/IBlockInteraction';
 export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
-    block: IBlock;
-    interaction: IBlockInteraction;
+    interactionId: string;
     config: PromptConfigType;
     value: PromptConfigType['value'];
     error: PromptValidationException | null;
@@ -11,15 +8,15 @@ export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptCo
     validate(val: PromptConfigType['value']): boolean;
 }
 export declare enum KnownPrompts {
-    Message = 0,
-    Numeric = 1,
-    SelectOne = 2,
-    Open = 3
+    Message = "Message",
+    Numeric = "Numeric",
+    SelectOne = "SelectOne",
+    Open = "Open"
 }
 export interface IPromptConfig<ExpectationType> {
     kind: KnownPrompts;
     isResponseRequired: boolean;
-    value: ExpectationType;
+    value?: ExpectationType;
 }
 export interface IBasePromptConfig {
     isSubmitted: boolean;

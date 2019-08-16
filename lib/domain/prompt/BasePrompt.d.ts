@@ -1,14 +1,11 @@
 import IPrompt, { IBasePromptConfig, IPromptConfig } from './IPrompt';
 import PromptValidationException from '../exceptions/PromptValidationException';
-import IBlockInteraction from '../../flow-spec/IBlockInteraction';
-import IBlock from '../../flow-spec/IBlock';
 export default abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> implements IPrompt<PromptConfigType> {
-    block: IBlock;
-    interaction: IBlockInteraction;
     config: PromptConfigType & IBasePromptConfig;
+    interactionId: string;
     error: PromptValidationException | null;
     isValid: boolean;
-    constructor(block: IBlock, interaction: IBlockInteraction, config: PromptConfigType & IBasePromptConfig);
+    constructor(config: PromptConfigType & IBasePromptConfig, interactionId: string);
     value: PromptConfigType['value'];
     abstract validate(val?: PromptConfigType['value']): boolean;
 }

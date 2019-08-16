@@ -2,7 +2,7 @@ export default interface IBlockExit {
     uuid: string;
     label: string;
     tag: string;
-    destinationBlock: string;
+    destinationBlock?: string;
     semanticLabel?: string;
     test?: string;
     config: object;
