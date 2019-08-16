@@ -2,13 +2,14 @@
 import IBlockExit from './IBlockExit'
 import {find} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
+import BlockType from './BlockType'
 
 export default interface IBlock {
   uuid: string,// UUID32
   name: string,
   label?: string,
   semanticLabel?: string,
-  type: string, // todo: dyamic enum based upon capabilities?
+  type: BlockType,
   config: object,
   exits: IBlockExit[],
 }
