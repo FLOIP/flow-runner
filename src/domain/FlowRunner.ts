@@ -275,8 +275,8 @@ export default class implements IFlowRunner {
   stepOut(ctx: IContext): IBlock | undefined {
     const {interactions, nestedFlowBlockInteractionIdStack} = ctx
 
-    if (nestedFlowBlockInteractionIdStack.length == 0) {
-      return undefined
+    if (!nestedFlowBlockInteractionIdStack.length) {
+      return
     }
 
     const lastParentInteractionId = nestedFlowBlockInteractionIdStack.pop() as string
@@ -284,11 +284,11 @@ export default class implements IFlowRunner {
     const lastRunFlowBlock = findBlockOnActiveFlowWith(lastRunFlowBlockId, ctx)
     const {uuid: runFlowBlockFirstExitId, destinationBlock} = first(lastRunFlowBlock.exits) as IBlockExit
 
-    if (destinationBlock == null) {
-      return undefined
-    }
-
     (last(interactions) as IBlockInteraction).details.selectedExitId = runFlowBlockFirstExitId
+
+    if (destinationBlock == null) {
+      return
+    }
 
     return findBlockOnActiveFlowWith(destinationBlock, ctx)
   }

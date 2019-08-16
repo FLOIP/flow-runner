@@ -58,17 +58,33 @@ describe('FlowRunner/stepOut', () => {
       expect(activeIntx.details.selectedExitId).toBe(lastRunFlowBlock.exits[0].uuid)
     })
 
-    it('should return block last RunFlow was connected to in original tree', () => {
-      const
+    describe('connecting block', () => {
+      it('should return block last RunFlow was connected to in original tree', () => {
+        const
           ctx = dataset.contexts[2],
           lastRunFlowBlock = ctx.flows[0].blocks[0],
           runFlowDestinationBlock = ctx.flows[0].blocks[1],
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
 
-      expect(ctx.nestedFlowBlockInteractionIdStack.length).toBeGreaterThan(0)
-      expect(lastRunFlowBlock.exits[0].destinationBlock).toBe(runFlowDestinationBlock.uuid)
-      const nextBlock = runner.stepOut(ctx)
-      expect(nextBlock).toBe(runFlowDestinationBlock)
+        expect(ctx.nestedFlowBlockInteractionIdStack.length).toBeGreaterThan(0)
+        expect(lastRunFlowBlock.exits[0].destinationBlock).toBe(runFlowDestinationBlock.uuid)
+        const nextBlock = runner.stepOut(ctx)
+        expect(nextBlock).toBe(runFlowDestinationBlock)
+      })
+
+      it('should return null if last RunFlow was end of original tree', () => {
+        const
+          ctx = dataset.contexts[2],
+          lastRunFlowBlock = ctx.flows[0].blocks[0],
+          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+
+        delete lastRunFlowBlock.exits[0].destinationBlock
+
+        expect(ctx.nestedFlowBlockInteractionIdStack.length).toBeGreaterThan(0)
+        expect(lastRunFlowBlock.exits[0].destinationBlock).toBeUndefined()
+        const nextBlock = runner.stepOut(ctx)
+        expect(nextBlock).toBeUndefined()
+      })
     })
   })
 })
