@@ -1,4 +1,5 @@
 export enum SupportedMode {
+  // noinspection JSUnusedGlobalSymbols
   SMS = 'sms',
   USSD = 'ussd',
   TWITTER = 'twitter',
