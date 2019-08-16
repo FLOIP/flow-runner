@@ -1,13 +1,13 @@
 import IBlock from './IBlock';
-import { Mode } from './Mode';
+import SupportedMode from './SupportedMode';
 export default interface IFlow {
     uuid: string;
     name: string;
     label?: string;
-    lastModified: Date;
+    lastModified: string;
     interactionTimeout: number;
     platformMetadata: object;
-    supportedModes: Mode[];
+    supportedModes: SupportedMode[];
     languages: string[];
     blocks: IBlock[];
     firstBlockId: string;

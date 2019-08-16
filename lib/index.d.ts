@@ -29,5 +29,5 @@ export * from './flow-spec/IContext';
 export * from './flow-spec/IFlow';
 export * from './flow-spec/IContact';
 export * from './flow-spec/ISession';
-export * from './flow-spec/Mode';
+export * from './flow-spec/SupportedMode';
 //# sourceMappingURL=index.d.ts.map

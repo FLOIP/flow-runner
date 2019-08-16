@@ -284,6 +284,10 @@ export default class implements IFlowRunner {
     const lastRunFlowBlock = findBlockOnActiveFlowWith(lastRunFlowBlockId, ctx)
     const {uuid: runFlowBlockFirstExitId, destinationBlock} = first(lastRunFlowBlock.exits) as IBlockExit
 
+    if (destinationBlock == null) {
+      return undefined
+    }
+
     (last(interactions) as IBlockInteraction).details.selectedExitId = runFlowBlockFirstExitId
 
     return findBlockOnActiveFlowWith(destinationBlock, ctx)

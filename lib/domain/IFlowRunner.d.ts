@@ -8,6 +8,6 @@ export default interface IFlowRunner {
     context: IContext;
     runnerFactoryStore: IBlockRunnerFactoryStore;
     initialize(): void;
-    run(): RichCursorInputRequiredType | null;
+    run(): RichCursorInputRequiredType | void;
 }
 //# sourceMappingURL=IFlowRunner.d.ts.map

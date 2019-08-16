@@ -4,12 +4,12 @@ import ISession from './ISession';
 import IBlockInteraction from './IBlockInteraction';
 import IPrompt, { IBasePromptConfig, IPromptConfig } from '../domain/prompt/IPrompt';
 import IBlock from './IBlock';
-export declare type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | null];
+export declare type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined];
 export declare type CursorInputRequiredType = [string, IPromptConfig<any> & IBasePromptConfig];
-export declare type CursorNoInputRequiredType = [string, null];
+export declare type CursorNoInputRequiredType = [string, undefined];
 export declare type RichCursorType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined];
 export declare type RichCursorInputRequiredType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig>];
-export declare type RichCursorNoInputRequiredType = [IBlockInteraction, null];
+export declare type RichCursorNoInputRequiredType = [IBlockInteraction, undefined];
 export default interface IContext {
     flows: IFlow[];
     firstFlowId: string;
