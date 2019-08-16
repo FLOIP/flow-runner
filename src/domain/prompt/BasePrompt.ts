@@ -2,9 +2,6 @@
 // import UUID64 from "../../model/UUID64"
 import IPrompt, {IBasePromptConfig, IPromptConfig} from './IPrompt'
 import PromptValidationException from '../exceptions/PromptValidationException'
-import IBlockInteraction from '../../flow-spec/IBlockInteraction'
-import IBlock from '../../flow-spec/IBlock'
-// import {KnownPrompts} from "./IPrompt";
 
 // export enum KnownPrompts {
 //   Message,
@@ -24,12 +21,12 @@ export default abstract class BasePrompt<PromptConfigType extends IPromptConfig<
   isValid = false
 
   constructor(
+    public config: PromptConfigType & IBasePromptConfig,
     // todo: figure out a nice pattern for hydrating UUIDs
-    public block: IBlock,
-    public interaction: IBlockInteraction,
-    public config: PromptConfigType & IBasePromptConfig) {
+    public interactionId: string,) {
 
     // todo: add canPerformEarlyExit() behaviour
+    // todo: should perform initial validate() here?
   }
 
   get value(): PromptConfigType['value'] {
@@ -39,7 +36,7 @@ export default abstract class BasePrompt<PromptConfigType extends IPromptConfig<
 
   set value(val: PromptConfigType['value']) {
     try {
-      this.validate(val)
+      this.isValid = this.validate(val)
     } catch (e) {
       if (!(e instanceof PromptValidationException)) {
         throw e

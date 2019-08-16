@@ -15,7 +15,6 @@ export default class SelectOneResponseBlockRunner implements IBlockRunner {
       kind: KnownPrompts.SelectOne,
       choices: Array.from(this.block.config.choices.keys()),
       isResponseRequired: true,
-      value: null,
     }
   }
 
