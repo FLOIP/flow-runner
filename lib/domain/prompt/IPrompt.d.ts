@@ -16,6 +16,7 @@ export declare enum KnownPrompts {
 export interface IPromptConfig<ExpectationType> {
     kind: KnownPrompts;
     isResponseRequired: boolean;
+    prompt: string;
     value?: ExpectationType;
 }
 export interface IBasePromptConfig {
