@@ -19,10 +19,7 @@ import ValidationException from './exceptions/ValidationException'
 import IPrompt, {IBasePromptConfig, IPromptConfig} from './prompt/IPrompt'
 import MessagePrompt from './prompt/MessagePrompt'
 import {IMessagePromptConfig} from './prompt/IMessagePromptConfig'
-import IFlow from '../flow-spec/IFlow'
-import IContact from '../flow-spec/IContact'
 import DeliveryStatus from '../flow-spec/DeliveryStatus'
-import SupportedMode from '../flow-spec/SupportedMode'
 
 
 export class BlockRunnerFactoryStore
@@ -158,7 +155,7 @@ export default class implements IFlowRunner {
      *       - Cursor would then hold a union type of the different config types we know of where config has a type
      **/
     const {cursor} = ctx
-    let interaction = findInteractionWith(cursor[0], ctx)
+    const interaction = findInteractionWith(cursor[0], ctx)
     return [interaction, this.createPromptFrom(cursor[1], interaction)]
   }
 
@@ -283,7 +280,7 @@ export default class implements IFlowRunner {
   stepOut(ctx: IContext): IBlock | undefined {
     const {interactions, nestedFlowBlockInteractionIdStack} = ctx
 
-    if (!nestedFlowBlockInteractionIdStack.length) {
+    if (nestedFlowBlockInteractionIdStack.length === 0) {
       return
     }
 
@@ -325,32 +322,6 @@ export default class implements IFlowRunner {
     const {blocks} = getActiveFlowFrom(ctx)
 
     return find(blocks, {uuid: destinationBlock})
-  }
-
-  createContextFor(
-    contact: IContact,
-    userId: string,
-    flows: IFlow[],
-    languageId: string = 'en_US',
-  ): IContext {
-
-    return {
-      id: uuid.v4(),
-      createdAt: new Date,
-      deliveryStatus: DeliveryStatus.QUEUED,
-
-      userId,
-      mode: SupportedMode.OFFLINE,
-      languageId: languageId,
-
-      contact,
-      sessionVars: {},
-      interactions: [],
-      nestedFlowBlockInteractionIdStack: [],
-
-      flows,
-      firstFlowId: flows[0].uuid,
-    }
   }
 
   private createBlockInteractionFor(

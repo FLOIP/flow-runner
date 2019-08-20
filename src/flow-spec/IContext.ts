@@ -8,6 +8,7 @@ import {find, last} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
 import DeliveryStatus from './DeliveryStatus'
 import SupportedMode from './SupportedMode'
+import uuid from 'uuid'
 
 
 export type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined]
@@ -45,6 +46,31 @@ export interface IContextWithCursor extends IContext {
 
 export interface IContextInputRequired extends IContext {
   cursor: CursorInputRequiredType,
+}
+
+export function createContextFor(
+  contact: IContact,
+  userId: string,
+  flows: IFlow[],
+  languageId: string): IContext {
+
+  return {
+    id: uuid.v4(),
+    createdAt: new Date,
+    deliveryStatus: DeliveryStatus.QUEUED,
+
+    userId,
+    mode: SupportedMode.OFFLINE,
+    languageId,
+
+    contact,
+    sessionVars: {},
+    interactions: [],
+    nestedFlowBlockInteractionIdStack: [],
+
+    flows,
+    firstFlowId: flows[0].uuid,
+  }
 }
 
 export function findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction {
