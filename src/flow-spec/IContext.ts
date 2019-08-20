@@ -1,12 +1,13 @@
 import IContact from './IContact'
 import IFlow, {findBlockWith} from './IFlow'
-import ISession from './ISession'
 import IBlockInteraction from './IBlockInteraction'
 import IPrompt, {IBasePromptConfig, IPromptConfig} from '../domain/prompt/IPrompt'
 import IBlock from './IBlock'
 import IRunFlowBlockConfig from '../model/block/IRunFlowBlockConfig'
 import {find, last} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
+import DeliveryStatus from './DeliveryStatus'
+import SupportedMode from './SupportedMode'
 
 
 export type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined]
@@ -18,14 +19,24 @@ export type RichCursorInputRequiredType = [IBlockInteraction, IPrompt<IPromptCon
 export type RichCursorNoInputRequiredType = [IBlockInteraction, undefined]
 
 export default interface IContext {
-  flows: IFlow[],
-  firstFlowId: string,
-  interactions: IBlockInteraction[],
-  contact: IContact,
-  session: ISession,
-  sessionVars: object,
-  nestedFlowBlockInteractionIdStack: string[],
-  cursor?: CursorType,
+  id: string
+  createdAt: Date
+  entryAt?: Date
+  exitAt?: Date
+  deliveryStatus: DeliveryStatus
+
+  userId?: string
+  mode: SupportedMode
+  languageId: string
+
+  contact: IContact
+  sessionVars: object
+  interactions: IBlockInteraction[]
+  nestedFlowBlockInteractionIdStack: string[]
+  cursor?: CursorType
+
+  flows: IFlow[]
+  firstFlowId: string
 }
 
 export interface IContextWithCursor extends IContext {

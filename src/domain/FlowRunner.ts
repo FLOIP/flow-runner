@@ -19,6 +19,10 @@ import ValidationException from './exceptions/ValidationException'
 import IPrompt, {IBasePromptConfig, IPromptConfig} from './prompt/IPrompt'
 import MessagePrompt from './prompt/MessagePrompt'
 import {IMessagePromptConfig} from './prompt/IMessagePromptConfig'
+import IFlow from '../flow-spec/IFlow'
+import IContact from '../flow-spec/IContact'
+import DeliveryStatus from '../flow-spec/DeliveryStatus'
+import SupportedMode from '../flow-spec/SupportedMode'
 
 
 export class BlockRunnerFactoryStore
@@ -35,13 +39,15 @@ export default class implements IFlowRunner {
   /**
    * We want to call start when we don't have a prompt needing work to be done. */
   initialize(): RichCursorType | void {
-    const block = this.findNextBlockOnActiveFlowFor(this.context)
+    const ctx = this.context
+    const block = this.findNextBlockOnActiveFlowFor(ctx)
+
     if (block == null) {
       throw new ValidationException('Unable to initialize flow without blocks.')
     }
 
-    // todo: set flow starting timestamp on context
-    // todo: set delivery status on context
+    ctx.deliveryStatus = DeliveryStatus.IN_PROGRESS
+    ctx.entryAt = new Date
 
     return this.navigateTo(block, this.context) // kick-start by navigating to first block
   }
@@ -130,6 +136,8 @@ export default class implements IFlowRunner {
 
     (last(ctx.interactions) as IBlockInteraction).exitAt = new Date
     delete ctx.cursor
+    ctx.deliveryStatus = DeliveryStatus.FINISHED_COMPLETE
+    ctx.exitAt = new Date
   }
 
   dehydrateCursor(richCursor: RichCursorType): CursorType {
@@ -317,6 +325,32 @@ export default class implements IFlowRunner {
     const {blocks} = getActiveFlowFrom(ctx)
 
     return find(blocks, {uuid: destinationBlock})
+  }
+
+  createContextFor(
+    contact: IContact,
+    userId: string,
+    flows: IFlow[],
+    languageId: string = 'en_US',
+  ): IContext {
+
+    return {
+      id: uuid.v4(),
+      createdAt: new Date,
+      deliveryStatus: DeliveryStatus.QUEUED,
+
+      userId,
+      mode: SupportedMode.OFFLINE,
+      languageId: languageId,
+
+      contact,
+      sessionVars: {},
+      interactions: [],
+      nestedFlowBlockInteractionIdStack: [],
+
+      flows,
+      firstFlowId: flows[0].uuid,
+    }
   }
 
   private createBlockInteractionFor(
