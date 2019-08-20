@@ -4,6 +4,8 @@ import IBlockRunner from './runners/IBlockRunner';
 import IBlockInteraction from '../flow-spec/IBlockInteraction';
 import IBlockExit from '../flow-spec/IBlockExit';
 import IFlowRunner, { IBlockRunnerFactoryStore } from './IFlowRunner';
+import IFlow from '../flow-spec/IFlow';
+import IContact from '../flow-spec/IContact';
 export declare class BlockRunnerFactoryStore extends Map<string, {
     (block: IBlock): IBlockRunner;
 }> implements IBlockRunnerFactoryStore {
@@ -28,6 +30,7 @@ export default class implements IFlowRunner {
     stepOut(ctx: IContext): IBlock | undefined;
     findNextBlockOnActiveFlowFor(ctx: IContext): IBlock | undefined;
     findNextBlockFrom(interaction: IBlockInteraction, ctx: IContext): IBlock | undefined;
+    createContextFor(contact: IContact, userId: string, flows: IFlow[], languageId?: string): IContext;
     private createBlockInteractionFor;
     private createBlockExitFor;
     private createPromptFrom;
