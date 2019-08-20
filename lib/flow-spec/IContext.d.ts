@@ -34,6 +34,7 @@ export interface IContextWithCursor extends IContext {
 export interface IContextInputRequired extends IContext {
     cursor: CursorInputRequiredType;
 }
+export declare function createContextFor(contact: IContact, userId: string, flows: IFlow[], languageId: string): IContext;
 export declare function findInteractionWith(uuid: string, { interactions }: IContext): IBlockInteraction;
 export declare function findFlowWith(uuid: string, { flows }: IContext): IFlow;
 export declare function findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock;
