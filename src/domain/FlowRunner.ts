@@ -35,7 +35,7 @@ export default class implements IFlowRunner {
 
   /**
    * We want to call start when we don't have a prompt needing work to be done. */
-  initialize(): RichCursorType | void {
+  initialize(): RichCursorType | undefined {
     const ctx = this.context
     const block = this.findNextBlockOnActiveFlowFor(ctx)
 
@@ -65,7 +65,7 @@ export default class implements IFlowRunner {
    * The issue is that we may, in fact, end up needing to resume from a state where a particular block
    *    got itself into an invalid state and _crashed_, in which case, we'd still want the ability to pick up
    *    where we'd left off. */
-  run(): RichCursorInputRequiredType | void {
+  run(): RichCursorInputRequiredType | undefined {
     const {context: ctx} = this
     if (!this.isInitialized(ctx)) {
       /* const richCursor = */
@@ -81,11 +81,11 @@ export default class implements IFlowRunner {
       && ctx.cursor[1].value === undefined
   }
 
-  runUntilInputRequiredFrom(ctx: IContextWithCursor): RichCursorInputRequiredType | void {
+  runUntilInputRequiredFrom(ctx: IContextWithCursor): RichCursorInputRequiredType | undefined {
     /* todo: convert cursor to an object instead of tuple; since we don't have named tuples, a dictionary
         would be more intuitive */
     let richCursor: RichCursorType = this.hydrateRichCursorFrom(ctx)
-    let block: IBlock | void = findBlockOnActiveFlowWith(richCursor[0].blockId, ctx)
+    let block: IBlock | undefined = findBlockOnActiveFlowWith(richCursor[0].blockId, ctx)
 
     do {
       if (this.isInputRequiredFor(ctx)) {
@@ -119,6 +119,7 @@ export default class implements IFlowRunner {
     } while (block != null)
 
     this.complete(ctx)
+    return
   }
 
   // exitEarlyThrough(block: IBlock) {
@@ -280,7 +281,7 @@ export default class implements IFlowRunner {
   stepOut(ctx: IContext): IBlock | undefined {
     const {interactions, nestedFlowBlockInteractionIdStack} = ctx
 
-    if (nestedFlowBlockInteractionIdStack.length === 0) {
+    if (!nestedFlowBlockInteractionIdStack.length) {
       return
     }
 
