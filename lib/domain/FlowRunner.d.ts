@@ -12,11 +12,11 @@ export default class implements IFlowRunner {
     context: IContext;
     runnerFactoryStore: IBlockRunnerFactoryStore;
     constructor(context: IContext, runnerFactoryStore: IBlockRunnerFactoryStore);
-    initialize(): RichCursorType | void;
+    initialize(): RichCursorType | undefined;
     isInitialized(ctx: IContext): boolean;
-    run(): RichCursorInputRequiredType | void;
+    run(): RichCursorInputRequiredType | undefined;
     isInputRequiredFor(ctx: IContext): false | boolean;
-    runUntilInputRequiredFrom(ctx: IContextWithCursor): RichCursorInputRequiredType | void;
+    runUntilInputRequiredFrom(ctx: IContextWithCursor): RichCursorInputRequiredType | undefined;
     complete(ctx: IContext): void;
     dehydrateCursor(richCursor: RichCursorType): CursorType;
     hydrateRichCursorFrom(ctx: IContextWithCursor): RichCursorType;
