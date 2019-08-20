@@ -14,6 +14,7 @@ export default class OpenResponseBlockRunner implements IBlockRunner {
     return {
       kind: KnownPrompts.Open,
       isResponseRequired: true,
+      prompt: this.block.config.prompt,
     }
   }
 

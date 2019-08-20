@@ -18,6 +18,7 @@ export default class NumericResponseBlockRunner implements IBlockRunner {
       min: this.block.config.validationMinimum,
       max: this.block.config.validationMaximum,
       isResponseRequired: false,
+      prompt: this.block.config.prompt,
     }
   }
 

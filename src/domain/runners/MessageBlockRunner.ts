@@ -13,6 +13,7 @@ export default class MessageBlockRunner implements IBlockRunner {
     return {
       kind: KnownPrompts.Message,
       isResponseRequired: false,
+      prompt: this.block.config.message,
     }
   }
 
