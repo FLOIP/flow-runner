@@ -1,4 +1,4 @@
 export default interface IMessageBlockConfig {
-  message: string,
-  messageAudio: string,
+  message: string
+  messageAudio: string
 }

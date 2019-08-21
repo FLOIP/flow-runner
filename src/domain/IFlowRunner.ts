@@ -5,12 +5,12 @@ import IBlockRunner from './runners/IBlockRunner'
 export type IBlockRunnerFactoryStore = Map<string, { (block: IBlock): IBlockRunner }>
 
 export default interface IFlowRunner {
-  context: IContext,
-  runnerFactoryStore: IBlockRunnerFactoryStore,
+  context: IContext
+  runnerFactoryStore: IBlockRunnerFactoryStore
 
   // new (context: IContext, runnerFactoryStore: IBlockRunnerFactoryStore): IFlowRunner
 
-  initialize(): RichCursorType | undefined,
+  initialize(): RichCursorType | undefined
 
-  run(): RichCursorInputRequiredType | undefined,
+  run(): RichCursorInputRequiredType | undefined
 }

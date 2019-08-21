@@ -4,13 +4,13 @@ import {find} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
 
 export default interface IBlock {
-  uuid: string,// UUID32
-  name: string,
-  label?: string,
-  semanticLabel?: string,
-  type: string,
-  config: object,
-  exits: IBlockExit[],
+  uuid: string // UUID32
+  name: string
+  label?: string
+  semanticLabel?: string
+  type: string
+  config: object
+  exits: IBlockExit[]
 }
 
 

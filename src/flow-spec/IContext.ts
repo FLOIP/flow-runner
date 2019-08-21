@@ -41,11 +41,11 @@ export default interface IContext {
 }
 
 export interface IContextWithCursor extends IContext {
-  cursor: CursorType,
+  cursor: CursorType
 }
 
 export interface IContextInputRequired extends IContext {
-  cursor: CursorInputRequiredType,
+  cursor: CursorInputRequiredType
 }
 
 export function createContextFor(
