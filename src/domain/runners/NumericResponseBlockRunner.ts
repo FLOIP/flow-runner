@@ -12,19 +12,22 @@ export default class NumericResponseBlockRunner implements IBlockRunner {
 
 
   initialize(): INumericPromptConfig {
+    const {
+      validationMinimum: min,
+      validationMaximum: max,
+    } = this.block.config
+
     return {
       kind: KnownPrompts.Numeric,
-      maxLength: 0, // todo: is this viamo-specific and no longer necessary?
-      min: this.block.config.validationMinimum,
-      max: this.block.config.validationMaximum,
-      isResponseRequired: false,
       prompt: this.block.config.prompt,
+      isResponseRequired: false,
+
+      min,
+      max,
     }
   }
 
-  run(): IBlockExit {
-    // todo: what constitutes an error exit on web/android chanels?
-
+  run(): IBlockExit { // todo: what constitutes an error exit on web/android chanels?
     return this.block.exits[0]
   }
 }
