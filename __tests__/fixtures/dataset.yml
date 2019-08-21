@@ -189,7 +189,8 @@ contexts:
       - *intx/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
     cursor:
       - *intxId/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
-      - kind: Numeric
+      - kind: Numeric # todo: let's change these (Message->Message)'s to Numeric, so this makes a bit more sense
+        prompt: What age are you at?
         isResponseRequired: true
         value: null
         isSubmitted: false

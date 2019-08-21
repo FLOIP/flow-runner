@@ -1,5 +1,4 @@
-import {read} from 'yaml-import'
-import IDataset from './fixtures/IDataset'
+import IDataset, {createDefaultDataset} from './fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from '../src/domain/FlowRunner'
 import MessageBlockRunner from '../src/domain/runners/MessageBlockRunner'
 import IMessageBlock from '../src/model/block/IMessageBlock'
@@ -12,7 +11,7 @@ describe('FlowRunner', () => {
   let dataset: IDataset
 
   beforeEach(() => {
-    dataset = read('__tests__/fixtures/dataset.yml')
+    dataset = createDefaultDataset()
   })
 
   describe('sanity', () => {

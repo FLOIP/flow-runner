@@ -179,6 +179,7 @@ export default class implements IFlowRunner {
 
     if (richCursor[1] != null) {
       richCursor[0].value = richCursor[1].value
+      richCursor[0].hasResponse = true
     }
 
     const exit = this.createBlockRunnerFor(block)
@@ -281,7 +282,7 @@ export default class implements IFlowRunner {
   stepOut(ctx: IContext): IBlock | undefined {
     const {interactions, nestedFlowBlockInteractionIdStack} = ctx
 
-    if (!nestedFlowBlockInteractionIdStack.length) {
+    if (nestedFlowBlockInteractionIdStack.length === 0) {
       return
     }
 
@@ -326,7 +327,7 @@ export default class implements IFlowRunner {
   }
 
   private createBlockInteractionFor(
-    {uuid: blockId}: IBlock,
+    {uuid: blockId, type}: IBlock,
     flowId: string,
     originFlowId: string | undefined,
     originBlockInteractionId: string | undefined): IBlockInteraction {
@@ -340,7 +341,7 @@ export default class implements IFlowRunner {
       hasResponse: false,
       value: undefined,
       details: {selectedExitId: null},
-      type: null, // (?) -- awaiting response from @george + @mark on this
+      type,
 
       // Nested flows:
       originFlowId,

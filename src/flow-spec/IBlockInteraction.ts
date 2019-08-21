@@ -10,7 +10,7 @@ export default interface IBlockInteraction {
   hasResponse: boolean,
   value?: string | number,
   details: IBlockInteractionDetails, // json (?) can we type this at all?
-  type: null, // (?) -- awaiting response from @george + @mark on this
+  type: string,
 
   originBlockInteractionId?: string, // UUID64
   originFlowId?: string, // UUID64

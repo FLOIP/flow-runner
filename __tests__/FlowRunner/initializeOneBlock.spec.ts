@@ -1,9 +1,8 @@
-import {read} from 'yaml-import'
-import IDataset from "../fixtures/IDataset";
+import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
-import {RichCursorType} from "../../src/flow-spec/IContext";
-import {IBasePromptConfig, KnownPrompts} from "../../src/domain/prompt/IPrompt";
+import {RichCursorType} from '../../src';
+import {IBasePromptConfig, KnownPrompts} from '../../src';
 import {INumericPromptConfig} from "../../src"
 
 
@@ -11,7 +10,7 @@ describe('FlowRunner/initializeOneBlock', () => {
   let dataset: IDataset
 
   beforeEach(() => {
-    dataset = read('__tests__/fixtures/dataset.yml')
+    dataset = createDefaultDataset()
   })
 
   it('should return cursor with empty prompt when prompt not provided', () => {
@@ -43,6 +42,7 @@ describe('FlowRunner/initializeOneBlock', () => {
             block,
             initialize: (): INumericPromptConfig & IBasePromptConfig => expectedPrompt = {
               kind: KnownPrompts.Numeric,
+              prompt: 'What age are you at?',
               value: null,
               isResponseRequired: false,
               isSubmitted: false,

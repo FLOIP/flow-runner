@@ -3,6 +3,8 @@ import IBlock from "../../src/flow-spec/IBlock";
 import IBlockExit from "../../src/flow-spec/IBlockExit";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
 import IContext from "../../src/flow-spec/IContext";
+import {read} from 'yaml-import'
+import {cloneDeep} from 'lodash'
 
 export default interface IDataset {
   contexts: IContext[]
@@ -12,4 +14,10 @@ export default interface IDataset {
   _block_exits: IBlockExit[]
   _block_interactions: IBlockInteraction[]
   _cursors: []
+}
+
+export const DATA_SOURCE = read('__tests__/fixtures/dataset.yml')
+
+export function createDefaultDataset(): IDataset {
+  return cloneDeep(DATA_SOURCE)
 }
