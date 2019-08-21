@@ -5,8 +5,10 @@ import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
 import IContext from "../../src/flow-spec/IContext";
 import {read} from 'yaml-import'
 import {cloneDeep} from 'lodash'
+import {IBasePromptConfig, IPromptConfig} from '../../src'
 
 export default interface IDataset {
+  _prompts: (IPromptConfig<any> & IBasePromptConfig)[]
   contexts: IContext[]
   _defaults: object
   _flows: IFlow[]

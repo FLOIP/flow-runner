@@ -368,6 +368,9 @@ export default class implements IFlowRunner {
       return
     }
 
-    return new MessagePrompt(config as IMessagePromptConfig & IBasePromptConfig, interaction.uuid)
+    return new MessagePrompt(
+      config as IMessagePromptConfig & IBasePromptConfig,
+      interaction.uuid,
+      this)
   }
 }

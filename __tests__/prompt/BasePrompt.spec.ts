@@ -1,0 +1,56 @@
+import MessagePrompt from '../../src/domain/prompt/MessagePrompt'
+import {
+  BlockRunnerFactoryStore,
+  IBasePromptConfig,
+  IContextInputRequired,
+  IMessagePromptConfig,
+  IPromptConfig, RichCursorInputRequiredType,
+} from '../../src'
+import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
+import FlowRunner from '../../src/domain/FlowRunner'
+
+describe('BasePrompt', () => {
+  let dataset: IDataset
+
+  beforeEach(() => {
+    dataset = createDefaultDataset()
+  })
+
+  describe('fulfill', () => {
+    it('should set provided value onto itself', () => {
+      let config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[0]
+      const
+        ctx = dataset.contexts[1] as IContextInputRequired,
+        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore),
+        prompt = new MessagePrompt(
+          config as IMessagePromptConfig & IBasePromptConfig,
+          'abc-123',
+          runner)
+
+      jest.spyOn(runner, 'run')
+        .mockImplementation(() => undefined)
+
+      delete config.value
+      prompt.fulfill(null)
+      expect(config.value).toBeNull()
+    })
+
+    it('should return result of calling run on its runner', () => {
+      let config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[0]
+      const
+        ctx = dataset.contexts[1] as IContextInputRequired,
+        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore),
+        prompt = new MessagePrompt(
+          config as IMessagePromptConfig & IBasePromptConfig,
+          'abc-123',
+          runner),
+        richCursor = runner.hydrateRichCursorFrom(ctx) as RichCursorInputRequiredType
+
+      jest.spyOn(runner, 'run')
+        .mockImplementation(() => richCursor)
+
+      const cursor = prompt.fulfill(null)
+      expect(cursor).toBe(richCursor)
+    })
+  })
+})

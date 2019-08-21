@@ -167,6 +167,13 @@ _block_interactions:
     details:
       selectedExitId: *exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
 
+_prompts:
+  - kind: Message
+    prompt: This is it!
+    value: null
+    isResponseRequired: false
+    isSubmitted: false
+
 _cursors: []
 
 contexts:

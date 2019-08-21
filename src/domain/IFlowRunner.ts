@@ -1,4 +1,4 @@
-import IContext, {RichCursorInputRequiredType} from '../flow-spec/IContext'
+import IContext, {RichCursorInputRequiredType, RichCursorType} from '../flow-spec/IContext'
 import IBlock from '../flow-spec/IBlock'
 import IBlockRunner from './runners/IBlockRunner'
 
@@ -10,7 +10,7 @@ export default interface IFlowRunner {
 
   // new (context: IContext, runnerFactoryStore: IBlockRunnerFactoryStore): IFlowRunner
 
-  initialize(): void,
+  initialize(): RichCursorType | undefined,
 
-  run(): RichCursorInputRequiredType | void,
+  run(): RichCursorInputRequiredType | undefined,
 }

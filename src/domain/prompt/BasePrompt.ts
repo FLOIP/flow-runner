@@ -2,6 +2,8 @@
 // import UUID64 from "../../model/UUID64"
 import IPrompt, {IBasePromptConfig, IPromptConfig} from './IPrompt'
 import PromptValidationException from '../exceptions/PromptValidationException'
+import IFlowRunner from '../IFlowRunner'
+import {RichCursorInputRequiredType} from '../..'
 
 // export enum KnownPrompts {
 //   Message,
@@ -23,7 +25,8 @@ export default abstract class BasePrompt<PromptConfigType extends IPromptConfig<
   constructor(
     public config: PromptConfigType & IBasePromptConfig,
     // todo: figure out a nice pattern for hydrating UUIDs
-    public interactionId: string,) {
+    public interactionId: string,
+    public runner: IFlowRunner,) {
 
     // todo: add canPerformEarlyExit() behaviour
     // todo: should perform initial validate() here?
@@ -46,6 +49,11 @@ export default abstract class BasePrompt<PromptConfigType extends IPromptConfig<
     }
 
     this.config.value = val
+  }
+
+  fulfill(val: PromptConfigType['value']): RichCursorInputRequiredType | undefined {
+    this.value = val
+    return this.runner.run()
   }
 
   abstract validate(val?: PromptConfigType['value']): boolean
