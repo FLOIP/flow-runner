@@ -3,6 +3,10 @@ export default interface ISelectOneResponseBlockConfig {
     promptAudio: string;
     questionPrompt?: string;
     choicesPrompt?: string;
-    choices: Map<string, string>;
+    choices: StringMapType;
 }
+declare type StringMapType = {
+    [k: string]: string;
+};
+export {};
 //# sourceMappingURL=ISelectOneResponseBlockConfig.d.ts.map

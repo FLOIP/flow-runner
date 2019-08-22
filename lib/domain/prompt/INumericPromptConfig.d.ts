@@ -3,6 +3,5 @@ export interface INumericPromptConfig extends IPromptConfig<number | null> {
     kind: KnownPrompts.Numeric;
     min: number;
     max: number;
-    maxLength: number;
 }
 //# sourceMappingURL=INumericPromptConfig.d.ts.map

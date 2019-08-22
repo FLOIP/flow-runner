@@ -1,4 +1,4 @@
-import IContext, { RichCursorInputRequiredType } from '../flow-spec/IContext';
+import IContext, { RichCursorInputRequiredType, RichCursorType } from '../flow-spec/IContext';
 import IBlock from '../flow-spec/IBlock';
 import IBlockRunner from './runners/IBlockRunner';
 export declare type IBlockRunnerFactoryStore = Map<string, {
@@ -7,7 +7,7 @@ export declare type IBlockRunnerFactoryStore = Map<string, {
 export default interface IFlowRunner {
     context: IContext;
     runnerFactoryStore: IBlockRunnerFactoryStore;
-    initialize(): void;
-    run(): RichCursorInputRequiredType | void;
+    initialize(): RichCursorType | undefined;
+    run(): RichCursorInputRequiredType | undefined;
 }
 //# sourceMappingURL=IFlowRunner.d.ts.map

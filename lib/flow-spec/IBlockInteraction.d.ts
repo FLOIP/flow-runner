@@ -7,7 +7,7 @@ export default interface IBlockInteraction {
     hasResponse: boolean;
     value?: string | number;
     details: IBlockInteractionDetails;
-    type: null;
+    type: string;
     originBlockInteractionId?: string;
     originFlowId?: string;
 }
