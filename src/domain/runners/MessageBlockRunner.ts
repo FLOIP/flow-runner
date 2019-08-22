@@ -12,8 +12,8 @@ export default class MessageBlockRunner implements IBlockRunner {
   initialize(): IMessagePromptConfig {
     return {
       kind: KnownPrompts.Message,
-      isResponseRequired: false,
       prompt: this.block.config.message,
+      isResponseRequired: false,
     }
   }
 

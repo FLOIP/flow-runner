@@ -3,5 +3,7 @@ export default interface ISelectOneResponseBlockConfig {
   promptAudio: string
   questionPrompt?: string
   choicesPrompt?: string
-  choices: Map<string, string> // todo: choice should be a type like {id, resource, value}
+  choices: StringMapType
 }
+
+type StringMapType = {[k: string]: string}

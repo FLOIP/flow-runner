@@ -13,13 +13,14 @@ export default class NumericResponseBlockRunner implements IBlockRunner {
 
   initialize(): INumericPromptConfig {
     const {
+      prompt,
       validationMinimum: min,
       validationMaximum: max,
     } = this.block.config
 
     return {
       kind: KnownPrompts.Numeric,
-      prompt: this.block.config.prompt,
+      prompt,
       isResponseRequired: false,
 
       min,

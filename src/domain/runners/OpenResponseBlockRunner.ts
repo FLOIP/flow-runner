@@ -13,8 +13,8 @@ export default class OpenResponseBlockRunner implements IBlockRunner {
   initialize(): IOpenPromptConfig {
     return {
       kind: KnownPrompts.Open,
-      isResponseRequired: true,
       prompt: this.block.config.prompt,
+      isResponseRequired: true,
       maxResponseCharacters: this.block.config.text.maxResponseCharacters,
     }
   }

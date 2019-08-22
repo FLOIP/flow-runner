@@ -51,6 +51,10 @@ export default abstract class BasePrompt<PromptConfigType extends IPromptConfig<
     this.config.value = val
   }
 
+  get isEmpty() {
+    return this.value === undefined
+  }
+
   fulfill(val: PromptConfigType['value']): RichCursorInputRequiredType | undefined {
     this.value = val
     return this.runner.run()
