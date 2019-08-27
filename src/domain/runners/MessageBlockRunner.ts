@@ -12,7 +12,7 @@ export default class MessageBlockRunner implements IBlockRunner {
   initialize(): IMessagePromptConfig {
     return {
       kind: KnownPrompts.Message,
-      prompt: this.block.config.message,
+      prompt: this.block.config.prompt,
       isResponseRequired: false,
     }
   }
