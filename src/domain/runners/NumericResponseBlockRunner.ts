@@ -1,13 +1,11 @@
 import IBlockRunner from './IBlockRunner'
 import IBlockExit from '../../flow-spec/IBlockExit'
-import {INumericPromptConfig} from '../prompt/INumericPromptConfig'
-import IBlock from '../../flow-spec/IBlock'
-import INumericBlockConfig from '../../model/block/INumericBlockConfig'
-import {KnownPrompts} from '../prompt/IPrompt'
+import {INumericPromptConfig, KnownPrompts} from '../..'
+import INumericResponseBlock from '../../model/block/INumericResponseBlock'
 
 export default class NumericResponseBlockRunner implements IBlockRunner {
   constructor(
-    public block: IBlock & { config: INumericBlockConfig }) {
+    public block: INumericResponseBlock) {
   }
 
 

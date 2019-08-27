@@ -1,7 +1,6 @@
 import IBlockRunner from './IBlockRunner'
 import IBlockExit from '../../flow-spec/IBlockExit'
-import {IMessagePromptConfig} from '../prompt/IMessagePromptConfig'
-import {KnownPrompts} from '../prompt/IPrompt'
+import {IMessagePromptConfig, KnownPrompts} from '../..'
 import IMessageBlock from '../../model/block/IMessageBlock'
 
 
