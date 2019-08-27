@@ -1,5 +1,5 @@
 export default interface IMessageBlockConfig {
-    message: string;
+    prompt: string;
     messageAudio: string;
 }
 //# sourceMappingURL=IMessageBlockConfig.d.ts.map
