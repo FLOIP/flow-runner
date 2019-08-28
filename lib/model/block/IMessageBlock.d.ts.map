@@ -1,1 +1,1 @@
-{"version":3,"file":"IMessageBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/IMessageBlock.ts"],"names":[],"mappings":"AAAA,OAAO,MAAM,MAAM,wBAAwB,CAAA;AAC3C,OAAO,mBAAmB,MAAM,uBAAuB,CAAA;AAEvD,MAAM,CAAC,OAAO,WAAW,aAAc,SAAQ,MAAM;IACnD,MAAM,EAAE,mBAAmB,CAAA;CAC5B"}
+{"version":3,"file":"IMessageBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/IMessageBlock.ts"],"names":[],"mappings":"AAAA,OAAO,MAAM,MAAM,wBAAwB,CAAA;AAC3C,OAAO,mBAAmB,MAAM,uBAAuB,CAAA;AAEvD,MAAM,CAAC,OAAO,WAAW,aAAc,SAAQ,MAAM;IACnD,MAAM,EAAE,mBAAmB,CAAC;CAC7B"}

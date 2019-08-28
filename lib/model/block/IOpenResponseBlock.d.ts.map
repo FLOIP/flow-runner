@@ -1,0 +1,1 @@
+{"version":3,"file":"IOpenResponseBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/IOpenResponseBlock.ts"],"names":[],"mappings":"AAAA,OAAO,MAAM,MAAM,wBAAwB,CAAA;AAC3C,OAAO,wBAAwB,MAAM,4BAA4B,CAAA;AAEjE,MAAM,CAAC,OAAO,WAAW,kBAAmB,SAAQ,MAAM;IACxD,MAAM,EAAE,wBAAwB,CAAC;CAClC"}

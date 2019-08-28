@@ -1,6 +1,6 @@
 {
   "name": "via-clipboard-core-ts",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "main": "index.js",
   "repository": "git@bitbucket.org:voto/flowrunner-core-ts.git",
   "author": "bzabos <b.zabos@gmail.com>",

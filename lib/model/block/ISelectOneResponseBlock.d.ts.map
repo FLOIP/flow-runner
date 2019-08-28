@@ -1,0 +1,1 @@
+{"version":3,"file":"ISelectOneResponseBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/ISelectOneResponseBlock.ts"],"names":[],"mappings":"AAAA,OAAO,MAAM,MAAM,wBAAwB,CAAA;AAC3C,OAAO,6BAA6B,MAAM,iCAAiC,CAAA;AAE3E,MAAM,CAAC,OAAO,WAAW,uBAAwB,SAAQ,MAAM;IAC7D,MAAM,EAAE,6BAA6B,CAAC;CACvC"}

@@ -1,6 +1,6 @@
 import IBlockRunner from './IBlockRunner';
 import IBlockExit from '../../flow-spec/IBlockExit';
-import { IMessagePromptConfig } from '../prompt/IMessagePromptConfig';
+import { IMessagePromptConfig } from '../..';
 import IMessageBlock from '../../model/block/IMessageBlock';
 export default class MessageBlockRunner implements IBlockRunner {
     block: IMessageBlock;

@@ -1,15 +1,10 @@
 import IBlockRunner from './IBlockRunner';
-import IBlock from '../../flow-spec/IBlock';
 import IBlockExit from '../../flow-spec/IBlockExit';
-import { IOpenPromptConfig } from '../prompt/IOpenPromptConfig';
-import IOpenResponseBlockConfig from '../../model/block/IOpenResponseBlockConfig';
+import { IOpenPromptConfig } from '../..';
+import IOpenResponseBlock from '../../model/block/IOpenResponseBlock';
 export default class OpenResponseBlockRunner implements IBlockRunner {
-    block: IBlock & {
-        config: IOpenResponseBlockConfig;
-    };
-    constructor(block: IBlock & {
-        config: IOpenResponseBlockConfig;
-    });
+    block: IOpenResponseBlock;
+    constructor(block: IOpenResponseBlock);
     initialize(): IOpenPromptConfig;
     run(): IBlockExit;
 }

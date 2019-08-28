@@ -1,15 +1,10 @@
 import IBlockRunner from './IBlockRunner';
-import IBlock from '../../flow-spec/IBlock';
 import { ISelectOnePromptConfig } from '../..';
 import IBlockExit from '../../flow-spec/IBlockExit';
-import ISelectOneResponseBlockConfig from '../../model/block/ISelectOneResponseBlockConfig';
+import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock';
 export default class SelectOneResponseBlockRunner implements IBlockRunner {
-    block: IBlock & {
-        config: ISelectOneResponseBlockConfig;
-    };
-    constructor(block: IBlock & {
-        config: ISelectOneResponseBlockConfig;
-    });
+    block: ISelectOneResponseBlock;
+    constructor(block: ISelectOneResponseBlock);
     initialize(): ISelectOnePromptConfig;
     run(): IBlockExit;
 }
