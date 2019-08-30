@@ -16,10 +16,12 @@ import {find, first, last} from 'lodash'
 import uuid from 'uuid'
 import IFlowRunner, {IBlockRunnerFactoryStore} from './IFlowRunner'
 import ValidationException from './exceptions/ValidationException'
-import IPrompt, {IBasePromptConfig, IPromptConfig} from './prompt/IPrompt'
+import IPrompt, {IBasePromptConfig, IPromptConfig, KnownPrompts} from './prompt/IPrompt'
 import MessagePrompt from './prompt/MessagePrompt'
-import {IMessagePromptConfig} from './prompt/IMessagePromptConfig'
 import DeliveryStatus from '../flow-spec/DeliveryStatus'
+import NumericPrompt from './prompt/NumericPrompt'
+import OpenPrompt from './prompt/OpenPrompt'
+import SelectOnePrompt from './prompt/SelectOnePrompt'
 
 
 export class BlockRunnerFactoryStore
@@ -368,9 +370,14 @@ export default class FlowRunner implements IFlowRunner {
       return
     }
 
-    return new MessagePrompt(
-      config as IMessagePromptConfig & IBasePromptConfig,
-      interaction.uuid,
-      this)
+    const kindConstructor = {
+      [KnownPrompts.Message]: MessagePrompt,
+      [KnownPrompts.Numeric]: NumericPrompt,
+      [KnownPrompts.Open]: OpenPrompt,
+      [KnownPrompts.SelectOne]: SelectOnePrompt,
+    }[config.kind]
+
+    // @ts-ignore
+    return new kindConstructor(config, interaction.uuid, this)
   }
 }
