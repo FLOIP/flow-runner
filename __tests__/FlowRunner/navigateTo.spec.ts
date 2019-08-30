@@ -1,10 +1,10 @@
 import {last} from 'lodash'
-import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
+import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
 import {findInteractionWith, RichCursorType} from '../../src';
 import {IBasePromptConfig, KnownPrompts} from '../../src';
-import {createStaticFirstExitBlockRunnerFor} from "../fixtures/BlockRunner";
+import {createStaticFirstExitBlockRunnerFor} from "../../__test_fixtures__/fixtures/BlockRunner";
 import {INumericPromptConfig} from '../../src';
 
 // todo: abstract some of the setup
@@ -58,7 +58,6 @@ describe('FlowRunner/navigateTo', () => {
             isResponseRequired: false,
             isSubmitted: false,
             max: 999,
-            maxLength: 999,
             min: 999,},
           prevCursor = ctx.cursor = [previousIntxId, promptConfig],
           richCursor = runner.navigateTo(block, ctx),
@@ -96,7 +95,6 @@ describe('FlowRunner/navigateTo', () => {
                 isResponseRequired: false,
                 isSubmitted: false,
                 max: 999,
-                maxLength: 999,
                 min: 999,}))
 
       const

@@ -6,7 +6,7 @@ import {
   IMessagePromptConfig,
   IPromptConfig, RichCursorInputRequiredType,
 } from '../../src'
-import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
+import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner from '../../src/domain/FlowRunner'
 
 describe('BasePrompt', () => {

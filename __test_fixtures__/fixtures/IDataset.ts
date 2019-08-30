@@ -18,7 +18,7 @@ export default interface IDataset {
   _cursors: []
 }
 
-export const DATA_SOURCE = read('__tests__/fixtures/dataset.yml')
+export const DATA_SOURCE = read('__test_fixtures__/fixtures/dataset.yml')
 
 export function createDefaultDataset(): IDataset {
   return cloneDeep(DATA_SOURCE)

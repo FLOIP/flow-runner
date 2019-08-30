@@ -27,7 +27,7 @@ export class BlockRunnerFactoryStore
   implements IBlockRunnerFactoryStore {
 }
 
-export default class implements IFlowRunner {
+export default class FlowRunner implements IFlowRunner {
   constructor(
     public context: IContext,
     public runnerFactoryStore: IBlockRunnerFactoryStore) {
@@ -75,7 +75,7 @@ export default class implements IFlowRunner {
     return this.runUntilInputRequiredFrom(ctx as IContextWithCursor)
   }
 
-  isInputRequiredFor(ctx: IContext): false | boolean /* : ctx is RichCursorInputRequiredType*/ {
+  isInputRequiredFor(ctx: IContext): boolean /* : ctx is RichCursorInputRequiredType*/ {
     return ctx.cursor != null
       && ctx.cursor[1] != null
       && ctx.cursor[1].value === undefined

@@ -1,4 +1,4 @@
-import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
+import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
 import {RichCursorType} from '../../src';
@@ -47,7 +47,6 @@ describe('FlowRunner/initializeOneBlock', () => {
               isResponseRequired: false,
               isSubmitted: false,
               max: 999,
-              maxLength: 999,
               min: 999,},
             run: () => block.exits[0]
           })],

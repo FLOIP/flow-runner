@@ -1,4 +1,4 @@
-import IDataset, {createDefaultDataset} from './fixtures/IDataset'
+import IDataset, {createDefaultDataset} from '../__test_fixtures__/fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from '../src/domain/FlowRunner'
 import MessageBlockRunner from '../src/domain/runners/MessageBlockRunner'
 import IMessageBlock from '../src/model/block/IMessageBlock'

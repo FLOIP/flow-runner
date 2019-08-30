@@ -1,9 +1,13 @@
-export * from './domain/FlowRunner'
 export * from './domain/IFlowRunner'
+export * from './domain/IResourceResolver'
+export * from './domain/FlowRunner'
+export * from './domain/ResourceResolver'
+export * from './domain/Resource'
 
-export * from './domain/exceptions/ValidationException'
-export * from './domain/exceptions/PromptValidationException'
 export * from './domain/exceptions/NotImplementedException'
+export * from './domain/exceptions/PromptValidationException'
+export * from './domain/exceptions/ResourceNotFoundException'
+export * from './domain/exceptions/ValidationException'
 
 export * from './domain/prompt/IPrompt'
 export * from './domain/prompt/IOpenPromptConfig'

@@ -1,4 +1,4 @@
-import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
+import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from '../../src/domain/FlowRunner'
 import {cloneDeep, last} from 'lodash'
 import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'

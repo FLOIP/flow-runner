@@ -25,6 +25,9 @@ export default class SelectOneResponseBlockRunner implements IBlockRunner {
 
   run(): IBlockExit {
     // todo: need to know how we provide selected value on a context to an expression evaluator here
+    // const evaluator = EvaluatorFactory.create()
+    // const result = evaluator.evaluate(expression, context)
+
     return this.block.exits[0]
   }
 }
