@@ -1,7 +1,8 @@
 {
-  "name": "via-clipboard-core-ts",
-  "version": "0.0.19",
-  "main": "index.js",
+  "name": "flowrunner-core-ts",
+  "version": "0.0.20",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "repository": "git@bitbucket.org:voto/flowrunner-core-ts.git",
   "author": "bzabos <b.zabos@gmail.com>",
   "license": "MIT",
@@ -12,8 +13,8 @@
     "tsc-test": "tsc --project . --noEmit"
   },
   "dependencies": {
+    "floip-expression-evaluator-ts": "https://bitbucket.org/voto/floip-expression-evaluator-ts.git#semver:v0",
     "lodash": "^4.17.14",
-    "path": "^0.12.7",
     "tslib": "^1.10.0",
     "uuid": "^3.3.2"
   },

@@ -20,7 +20,7 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "lib",
+    "outDir": "dist",
     "removeComments": true,
     "rootDir": "src",
     "sourceMap": true,

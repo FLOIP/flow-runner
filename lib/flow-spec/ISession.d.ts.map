@@ -1,1 +1,0 @@
-{"version":3,"file":"ISession.d.ts","sourceRoot":"","sources":["../../src/flow-spec/ISession.ts"],"names":[],"mappings":"AAAA,OAAO,cAAc,MAAM,kBAAkB,CAAA;AAE7C,MAAM,CAAC,OAAO,WAAW,QAAQ;IAC/B,EAAE,EAAE,MAAM,CAAC;IACX,YAAY,EAAE,MAAM,GAAG,IAAI,CAAC;IAC5B,wBAAwB,EAAE,MAAM,GAAG,IAAI,CAAC;IACxC,cAAc,EAAE,cAAc,CAAC;CAChC"}
