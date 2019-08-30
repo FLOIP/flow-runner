@@ -1,6 +1,6 @@
 {
   "name": "flowrunner-core-ts",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "repository": "git@bitbucket.org:voto/flowrunner-core-ts.git",

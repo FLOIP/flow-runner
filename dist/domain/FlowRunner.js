@@ -6,8 +6,12 @@ const IContext_1 = require("../flow-spec/IContext");
 const lodash_1 = require("lodash");
 const uuid_1 = tslib_1.__importDefault(require("uuid"));
 const ValidationException_1 = tslib_1.__importDefault(require("./exceptions/ValidationException"));
+const IPrompt_1 = require("./prompt/IPrompt");
 const MessagePrompt_1 = tslib_1.__importDefault(require("./prompt/MessagePrompt"));
 const DeliveryStatus_1 = tslib_1.__importDefault(require("../flow-spec/DeliveryStatus"));
+const NumericPrompt_1 = tslib_1.__importDefault(require("./prompt/NumericPrompt"));
+const OpenPrompt_1 = tslib_1.__importDefault(require("./prompt/OpenPrompt"));
+const SelectOnePrompt_1 = tslib_1.__importDefault(require("./prompt/SelectOnePrompt"));
 class BlockRunnerFactoryStore extends Map {
 }
 exports.BlockRunnerFactoryStore = BlockRunnerFactoryStore;
@@ -211,7 +215,13 @@ class FlowRunner {
         if (config == null || interaction == null) {
             return;
         }
-        return new MessagePrompt_1.default(config, interaction.uuid, this);
+        const kindConstructor = {
+            [IPrompt_1.KnownPrompts.Message]: MessagePrompt_1.default,
+            [IPrompt_1.KnownPrompts.Numeric]: NumericPrompt_1.default,
+            [IPrompt_1.KnownPrompts.Open]: OpenPrompt_1.default,
+            [IPrompt_1.KnownPrompts.SelectOne]: SelectOnePrompt_1.default,
+        }[config.kind];
+        return new kindConstructor(config, interaction.uuid, this);
     }
 }
 exports.default = FlowRunner;
