@@ -13,7 +13,7 @@
     "tsc-test": "tsc --project . --noEmit"
   },
   "dependencies": {
-    "floip-expression-evaluator-ts": "https://bitbucket.org/voto/floip-expression-evaluator-ts.git#v1",
+    "floip-expression-evaluator-ts": "https://bitbucket.org/voto/floip-expression-evaluator-ts.git#semver:v1",
     "lodash": "^4.17.14",
     "tslib": "^1.10.0",
     "uuid": "^3.3.2"
