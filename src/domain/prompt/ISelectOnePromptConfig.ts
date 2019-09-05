@@ -1,4 +1,5 @@
 import {IPromptConfig, KnownPrompts} from './IPrompt'
+import {IResource} from '../IResourceResolver'
 
 
 // todo: can our value type use some fancy keyof magic to say we need a value that's of the type of one of the {key} props in choices?
@@ -9,6 +10,5 @@ export interface ISelectOnePromptConfig extends IPromptConfig<string | null> {
 
 export interface IChoice {
   key: string
-  value: string
-  resourceId?: string
+  value: IResource
 }

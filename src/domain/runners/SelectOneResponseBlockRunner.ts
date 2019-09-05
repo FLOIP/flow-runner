@@ -2,24 +2,25 @@ import IBlockRunner from './IBlockRunner'
 import {ISelectOnePromptConfig, KnownPrompts} from '../..'
 import IBlockExit from '../../flow-spec/IBlockExit'
 import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock'
+import IResourceResolver from '../IResourceResolver'
 
 export default class SelectOneResponseBlockRunner implements IBlockRunner {
-  constructor(
-    public block: ISelectOneResponseBlock) {
+  constructor(public block: ISelectOneResponseBlock,
+              public resources: IResourceResolver) {
   }
 
   initialize(): ISelectOnePromptConfig {
     const {prompt, choices} = this.block.config
 
-    // todo: for choices resource lookup, we'll want to detect uuid like:
-    //       "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed".length === 36 && .test(/[\d\w]{8}-([\d\w]{4}-){3}[\d\w]{12}/i)
-
     return {
       kind: KnownPrompts.SelectOne,
-      prompt,
+      prompt: this.resources.resolve(prompt),
       isResponseRequired: true,
       choices: Object.keys(choices)
-        .map(key => ({key, value: choices[key]})),
+        .map(key => ({
+          key,
+          value: this.resources.resolve(choices[key]),
+        })),
     }
   }
 

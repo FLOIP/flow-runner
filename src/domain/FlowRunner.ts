@@ -22,18 +22,19 @@ import DeliveryStatus from '../flow-spec/DeliveryStatus'
 import NumericPrompt from './prompt/NumericPrompt'
 import OpenPrompt from './prompt/OpenPrompt'
 import SelectOnePrompt from './prompt/SelectOnePrompt'
+import IResourceResolver from './IResourceResolver'
 
 
 export class BlockRunnerFactoryStore
-  extends Map<string, { (block: IBlock): IBlockRunner }>
+  extends Map<string, { (block: IBlock, resources: IResourceResolver): IBlockRunner }>
   implements IBlockRunnerFactoryStore {
 }
 
 export default class FlowRunner implements IFlowRunner {
   constructor(
     public context: IContext,
-    public runnerFactoryStore: IBlockRunnerFactoryStore) {
-  }
+    public runnerFactoryStore: IBlockRunnerFactoryStore,
+    public resources: IResourceResolver) {}
 
   /**
    * We want to call start when we don't have a prompt needing work to be done. */
@@ -130,7 +131,7 @@ export default class FlowRunner implements IFlowRunner {
     // todo: set delivery status on context as INCOMPLETE
   // }
 
-  complete(ctx: IContext) {
+  complete(ctx: IContext): void {
     // todo: set exitAt on context
     // todo: set delivery status on context as COMPLETE
 
@@ -152,7 +153,8 @@ export default class FlowRunner implements IFlowRunner {
      *       ```
      *       runner.createPromptFromCursor(): IPrompt<IPromptExpectationTypes> | null
      *       ```
-     *       - There is one additional complication with toggling between these two: We now need to type our IPromptConfig?
+     *       - There is one additional complication with toggling between these two:
+     *         We now need to type our IPromptConfig?
      *         As in, we'll likely want to return a config definition from our block runner, but have the instantiation
      *         handled by the runner? Another site for type injection.
      *       - Cursor would then hold a union type of the different config types we know of where config has a type
@@ -168,7 +170,7 @@ export default class FlowRunner implements IFlowRunner {
     originFlowId?: string,
     originBlockInteractionId?: string,
   ): RichCursorType {
-    const runner = this.createBlockRunnerFor(block)
+    const runner = this.createBlockRunnerFor(block, this.resources)
     const interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
     const promptConfig = runner.initialize(interaction)
     const prompt = this.createPromptFrom(promptConfig, interaction)
@@ -184,7 +186,7 @@ export default class FlowRunner implements IFlowRunner {
       richCursor[0].hasResponse = true
     }
 
-    const exit = this.createBlockRunnerFor(block)
+    const exit = this.createBlockRunnerFor(block, this.resources)
       .run(richCursor)
 
     richCursor[0].details.selectedExitId = exit.uuid
@@ -196,13 +198,13 @@ export default class FlowRunner implements IFlowRunner {
     return exit
   }
 
-  createBlockRunnerFor(block: IBlock): IBlockRunner {
+  createBlockRunnerFor(block: IBlock, resources: IResourceResolver): IBlockRunner {
     const factory = this.runnerFactoryStore.get(block.type)
     if (factory == null) { // todo: need to pass as no-op for beta
       throw new ValidationException(`Unable to find factory for block type: ${block.type}`)
     }
 
-    return factory(block)
+    return factory(block, resources)
   }
 
   navigateTo(block: IBlock, ctx: IContext): RichCursorType {
@@ -318,7 +320,8 @@ export default class FlowRunner implements IFlowRunner {
   findNextBlockFrom(interaction: IBlockInteraction, ctx: IContext): IBlock | undefined {
     if (interaction.details.selectedExitId == null) {
       // todo: maybe tighter check on this, like: prompt.isFulfilled() === false || !called block.run()
-      throw new ValidationException('Unable to navigate past incomplete interaction; did you forget to call runner.run()?')
+      throw new ValidationException(
+        'Unable to navigate past incomplete interaction; did you forget to call runner.run()?')
     }
 
     const block = findBlockOnActiveFlowWith(interaction.blockId, ctx)
@@ -370,6 +373,7 @@ export default class FlowRunner implements IFlowRunner {
       return
     }
 
+    // todo: flesh this out as an extensibile store that can be DI'd like runners
     const kindConstructor = {
       [KnownPrompts.Message]: MessagePrompt,
       [KnownPrompts.Numeric]: NumericPrompt,

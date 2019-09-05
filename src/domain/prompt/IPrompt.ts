@@ -1,6 +1,7 @@
 // import UUID32 from "../model/UUID32";
 // import UUID64 from "../model/UUID64";
 import PromptValidationException from '../exceptions/PromptValidationException'
+import {IResource} from '../IResourceResolver'
 
 
 export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
@@ -28,7 +29,7 @@ export enum KnownPrompts {
 export interface IPromptConfig<ExpectationType> {
   kind: KnownPrompts
   isResponseRequired: boolean
-  prompt: string
+  prompt: IResource
   value?: ExpectationType
 }
 

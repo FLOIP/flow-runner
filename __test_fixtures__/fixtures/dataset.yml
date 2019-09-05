@@ -9,7 +9,8 @@ _defaults:
   - &defaults/block
     name: My first block
     label: ''
-    config: {}
+    config:
+      prompt: My first block config's prompt
     exits: []
     semanticLabel: ''
 

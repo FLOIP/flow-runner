@@ -7,57 +7,61 @@ import {
   SupportedMode,
 } from '../src'
 import ResourceNotFoundException from '../src/domain/exceptions/ResourceNotFoundException'
+import IResourceResolver from '../src/domain/IResourceResolver'
 
 
 describe('ResourceResolver', () => {
+  let resolver: IResourceResolver
+  let _SETUP_SUPPORTED_MODES: SupportedMode[]
+  let _SETUP_LANG_ID: string
+
+  beforeEach(() => {
+    _SETUP_SUPPORTED_MODES = [SupportedMode.SMS]
+    _SETUP_LANG_ID = 'eng'
+
+    resolver = new ResourceResolver(_SETUP_SUPPORTED_MODES, _SETUP_LANG_ID)
+  })
+
   describe('resolve', () => {
     it('should raise when resource absent', () => {
-      const r = new ResourceResolver
-      expect(() => r.resolve("notknown-0000-0000-0000-resource0123", [], "eng"))
+      expect(() => resolver.resolve("notknown-0000-0000-0000-resource0123"))
         .toThrow(ResourceNotFoundException)
     })
 
     describe('when uuid provided is a string resource', () => {
       it('should return a wrapper resource', () => {
-        const modes = [SupportedMode.SMS]
-        const languageId = 'any-lang'
         const value = 'hello world!'
-
-        const r = new ResourceResolver
         const expectedResourceContentTypeSpecific: IResourceDefinitionContentTypeSpecific = {
-          modes,
-          languageId,
+          modes: _SETUP_SUPPORTED_MODES,
+          languageId: _SETUP_LANG_ID,
           value,
           contentType: SupportedContentType.TEXT,
         }
 
-        const actual: IResource = r.resolve(value, modes, languageId)
+        const actual: IResource = resolver.resolve(value)
 
         expect(actual.uuid).toBe(value)
         expect(actual.values).toEqual([expectedResourceContentTypeSpecific])
-        expect(actual.criteria.languageId).toBe(languageId)
-        expect(actual.criteria.modes).toBe(modes)
+        expect(actual.criteria.languageId).toBe(_SETUP_LANG_ID)
+        expect(actual.criteria.modes).toBe(_SETUP_SUPPORTED_MODES)
       })
     })
 
     describe('when resource with uuid present', () => {
       it('should return resource with UUID provided', () => {
-        const languageId = "eng"
-        const modes = [SupportedMode.SMS]
-
         const expected: IResourceDefinition = {uuid: 'known000-0000-0000-0000-resource0123', values: []}
 
-        const r = new ResourceResolver([
+        resolver.resourceDefinitions = [
           {uuid: 'notknown-0000-0000-0000-resource0654', values: []},
           expected,
-          {uuid: 'notknown-0000-0000-0000-resource0123', values: []}])
+          {uuid: 'notknown-0000-0000-0000-resource0123', values: []}]
 
-        const actual: IResource = r.resolve('known000-0000-0000-0000-resource0123', modes, languageId)
+        const actual: IResource = resolver.resolve('known000-0000-0000-0000-resource0123')
 
         expect(actual.uuid).toBe(expected.uuid)
         expect(actual.values).toEqual(expected.values)
-        expect(actual.criteria.languageId).toBe(languageId)
-        expect(actual.criteria.modes).toBe(modes)
+        expect(actual.criteria.languageId).toBe(_SETUP_LANG_ID)
+        expect(actual.criteria.modes).toBe(_SETUP_SUPPORTED_MODES)
       })
 
       describe('filtered resource definitions', () => {
@@ -90,8 +94,8 @@ describe('ResourceResolver', () => {
 
           const expectedValues = values.filter((_v, i) => expectedResourceDefIndices.indexOf(i) !== -1)
 
-          const r = new ResourceResolver([{uuid: 'known000-0000-0000-0000-resource0123', values}])
-          const actual: IResource = r.resolve('known000-0000-0000-0000-resource0123', modes, languageId)
+          const r = new ResourceResolver(modes, languageId, [{uuid: 'known000-0000-0000-0000-resource0123', values}])
+          const actual: IResource = r.resolve('known000-0000-0000-0000-resource0123')
           expect(actual.values).toEqual(expectedValues)
         })
       })

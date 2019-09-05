@@ -50,10 +50,9 @@ export interface IResource {
 }
 
 export default interface IResourceResolver {
-  resources: IResources
+  modes: SupportedMode[]
+  languageId: string
+  resourceDefinitions: IResources
 
-  resolve(
-    resourceId: string,
-    modes: SupportedMode[],
-    languageId: string): IResource
+  resolve(resourceId: string): IResource
 }
