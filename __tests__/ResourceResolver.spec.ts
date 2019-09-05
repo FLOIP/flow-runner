@@ -70,26 +70,26 @@ describe('ResourceResolver', () => {
         beforeEach(() => values = [
             /* 00 */createResourceDefWith('eng', SupportedContentType.AUDIO, [SupportedMode.SMS, SupportedMode.USSD]),
             /* 01 */createResourceDefWith('eng', SupportedContentType.AUDIO, [SupportedMode.USSD]),
-            /* 02 */createResourceDefWith('eng', SupportedContentType.AUDIO, [SupportedMode.IVR, SupportedMode.OFFLINE]),
+            /* 02 */createResourceDefWith('eng', SupportedContentType.AUDIO, [SupportedMode.IVR, SupportedMode.RICH_MESSAGING]),
             /* 03 */createResourceDefWith('eng', SupportedContentType.TEXT, [SupportedMode.SMS, SupportedMode.USSD]),
             /* 04 */createResourceDefWith('eng', SupportedContentType.TEXT, [SupportedMode.USSD]),
-            /* 05 */createResourceDefWith('eng', SupportedContentType.TEXT, [SupportedMode.IVR, SupportedMode.OFFLINE]),
+            /* 05 */createResourceDefWith('eng', SupportedContentType.TEXT, [SupportedMode.IVR, SupportedMode.RICH_MESSAGING]),
             /* 06 */createResourceDefWith('fre', SupportedContentType.AUDIO, [SupportedMode.SMS, SupportedMode.USSD]),
             /* 07 */createResourceDefWith('fre', SupportedContentType.AUDIO, [SupportedMode.USSD]),
-            /* 08 */createResourceDefWith('fre', SupportedContentType.AUDIO, [SupportedMode.IVR, SupportedMode.OFFLINE]),
+            /* 08 */createResourceDefWith('fre', SupportedContentType.AUDIO, [SupportedMode.IVR, SupportedMode.RICH_MESSAGING]),
             /* 09 */createResourceDefWith('fre', SupportedContentType.TEXT, [SupportedMode.SMS, SupportedMode.USSD]),
             /* 10 */createResourceDefWith('fre', SupportedContentType.TEXT, [SupportedMode.USSD]),
-            /* 11 */createResourceDefWith('fre', SupportedContentType.TEXT, [SupportedMode.IVR, SupportedMode.OFFLINE])])
+            /* 11 */createResourceDefWith('fre', SupportedContentType.TEXT, [SupportedMode.IVR, SupportedMode.RICH_MESSAGING])])
 
         test.each`
           modes                                       | languageId  | expectedResourceDefIndices | desc
           ${[SupportedMode.SMS, SupportedMode.USSD]}  | ${'eng'}    | ${[0, 1, 3, 4]}            | ${'multiple matches when both criteria match'}
           ${[SupportedMode.IVR]}                      | ${'eng'}    | ${[2, 5]}                  | ${'matches when partial modes matched'}
-          ${[SupportedMode.FACEBOOK_MESSENGER]}       | ${'eng'}    | ${[]}                      | ${'nothing whne mode not found'}
+          ${['some-mode']}                            | ${'eng'}    | ${[]}                      | ${'nothing when mode not found'}
   
           ${[SupportedMode.SMS, SupportedMode.USSD]}  | ${'___'}    | ${[]}                      | ${'nothing when modes match and langauge not found'}
           ${[SupportedMode.IVR]}                      | ${'___'}    | ${[]}                      | ${'nothing when partial modes match and langauge not found'}
-          ${[SupportedMode.FACEBOOK_MESSENGER]}       | ${'___'}    | ${[]}                      | ${'nothign when mode not found and language not found'}
+          ${['some-mode']}                            | ${'___'}    | ${[]}                      | ${'nothing when mode not found and language not found'}
 `('should return $desc`', ({modes, languageId, expectedResourceDefIndices}) => {
 
           const expectedValues = values.filter((_v, i) => expectedResourceDefIndices.indexOf(i) !== -1)
