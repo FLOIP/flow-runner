@@ -2,14 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const __1 = require("../..");
 class NumericResponseBlockRunner {
-    constructor(block) {
+    constructor(block, resources) {
         this.block = block;
+        this.resources = resources;
     }
     initialize() {
         const { prompt, validationMinimum: min, validationMaximum: max, } = this.block.config;
         return {
             kind: __1.KnownPrompts.Numeric,
-            prompt,
+            prompt: this.resources.resolve(prompt),
             isResponseRequired: false,
             min,
             max,

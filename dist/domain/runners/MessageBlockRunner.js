@@ -2,13 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const __1 = require("../..");
 class MessageBlockRunner {
-    constructor(block) {
+    constructor(block, resources) {
         this.block = block;
+        this.resources = resources;
     }
     initialize() {
+        const { prompt } = this.block.config;
         return {
             kind: __1.KnownPrompts.Message,
-            prompt: this.block.config.prompt,
+            prompt: this.resources.resolve(prompt),
             isResponseRequired: false,
         };
     }

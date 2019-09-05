@@ -2,17 +2,21 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const __1 = require("../..");
 class SelectOneResponseBlockRunner {
-    constructor(block) {
+    constructor(block, resources) {
         this.block = block;
+        this.resources = resources;
     }
     initialize() {
         const { prompt, choices } = this.block.config;
         return {
             kind: __1.KnownPrompts.SelectOne,
-            prompt,
+            prompt: this.resources.resolve(prompt),
             isResponseRequired: true,
             choices: Object.keys(choices)
-                .map(key => ({ key, value: choices[key] })),
+                .map(key => ({
+                key,
+                value: this.resources.resolve(choices[key]),
+            })),
         };
     }
     run() {

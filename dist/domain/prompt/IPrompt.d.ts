@@ -1,4 +1,5 @@
 import PromptValidationException from '../exceptions/PromptValidationException';
+import { IResource } from '../IResourceResolver';
 export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
     interactionId: string;
     config: PromptConfigType;
@@ -16,7 +17,7 @@ export declare enum KnownPrompts {
 export interface IPromptConfig<ExpectationType> {
     kind: KnownPrompts;
     isResponseRequired: boolean;
-    prompt: string;
+    prompt: IResource;
     value?: ExpectationType;
 }
 export interface IBasePromptConfig {

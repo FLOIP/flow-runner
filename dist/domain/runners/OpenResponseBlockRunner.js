@@ -2,15 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const __1 = require("../..");
 class OpenResponseBlockRunner {
-    constructor(block) {
+    constructor(block, resources) {
         this.block = block;
+        this.resources = resources;
     }
     initialize() {
+        const { prompt, text: { maxResponseCharacters } } = this.block.config;
         return {
             kind: __1.KnownPrompts.Open,
-            prompt: this.block.config.prompt,
+            prompt: this.resources.resolve(prompt),
             isResponseRequired: true,
-            maxResponseCharacters: this.block.config.text.maxResponseCharacters,
+            maxResponseCharacters,
         };
     }
     run() {

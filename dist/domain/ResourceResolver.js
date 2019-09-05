@@ -11,19 +11,17 @@ function isUUID(uuid) {
         && UUID_MATCHER.test(uuid);
 }
 class ResourceResolver {
-    constructor(resources = []) {
-        this.resources = resources;
+    constructor(modes, languageId, resourceDefinitions = []) {
+        this.modes = modes;
+        this.languageId = languageId;
+        this.resourceDefinitions = resourceDefinitions;
     }
-    resolve(resourceId, modes, languageId) {
+    resolve(resourceId) {
+        const { modes, languageId } = this;
         if (!isUUID(resourceId)) {
-            return new Resource_1.Resource(resourceId, [{
-                    contentType: IResourceResolver_1.SupportedContentType.TEXT,
-                    value: resourceId,
-                    languageId,
-                    modes,
-                }], { languageId, modes });
+            return new Resource_1.Resource(resourceId, [this.createTextResourceVariantWith(resourceId)], { languageId, modes });
         }
-        const resource = this.resources.find(({ uuid }) => uuid === resourceId);
+        const resource = this.resourceDefinitions.find(({ uuid }) => uuid === resourceId);
         if (resource == null) {
             throw new ResourceNotFoundException_1.default(`No resource matching ${JSON.stringify(resourceId)} for ${JSON.stringify({
                 modes,
@@ -33,6 +31,15 @@ class ResourceResolver {
         const values = resource.values.filter(def => def.languageId === languageId
             && lodash_1.intersection(def.modes, modes).length > 0);
         return new Resource_1.Resource(resourceId, values, { languageId, modes });
+    }
+    createTextResourceVariantWith(value) {
+        const { modes, languageId } = this;
+        return {
+            contentType: IResourceResolver_1.SupportedContentType.TEXT,
+            value,
+            languageId,
+            modes,
+        };
     }
 }
 exports.default = ResourceResolver;

@@ -33,7 +33,9 @@ export interface IResource {
     getVideo(): string;
 }
 export default interface IResourceResolver {
-    resources: IResources;
-    resolve(resourceId: string, modes: SupportedMode[], languageId: string): IResource;
+    modes: SupportedMode[];
+    languageId: string;
+    resourceDefinitions: IResources;
+    resolve(resourceId: string): IResource;
 }
 //# sourceMappingURL=IResourceResolver.d.ts.map
