@@ -7,7 +7,7 @@ import IContext from '../src/flow-spec/IContext'
 import ValidationException from '../src/domain/exceptions/ValidationException'
 import IResourceResolver from '../src/domain/IResourceResolver'
 import ResourceResolver from '../src/domain/ResourceResolver'
-import {SupportedMode} from '..'
+import SupportedMode from '../src/flow-spec/SupportedMode'
 
 
 describe('FlowRunner', () => {
