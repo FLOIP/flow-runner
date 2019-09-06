@@ -6,7 +6,7 @@ import IContext from '../../flow-spec/IContext'
 import ResourceResolver from '../ResourceResolver'
 import IResourceResolver from '../IResourceResolver'
 import {find, last, pick} from 'lodash'
-import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
+import {Evaluator, EvaluatorFactory} from 'floip-expression-evaluator-ts'
 import ValidationException from '../exceptions/ValidationException'
 
 export default class SelectOneResponseBlockRunner implements IBlockRunner {
@@ -51,8 +51,13 @@ export default class SelectOneResponseBlockRunner implements IBlockRunner {
 
     const exit = find(
       this.block.exits,
-      ({test}) => Boolean(evaluator.evaluate(String(test), evalContext)))
+      ({test}) => this.evaluateToBool(String(test), evalContext, evaluator))
 
     return (exit != null ? exit : last(exits)) as IBlockExit
+  }
+
+  evaluateToBool(expr: string, ctx: object, evaluator: Evaluator) {
+    const result = evaluator.evaluate(expr, ctx)
+    return JSON.parse(result.toLocaleLowerCase())
   }
 }
