@@ -2,11 +2,12 @@ import IBlockRunner from './IBlockRunner'
 import IBlockExit from '../../flow-spec/IBlockExit'
 import {INumericPromptConfig, KnownPrompts} from '../..'
 import INumericResponseBlock from '../../model/block/INumericResponseBlock'
-import IResourceResolver from '../IResourceResolver'
+import IContext from '../../flow-spec/IContext'
+import ResourceResolver from '../ResourceResolver'
 
 export default class NumericResponseBlockRunner implements IBlockRunner {
   constructor(public block: INumericResponseBlock,
-              public resources: IResourceResolver) {}
+              public context: IContext) {}
 
   initialize(): INumericPromptConfig {
     const {
@@ -17,7 +18,7 @@ export default class NumericResponseBlockRunner implements IBlockRunner {
 
     return {
       kind: KnownPrompts.Numeric,
-      prompt: this.resources.resolve(prompt),
+      prompt: (new ResourceResolver(this.context)).resolve(prompt),
       isResponseRequired: false,
 
       min,

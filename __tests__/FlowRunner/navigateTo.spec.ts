@@ -2,12 +2,18 @@ import {last} from 'lodash'
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
-import {findInteractionWith, RichCursorType} from '../../src';
+import {createTextResourceVariantWith, findInteractionWith, Resource, RichCursorType} from '../../src'
 import {IBasePromptConfig, KnownPrompts} from '../../src';
 import {createStaticFirstExitBlockRunnerFor} from "../../__test_fixtures__/fixtures/BlockRunner";
 import {INumericPromptConfig} from '../../src';
+import IContext from '../../src/flow-spec/IContext'
 
 // todo: abstract some of the setup
+
+function createTextResourceFor(resourceAsString: string, ctx: IContext) {
+  const values = [createTextResourceVariantWith(resourceAsString, ctx)]
+  return new Resource(resourceAsString, values, ctx)
+}
 
 describe('FlowRunner/navigateTo', () => {
   let dataset: IDataset
@@ -53,7 +59,7 @@ describe('FlowRunner/navigateTo', () => {
           previousIntxId = 'some-fake-block-interaction-uuid',
           promptConfig: INumericPromptConfig & IBasePromptConfig = {
             kind: KnownPrompts.Numeric,
-            prompt: 'What age are you at?',
+            prompt: createTextResourceFor('What age are you at?', ctx),
             value: null,
             isResponseRequired: false,
             isSubmitted: false,
@@ -90,7 +96,7 @@ describe('FlowRunner/navigateTo', () => {
           startSpy = jest.spyOn(messageBlockRunner, 'initialize')
               .mockImplementation((): INumericPromptConfig & IBasePromptConfig => ({
                 kind: KnownPrompts.Numeric,
-                prompt: 'What age are you at?',
+                prompt: createTextResourceFor('What age are you at?', ctx),
                 value: null,
                 isResponseRequired: false,
                 isSubmitted: false,

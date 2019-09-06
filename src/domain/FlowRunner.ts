@@ -22,19 +22,17 @@ import DeliveryStatus from '../flow-spec/DeliveryStatus'
 import NumericPrompt from './prompt/NumericPrompt'
 import OpenPrompt from './prompt/OpenPrompt'
 import SelectOnePrompt from './prompt/SelectOnePrompt'
-import IResourceResolver from './IResourceResolver'
 
 
 export class BlockRunnerFactoryStore
-  extends Map<string, { (block: IBlock, resources: IResourceResolver): IBlockRunner }>
+  extends Map<string, { (block: IBlock, ctx: IContext): IBlockRunner }>
   implements IBlockRunnerFactoryStore {
 }
 
 export default class FlowRunner implements IFlowRunner {
   constructor(
     public context: IContext,
-    public runnerFactoryStore: IBlockRunnerFactoryStore,
-    public resources: IResourceResolver) {}
+    public runnerFactoryStore: IBlockRunnerFactoryStore) {}
 
   /**
    * We want to call start when we don't have a prompt needing work to be done. */
@@ -170,7 +168,7 @@ export default class FlowRunner implements IFlowRunner {
     originFlowId?: string,
     originBlockInteractionId?: string,
   ): RichCursorType {
-    const runner = this.createBlockRunnerFor(block, this.resources)
+    const runner = this.createBlockRunnerFor(block, this.context)
     const interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
     const promptConfig = runner.initialize(interaction)
     const prompt = this.createPromptFrom(promptConfig, interaction)
@@ -186,7 +184,7 @@ export default class FlowRunner implements IFlowRunner {
       richCursor[0].hasResponse = true
     }
 
-    const exit = this.createBlockRunnerFor(block, this.resources)
+    const exit = this.createBlockRunnerFor(block, this.context)
       .run(richCursor)
 
     richCursor[0].details.selectedExitId = exit.uuid
@@ -198,13 +196,13 @@ export default class FlowRunner implements IFlowRunner {
     return exit
   }
 
-  createBlockRunnerFor(block: IBlock, resources: IResourceResolver): IBlockRunner {
+  createBlockRunnerFor(block: IBlock, ctx: IContext): IBlockRunner {
     const factory = this.runnerFactoryStore.get(block.type)
     if (factory == null) { // todo: need to pass as no-op for beta
       throw new ValidationException(`Unable to find factory for block type: ${block.type}`)
     }
 
-    return factory(block, resources)
+    return factory(block, ctx)
   }
 
   navigateTo(block: IBlock, ctx: IContext): RichCursorType {

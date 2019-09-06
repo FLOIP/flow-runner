@@ -1,9 +1,15 @@
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
-import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
-import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
-import {RichCursorType} from '../../src';
-import {IBasePromptConfig, KnownPrompts} from '../../src';
-import {INumericPromptConfig} from "../../src"
+import FlowRunner, {BlockRunnerFactoryStore} from '../../src/domain/FlowRunner'
+import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
+import {
+  IBasePromptConfig,
+  INumericPromptConfig,
+  KnownPrompts,
+  Resource,
+  RichCursorType,
+  SupportedContentType,
+  SupportedMode,
+} from '../../src'
 
 
 describe('FlowRunner/initializeOneBlock', () => {
@@ -19,8 +25,9 @@ describe('FlowRunner/initializeOneBlock', () => {
         flow = ctx.flows[0],
         block = flow.blocks[0],
         runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-          ['MobilePrimitives\\Message', block => ({
+          ['MobilePrimitives\\Message', (block, context) => ({
             block,
+            context,
             initialize: () => undefined,
             run: () => block.exits[0]
           })],
@@ -38,11 +45,18 @@ describe('FlowRunner/initializeOneBlock', () => {
         flow = ctx.flows[0],
         block = flow.blocks[0],
         runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-          ['MobilePrimitives\\Message', block => ({
+          ['MobilePrimitives\\Message', (block, context) => ({
             block,
+            context,
             initialize: (): INumericPromptConfig & IBasePromptConfig => expectedPrompt = {
               kind: KnownPrompts.Numeric,
-              prompt: 'What age are you at?',
+              prompt: new Resource(
+                'What age are you at?',
+                [{ modes: [SupportedMode.SMS],
+                   languageId: 'eng',
+                   value: 'What age are you at?',
+                   contentType: SupportedContentType.TEXT}],
+                context),
               value: null,
               isResponseRequired: false,
               isSubmitted: false,
@@ -65,10 +79,11 @@ describe('FlowRunner/initializeOneBlock', () => {
         flow = ctx.flows[0],
         block = flow.blocks[0],
         runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-          ['MobilePrimitives\\Message', block => ({
+          ['MobilePrimitives\\Message', (block, context) => ({
             block,
+            context,
             initialize: () => undefined,
-            run: () => block.exits[0] // todo: should we always call resume to get access to block exit? Is there a pattern here?
+            run: () => block.exits[0]
           })],
         ]))
 

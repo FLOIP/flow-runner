@@ -2,11 +2,12 @@ import IBlockRunner from './IBlockRunner'
 import IBlockExit from '../../flow-spec/IBlockExit'
 import {IOpenPromptConfig, KnownPrompts} from '../..'
 import IOpenResponseBlock from '../../model/block/IOpenResponseBlock'
-import IResourceResolver from '../IResourceResolver'
+import ResourceResolver from '../ResourceResolver'
+import IContext from '../../flow-spec/IContext'
 
 export default class OpenResponseBlockRunner implements IBlockRunner {
   constructor(public block: IOpenResponseBlock,
-              public resources: IResourceResolver) {}
+              public context: IContext) {}
 
   initialize(): IOpenPromptConfig {
     const {
@@ -16,7 +17,7 @@ export default class OpenResponseBlockRunner implements IBlockRunner {
 
     return {
       kind: KnownPrompts.Open,
-      prompt: this.resources.resolve(prompt),
+      prompt: (new ResourceResolver(this.context)).resolve(prompt),
       isResponseRequired: true,
       maxResponseCharacters,
     }

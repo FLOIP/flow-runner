@@ -9,6 +9,7 @@ import ValidationException from '../domain/exceptions/ValidationException'
 import DeliveryStatus from './DeliveryStatus'
 import SupportedMode from './SupportedMode'
 import uuid from 'uuid'
+import {IResources} from '..'
 
 
 export type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined]
@@ -37,7 +38,8 @@ export default interface IContext {
   cursor?: CursorType
 
   flows: IFlow[]
-  firstFlowId: string
+  firstFlowId: string,
+  resources: IResources
 }
 
 export interface IContextWithCursor extends IContext {
@@ -60,7 +62,7 @@ export function createContextFor(
     deliveryStatus: DeliveryStatus.QUEUED,
 
     userId,
-    mode: SupportedMode.OFFLINE,
+    mode: SupportedMode.RICH_MESSAGING,
     languageId,
 
     contact,
@@ -70,6 +72,8 @@ export function createContextFor(
 
     flows,
     firstFlowId: flows[0].uuid,
+
+    resources: [],
   }
 }
 

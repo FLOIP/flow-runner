@@ -1,11 +1,7 @@
-import {
-  SupportedMode,
-  IResourceDefinitionContentTypeSpecific,
-  Resource,
-  SupportedContentType, IResource,
-} from '../src'
+import {IResource, IResourceDefinitionContentTypeSpecific, Resource, SupportedContentType, SupportedMode} from '../src'
 
 import ResourceNotFoundException from '../src/domain/exceptions/ResourceNotFoundException'
+import IContext from '../src/flow-spec/IContext'
 
 describe('Resource', () => {
   let baseResource: IResourceDefinitionContentTypeSpecific
@@ -31,7 +27,11 @@ describe('Resource', () => {
       {...baseResource, contentType: SupportedContentType.VIDEO},
     ]
 
-    resource = new Resource('some-uuid', values, {languageId: 'some-language-id', modes: []})
+    resource = new Resource('some-uuid', values, {
+      contact: {name: 'Expressions'},
+      languageId: 'some-language-id',
+      mode: SupportedMode.SMS
+    } as IContext)
   })
 
   describe('getAudio', () => {
@@ -54,6 +54,11 @@ describe('Resource', () => {
     it('should raise ResourceNotFoundException when text resource absent', () => {
       resource.values = []
       expect(resource.getText.bind(resource)).toThrow(ResourceNotFoundException)
+    })
+
+    it('should return text interpolated with values from context when an expression is provided', () => {
+      resource.values = [{...baseResource, contentType: SupportedContentType.TEXT, value: 'Hello @contact.name!'}]
+      expect(resource.getText()).toBe('Hello Expressions!')
     })
   })
 

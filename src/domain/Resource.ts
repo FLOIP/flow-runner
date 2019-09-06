@@ -1,23 +1,22 @@
+import {pick} from 'lodash'
 import {IResource, IResourceDefinitionContentTypeSpecific, SupportedContentType} from './IResourceResolver'
-import {SupportedMode} from '..'
 import ResourceNotFoundException from './exceptions/ResourceNotFoundException'
+import IContext from '../flow-spec/IContext'
+import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
 
 export class Resource implements IResource {
   constructor(
     public uuid: string,
     public values: IResourceDefinitionContentTypeSpecific[],
-    public criteria: {
-      languageId: string,
-      modes: SupportedMode[],
-    }) {
+    public context: IContext) {
   }
 
   _getValueByContentType(contentType: SupportedContentType): string {
     const def = this._findByContentType(contentType)
 
     if (def == null) {
-      const {criteria} = this
-      throw new ResourceNotFoundException(`Unable to find resource for ${JSON.stringify({contentType, criteria})}`)
+      const {languageId, mode} = this.context
+      throw new ResourceNotFoundException(`Unable to find resource for ${JSON.stringify({contentType, languageId, mode})}`)
     }
 
     return def.value
@@ -40,7 +39,10 @@ export class Resource implements IResource {
   }
 
   getText(): string {
-    return this._getValueByContentType(SupportedContentType.TEXT)
+    return EvaluatorFactory.create()
+      .evaluate(
+        this._getValueByContentType(SupportedContentType.TEXT),
+        pick(this.context, ['contact']))
   }
 
   getVideo(): string {

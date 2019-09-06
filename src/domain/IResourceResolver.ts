@@ -1,4 +1,5 @@
 import {SupportedMode} from '..'
+import IContext from '../flow-spec/IContext'
 
 
 export enum SupportedContentType {
@@ -8,7 +9,7 @@ export enum SupportedContentType {
   VIDEO = 'video',
 }
 
-export interface IResourceDefinitionContentTypeSpecific {
+export interface IResourceDefinitionContentTypeSpecific { // todo: rename to IResourceDefinitionVariant
   languageId: string
   contentType: SupportedContentType
   modes: SupportedMode[]
@@ -27,10 +28,7 @@ export type IResources = IResourceDefinition[]
 export interface IResource {
   uuid: string
   values: IResourceDefinitionContentTypeSpecific[]
-  criteria: {
-    languageId: string
-    modes: SupportedMode[]
-  }
+  context: IContext
 
   hasText(): boolean
   /** @throws ResourceNotFoundException */
@@ -50,9 +48,16 @@ export interface IResource {
 }
 
 export default interface IResourceResolver {
-  modes: SupportedMode[]
-  languageId: string
-  resourceDefinitions: IResources
+  context: IContext
 
   resolve(resourceId: string): IResource
+}
+
+export function createTextResourceVariantWith(value: string, ctx: IContext): IResourceDefinitionContentTypeSpecific {
+  return {
+    contentType: SupportedContentType.TEXT,
+    value,
+    languageId: ctx.languageId,
+    modes: [ctx.mode],
+  }
 }

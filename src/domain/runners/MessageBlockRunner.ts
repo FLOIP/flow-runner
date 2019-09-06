@@ -2,18 +2,19 @@ import IBlockRunner from './IBlockRunner'
 import IBlockExit from '../../flow-spec/IBlockExit'
 import {IMessagePromptConfig, KnownPrompts} from '../..'
 import IMessageBlock from '../../model/block/IMessageBlock'
-import IResourceResolver from '../IResourceResolver'
+import IContext from '../../flow-spec/IContext'
+import ResourceResolver from '../ResourceResolver'
 
 
 export default class MessageBlockRunner implements IBlockRunner {
   constructor(public block: IMessageBlock,
-              public resources: IResourceResolver) {}
+              public context: IContext) {}
 
   initialize(): IMessagePromptConfig {
     const {prompt} = this.block.config
     return {
       kind: KnownPrompts.Message,
-      prompt: this.resources.resolve(prompt),
+      prompt: (new ResourceResolver(this.context)).resolve(prompt),
       isResponseRequired: false,
     }
   }

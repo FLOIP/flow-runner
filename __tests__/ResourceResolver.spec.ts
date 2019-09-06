@@ -1,5 +1,6 @@
 import ResourceResolver from '../src/domain/ResourceResolver'
 import {
+  createContextFor,
   IResource,
   IResourceDefinition,
   IResourceDefinitionContentTypeSpecific,
@@ -8,18 +9,17 @@ import {
 } from '../src'
 import ResourceNotFoundException from '../src/domain/exceptions/ResourceNotFoundException'
 import IResourceResolver from '../src/domain/IResourceResolver'
+import IContext from '../src/flow-spec/IContext'
+import IFlow from '../src/flow-spec/IFlow'
 
 
 describe('ResourceResolver', () => {
   let resolver: IResourceResolver
-  let _SETUP_SUPPORTED_MODES: SupportedMode[]
-  let _SETUP_LANG_ID: string
+  let ctx: IContext
 
   beforeEach(() => {
-    _SETUP_SUPPORTED_MODES = [SupportedMode.SMS]
-    _SETUP_LANG_ID = 'eng'
-
-    resolver = new ResourceResolver(_SETUP_SUPPORTED_MODES, _SETUP_LANG_ID)
+    ctx = createContextFor({id: 'contact-123', name: 'Bert'}, 'user-123', [{uuid: 'flow-123'} as IFlow], 'eng')
+    resolver = new ResourceResolver(ctx)
   })
 
   describe('resolve', () => {
@@ -32,8 +32,8 @@ describe('ResourceResolver', () => {
       it('should return a wrapper resource', () => {
         const value = 'hello world!'
         const expectedResourceContentTypeSpecific: IResourceDefinitionContentTypeSpecific = {
-          modes: _SETUP_SUPPORTED_MODES,
-          languageId: _SETUP_LANG_ID,
+          modes: [ctx.mode],
+          languageId: ctx.languageId,
           value,
           contentType: SupportedContentType.TEXT,
         }
@@ -42,8 +42,7 @@ describe('ResourceResolver', () => {
 
         expect(actual.uuid).toBe(value)
         expect(actual.values).toEqual([expectedResourceContentTypeSpecific])
-        expect(actual.criteria.languageId).toBe(_SETUP_LANG_ID)
-        expect(actual.criteria.modes).toBe(_SETUP_SUPPORTED_MODES)
+        expect(actual.context).toBe(ctx)
       })
     })
 
@@ -51,7 +50,7 @@ describe('ResourceResolver', () => {
       it('should return resource with UUID provided', () => {
         const expected: IResourceDefinition = {uuid: 'known000-0000-0000-0000-resource0123', values: []}
 
-        resolver.resourceDefinitions = [
+        ctx.resources = [
           {uuid: 'notknown-0000-0000-0000-resource0654', values: []},
           expected,
           {uuid: 'notknown-0000-0000-0000-resource0123', values: []}]
@@ -60,14 +59,13 @@ describe('ResourceResolver', () => {
 
         expect(actual.uuid).toBe(expected.uuid)
         expect(actual.values).toEqual(expected.values)
-        expect(actual.criteria.languageId).toBe(_SETUP_LANG_ID)
-        expect(actual.criteria.modes).toBe(_SETUP_SUPPORTED_MODES)
+        expect(actual.context).toBe(ctx)
       })
 
       describe('filtered resource definitions', () => {
-        let values: IResourceDefinitionContentTypeSpecific[]
+        let variants: IResourceDefinitionContentTypeSpecific[]
 
-        beforeEach(() => values = [
+        beforeEach(() => variants = [
             /* 00 */createResourceDefWith('eng', SupportedContentType.AUDIO, [SupportedMode.SMS, SupportedMode.USSD]),
             /* 01 */createResourceDefWith('eng', SupportedContentType.AUDIO, [SupportedMode.USSD]),
             /* 02 */createResourceDefWith('eng', SupportedContentType.AUDIO, [SupportedMode.IVR, SupportedMode.RICH_MESSAGING]),
@@ -82,20 +80,30 @@ describe('ResourceResolver', () => {
             /* 11 */createResourceDefWith('fre', SupportedContentType.TEXT, [SupportedMode.IVR, SupportedMode.RICH_MESSAGING])])
 
         test.each`
-          modes                                       | languageId  | expectedResourceDefIndices | desc
-          ${[SupportedMode.SMS, SupportedMode.USSD]}  | ${'eng'}    | ${[0, 1, 3, 4]}            | ${'multiple matches when both criteria match'}
-          ${[SupportedMode.IVR]}                      | ${'eng'}    | ${[2, 5]}                  | ${'matches when partial modes matched'}
-          ${['some-mode']}                            | ${'eng'}    | ${[]}                      | ${'nothing when mode not found'}
+          modeFilter                                  | languageIdFilter  | expectedResourceDefIndices | desc
+          ${SupportedMode.USSD}                       | ${'eng'}          | ${[0, 1, 3, 4]}            | ${'list of multiple matches when mode present in supported modes on multiple and language matches'}
+          ${SupportedMode.IVR}                        | ${'eng'}          | ${[2, 5]}                  | ${'list of single match when mode in supported modes and language matches'}
+          ${'some-mode'}                              | ${'eng'}          | ${[]}                      | ${'nothing when mode not found and languag matches'}
   
-          ${[SupportedMode.SMS, SupportedMode.USSD]}  | ${'___'}    | ${[]}                      | ${'nothing when modes match and langauge not found'}
-          ${[SupportedMode.IVR]}                      | ${'___'}    | ${[]}                      | ${'nothing when partial modes match and langauge not found'}
-          ${['some-mode']}                            | ${'___'}    | ${[]}                      | ${'nothing when mode not found and language not found'}
-`('should return $desc`', ({modes, languageId, expectedResourceDefIndices}) => {
+          ${SupportedMode.USSD}                       | ${'abc'}          | ${[]}                      | ${'nothing when mode present in supported modes on multiple and langauge not found'}
+          ${SupportedMode.IVR}                        | ${'abc'}          | ${[]}                      | ${'nothing when mode in supported modes and langauge not found'}
+          ${'some-mode'}                              | ${'abc'}          | ${[]}                      | ${'nothing when mode not found and language not found'}
+        `('should return $desc`', ({
+            modeFilter: mode,
+            languageIdFilter: languageId,
+            expectedResourceDefIndices}) => {
 
-          const expectedValues = values.filter((_v, i) => expectedResourceDefIndices.indexOf(i) !== -1)
+          const expectedValues = variants.filter((_v, i) => expectedResourceDefIndices.indexOf(i) !== -1)
 
-          const r = new ResourceResolver(modes, languageId, [{uuid: 'known000-0000-0000-0000-resource0123', values}])
-          const actual: IResource = r.resolve('known000-0000-0000-0000-resource0123')
+          Object.assign(resolver.context, {
+            mode,
+            languageId,
+            resources: [{
+              uuid: 'known000-0000-0000-0000-resource0123',
+              values: variants}],
+          } as Partial<IContext>)
+
+          const actual: IResource = resolver.resolve('known000-0000-0000-0000-resource0123')
           expect(actual.values).toEqual(expectedValues)
         })
       })

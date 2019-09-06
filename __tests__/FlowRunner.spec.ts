@@ -5,18 +5,13 @@ import IMessageBlock from '../src/model/block/IMessageBlock'
 import {RichCursorInputRequiredType} from '../src'
 import IContext from '../src/flow-spec/IContext'
 import ValidationException from '../src/domain/exceptions/ValidationException'
-import IResourceResolver from '../src/domain/IResourceResolver'
-import ResourceResolver from '../src/domain/ResourceResolver'
-import SupportedMode from '../src/flow-spec/SupportedMode'
 
 
 describe('FlowRunner', () => {
   let dataset: IDataset
-  let resources: IResourceResolver
 
   beforeEach(() => {
     dataset = createDefaultDataset()
-    resources = new ResourceResolver([SupportedMode.SMS], 'eng')
   })
 
   describe('sanity', () => {
@@ -25,9 +20,8 @@ describe('FlowRunner', () => {
         dataset.contexts[0],
         new BlockRunnerFactoryStore([
           // todo: how do we get proper typing here without needing to cast?
-          ['MobilePrimitives\\Message', (block, resources) => new MessageBlockRunner(block as IMessageBlock, resources)],
-        ]),
-        resources)
+          ['MobilePrimitives\\Message', (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
+        ]))
 
       expect(runner).toBeTruthy()
     })
@@ -43,9 +37,8 @@ describe('FlowRunner', () => {
       const runner = new FlowRunner(
         ctx,
         new BlockRunnerFactoryStore([
-          ['MobilePrimitives\\Message', (block, resources) => new MessageBlockRunner(block as IMessageBlock, resources)],
-        ]),
-        resources)
+          ['MobilePrimitives\\Message', (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
+        ]))
 
       // block1
       let cursor: RichCursorInputRequiredType | void = runner.run()
