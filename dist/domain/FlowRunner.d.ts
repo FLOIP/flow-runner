@@ -4,16 +4,14 @@ import IBlockRunner from './runners/IBlockRunner';
 import IBlockInteraction from '../flow-spec/IBlockInteraction';
 import IBlockExit from '../flow-spec/IBlockExit';
 import IFlowRunner, { IBlockRunnerFactoryStore } from './IFlowRunner';
-import IResourceResolver from './IResourceResolver';
 export declare class BlockRunnerFactoryStore extends Map<string, {
-    (block: IBlock, resources: IResourceResolver): IBlockRunner;
+    (block: IBlock, ctx: IContext): IBlockRunner;
 }> implements IBlockRunnerFactoryStore {
 }
 export default class FlowRunner implements IFlowRunner {
     context: IContext;
     runnerFactoryStore: IBlockRunnerFactoryStore;
-    resources: IResourceResolver;
-    constructor(context: IContext, runnerFactoryStore: IBlockRunnerFactoryStore, resources: IResourceResolver);
+    constructor(context: IContext, runnerFactoryStore: IBlockRunnerFactoryStore);
     initialize(): RichCursorType | undefined;
     isInitialized(ctx: IContext): boolean;
     run(): RichCursorInputRequiredType | undefined;
@@ -24,7 +22,7 @@ export default class FlowRunner implements IFlowRunner {
     hydrateRichCursorFrom(ctx: IContextWithCursor): RichCursorType;
     initializeOneBlock(block: IBlock, flowId: string, originFlowId?: string, originBlockInteractionId?: string): RichCursorType;
     runActiveBlockOn(richCursor: RichCursorType, block: IBlock): IBlockExit;
-    createBlockRunnerFor(block: IBlock, resources: IResourceResolver): IBlockRunner;
+    createBlockRunnerFor(block: IBlock, ctx: IContext): IBlockRunner;
     navigateTo(block: IBlock, ctx: IContext): RichCursorType;
     stepInto(runFlowBlock: IBlock, ctx: IContext): IBlock | undefined;
     stepOut(ctx: IContext): IBlock | undefined;

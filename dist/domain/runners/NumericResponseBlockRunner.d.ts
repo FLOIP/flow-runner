@@ -2,11 +2,11 @@ import IBlockRunner from './IBlockRunner';
 import IBlockExit from '../../flow-spec/IBlockExit';
 import { INumericPromptConfig } from '../..';
 import INumericResponseBlock from '../../model/block/INumericResponseBlock';
-import IResourceResolver from '../IResourceResolver';
+import IContext from '../../flow-spec/IContext';
 export default class NumericResponseBlockRunner implements IBlockRunner {
     block: INumericResponseBlock;
-    resources: IResourceResolver;
-    constructor(block: INumericResponseBlock, resources: IResourceResolver);
+    context: IContext;
+    constructor(block: INumericResponseBlock, context: IContext);
     initialize(): INumericPromptConfig;
     run(): IBlockExit;
 }

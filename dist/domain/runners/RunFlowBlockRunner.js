@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class RunFlowBlockRunner {
-    constructor(block, resources) {
+    constructor(block, context) {
         this.block = block;
-        this.resources = resources;
+        this.context = context;
     }
     initialize() {
         return undefined;

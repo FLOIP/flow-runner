@@ -1,11 +1,8 @@
-import IResourceResolver, { IResource, IResourceDefinitionContentTypeSpecific, IResources } from './IResourceResolver';
-import { SupportedMode } from '..';
+import IResourceResolver, { IResource } from './IResourceResolver';
+import IContext from '../flow-spec/IContext';
 export default class ResourceResolver implements IResourceResolver {
-    modes: SupportedMode[];
-    languageId: string;
-    resourceDefinitions: IResources;
-    constructor(modes: SupportedMode[], languageId: string, resourceDefinitions?: IResources);
+    context: IContext;
+    constructor(context: IContext);
     resolve(resourceId: string): IResource;
-    createTextResourceVariantWith(value: string): IResourceDefinitionContentTypeSpecific;
 }
 //# sourceMappingURL=ResourceResolver.d.ts.map

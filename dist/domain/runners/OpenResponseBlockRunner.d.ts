@@ -2,11 +2,11 @@ import IBlockRunner from './IBlockRunner';
 import IBlockExit from '../../flow-spec/IBlockExit';
 import { IOpenPromptConfig } from '../..';
 import IOpenResponseBlock from '../../model/block/IOpenResponseBlock';
-import IResourceResolver from '../IResourceResolver';
+import IContext from '../../flow-spec/IContext';
 export default class OpenResponseBlockRunner implements IBlockRunner {
     block: IOpenResponseBlock;
-    resources: IResourceResolver;
-    constructor(block: IOpenResponseBlock, resources: IResourceResolver);
+    context: IContext;
+    constructor(block: IOpenResponseBlock, context: IContext);
     initialize(): IOpenPromptConfig;
     run(): IBlockExit;
 }

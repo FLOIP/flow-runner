@@ -1,16 +1,10 @@
 import { IResource, IResourceDefinitionContentTypeSpecific, SupportedContentType } from './IResourceResolver';
-import { SupportedMode } from '..';
+import IContext from '../flow-spec/IContext';
 export declare class Resource implements IResource {
     uuid: string;
     values: IResourceDefinitionContentTypeSpecific[];
-    criteria: {
-        languageId: string;
-        modes: SupportedMode[];
-    };
-    constructor(uuid: string, values: IResourceDefinitionContentTypeSpecific[], criteria: {
-        languageId: string;
-        modes: SupportedMode[];
-    });
+    context: IContext;
+    constructor(uuid: string, values: IResourceDefinitionContentTypeSpecific[], context: IContext);
     _getValueByContentType(contentType: SupportedContentType): string;
     _hasByContentType(contentType: SupportedContentType): boolean;
     _findByContentType(contentType: SupportedContentType): IResourceDefinitionContentTypeSpecific | undefined;

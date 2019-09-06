@@ -1,19 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
+const lodash_1 = require("lodash");
 const IResourceResolver_1 = require("./IResourceResolver");
 const ResourceNotFoundException_1 = tslib_1.__importDefault(require("./exceptions/ResourceNotFoundException"));
+const floip_expression_evaluator_ts_1 = require("floip-expression-evaluator-ts");
 class Resource {
-    constructor(uuid, values, criteria) {
+    constructor(uuid, values, context) {
         this.uuid = uuid;
         this.values = values;
-        this.criteria = criteria;
+        this.context = context;
     }
     _getValueByContentType(contentType) {
         const def = this._findByContentType(contentType);
         if (def == null) {
-            const { criteria } = this;
-            throw new ResourceNotFoundException_1.default(`Unable to find resource for ${JSON.stringify({ contentType, criteria })}`);
+            const { languageId, mode } = this.context;
+            throw new ResourceNotFoundException_1.default(`Unable to find resource for ${JSON.stringify({ contentType, languageId, mode })}`);
         }
         return def.value;
     }
@@ -30,7 +32,8 @@ class Resource {
         return this._getValueByContentType(IResourceResolver_1.SupportedContentType.IMAGE);
     }
     getText() {
-        return this._getValueByContentType(IResourceResolver_1.SupportedContentType.TEXT);
+        return floip_expression_evaluator_ts_1.EvaluatorFactory.create()
+            .evaluate(this._getValueByContentType(IResourceResolver_1.SupportedContentType.TEXT), lodash_1.pick(this.context, ['contact']));
     }
     getVideo() {
         return this._getValueByContentType(IResourceResolver_1.SupportedContentType.VIDEO);

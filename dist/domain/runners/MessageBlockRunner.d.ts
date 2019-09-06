@@ -2,11 +2,11 @@ import IBlockRunner from './IBlockRunner';
 import IBlockExit from '../../flow-spec/IBlockExit';
 import { IMessagePromptConfig } from '../..';
 import IMessageBlock from '../../model/block/IMessageBlock';
-import IResourceResolver from '../IResourceResolver';
+import IContext from '../../flow-spec/IContext';
 export default class MessageBlockRunner implements IBlockRunner {
     block: IMessageBlock;
-    resources: IResourceResolver;
-    constructor(block: IMessageBlock, resources: IResourceResolver);
+    context: IContext;
+    constructor(block: IMessageBlock, context: IContext);
     initialize(): IMessagePromptConfig;
     run(): IBlockExit;
 }

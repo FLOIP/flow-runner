@@ -2,15 +2,15 @@ import IBlockRunner from './IBlockRunner';
 import IBlock from '../../flow-spec/IBlock';
 import IBlockExit from '../../flow-spec/IBlockExit';
 import IRunFlowBlockConfig from '../../model/block/IRunFlowBlockConfig';
-import IResourceResolver from '../IResourceResolver';
+import IContext from '../../flow-spec/IContext';
 export default class RunFlowBlockRunner implements IBlockRunner {
     block: IBlock & {
         config: IRunFlowBlockConfig;
     };
-    resources: IResourceResolver;
+    context: IContext;
     constructor(block: IBlock & {
         config: IRunFlowBlockConfig;
-    }, resources: IResourceResolver);
+    }, context: IContext);
     initialize(): undefined;
     run(): IBlockExit;
 }

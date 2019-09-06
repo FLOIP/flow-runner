@@ -1,26 +1,50 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 const __1 = require("../..");
+const ResourceResolver_1 = tslib_1.__importDefault(require("../ResourceResolver"));
+const lodash_1 = require("lodash");
+const floip_expression_evaluator_ts_1 = require("floip-expression-evaluator-ts");
+const ValidationException_1 = tslib_1.__importDefault(require("../exceptions/ValidationException"));
 class SelectOneResponseBlockRunner {
-    constructor(block, resources) {
+    constructor(block, context) {
         this.block = block;
-        this.resources = resources;
+        this.context = context;
     }
     initialize() {
         const { prompt, choices } = this.block.config;
+        const resources = new ResourceResolver_1.default(this.context);
         return {
             kind: __1.KnownPrompts.SelectOne,
-            prompt: this.resources.resolve(prompt),
+            prompt: resources.resolve(prompt),
             isResponseRequired: true,
             choices: Object.keys(choices)
                 .map(key => ({
                 key,
-                value: this.resources.resolve(choices[key]),
+                value: resources.resolve(choices[key]),
             })),
         };
     }
     run() {
-        return this.block.exits[0];
+        const { exits } = this.block;
+        if (exits.length === 0) {
+            throw new ValidationException_1.default(`Unable to find exits on block ${this.block.uuid}`);
+        }
+        const { cursor } = this.context;
+        if (cursor == null || cursor[1] == null) {
+            throw new ValidationException_1.default(`Unable to find cursor on context ${this.context.id}`);
+        }
+        const evaluator = floip_expression_evaluator_ts_1.EvaluatorFactory.create();
+        const evalContext = {
+            ...lodash_1.pick(this.context, ['contact']),
+            value: cursor[1].value,
+        };
+        const exit = lodash_1.find(this.block.exits, ({ test }) => this.evaluateToBool(String(test), evalContext, evaluator));
+        return (exit != null ? exit : lodash_1.last(exits));
+    }
+    evaluateToBool(expr, ctx, evaluator) {
+        const result = evaluator.evaluate(expr, ctx);
+        return JSON.parse(result.toLocaleLowerCase());
     }
 }
 exports.default = SelectOneResponseBlockRunner;

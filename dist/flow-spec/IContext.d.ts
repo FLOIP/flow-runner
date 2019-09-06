@@ -5,6 +5,7 @@ import IPrompt, { IBasePromptConfig, IPromptConfig } from '../domain/prompt/IPro
 import IBlock from './IBlock';
 import DeliveryStatus from './DeliveryStatus';
 import SupportedMode from './SupportedMode';
+import { IResources } from '..';
 export declare type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined];
 export declare type CursorInputRequiredType = [string, IPromptConfig<any> & IBasePromptConfig];
 export declare type CursorNoInputRequiredType = [string, undefined];
@@ -27,6 +28,7 @@ export default interface IContext {
     cursor?: CursorType;
     flows: IFlow[];
     firstFlowId: string;
+    resources: IResources;
 }
 export interface IContextWithCursor extends IContext {
     cursor: CursorType;

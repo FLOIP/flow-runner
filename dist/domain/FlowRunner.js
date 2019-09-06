@@ -16,10 +16,9 @@ class BlockRunnerFactoryStore extends Map {
 }
 exports.BlockRunnerFactoryStore = BlockRunnerFactoryStore;
 class FlowRunner {
-    constructor(context, runnerFactoryStore, resources) {
+    constructor(context, runnerFactoryStore) {
         this.context = context;
         this.runnerFactoryStore = runnerFactoryStore;
-        this.resources = resources;
     }
     initialize() {
         const ctx = this.context;
@@ -89,7 +88,7 @@ class FlowRunner {
         return [interaction, this.createPromptFrom(cursor[1], interaction)];
     }
     initializeOneBlock(block, flowId, originFlowId, originBlockInteractionId) {
-        const runner = this.createBlockRunnerFor(block, this.resources);
+        const runner = this.createBlockRunnerFor(block, this.context);
         const interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId);
         const promptConfig = runner.initialize(interaction);
         const prompt = this.createPromptFrom(promptConfig, interaction);
@@ -100,7 +99,7 @@ class FlowRunner {
             richCursor[0].value = richCursor[1].value;
             richCursor[0].hasResponse = true;
         }
-        const exit = this.createBlockRunnerFor(block, this.resources)
+        const exit = this.createBlockRunnerFor(block, this.context)
             .run(richCursor);
         richCursor[0].details.selectedExitId = exit.uuid;
         if (richCursor[1] != null) {
@@ -108,12 +107,12 @@ class FlowRunner {
         }
         return exit;
     }
-    createBlockRunnerFor(block, resources) {
+    createBlockRunnerFor(block, ctx) {
         const factory = this.runnerFactoryStore.get(block.type);
         if (factory == null) {
             throw new ValidationException_1.default(`Unable to find factory for block type: ${block.type}`);
         }
-        return factory(block, resources);
+        return factory(block, ctx);
     }
     navigateTo(block, ctx) {
         const { interactions, nestedFlowBlockInteractionIdStack } = ctx;

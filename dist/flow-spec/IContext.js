@@ -13,7 +13,7 @@ function createContextFor(contact, userId, flows, languageId) {
         createdAt: new Date,
         deliveryStatus: DeliveryStatus_1.default.QUEUED,
         userId,
-        mode: SupportedMode_1.default.OFFLINE,
+        mode: SupportedMode_1.default.RICH_MESSAGING,
         languageId,
         contact,
         sessionVars: {},
@@ -21,6 +21,7 @@ function createContextFor(contact, userId, flows, languageId) {
         nestedFlowBlockInteractionIdStack: [],
         flows,
         firstFlowId: flows[0].uuid,
+        resources: [],
     };
 }
 exports.createContextFor = createContextFor;
