@@ -5,6 +5,9 @@ import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock'
 import IContext from '../../flow-spec/IContext'
 import ResourceResolver from '../ResourceResolver'
 import IResourceResolver from '../IResourceResolver'
+import {find, last, pick} from 'lodash'
+import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
+import ValidationException from '../exceptions/ValidationException'
 
 export default class SelectOneResponseBlockRunner implements IBlockRunner {
   constructor(public block: ISelectOneResponseBlock,
@@ -28,10 +31,28 @@ export default class SelectOneResponseBlockRunner implements IBlockRunner {
   }
 
   run(): IBlockExit {
-    // todo: need to know how we provide selected value on a context to an expression evaluator here
-    // const evaluator = EvaluatorFactory.create()
-    // const result = evaluator.evaluate(expression, context)
+    // todo: tdd this :P
 
-    return this.block.exits[0]
+    const {exits} = this.block
+    if (exits.length === 0) {
+      throw new ValidationException(`Unable to find exits on block ${this.block.uuid}`)
+    }
+
+    const {cursor} = this.context
+    if (cursor == null || cursor[1] == null) {
+      throw new ValidationException(`Unable to find cursor on context ${this.context.id}`)
+    }
+
+    const evaluator = EvaluatorFactory.create()
+    const evalContext = {
+      ...pick(this.context, ['contact']),
+      value: cursor[1].value,
+    }
+
+    const exit = find(
+      this.block.exits,
+      ({test}) => Boolean(evaluator.evaluate(String(test), evalContext)))
+
+    return (exit != null ? exit : last(exits)) as IBlockExit
   }
 }
