@@ -54,7 +54,8 @@ export function createContextFor(
   contact: IContact,
   userId: string,
   flows: IFlow[],
-  languageId: string): IContext {
+  languageId: string,
+  mode: SupportedMode): IContext {
 
   return {
     id: uuid.v4(),
@@ -62,7 +63,7 @@ export function createContextFor(
     deliveryStatus: DeliveryStatus.QUEUED,
 
     userId,
-    mode: SupportedMode.RICH_MESSAGING,
+    mode,
     languageId,
 
     contact,

@@ -4,6 +4,7 @@ export enum SupportedMode {
   USSD = 'ussd',
   IVR = 'ivr',
   RICH_MESSAGING = 'rich_messaging',
+  OFFLINE = 'offline',
 }
 
 export default SupportedMode
