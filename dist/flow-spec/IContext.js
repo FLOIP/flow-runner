@@ -5,15 +5,14 @@ const IFlow_1 = require("./IFlow");
 const lodash_1 = require("lodash");
 const ValidationException_1 = tslib_1.__importDefault(require("../domain/exceptions/ValidationException"));
 const DeliveryStatus_1 = tslib_1.__importDefault(require("./DeliveryStatus"));
-const SupportedMode_1 = tslib_1.__importDefault(require("./SupportedMode"));
 const uuid_1 = tslib_1.__importDefault(require("uuid"));
-function createContextFor(contact, userId, flows, languageId) {
+function createContextFor(contact, userId, flows, languageId, mode) {
     return {
         id: uuid_1.default.v4(),
         createdAt: new Date,
         deliveryStatus: DeliveryStatus_1.default.QUEUED,
         userId,
-        mode: SupportedMode_1.default.RICH_MESSAGING,
+        mode,
         languageId,
         contact,
         sessionVars: {},
