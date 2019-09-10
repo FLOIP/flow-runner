@@ -6,6 +6,7 @@ import ISelectOneResponseBlock from '../../src/model/block/ISelectOneResponseBlo
 import IContact from '../../src/flow-spec/IContact'
 import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
 import {ISelectOnePromptConfig} from '../../src'
+import IFlow from '../../src/flow-spec/IFlow'
 
 describe('SelectOneResponseBlockRunner', () => {
   // let dataset: IDataset
@@ -26,22 +27,31 @@ describe('SelectOneResponseBlockRunner', () => {
         ]
       } as ISelectOneResponseBlock
 
-      const ctx: IContext = {
-        contact: {
-          id: 'contact-123',
-          name: 'Bert',
-          age: 12,
-        } as IContact,
-
-        cursor: [
-          {} as IBlockInteraction,
-          {} as ISelectOnePromptConfig,
-        ] as any as CursorInputRequiredType,
-      } as IContext
-
+      const ctx: IContext = createContext()
       const runner = new SelectOneResponseBlockRunner(block, ctx)
       const exit: IBlockExit = runner.run()
       expect(exit).toBe(block.exits[3])
     })
+
+    it.todo('should raise an exception when an expression is provided that doesn\'t evaluate to bool.')
   })
 })
+
+function createContext(): IContext {
+  return  {
+    contact: {
+      id: 'contact-123',
+      name: 'Bert',
+      age: 12,
+    } as IContact,
+
+    nestedFlowBlockInteractionIdStack: [] as string[],
+    firstFlowId: 'flow-1234',
+    flows: [{uuid: 'flow-1234'}] as IFlow[],
+
+    cursor: [
+      {} as IBlockInteraction,
+      {} as ISelectOnePromptConfig,
+    ] as any as CursorInputRequiredType,
+  } as IContext
+}

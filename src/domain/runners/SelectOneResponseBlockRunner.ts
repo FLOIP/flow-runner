@@ -70,7 +70,7 @@ export default class SelectOneResponseBlockRunner implements IBlockRunner {
   evaluateToBool(expr: string, ctx: object) {
     const evaluator = EvaluatorFactory.create()
     const result = evaluator.evaluate(expr, ctx)
-    
+
     return JSON.parse(result.toLocaleLowerCase())
   }
 }
