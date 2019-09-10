@@ -1,12 +1,12 @@
 import IBlockRunner from './IBlockRunner'
-import {ISelectOnePromptConfig, KnownPrompts} from '../..'
+import {CursorInputRequiredType, getActiveFlowFrom, ISelectOnePromptConfig, KnownPrompts} from '../..'
 import IBlockExit from '../../flow-spec/IBlockExit'
 import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock'
 import IContext from '../../flow-spec/IContext'
 import ResourceResolver from '../ResourceResolver'
 import IResourceResolver from '../IResourceResolver'
-import {find, last, pick} from 'lodash'
-import {Evaluator, EvaluatorFactory} from 'floip-expression-evaluator-ts'
+import {find, last} from 'lodash'
+import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
 import ValidationException from '../exceptions/ValidationException'
 
 export default class SelectOneResponseBlockRunner implements IBlockRunner {
@@ -43,21 +43,34 @@ export default class SelectOneResponseBlockRunner implements IBlockRunner {
       throw new ValidationException(`Unable to find cursor on context ${this.context.id}`)
     }
 
-    const evaluator = EvaluatorFactory.create()
-    const evalContext = {
-      ...pick(this.context, ['contact']),
-      value: cursor[1].value,
-    }
-
+    const evalContext = this.createEvalContextFrom(this.context)
     const exit = find(
       this.block.exits,
-      ({test}) => this.evaluateToBool(String(test), evalContext, evaluator))
+      ({test}) => this.evaluateToBool(String(test), evalContext))
 
     return (exit != null ? exit : last(exits)) as IBlockExit
   }
 
-  evaluateToBool(expr: string, ctx: object, evaluator: Evaluator) {
+  createEvalContextFrom(context: IContext) {
+    const {contact, cursor, mode, languageId: language} = context
+    return {
+      contact,
+      channel: {mode},
+      flow: {
+        ...getActiveFlowFrom(this.context),
+        language, // todo: why isn't this languageId?
+      },
+      block: {
+        ...this.block,
+        value: (cursor as CursorInputRequiredType)[1].value,
+      },
+    }
+  }
+
+  evaluateToBool(expr: string, ctx: object) {
+    const evaluator = EvaluatorFactory.create()
     const result = evaluator.evaluate(expr, ctx)
+    
     return JSON.parse(result.toLocaleLowerCase())
   }
 }
