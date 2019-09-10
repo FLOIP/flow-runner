@@ -34,15 +34,27 @@ class SelectOneResponseBlockRunner {
         if (cursor == null || cursor[1] == null) {
             throw new ValidationException_1.default(`Unable to find cursor on context ${this.context.id}`);
         }
-        const evaluator = floip_expression_evaluator_ts_1.EvaluatorFactory.create();
-        const evalContext = {
-            ...lodash_1.pick(this.context, ['contact']),
-            value: cursor[1].value,
-        };
-        const exit = lodash_1.find(this.block.exits, ({ test }) => this.evaluateToBool(String(test), evalContext, evaluator));
+        const evalContext = this.createEvalContextFrom(this.context);
+        const exit = lodash_1.find(this.block.exits, ({ test }) => this.evaluateToBool(String(test), evalContext));
         return (exit != null ? exit : lodash_1.last(exits));
     }
-    evaluateToBool(expr, ctx, evaluator) {
+    createEvalContextFrom(context) {
+        const { contact, cursor, mode, languageId: language } = context;
+        return {
+            contact,
+            channel: { mode },
+            flow: {
+                ...__1.getActiveFlowFrom(this.context),
+                language,
+            },
+            block: {
+                ...this.block,
+                value: cursor[1].value,
+            },
+        };
+    }
+    evaluateToBool(expr, ctx) {
+        const evaluator = floip_expression_evaluator_ts_1.EvaluatorFactory.create();
         const result = evaluator.evaluate(expr, ctx);
         return JSON.parse(result.toLocaleLowerCase());
     }
