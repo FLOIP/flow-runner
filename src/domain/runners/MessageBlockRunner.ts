@@ -1,26 +1,25 @@
-import IBlockInteraction from "../../flow-spec/IBlockInteraction";
-import {RichCursorType} from "../../flow-spec/IContext";
-import IBlockRunner from "./IBlockRunner";
-import IBlock from "../../flow-spec/IBlock";
-import IBlockExit from "../../flow-spec/IBlockExit";
-import {IMessagePromptConfig} from "../prompt/IMessagePromptConfig";
-import IMessageBlockConfig from "../../model/block/IMessageBlockConfig";
-import {KnownPrompts} from "../prompt/IPrompt";
+import IBlockRunner from './IBlockRunner'
+import IBlockExit from '../../flow-spec/IBlockExit'
+import {IMessagePromptConfig, KnownPrompts} from '../..'
+import IMessageBlock from '../../model/block/IMessageBlock'
+import IContext from '../../flow-spec/IContext'
+import ResourceResolver from '../ResourceResolver'
 
 
 export default class MessageBlockRunner implements IBlockRunner {
-  constructor(
-      public block: IBlock & {config: IMessageBlockConfig}) {}
+  constructor(public block: IMessageBlock,
+              public context: IContext) {}
 
-  initialize(interaction: IBlockInteraction): IMessagePromptConfig {
+  initialize(): IMessagePromptConfig {
+    const {prompt} = this.block.config
     return {
       kind: KnownPrompts.Message,
+      prompt: (new ResourceResolver(this.context)).resolve(prompt),
       isResponseRequired: false,
-      value: null,
     }
   }
 
-  run(cursor: RichCursorType): IBlockExit {
+  run(): IBlockExit {
     return this.block.exits[0]
   }
 }

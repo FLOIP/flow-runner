@@ -1,10 +1,10 @@
 export default interface INumericBlockConfig {
   prompt: string
-  'prompt-audio': string
-  'validation-minimum': number // todo: this should be camel-cased
-  'validation-maximum': number // todo: this should be camel-cased
+  promptAudio: string
+  validationMinimum: number
+  validationMaximum: number
 
   ivr: {
-    'max-digits': number
+    maxDigits: number
   }
 }

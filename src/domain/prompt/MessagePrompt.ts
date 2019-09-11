@@ -1,7 +1,9 @@
-import BasePrompt from "./BasePrompt";
-import {IBasePromptConfig} from "./IPrompt";
-import {IMessagePromptConfig} from "./IMessagePromptConfig";
+import BasePrompt from './BasePrompt'
+import {IBasePromptConfig} from './IPrompt'
+import {IMessagePromptConfig} from './IMessagePromptConfig'
 
-export default class extends BasePrompt<IMessagePromptConfig & IBasePromptConfig> {
-  validate: (val: null) => true
+export default class MessagePrompt extends BasePrompt<IMessagePromptConfig & IBasePromptConfig> {
+  validate() {
+    return true
+  }
 }

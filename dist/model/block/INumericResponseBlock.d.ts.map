@@ -1,0 +1,1 @@
+{"version":3,"file":"INumericResponseBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/INumericResponseBlock.ts"],"names":[],"mappings":"AAAA,OAAO,MAAM,MAAM,wBAAwB,CAAA;AAC3C,OAAO,mBAAmB,MAAM,uBAAuB,CAAA;AAEvD,MAAM,CAAC,OAAO,WAAW,qBAAsB,SAAQ,MAAM;IAC3D,MAAM,EAAE,mBAAmB,CAAC;CAC7B"}

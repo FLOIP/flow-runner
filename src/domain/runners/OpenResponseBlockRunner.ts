@@ -1,25 +1,29 @@
-import IBlockRunner from "./IBlockRunner";
-import IBlock from "../../flow-spec/IBlock";
-import IBlockInteraction from "../../flow-spec/IBlockInteraction";
-import IBlockExit from "../../flow-spec/IBlockExit";
-import {RichCursorInputRequiredType} from "../../flow-spec/IContext";
-import {IOpenPromptConfig} from "../prompt/IOpenPromptConfig";
-import IOpenResponseBlockConfig from "../../model/block/IOpenResponseBlockConfig";
-import {KnownPrompts} from "../prompt/IPrompt";
+import IBlockRunner from './IBlockRunner'
+import IBlockExit from '../../flow-spec/IBlockExit'
+import {IOpenPromptConfig, KnownPrompts} from '../..'
+import IOpenResponseBlock from '../../model/block/IOpenResponseBlock'
+import ResourceResolver from '../ResourceResolver'
+import IContext from '../../flow-spec/IContext'
 
 export default class OpenResponseBlockRunner implements IBlockRunner {
-  constructor(
-      public block: IBlock & {config: IOpenResponseBlockConfig}) {}
+  constructor(public block: IOpenResponseBlock,
+              public context: IContext) {}
 
-  initialize(interaction: IBlockInteraction): IOpenPromptConfig {
+  initialize(): IOpenPromptConfig {
+    const {
+      prompt,
+      text: {maxResponseCharacters}
+    } = this.block.config
+
     return {
       kind: KnownPrompts.Open,
+      prompt: (new ResourceResolver(this.context)).resolve(prompt),
       isResponseRequired: true,
-      value: null,
+      maxResponseCharacters,
     }
   }
 
-  run(cursor: RichCursorInputRequiredType): IBlockExit {
+  run(): IBlockExit {
     // todo: should there be a BaseBlockRunner that defaults to returning first exit?
     return this.block.exits[0]
   }

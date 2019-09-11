@@ -1,5 +1,4 @@
-import {read} from 'yaml-import'
-import IDataset from "../fixtures/IDataset";
+import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import ValidationException from "../../src/domain/exceptions/ValidationException";
 
@@ -8,7 +7,7 @@ describe('FlowRunner/stepInto', () => {
   let dataset: IDataset
 
   beforeEach(() => {
-    dataset = read('__tests__/fixtures/dataset.yml')
+    dataset = createDefaultDataset()
   })
 
   it('should raise when block type is not RunFlow', () => {

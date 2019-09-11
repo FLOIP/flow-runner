@@ -1,28 +1,44 @@
 {
   "compilerOptions": {
-    "composite": true,
-    "declarationMap": true,
-    "module": "commonjs",
-    "target": "es2018",
-    "noImplicitReturns": true,
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "declaration": true,
-    "forceConsistentCasingInFileNames": true,
     "allowJs": false,
-    "importHelpers": true,
-    "noUnusedLocals": true,
+    "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "lib": [
+      "es2018"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "dist",
+    "removeComments": true,
+    "rootDir": "src",
+    "sourceMap": true,
+    "strict": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
-    "removeComments": true,
-    "esModuleInterop": true,
-    "types": ["jest", "node", "lodash"],
-    "lib": ["es2018"],
-    "rootDir": "src",
-    "outDir": "lib"
+    "strictPropertyInitialization": true,
+    "target": "es2018",
+    "types": [
+      "jest",
+      "node",
+      "lodash"
+    ]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.test.ts"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

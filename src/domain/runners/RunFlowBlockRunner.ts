@@ -1,19 +1,18 @@
-import IBlockInteraction from "../../flow-spec/IBlockInteraction";
-import {RichCursorType} from "../../flow-spec/IContext";
-import IBlockRunner from "./IBlockRunner";
-import IBlock from "../../flow-spec/IBlock";
-import IBlockExit from "../../flow-spec/IBlockExit";
-import IRunFlowBlockConfig from "../../model/block/IRunFlowBlockConfig";
+import IBlockRunner from './IBlockRunner'
+import IBlock from '../../flow-spec/IBlock'
+import IBlockExit from '../../flow-spec/IBlockExit'
+import IRunFlowBlockConfig from '../../model/block/IRunFlowBlockConfig'
+import IContext from '../../flow-spec/IContext'
 
 export default class RunFlowBlockRunner implements IBlockRunner {
-  constructor(
-      public block: IBlock & {config: IRunFlowBlockConfig}) {}
+  constructor(public block: IBlock & { config: IRunFlowBlockConfig },
+              public context: IContext) {}
 
-  initialize(interaction: IBlockInteraction): null {
-    return null
+  initialize(): undefined {
+    return undefined
   }
 
-  run(cursor: RichCursorType): IBlockExit {
+  run(): IBlockExit {
     return this.block.exits[0]
   }
 }

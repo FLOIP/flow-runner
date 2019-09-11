@@ -1,31 +1,32 @@
-import IBlockRunner from "./IBlockRunner";
-import {RichCursorInputRequiredType} from "../../flow-spec/IContext";
-import IBlockExit from "../../flow-spec/IBlockExit";
-import IBlockInteraction from "../../flow-spec/IBlockInteraction";
-import {INumericPromptConfig} from "../prompt/INumericPromptConfig";
-import IBlock from "../../flow-spec/IBlock";
-import INumericBlockConfig from "../../model/block/INumericBlockConfig";
-import {KnownPrompts} from "../prompt/IPrompt";
+import IBlockRunner from './IBlockRunner'
+import IBlockExit from '../../flow-spec/IBlockExit'
+import {INumericPromptConfig, KnownPrompts} from '../..'
+import INumericResponseBlock from '../../model/block/INumericResponseBlock'
+import IContext from '../../flow-spec/IContext'
+import ResourceResolver from '../ResourceResolver'
 
 export default class NumericResponseBlockRunner implements IBlockRunner {
-  constructor(
-      public block: IBlock & {config: INumericBlockConfig}) {}
+  constructor(public block: INumericResponseBlock,
+              public context: IContext) {}
 
+  initialize(): INumericPromptConfig {
+    const {
+      prompt,
+      validationMinimum: min,
+      validationMaximum: max,
+    } = this.block.config
 
-  initialize(interaction: IBlockInteraction): INumericPromptConfig {
     return {
       kind: KnownPrompts.Numeric,
-      maxLength: 0, // todo: is this viamo-specific and no longer necessary?
-      min: this.block.config["validation-minimum"],
-      max: this.block.config['validation-maximum'],
+      prompt: (new ResourceResolver(this.context)).resolve(prompt),
       isResponseRequired: false,
-      value: null,
+
+      min,
+      max,
     }
   }
 
-  run(cursor: RichCursorInputRequiredType): IBlockExit {
-    // todo: what constitutes an error exit on web/android chanels?
-
+  run(): IBlockExit { // todo: what constitutes an error exit on web/android chanels?
     return this.block.exits[0]
   }
 }

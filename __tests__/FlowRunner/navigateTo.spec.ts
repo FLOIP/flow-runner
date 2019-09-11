@@ -1,20 +1,25 @@
 import {last} from 'lodash'
-import {read} from 'yaml-import'
-import IDataset from "../fixtures/IDataset";
+import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
-import {findInteractionWith, RichCursorType} from "../../src/flow-spec/IContext";
-import {IBasePromptConfig, KnownPrompts} from "../../src/domain/prompt/IPrompt";
-import {createStaticMessageBlockRunnerFor} from "../fixtures/BlockRunner";
-import {INumericPromptConfig} from "../../src/domain/prompt/INumericPromptConfig";
+import {createTextResourceVariantWith, findInteractionWith, Resource, RichCursorType} from '../../src'
+import {IBasePromptConfig, KnownPrompts} from '../../src';
+import {createStaticFirstExitBlockRunnerFor} from "../../__test_fixtures__/fixtures/BlockRunner";
+import {INumericPromptConfig} from '../../src';
+import IContext from '../../src/flow-spec/IContext'
 
 // todo: abstract some of the setup
+
+function createTextResourceFor(resourceAsString: string, ctx: IContext) {
+  const values = [createTextResourceVariantWith(resourceAsString, ctx)]
+  return new Resource(resourceAsString, values, ctx)
+}
 
 describe('FlowRunner/navigateTo', () => {
   let dataset: IDataset
 
   beforeEach(() => {
-    dataset = read('__tests__/fixtures/dataset.yml')
+    dataset = createDefaultDataset()
   })
 
   it('should push an additional interaction onto context\'s interaction stack', () => {
@@ -22,7 +27,7 @@ describe('FlowRunner/navigateTo', () => {
         ctx = dataset.contexts[0],
         block = ctx.flows[0].blocks[0],
         runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-          ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+          ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
     expect(ctx.interactions.length).toBe(0)
     runner.navigateTo(block, ctx)
@@ -35,7 +40,7 @@ describe('FlowRunner/navigateTo', () => {
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-            ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+            ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
       expect(ctx.cursor).toBeFalsy()
       const richCursor = runner.navigateTo(block, ctx)
@@ -48,17 +53,17 @@ describe('FlowRunner/navigateTo', () => {
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-            ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+            ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
       const
           previousIntxId = 'some-fake-block-interaction-uuid',
           promptConfig: INumericPromptConfig & IBasePromptConfig = {
             kind: KnownPrompts.Numeric,
+            prompt: createTextResourceFor('What age are you at?', ctx),
             value: null,
             isResponseRequired: false,
             isSubmitted: false,
             max: 999,
-            maxLength: 999,
             min: 999,},
           prevCursor = ctx.cursor = [previousIntxId, promptConfig],
           richCursor = runner.navigateTo(block, ctx),
@@ -73,7 +78,7 @@ describe('FlowRunner/navigateTo', () => {
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-            ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+            ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
       const [interactionId,] = runner.navigateTo(block, ctx)
       expect(interactionId).toBe((last(ctx.interactions) as IBlockInteraction))
@@ -83,19 +88,19 @@ describe('FlowRunner/navigateTo', () => {
       const
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
-          messageBlockRunner = createStaticMessageBlockRunnerFor(block),
+          messageBlockRunner = createStaticFirstExitBlockRunnerFor(block),
 
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-            ['MobilePrimitives\\Message', block => messageBlockRunner]])),
+            ['MobilePrimitives\\Message', () => messageBlockRunner]])),
 
           startSpy = jest.spyOn(messageBlockRunner, 'initialize')
-              .mockImplementation((interaction: IBlockInteraction): INumericPromptConfig & IBasePromptConfig => ({
+              .mockImplementation((): INumericPromptConfig & IBasePromptConfig => ({
                 kind: KnownPrompts.Numeric,
+                prompt: createTextResourceFor('What age are you at?', ctx),
                 value: null,
                 isResponseRequired: false,
                 isSubmitted: false,
                 max: 999,
-                maxLength: 999,
                 min: 999,}))
 
       const
@@ -111,10 +116,10 @@ describe('FlowRunner/navigateTo', () => {
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-            ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+            ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
       const [, prompt] = runner.navigateTo(block, ctx)
-      expect(prompt).toBeNull()
+      expect(prompt).toBeUndefined()
     })
   })
 
@@ -124,7 +129,7 @@ describe('FlowRunner/navigateTo', () => {
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-            ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+            ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
       expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(0)
       runner.navigateTo(block, ctx)
@@ -137,7 +142,7 @@ describe('FlowRunner/navigateTo', () => {
             ctx = dataset.contexts[0],
             block = ctx.flows[0].blocks[0],
             runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-              ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+              ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(0)
         expect(ctx.firstFlowId).toBeTruthy()
@@ -151,7 +156,7 @@ describe('FlowRunner/navigateTo', () => {
             ctx = dataset.contexts[2], // RunFlow->(Message)->Message
             block = ctx.flows[1].blocks[0], // todo: actually, ths needs to be the first block on the nested flow!
             runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-              ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+              ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
         expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) as string, ctx).flowId)
@@ -171,14 +176,14 @@ describe('FlowRunner/navigateTo', () => {
             ctx = dataset.contexts[0],
             block = ctx.flows[0].blocks[0],
             runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-              ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+              ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(0)
         expect(ctx.interactions.length).toBe(0)
 
         runner.navigateTo(block, ctx)
 
-        expect(ctx.interactions[0].originFlowId).toBe(null)
+        expect(ctx.interactions[0].originFlowId).toBeUndefined()
       })
 
       it('should be from root flow when nested once', () => {
@@ -186,7 +191,7 @@ describe('FlowRunner/navigateTo', () => {
             ctx = dataset.contexts[2], // RunFlow->(Message)->Message
             block = ctx.flows[1].blocks[0],
             runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-              ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+              ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
         expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) as string, ctx).flowId)
@@ -206,14 +211,14 @@ describe('FlowRunner/navigateTo', () => {
             ctx = dataset.contexts[0],
             block = ctx.flows[0].blocks[0],
             runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-              ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+              ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(0)
         expect(ctx.interactions.length).toBe(0)
 
         runner.navigateTo(block, ctx)
 
-        expect(ctx.interactions[0].originBlockInteractionId).toBe(null)
+        expect(ctx.interactions[0].originBlockInteractionId).toBeUndefined()
       })
 
       it('should be from root flow\'s interaction when nested once', () => {
@@ -221,7 +226,7 @@ describe('FlowRunner/navigateTo', () => {
             ctx = dataset.contexts[2], // RunFlow->(Message)->Message
             block = ctx.flows[1].blocks[0],
             runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-              ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],]))
+              ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
         expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) as string, ctx).flowId)
@@ -242,7 +247,7 @@ describe('FlowRunner/navigateTo', () => {
           ctx = dataset.contexts[1],
           block = ctx.flows[1].blocks[0],
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-            ['MobilePrimitives\\Message', createStaticMessageBlockRunnerFor],])),
+            ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],])),
           lastIntx = last(ctx.interactions) as IBlockInteraction
 
       expect(ctx.interactions.length).toBeGreaterThan(0)

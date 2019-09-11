@@ -1,7 +1,14 @@
-import {KnownPrompts} from "./IPrompt";
-import {IPromptConfig} from "./IPrompt";
+import {IPromptConfig, KnownPrompts} from './IPrompt'
+import {IResource} from '../IResourceResolver'
 
+
+// todo: can our value type use some fancy keyof magic to say we need a value that's of the type of one of the {key} props in choices?
 export interface ISelectOnePromptConfig extends IPromptConfig<string | null> {
   kind: KnownPrompts.SelectOne
-  choices: string[]
+  choices: IChoice[]
+}
+
+export interface IChoice {
+  key: string
+  value: IResource
 }

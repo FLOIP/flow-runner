@@ -1,13 +1,11 @@
 // import UUID32 from "../model/UUID32";
 // import UUID64 from "../model/UUID64";
-import PromptValidationException from "../exceptions/PromptValidationException";
-import IBlock from "../../flow-spec/IBlock";
-import IBlockInteraction from "../../flow-spec/IBlockInteraction";
+import PromptValidationException from '../exceptions/PromptValidationException'
+import {IResource} from '../IResourceResolver'
 
 
 export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
-  block: IBlock
-  interaction: IBlockInteraction
+  interactionId: string
   config: PromptConfigType
 
   // todo: need to validate on instantiation?
@@ -21,17 +19,18 @@ export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptCo
 
 // export enum KnownPrompts {}
 export enum KnownPrompts {
-  Message,
-  Numeric,
-  SelectOne,
-  Open,
+  Message = 'Message',
+  Numeric = 'Numeric',
+  SelectOne = 'SelectOne',
+  Open = 'Open',
 }
 
 
 export interface IPromptConfig<ExpectationType> {
   kind: KnownPrompts
   isResponseRequired: boolean
-  value: ExpectationType
+  prompt: IResource
+  value?: ExpectationType
 }
 
 

@@ -1,4 +1,4 @@
 export default interface IMessageBlockConfig {
-  message: string
-  'message-audio': string
+  prompt: string
+  messageAudio: string
 }
