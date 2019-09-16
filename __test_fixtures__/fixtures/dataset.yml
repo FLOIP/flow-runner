@@ -171,8 +171,19 @@ _block_interactions:
 _prompts:
   - kind: Message
     prompt: This is it!
-    value: null
+    value:
     isResponseRequired: false
+    isSubmitted: false
+
+  - kind: SelectMany
+    prompt: Choose many!
+    choices:
+      - {key: 'choice-A', value: {uuid: 'res-123'}}
+      - {key: 'choice-B', value: {uuid: 'res-321'}}
+      - {key: 'choice-C', value: {uuid: 'res-ABC'}}
+      - {key: 'choice-D', value: {uuid: 'res-DEF'}}
+    value:
+    isResponseRequired: true
     isSubmitted: false
 
 _cursors: []
