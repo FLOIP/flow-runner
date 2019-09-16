@@ -4,7 +4,7 @@ const tslib_1 = require("tslib");
 const __1 = require("../..");
 const ResourceResolver_1 = tslib_1.__importDefault(require("../ResourceResolver"));
 const lodash_1 = require("lodash");
-class SelectOneResponseBlockRunner {
+class SelectManyResponseBlockRunner {
     constructor(block, context) {
         this.block = block;
         this.context = context;
@@ -13,7 +13,7 @@ class SelectOneResponseBlockRunner {
         const { prompt, choices } = this.block.config;
         const resources = new ResourceResolver_1.default(this.context);
         return {
-            kind: __1.KnownPrompts.SelectOne,
+            kind: __1.KnownPrompts.SelectMany,
             prompt: resources.resolve(prompt),
             isResponseRequired: true,
             choices: Object.keys(choices)
@@ -30,5 +30,5 @@ class SelectOneResponseBlockRunner {
             : lodash_1.last(this.block.exits));
     }
 }
-exports.default = SelectOneResponseBlockRunner;
-//# sourceMappingURL=SelectOneResponseBlockRunner.js.map
+exports.default = SelectManyResponseBlockRunner;
+//# sourceMappingURL=SelectManyResponseBlockRunner.js.map

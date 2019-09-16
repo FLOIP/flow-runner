@@ -12,6 +12,7 @@ export declare enum KnownPrompts {
     Message = "Message",
     Numeric = "Numeric",
     SelectOne = "SelectOne",
+    SelectMany = "SelectMany",
     Open = "Open"
 }
 export interface IPromptConfig<ExpectationType> {

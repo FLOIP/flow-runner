@@ -7,7 +7,7 @@ import IContext from '../../flow-spec/IContext';
 export default interface IBlockRunner {
     block: IBlock;
     context: IContext;
-    initialize(interaction?: IBlockInteraction): IPromptConfig<any> | undefined;
-    run(cursor?: RichCursorType): IBlockExit;
+    initialize(interaction: IBlockInteraction): IPromptConfig<any> | undefined;
+    run(cursor: RichCursorType): IBlockExit;
 }
 //# sourceMappingURL=IBlockRunner.d.ts.map

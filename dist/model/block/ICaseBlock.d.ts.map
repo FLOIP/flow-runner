@@ -1,0 +1,1 @@
+{"version":3,"file":"ICaseBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/ICaseBlock.ts"],"names":[],"mappings":"AAAA,OAAO,MAAM,MAAM,wBAAwB,CAAA;AAC3C,OAAO,gBAAgB,MAAM,oBAAoB,CAAA;AACjD,OAAO,EAAC,sBAAsB,EAAC,MAAM,4BAA4B,CAAA;AAEjE,MAAM,CAAC,OAAO,WAAW,UAAW,SAAQ,MAAM;IAChD,MAAM,EAAE,gBAAgB,CAAC;IACzB,KAAK,EAAE,sBAAsB,EAAE,CAAC;CACjC"}

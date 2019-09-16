@@ -12,6 +12,7 @@ const DeliveryStatus_1 = tslib_1.__importDefault(require("../flow-spec/DeliveryS
 const NumericPrompt_1 = tslib_1.__importDefault(require("./prompt/NumericPrompt"));
 const OpenPrompt_1 = tslib_1.__importDefault(require("./prompt/OpenPrompt"));
 const SelectOnePrompt_1 = tslib_1.__importDefault(require("./prompt/SelectOnePrompt"));
+const SelectManyPrompt_1 = tslib_1.__importDefault(require("./prompt/SelectManyPrompt"));
 class BlockRunnerFactoryStore extends Map {
 }
 exports.BlockRunnerFactoryStore = BlockRunnerFactoryStore;
@@ -220,6 +221,7 @@ class FlowRunner {
             [IPrompt_1.KnownPrompts.Numeric]: NumericPrompt_1.default,
             [IPrompt_1.KnownPrompts.Open]: OpenPrompt_1.default,
             [IPrompt_1.KnownPrompts.SelectOne]: SelectOnePrompt_1.default,
+            [IPrompt_1.KnownPrompts.SelectMany]: SelectManyPrompt_1.default,
         }[config.kind];
         return new kindConstructor(config, interaction.uuid, this);
     }

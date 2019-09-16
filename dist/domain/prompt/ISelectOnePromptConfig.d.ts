@@ -1,6 +1,6 @@
 import { IPromptConfig, KnownPrompts } from './IPrompt';
 import { IResource } from '../IResourceResolver';
-export interface ISelectOnePromptConfig extends IPromptConfig<string | null> {
+export interface ISelectOnePromptConfig extends IPromptConfig<IChoice['key'] | null> {
     kind: KnownPrompts.SelectOne;
     choices: IChoice[];
 }
