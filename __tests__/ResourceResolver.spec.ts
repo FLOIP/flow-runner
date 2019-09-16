@@ -18,7 +18,13 @@ describe('ResourceResolver', () => {
   let ctx: IContext
 
   beforeEach(() => {
-    ctx = createContextFor({id: 'contact-123', name: 'Bert'}, 'user-123', [{uuid: 'flow-123'} as IFlow], 'eng')
+    ctx = createContextFor(
+      {id: 'contact-123', name: 'Bert'},
+      'user-123',
+      [{uuid: 'flow-123'} as IFlow],
+      'eng',
+      SupportedMode.OFFLINE)
+
     resolver = new ResourceResolver(ctx)
   })
 
