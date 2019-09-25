@@ -6,5 +6,9 @@ export default interface IBlockExit {
     semanticLabel?: string;
     test?: string;
     config: object;
+    default?: boolean;
+}
+export interface IBlockExitTestRequired extends IBlockExit {
+    test: string;
 }
 //# sourceMappingURL=IBlockExit.d.ts.map
