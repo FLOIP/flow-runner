@@ -3,7 +3,6 @@ import IBlockExit from '../../flow-spec/IBlockExit'
 import {IMessagePromptConfig, KnownPrompts} from '../..'
 import IMessageBlock from '../../model/block/IMessageBlock'
 import IContext from '../../flow-spec/IContext'
-import ResourceResolver from '../ResourceResolver'
 
 
 export default class MessageBlockRunner implements IBlockRunner {
@@ -14,7 +13,7 @@ export default class MessageBlockRunner implements IBlockRunner {
     const {prompt} = this.block.config
     return {
       kind: KnownPrompts.Message,
-      prompt: (new ResourceResolver(this.context)).resolve(prompt),
+      prompt,
       isResponseRequired: false,
     }
   }

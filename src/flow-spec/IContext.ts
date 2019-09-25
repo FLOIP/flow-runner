@@ -50,7 +50,7 @@ export interface IContextInputRequired extends IContext {
   cursor: CursorInputRequiredType
 }
 
-export function createContextFor(
+export function createContextDataObjectFor(
   contact: IContact,
   userId: string,
   flows: IFlow[],

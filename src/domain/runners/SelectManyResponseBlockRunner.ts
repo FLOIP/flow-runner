@@ -6,8 +6,6 @@ import {
 import IBlockExit from '../../flow-spec/IBlockExit'
 import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock'
 import IContext from '../../flow-spec/IContext'
-import ResourceResolver from '../ResourceResolver'
-import IResourceResolver from '../IResourceResolver'
 import {last} from 'lodash'
 import {ISelectManyPromptConfig} from '../prompt/ISelectManyPromptConfig'
 
@@ -18,16 +16,15 @@ export default class SelectManyResponseBlockRunner implements IBlockRunner {
 
   initialize(): ISelectManyPromptConfig {
     const {prompt, choices} = this.block.config
-    const resources: IResourceResolver = new ResourceResolver(this.context)
 
     return {
       kind: KnownPrompts.SelectMany,
-      prompt: resources.resolve(prompt),
+      prompt,
       isResponseRequired: true,
       choices: Object.keys(choices)
         .map(key => ({
           key,
-          value: resources.resolve(choices[key]),
+          value: choices[key],
         })),
     }
   }
