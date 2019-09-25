@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const __1 = require("../..");
 const lodash_1 = require("lodash");
-class SelectOneResponseBlockRunner {
+class SelectManyResponseBlockRunner {
     constructor(block, context) {
         this.block = block;
         this.context = context;
@@ -10,7 +10,7 @@ class SelectOneResponseBlockRunner {
     initialize() {
         const { prompt, choices } = this.block.config;
         return {
-            kind: __1.KnownPrompts.SelectOne,
+            kind: __1.KnownPrompts.SelectMany,
             prompt,
             isResponseRequired: true,
             choices: Object.keys(choices)
@@ -27,5 +27,5 @@ class SelectOneResponseBlockRunner {
             : lodash_1.last(this.block.exits));
     }
 }
-exports.default = SelectOneResponseBlockRunner;
-//# sourceMappingURL=SelectOneResponseBlockRunner.js.map
+exports.default = SelectManyResponseBlockRunner;
+//# sourceMappingURL=SelectManyResponseBlockRunner.js.map

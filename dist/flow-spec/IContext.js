@@ -6,10 +6,10 @@ const lodash_1 = require("lodash");
 const ValidationException_1 = tslib_1.__importDefault(require("../domain/exceptions/ValidationException"));
 const DeliveryStatus_1 = tslib_1.__importDefault(require("./DeliveryStatus"));
 const uuid_1 = tslib_1.__importDefault(require("uuid"));
-function createContextFor(contact, userId, flows, languageId, mode) {
+function createContextDataObjectFor(contact, userId, flows, languageId, mode) {
     return {
         id: uuid_1.default.v4(),
-        createdAt: new Date,
+        createdAt: new Date().toISOString(),
         deliveryStatus: DeliveryStatus_1.default.QUEUED,
         userId,
         mode,
@@ -23,7 +23,7 @@ function createContextFor(contact, userId, flows, languageId, mode) {
         resources: [],
     };
 }
-exports.createContextFor = createContextFor;
+exports.createContextDataObjectFor = createContextDataObjectFor;
 function findInteractionWith(uuid, { interactions }) {
     const interaction = lodash_1.find(interactions, { uuid });
     if (interaction == null) {

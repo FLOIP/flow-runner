@@ -12,6 +12,7 @@ const DeliveryStatus_1 = tslib_1.__importDefault(require("../flow-spec/DeliveryS
 const NumericPrompt_1 = tslib_1.__importDefault(require("./prompt/NumericPrompt"));
 const OpenPrompt_1 = tslib_1.__importDefault(require("./prompt/OpenPrompt"));
 const SelectOnePrompt_1 = tslib_1.__importDefault(require("./prompt/SelectOnePrompt"));
+const SelectManyPrompt_1 = tslib_1.__importDefault(require("./prompt/SelectManyPrompt"));
 class BlockRunnerFactoryStore extends Map {
 }
 exports.BlockRunnerFactoryStore = BlockRunnerFactoryStore;
@@ -27,7 +28,7 @@ class FlowRunner {
             throw new ValidationException_1.default('Unable to initialize flow without blocks.');
         }
         ctx.deliveryStatus = DeliveryStatus_1.default.IN_PROGRESS;
-        ctx.entryAt = new Date;
+        ctx.entryAt = new Date().toISOString();
         return this.navigateTo(block, this.context);
     }
     isInitialized(ctx) {
@@ -74,10 +75,10 @@ class FlowRunner {
         return;
     }
     complete(ctx) {
-        lodash_1.last(ctx.interactions).exitAt = new Date;
+        lodash_1.last(ctx.interactions).exitAt = new Date().toISOString();
         delete ctx.cursor;
         ctx.deliveryStatus = DeliveryStatus_1.default.FINISHED_COMPLETE;
-        ctx.exitAt = new Date;
+        ctx.exitAt = new Date().toISOString();
     }
     dehydrateCursor(richCursor) {
         return [richCursor[0].uuid, richCursor[1] != null ? richCursor[1].config : undefined];
@@ -124,7 +125,7 @@ class FlowRunner {
         const richCursor = this.initializeOneBlock(block, flowId, originInteraction == null ? undefined : originInteraction.flowId, originInteractionId);
         const lastInteraction = lodash_1.last(interactions);
         if (lastInteraction != null) {
-            lastInteraction.exitAt = new Date;
+            lastInteraction.exitAt = new Date().toISOString();
         }
         interactions.push(richCursor[0]);
         ctx.cursor = this.dehydrateCursor(richCursor);
@@ -190,7 +191,7 @@ class FlowRunner {
             uuid: uuid_1.default.v4(),
             blockId,
             flowId,
-            entryAt: new Date,
+            entryAt: new Date().toISOString(),
             exitAt: undefined,
             hasResponse: false,
             value: undefined,
@@ -220,6 +221,7 @@ class FlowRunner {
             [IPrompt_1.KnownPrompts.Numeric]: NumericPrompt_1.default,
             [IPrompt_1.KnownPrompts.Open]: OpenPrompt_1.default,
             [IPrompt_1.KnownPrompts.SelectOne]: SelectOnePrompt_1.default,
+            [IPrompt_1.KnownPrompts.SelectMany]: SelectManyPrompt_1.default,
         }[config.kind];
         return new kindConstructor(config, interaction.uuid, this);
     }
