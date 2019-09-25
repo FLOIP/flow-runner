@@ -23,7 +23,7 @@ _defaults:
     type: Core\RunFlow
 
   - &defaults/intx
-    entryAt: 2020-10-10
+    entryAt: "2020-10-10T00:00:00.000Z"
     exitAt:
     hasResponse: false
     value:
@@ -38,7 +38,7 @@ _defaults:
     interactionTimeout: 5
     label: My first label
     languages: [en]
-    lastModified: 2020-10-10
+    lastModified: "2020-10-10T00:00:00.000Z"
     name: My first flow
     platformMetadata: {}
     supportedModes: [text]

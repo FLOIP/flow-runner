@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import IDataset, {createDefaultDataset} from '../__test_fixtures__/fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from '../src/domain/FlowRunner'
 import MessageBlockRunner from '../src/domain/runners/MessageBlockRunner'
@@ -5,6 +6,8 @@ import IMessageBlock from '../src/model/block/IMessageBlock'
 import {RichCursorInputRequiredType} from '../src'
 import IContext from '../src/flow-spec/IContext'
 import ValidationException from '../src/domain/exceptions/ValidationException'
+import {deserialize, plainToClass, serialize} from 'class-transformer'
+import Context from '../src/flow-spec/Context'
 
 
 describe('FlowRunner', () => {
@@ -13,6 +16,19 @@ describe('FlowRunner', () => {
   beforeEach(() => {
     dataset = createDefaultDataset()
   })
+
+  describe('serialization', () => {
+    it ('should be stringifiable', () => {
+      const context = dataset.contexts[2]
+      const contextObj = plainToClass(Context, context)
+      const serializedContext = serialize(contextObj);
+      const deserializedContext = deserialize(Context, serializedContext);
+
+      expect(contextObj).toEqual(deserializedContext)
+      expect(contextObj.getResource).toBeInstanceOf(Function)
+    })
+  })
+
 
   describe('sanity', () => {
     it('should be available', () => {

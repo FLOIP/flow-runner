@@ -22,9 +22,9 @@ export type RichCursorNoInputRequiredType = [IBlockInteraction, undefined]
 
 export default interface IContext {
   id: string
-  createdAt: Date
-  entryAt?: Date
-  exitAt?: Date
+  createdAt: string
+  entryAt?: string
+  exitAt?: string
   deliveryStatus: DeliveryStatus
 
   userId?: string
@@ -59,7 +59,7 @@ export function createContextDataObjectFor(
 
   return {
     id: uuid.v4(),
-    createdAt: new Date,
+    createdAt: new Date().toISOString(),
     deliveryStatus: DeliveryStatus.QUEUED,
 
     userId,

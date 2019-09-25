@@ -9,11 +9,11 @@ import ResourceResolver from '../domain/ResourceResolver'
 export default class Context implements IContext {
   constructor(
     public contact: IContact,
-    public createdAt: Date,
+    public createdAt: string,
     public cursor: CursorType,
     public deliveryStatus: DeliveryStatus,
-    public entryAt: Date,
-    public exitAt: Date,
+    public entryAt: string,
+    public exitAt: string,
     public firstFlowId: string,
     public flows: IFlow[],
     public id: string,
