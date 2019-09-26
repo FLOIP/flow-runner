@@ -247,7 +247,7 @@ describe('FlowRunner/navigateTo', () => {
       expect(ctx.interactions.length).toBeGreaterThan(0)
       expect(lastIntx.exitAt).toBeNull()
       runner.navigateTo(block, ctx)
-      expect(lastIntx.exitAt).toBeInstanceOf(Date)
+      expect(lastIntx.exitAt).toBe(new Date().toISOString()) // todo: this is a fragile time-sensitive test; make it not so
     })
   })
 })
