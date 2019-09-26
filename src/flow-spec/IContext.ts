@@ -38,7 +38,7 @@ export default interface IContext {
   cursor?: CursorType
 
   flows: IFlow[]
-  firstFlowId: string,
+  firstFlowId: string
   resources: IResources
 }
 
