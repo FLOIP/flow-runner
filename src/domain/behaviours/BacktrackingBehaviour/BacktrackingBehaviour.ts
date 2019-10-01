@@ -222,108 +222,19 @@ export default class BacktrackingBehaviour implements IBehaviour {
 
     interaction.value = (getEntityAt(keyForSuggestion, interactionStack) as IBlockInteraction).value
 
+    // need to splice out things between key + keyForSuggestion so that key points to both interaction and suggestion
     if (keyForSuggestion.join() !== key.join()) {
       this.syncGhost(key, keyForSuggestion, ghostInteractionStack)
     }
-
-    // need to splice out things between key + keyForSuggestion so that key points to both interaction and suggestion
-    // this is hard, because since the main track hasn't closed loops yet, they'll have items in a parent iteration
-    // that will be in a child iteration on the ghost
-
-    // const ghost = [
-    //   [1, [
-    //     [2, 3, 4, 5, 6, 7, 8],
-    //     [2, 3, 5, [
-    //       [6, 5, 5, 7, ], // could be at a later index but not an earlier index
-    //                 ^
-    //       [6, 7, 8]]]]]
-    // ]
-
-    // const ghost = [
-    //   [1, [
-    //     [2, 3, 4, 5, 6, 7, 8],
-    //     [2, 3, 5, [
-    //       [6, [
-    //          [5, 4],
-    //          [5, 4, 7**, 8],   <<- found it!!
-    //          [5, 4, 7, 8]]]
-    //       [6, 7, 8]]]]]
-    // ]
-
-
-
-
-    // - it has to be within the current iteration, because that's where we're searching
-    // - drop iterations until we find it
-    // - [[0, 1], [1, 3], [0, 1], [1, 2]]
-    // -- for this example we'd need to drop up two stacks
-    // --- shift() // splice {ITER_NUM} iterations off beginning of deepest matching stack until we have matching iteration in hand
-    // --- shift() // splice {ITER_INDEX} items off beginning of iteration in hand until we have match at HEAD
-    // ----- when stack is left empty, then discard it somehow
-    // --- insert remainder of iteration in front of stack it's found inside of
-    // --- check if stack depth is equal // key.length
-    // --- if not: then repeat
-    // --- work your way outward, until keys are matching in length
-    // ---
-
-    // const main=[
-    //   [1, [
-    //     [2, 3, 4, 5, 6, 7, 8],
-    //     [2, 3, 5, 6, 7, ]]]]
-    //                  ^
-
-    // [[0, 1], [1, 3], [0, 1]] = 7
-
-    // [[0, 1], [1, 4]] = 7
-
-
-    // what we've learned:
-    // - we can actually sum these matrices to later find things
-
-    // what we need:
-    // - need to be able to splice across stacks, or maybe reduce stacks?
-    // -
-
-
-    // if there's a sourced from field on the block interaction then we have a way to look it up after the fact
-    // does this help?
-
-    // I think this is primarily setup so that we can find it later.
-    // either cache source interactionId or source key; I think I'd prefer source interaction id.
-
-
-    // we also want the key to point to both so that we can know where to suggest _from_ upon next iteration
-    // does this get solved by caching a source intxId on the new intx?
-    // -
-
-    // is there something to do with unravelling what we'd want to be doing here?
-    // -
-
-    // another thought:
-    // - can we do anything by checking the previous interaction on interactions list to see if a suggestion was accepted?
-    // - accepted being defined as something like "suggestedFrom: intx.id" -- we'd need to null this when values are different upon completion
-
-    // when attempting to resolve a suggestion, we could first investigate if we _can_ make a suggestion
-    // - canMakeSuggestion = hasGhost + lastIntxHadSuggestion +
-
-
-    // how hard would it be to flatten until we find the one we've suggested?
-    // this is a way we could get the keys to match; basically vaccuum them in DEJA VU
-
-    // ------
-
-    // post-walk thoughts
-    // - I think we can create a diagonal, and just pop the top iteration off to slurp the entities back in time
-    // - need to solve how this looks over multiple iterations, though.
   }
 
-  syncGhost(keyForSuggestion: Key, key: Key, ghost: IStack): Key { // push out as stack::deepSplice(key, key, stack): Item[]
-    // - it has to be within the current iteration, because that's where we're searching
-    // - drop iterations until we find it
-
-    // -- for this example we'd need to drop up two stacks
-    // [[0, 1], [1, 3], [0, 1], [1, 2]]
-    // [[0, 1], [1, 4]] = 7
+  /**
+   * A hierarchical deep splice to remove items between two keys, hoisting deepest iteration to main depth.
+   * ghost=[[0, 1], [1, 3], [0, 1], [1, 2]]
+   * main=[[0, 1], [1, 4]] */
+  syncGhost(keyForSuggestion: Key, key: Key, ghost: IStack): Key {
+    // todo: push out as stack::deepSplice(key, key, stack): Item[]
+    //       if we provide items (remainderOfCurrentGhostIteration), this becomes two logical pieces splice() + deepSplice()
 
     if (keyForSuggestion.length < key.length) {
       throw new ValidationException(`Unable to sync up ghost; ${JSON.stringify({key, keyForSuggestion})}`)
@@ -333,32 +244,37 @@ export default class BacktrackingBehaviour implements IBehaviour {
       return keyForSuggestion
     }
 
-    const deepestContainingStack: IStack = getStackFor(keyForSuggestion, ghost)
-    const deepestStackKey: StackKey = last(keyForSuggestion)!
+    let isAtGreaterDepth = keyForSuggestion.length > key.length
+    let stackKeyForSuggestion: StackKey = last(keyForSuggestion)!
+    // find our keepers = remainderOfCurrentGhostIteration
+    const iterationForSuggestion = getIterationFor(keyForSuggestion, ghost)
+    const remainderOfCurrentGhostIteration = iterationForSuggestion.slice(stackKeyForSuggestion[STACK_KEY_ITERATION_INDEX])
 
-    // todo: we need guards against over splicing
-    // todo: we need to discard empty stacks
-    // todo: we need to handle same iteration, differnet index --- aka discard items between, but on same iteration
+    // discard iterations up to + including one with keepers
+    if (isAtGreaterDepth) {
+      const {stack} = getStackFor(keyForSuggestion, ghost)
+      stack.splice(0, stackKeyForSuggestion[STACK_KEY_ITERATION_NUMBER] + 1)
+      keyForSuggestion.pop() // update suggestion key to point to containing stack
+    }
 
-    // splice {ITER_NUM} iterations off beginning of deepest matching stack until we have matching iteration in hand
-    const removedIterations: Iteration[] = deepestContainingStack.stack.splice(0, deepestStackKey[STACK_KEY_ITERATION_NUMBER] + 1)
-    const iterationForSuggestion: Iteration = removedIterations[deepestStackKey[STACK_KEY_ITERATION_NUMBER]]
+    // splice keepers onto containing stack at suggestedKeyIterAndIndex; discarding # of items between
+    stackKeyForSuggestion = last(keyForSuggestion)!
+    const mainDeepestStackKey: StackKey = last(key)!
+    const containingIterationForSuggestion = getIterationFor(keyForSuggestion, ghost)
+    isAtGreaterDepth = keyForSuggestion.length > key.length
+    const itemsBetweenKeyAndGhost = isAtGreaterDepth
+      ? 0 // when still different depth(post-pop())
+      : (stackKeyForSuggestion[STACK_KEY_ITERATION_INDEX] - mainDeepestStackKey[STACK_KEY_ITERATION_INDEX]) // {sugKey's index} - {key's index} when same depth
 
-    // splice {ITER_INDEX} items off beginning of iteration in hand until we have match at HEAD
-    iterationForSuggestion.splice(0, deepestStackKey[STACK_KEY_ITERATION_INDEX])
-    // insert remainder of iteration in front of stack it's found inside of
-    keyForSuggestion.pop() // update suggestion key to point to containing stack
-    const iterationForContainingStack = getIterationFor(keyForSuggestion, ghost)
-    // take iteration for suggestion, now containing suggestion onward, and inject where stack was
-    iterationForContainingStack.splice(last(keyForSuggestion)![STACK_KEY_ITERATION_INDEX], 0, ...iterationForSuggestion)
+    containingIterationForSuggestion.splice(
+      stackKeyForSuggestion[STACK_KEY_ITERATION_NUMBER],
+      itemsBetweenKeyAndGhost,
+      ...remainderOfCurrentGhostIteration)
 
-
-    // ----- when stack is left empty: discard it somehow
-    // --- return when stack depth is equal // key.length
-    //        && key contents are equal
-    // --- when not: repeat the ordeal
-
-    return this.syncGhost(keyForSuggestion, key, ghost)
+    // when still at greater depth: repeat the ordeal
+    if (isAtGreaterDepth) {
+      this.syncGhost(keyForSuggestion, key, ghost)
+    }
   }
 
   postInteractionComplete(interaction: IBlockInteraction, _context: IContext): void {
