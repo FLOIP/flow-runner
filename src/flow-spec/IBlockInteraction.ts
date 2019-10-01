@@ -14,6 +14,8 @@ export default interface IBlockInteraction {
 
   originBlockInteractionId?: string // UUID64
   originFlowId?: string // UUID64
+
+  platformMetadata: object
 }
 
 export interface IBlockInteractionDetails {

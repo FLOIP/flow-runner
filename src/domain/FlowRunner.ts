@@ -353,6 +353,7 @@ export default class FlowRunner implements IFlowRunner {
       // Nested flows:
       originFlowId,
       originBlockInteractionId,
+      platformMetadata: {},
     }
   }
 

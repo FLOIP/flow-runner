@@ -40,6 +40,7 @@ export default interface IContext {
   flows: IFlow[]
   firstFlowId: string
   resources: IResources
+  platformMetadata: object
 }
 
 export interface IContextWithCursor extends IContext {
@@ -75,6 +76,7 @@ export function createContextDataObjectFor(
     firstFlowId: flows[0].uuid,
 
     resources: [],
+    platformMetadata: {}
   }
 }
 
