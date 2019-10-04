@@ -8,22 +8,27 @@ import ResourceResolver from '../domain/ResourceResolver'
 
 export default class Context implements IContext {
   constructor(
-    public contact: IContact,
-    public createdAt: string,
-    public cursor: CursorType,
-    public deliveryStatus: DeliveryStatus,
-    public entryAt: string,
-    public exitAt: string,
-    public firstFlowId: string,
-    public flows: IFlow[],
     public id: string,
-    public interactions: IBlockInteraction[],
-    public languageId: string,
+    public createdAt: string,
+    public deliveryStatus: DeliveryStatus,
+
     public mode: SupportedMode,
-    public nestedFlowBlockInteractionIdStack: string[],
-    public resources: IResources,
+    public languageId: string,
+
+    public contact: IContact,
     public sessionVars: object,
-    public userId: string) {}
+    public interactions: IBlockInteraction[],
+    public nestedFlowBlockInteractionIdStack: string[],
+
+    public flows: IFlow[],
+    public firstFlowId: string,
+    public resources: IResources,
+
+    public entryAt?: string,
+    public exitAt?: string,
+    public userId?: string,
+    public cursor?: CursorType,
+  ) {}
 
   getResource(resourceId: string): IResource {
     return new ResourceResolver(this)

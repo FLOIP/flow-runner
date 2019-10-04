@@ -3,23 +3,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const ResourceResolver_1 = tslib_1.__importDefault(require("../domain/ResourceResolver"));
 class Context {
-    constructor(contact, createdAt, cursor, deliveryStatus, entryAt, exitAt, firstFlowId, flows, id, interactions, languageId, mode, nestedFlowBlockInteractionIdStack, resources, sessionVars, userId) {
-        this.contact = contact;
+    constructor(id, createdAt, deliveryStatus, mode, languageId, contact, sessionVars, interactions, nestedFlowBlockInteractionIdStack, flows, firstFlowId, resources, entryAt, exitAt, userId, cursor) {
+        this.id = id;
         this.createdAt = createdAt;
-        this.cursor = cursor;
         this.deliveryStatus = deliveryStatus;
+        this.mode = mode;
+        this.languageId = languageId;
+        this.contact = contact;
+        this.sessionVars = sessionVars;
+        this.interactions = interactions;
+        this.nestedFlowBlockInteractionIdStack = nestedFlowBlockInteractionIdStack;
+        this.flows = flows;
+        this.firstFlowId = firstFlowId;
+        this.resources = resources;
         this.entryAt = entryAt;
         this.exitAt = exitAt;
-        this.firstFlowId = firstFlowId;
-        this.flows = flows;
-        this.id = id;
-        this.interactions = interactions;
-        this.languageId = languageId;
-        this.mode = mode;
-        this.nestedFlowBlockInteractionIdStack = nestedFlowBlockInteractionIdStack;
-        this.resources = resources;
-        this.sessionVars = sessionVars;
         this.userId = userId;
+        this.cursor = cursor;
     }
     getResource(resourceId) {
         return new ResourceResolver_1.default(this)

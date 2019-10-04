@@ -5,10 +5,7 @@ import {
   IBasePromptConfig,
   INumericPromptConfig,
   KnownPrompts,
-  Resource,
   RichCursorType,
-  SupportedContentType,
-  SupportedMode,
 } from '../../src'
 
 
@@ -50,13 +47,7 @@ describe('FlowRunner/initializeOneBlock', () => {
             context,
             initialize: (): INumericPromptConfig & IBasePromptConfig => expectedPrompt = {
               kind: KnownPrompts.Numeric,
-              prompt: new Resource(
-                'What age are you at?',
-                [{ modes: [SupportedMode.SMS],
-                   languageId: 'eng',
-                   value: 'What age are you at?',
-                   contentType: SupportedContentType.TEXT}],
-                context),
+              prompt: 'What age are you at?',
               value: null,
               isResponseRequired: false,
               isSubmitted: false,
