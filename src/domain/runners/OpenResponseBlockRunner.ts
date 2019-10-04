@@ -5,20 +5,25 @@ import IOpenResponseBlock from '../../model/block/IOpenResponseBlock'
 import IContext from '../../flow-spec/IContext'
 
 export default class OpenResponseBlockRunner implements IBlockRunner {
-  constructor(public block: IOpenResponseBlock,
-              public context: IContext) {}
+  constructor(
+    public block: IOpenResponseBlock,
+    public context: IContext,
+  ) {
+  }
 
   initialize(): IOpenPromptConfig {
-    const {
-      prompt,
-      text: {maxResponseCharacters}
-    } = this.block.config
+    const blockConfig = this.block.config
+
+    let maxResponseCharacters
+    if (blockConfig.text != null) {
+      maxResponseCharacters = blockConfig.text.maxResponseCharacters
+    }
 
     return {
       kind: KnownPrompts.Open,
-      prompt,
+      prompt: blockConfig.prompt,
       isResponseRequired: true,
-      maxResponseCharacters,
+      maxResponseCharacters: maxResponseCharacters,
     }
   }
 
