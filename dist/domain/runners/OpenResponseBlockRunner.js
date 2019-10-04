@@ -7,12 +7,16 @@ class OpenResponseBlockRunner {
         this.context = context;
     }
     initialize() {
-        const { prompt, text: { maxResponseCharacters } } = this.block.config;
+        const blockConfig = this.block.config;
+        let maxResponseCharacters;
+        if (blockConfig.text != null) {
+            maxResponseCharacters = blockConfig.text.maxResponseCharacters;
+        }
         return {
             kind: __1.KnownPrompts.Open,
-            prompt,
+            prompt: blockConfig.prompt,
             isResponseRequired: true,
-            maxResponseCharacters,
+            maxResponseCharacters: maxResponseCharacters,
         };
     }
     run() {

@@ -13,6 +13,7 @@
     "lib": [
       "es2018"
     ],
+    "newLine": "LF",
     "module": "commonjs",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
