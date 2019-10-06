@@ -15,6 +15,8 @@ import IBlockExit from '../flow-spec/IBlockExit'
 import {find, first, last} from 'lodash'
 import uuid from 'uuid'
 import IFlowRunner, {IBlockRunnerFactoryStore} from './IFlowRunner'
+import IIdGenerator from './IIdGenerator'
+import IdGeneratorUuidV4 from './IdGeneratorUuidV4'
 import ValidationException from './exceptions/ValidationException'
 import IPrompt, {IBasePromptConfig, IPromptConfig, KnownPrompts} from './prompt/IPrompt'
 import MessagePrompt from './prompt/MessagePrompt'
@@ -33,7 +35,8 @@ export class BlockRunnerFactoryStore
 export default class FlowRunner implements IFlowRunner {
   constructor(
     public context: IContext,
-    public runnerFactoryStore: IBlockRunnerFactoryStore) {}
+    public runnerFactoryStore: IBlockRunnerFactoryStore,
+    protected idGenerator: IIdGenerator = new IdGeneratorUuidV4() ) {}
 
   /**
    * We want to call start when we don't have a prompt needing work to be done. */
@@ -337,7 +340,7 @@ export default class FlowRunner implements IFlowRunner {
     originBlockInteractionId: string | undefined): IBlockInteraction {
 
     return {
-      uuid: uuid.v4(),
+      uuid: this.idGenerator.generate(),
       blockId,
       flowId,
       entryAt: new Date().toISOString(),
