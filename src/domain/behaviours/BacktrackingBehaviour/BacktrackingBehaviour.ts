@@ -6,7 +6,7 @@ import {
 } from 'lodash'
 import IBehaviour from '../IBehaviour'
 import IBlockInteraction from '../../../flow-spec/IBlockInteraction'
-import IContext from '../../../flow-spec/IContext'
+import IContext, {findBlockOnActiveFlowWith} from '../../../flow-spec/IContext'
 import {
   _append,
   _loop,
@@ -24,13 +24,15 @@ import {
   StackKey,
   moveStackIndexTo,
   createKey,
-  deepTruncateIterationsFrom,
+  deepTruncateIterationFrom,
   deepIndexOfFrom,
   forceGet,
   isEntity,
-  truncateIterationsFrom, STACK_KEY_ITERATION_NUMBER, Iteration,
+  truncateIterationFrom,
+  STACK_KEY_ITERATION_NUMBER,
 } from './HierarchicalIterStack'
 import ValidationException from '../../exceptions/ValidationException'
+import {IFlowNavigator} from '../../FlowRunner'
 
 export interface IBacktrackingContext {
   /**
@@ -53,7 +55,9 @@ type BacktrackingIntxStack = IBacktrackingContext['interactionStack']
 
 export default class BacktrackingBehaviour implements IBehaviour {
   constructor(
-    public context: IContext) {
+    public context: IContext,
+    public navigator: IFlowNavigator) {
+
     this.initializeBacktrackingContext()
   }
 
@@ -103,7 +107,7 @@ export default class BacktrackingBehaviour implements IBehaviour {
     // check if any parent stacks start with a matching block; included current stack, but that should be caught above
     const keyToBeginningOfStackWithHeadMatchingBlock = findHeadRightFrom(key, interactionStack, intx => (intx as IBlockInteraction).blockId === interaction.blockId)
     if (keyToBeginningOfStackWithHeadMatchingBlock != null) {
-      // [Step Out] Found an stack continue on from
+      // [Step Out] Found an stack to continue on from
       this._stepOut(keyToBeginningOfStackWithHeadMatchingBlock, interactionStack, interaction, key)
       return
     }
@@ -112,11 +116,10 @@ export default class BacktrackingBehaviour implements IBehaviour {
     last(key)![STACK_KEY_ITERATION_INDEX] = _append(interaction, getStackFor(key, interactionStack)) - 1
   }
 
-  _stepOut(keyToBeginningOfStackWithHeadMatchingBlock: Key, interactionStack: BacktrackingIntxStack, interaction: IBlockInteraction, key: BacktrackingCursor) {
-    // shift index to the right of stack
-    // const i = last(keyToBeginningOfStackWithHeadMatchingBlock)![STACK_KEY_ITERATION_INDEX] += 1
-    // _insertAt(i, interaction, getIterationFor(keyToBeginningOfStackWithHeadMatchingBlock, interactionStack))
-    // const stack: IStack = forceGet(keyToBeginningOfStackWithHeadMatchingBlock, interactionStack) as IStack
+  _stepOut(keyToBeginningOfStackWithHeadMatchingBlock: Key,
+           interactionStack: BacktrackingIntxStack,
+           interaction: IBlockInteraction,
+           key: BacktrackingCursor) {
 
     const stack: IStack = getStackFor(keyToBeginningOfStackWithHeadMatchingBlock, interactionStack)
     _loop(stack, [interaction])
@@ -127,7 +130,11 @@ export default class BacktrackingBehaviour implements IBehaviour {
     key.splice(0, Number.MAX_VALUE, ...keyToBeginningOfStackWithHeadMatchingBlock)
   }
 
-  _stepIn(key: BacktrackingCursor, interactionStack: BacktrackingIntxStack, keyForIntxOfRepeatedBlock: Key, interaction: IBlockInteraction) {
+  _stepIn(key: BacktrackingCursor,
+          interactionStack: BacktrackingIntxStack,
+          keyForIntxOfRepeatedBlock: Key,
+          interaction: IBlockInteraction) {
+
     const iteration = getIterationFor(key, interactionStack)
     const i = last(keyForIntxOfRepeatedBlock)![STACK_KEY_ITERATION_INDEX] // todo: abstract key operations
 
@@ -144,6 +151,44 @@ export default class BacktrackingBehaviour implements IBehaviour {
     key.push(createStackKey(1, 0))
   }
 
+    // we jump to a particular interaction
+    // which updates context.interactions
+    // the only piece that's missing is updating the cursor, because we're already initialized everything
+    // we only need to regenrate hte prompt for this particular interaction
+    // once the prompt is generated, then we can set that on the context as our new cursor
+    //
+    // everything else regarding hierarchical cursors has been handled already
+    //
+    // so the hook that we need is basically the second half of initializeOneBlock()
+    // there's a weird thing here, where if we were to call initializeOneBlock
+    //  we'd get a new interaction
+    //  and our postCreateInteraction would get called --- except, we wouldn't really know where it's getting called FROM
+    //
+    //
+    //
+    // FlowRunner.navigateTo(block: IBlock, ctx: IContext)
+    //
+    //     -> FlowRunner.initializeOneBlock(
+    //             block: IBlock,
+    //             flowId: string,
+    //             originFlowId?: string,
+    //             originBlockInteractionId?: string)
+    //
+    //         -> behaviours.postInteractionCreate(): IBlockInteraction
+    //
+    //
+    //
+    // Now, we run into the issue where jumping back to a place that should step out of our nestedFlow stack breaks things
+    // -> nestedFlowBlockInteractionIdStack
+    //     -> when jumpTo()-ing: need to pop these off until flowId matches
+    //
+    // Question: when calling jumpTo() from the outside, what does that UX look like? And how does that tie nav() + init() + post() together?
+    //
+    // If we reuse navigate to, then we get interaction.push(), lastIntx.exitAt, ctx.cursor, return richCursor all for free
+    //   - last.exitAt is a bit of an issue, but we can always use backtracking-meta on intx to store originalExitAt .
+
+
+
   jumpTo(interaction: IBlockInteraction, context: IContext) {
     const {
       backtracking,
@@ -151,7 +196,7 @@ export default class BacktrackingBehaviour implements IBehaviour {
 
     // find a key for provided past interaction
     const keyForLastOccurrenceOfInteraction = deepIndexOfFrom(
-      createKey(),
+      createKey(), // begins search from beginning -- todo: search from right
       backtracking.interactionStack,
       ({uuid}) => uuid === interaction.uuid)
 
@@ -159,26 +204,36 @@ export default class BacktrackingBehaviour implements IBehaviour {
       throw new ValidationException('Unable to find destination interaction in backtracking stack for jumpTo()')
     }
 
+
+    // todo: if something hasn't changed, can we extend this ghost rather than creating anew?
+
+
+
     // create ghost stack to follow after jumping back
     backtracking.ghostInteractionStack = cloneDeep(backtracking.interactionStack)
 
     // jump context.interactions back in time
-    context.interactions.splice( // truncate interactions list to pull us back in time
+    context.interactions.splice( // truncate interactions list to pull us back in time; including provided intx
       lastIndexOf(context.interactions, interaction),
       context.interactions.length)
 
     // update interactionStack to match
-    deepTruncateIterationsFrom(keyForLastOccurrenceOfInteraction, backtracking.interactionStack) // todo: should this be inclusive or exclusive?
+    // todo: should this truncate be inclusive or exclusive?
+    //       - it should remove found interaction; aka point should result in none; how does this change references to backtracking.cursor thenceforth?
+    deepTruncateIterationFrom(keyForLastOccurrenceOfInteraction, backtracking.interactionStack)
 
     // set backtracking cursor to match
     backtracking.cursor = keyForLastOccurrenceOfInteraction
 
-    // todo: need to facilitate the creation of our new interaction -- runner reference for createBlockInteractionFor()?
 
 
 
 
 
+
+    // todo: This navigateTo() is going to append an interaction onto context.interactions --> verify that context.interactions.splice() accounts for that
+
+    return this.navigator.navigateTo(findBlockOnActiveFlowWith(interaction.uuid, this.context), this.context)
   }
 
   findIndexOfSuggestionFor({blockId}: IBlockInteraction, key: Key, stack: IStack): Key | undefined {
@@ -232,8 +287,8 @@ export default class BacktrackingBehaviour implements IBehaviour {
    * A hierarchical deep splice to remove items between two keys, hoisting deepest iteration to main depth.
    * ghost=[[0, 1], [1, 3], [0, 1], [1, 2]]
    * main=[[0, 1], [1, 4]] */
-  syncGhost(keyForSuggestion: Key, key: Key, ghost: IStack): Key {
-    // todo: push out as stack::deepSplice(key, key, stack): Item[]
+  syncGhost(keyForSuggestion: Key, key: Key, ghost: IStack) {//: Key {
+    // todo: refactor this into stack::deepSplice(): Item[]
     //       if we provide items (remainderOfCurrentGhostIteration), this becomes two logical pieces splice() + deepSplice()
 
     if (keyForSuggestion.length < key.length) {
@@ -241,7 +296,7 @@ export default class BacktrackingBehaviour implements IBehaviour {
     }
 
     if (keyForSuggestion.length === key.length && keyForSuggestion.toString() === key.toString()) {
-      return keyForSuggestion
+      return //keyForSuggestion
     }
 
     let isAtGreaterDepth = keyForSuggestion.length > key.length
@@ -259,12 +314,11 @@ export default class BacktrackingBehaviour implements IBehaviour {
 
     // splice keepers onto containing stack at suggestedKeyIterAndIndex; discarding # of items between
     stackKeyForSuggestion = last(keyForSuggestion)!
-    const mainDeepestStackKey: StackKey = last(key)!
     const containingIterationForSuggestion = getIterationFor(keyForSuggestion, ghost)
     isAtGreaterDepth = keyForSuggestion.length > key.length
     const itemsBetweenKeyAndGhost = isAtGreaterDepth
       ? 0 // when still different depth(post-pop())
-      : (stackKeyForSuggestion[STACK_KEY_ITERATION_INDEX] - mainDeepestStackKey[STACK_KEY_ITERATION_INDEX]) // {sugKey's index} - {key's index} when same depth
+      : (stackKeyForSuggestion[STACK_KEY_ITERATION_INDEX] - last(key)![STACK_KEY_ITERATION_INDEX]) // {sugKey's index} - {key's index} when same depth
 
     containingIterationForSuggestion.splice(
       stackKeyForSuggestion[STACK_KEY_ITERATION_NUMBER],
@@ -302,14 +356,7 @@ export default class BacktrackingBehaviour implements IBehaviour {
     // when interaction's value differs from interaction@ghost's value
     // remove the possibility of suggesting from future -- todo: verify this logic -- can we be this destructive?
 
-    // what happens when we're at a different depth than each other?
-    // -
-
-
-
-    // - accepted being defined as something like "suggestedFrom: intx.id" -- we'd need to null this when values are different upon completion
-
-    // below assumes that keys point to same points in both ghost and non-ghost
-    truncateIterationsFrom(key, ghostInteractionStack) // todo: should this be inclusive or exclusive?
+    // assumption: keys point to same points in both ghost and main stacks
+    truncateIterationFrom(key, ghostInteractionStack) // todo: should this be inclusive or exclusive?
   }
 }

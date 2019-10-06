@@ -1,3 +1,4 @@
+import {trimEnd, lowerFirst} from 'lodash'
 import IBlock, {findBlockExitWith} from '../flow-spec/IBlock'
 import IContext, {
   CursorType,
@@ -25,6 +26,8 @@ import NumericPrompt from './prompt/NumericPrompt'
 import OpenPrompt from './prompt/OpenPrompt'
 import SelectOnePrompt from './prompt/SelectOnePrompt'
 import SelectManyPrompt from './prompt/SelectManyPrompt'
+import BacktrackingBehaviour from './behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
+import IBehaviour, {IBehaviourConstructor} from './behaviours/IBehaviour'
 
 
 export class BlockRunnerFactoryStore
@@ -32,11 +35,35 @@ export class BlockRunnerFactoryStore
   implements IBlockRunnerFactoryStore {
 }
 
-export default class FlowRunner implements IFlowRunner {
+export interface IFlowNavigator {
+  navigateTo(block: IBlock, ctx: IContext): RichCursorType
+}
+
+const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
+  BacktrackingBehaviour,
+]
+
+export default class FlowRunner implements IFlowRunner, IFlowNavigator {
   constructor(
     public context: IContext,
     public runnerFactoryStore: IBlockRunnerFactoryStore,
-    protected idGenerator: IIdGenerator = new IdGeneratorUuidV4() ) {}
+    protected idGenerator: IIdGenerator = new IdGeneratorUuidV4(),
+    public behaviours: { [key: string]: IBehaviour } = {},
+  ) {
+    this.initializeBehaviours(DEFAULT_BEHAVIOUR_TYPES)
+  }
+
+  /**
+   * Take list of constructors and initialize them like: ```
+   * runner.initializeBehaviours([MyFirstBehaviour, MySecondBehaviour])
+   * runner.behaviours.myFirst instanceof MyFirstBehaviour
+   * runner.behaviours.mySecond instanceof MySecondBehaviour
+   * ``` */
+  initializeBehaviours(behaviourConstructors: IBehaviourConstructor[]) {
+    behaviourConstructors.forEach(b =>
+      this.behaviours[lowerFirst(trimEnd(b.name, 'Behaviour|Behavior'))]
+        = new b(this.context, this))
+  }
 
   /**
    * We want to call start when we don't have a prompt needing work to be done. */
@@ -172,8 +199,10 @@ export default class FlowRunner implements IFlowRunner {
     originFlowId?: string,
     originBlockInteractionId?: string,
   ): RichCursorType {
-    const runner = this.createBlockRunnerFor(block, this.context)
     const interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
+    // interaction = behaviours.postCreateInteraction()
+
+    const runner = this.createBlockRunnerFor(block, this.context)
     const promptConfig = runner.initialize(interaction)
     const prompt = this.createPromptFrom(promptConfig, interaction)
 

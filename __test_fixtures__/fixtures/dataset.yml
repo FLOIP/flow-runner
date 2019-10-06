@@ -58,6 +58,7 @@ _defaults:
       deliveryStatus: IN_PROGRESS
     sessionVars: {}
     nestedFlowBlockInteractionIdStack: []
+    platformMetadata: {}
 
 # @note Some Id references are hand-rolled identifiers.
 #       Pls ensure that refactoring has "search in comments" enabled.

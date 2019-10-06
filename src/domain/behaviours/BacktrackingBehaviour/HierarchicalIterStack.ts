@@ -173,20 +173,20 @@ export function _loop(stack: IStack, nextIteration: Iteration = []) {
 
 /**
  * Remove tail end of current iteration after cursor and up hierarchy as well. */
-export function deepTruncateIterationsFrom(key: Key, stack: IStack) {
-  truncateIterationsFrom(key, stack)
+export function deepTruncateIterationFrom(key: Key, stack: IStack) {
+  truncateIterationFrom(key, stack)
 
   if (key.length <= 1) {
     return
   }
 
   // get containing stack + repeat
-  deepTruncateIterationsFrom(key.slice(0, -1), getStackFor(key, stack))
+  deepTruncateIterationFrom(key.slice(0, -1), getStackFor(key, stack))
 }
 
 /**
  * Remove tail end of current iteration after cursor. */
-export function truncateIterationsFrom(key: Key, stack: IStack) {
+export function truncateIterationFrom(key: Key, stack: IStack) {
   if (key.length === 0) {
     return
   }

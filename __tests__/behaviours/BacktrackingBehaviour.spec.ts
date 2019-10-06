@@ -18,6 +18,13 @@ import {
 
 
 describe('BacktrackingBehaviour', () => {
+  let backtracking: BacktrackingBehaviour
+
+  beforeEach(() => {
+    backtracking = new BacktrackingBehaviour(
+      {platformMetadata: {}} as IContext,
+      {navigateTo: (_b, _c) => [{} as IBlockInteraction, undefined]})
+  })
 
   describe('constructor', () => {
     it.todo('should initialize backtracking on context\'s platform metadata')
@@ -36,7 +43,6 @@ describe('BacktrackingBehaviour', () => {
           const interactionStack = createStack([...interactions])
 
           const cursor: IContextBacktrackingPlatformMetadata['backtracking']['cursor'] = createKey(3)
-          const backtracking = new BacktrackingBehaviour({} as IContext)
           const interaction = {blockId: '1', uuid: 'abc-4'} as IBlockInteraction
 
           backtracking.insertInteractionUsing(cursor, interaction, interactionStack)
@@ -66,7 +72,6 @@ describe('BacktrackingBehaviour', () => {
           const interactionStack = createStack([...interactions])
 
           const cursor: IContextBacktrackingPlatformMetadata['backtracking']['cursor'] = createKey(3)
-          const backtracking = new BacktrackingBehaviour({} as IContext)
           const interaction = {blockId: '0', uuid: 'abc-4'} as IBlockInteraction
 
           backtracking.insertInteractionUsing(cursor, interaction, interactionStack)
@@ -87,7 +92,6 @@ describe('BacktrackingBehaviour', () => {
           it('should insert at first position', () => {
             const interactionStack: IContextBacktrackingPlatformMetadata['backtracking']['interactionStack'] = createStack()
             const cursor: IContextBacktrackingPlatformMetadata['backtracking']['cursor'] = createKey()
-            const backtracking = new BacktrackingBehaviour({} as IContext)
             const interaction = {uuid: 'abc-123'} as IBlockInteraction
 
             expect(backtracking.insertInteractionUsing(cursor, interaction, interactionStack))
@@ -108,7 +112,6 @@ describe('BacktrackingBehaviour', () => {
             const interactionStack = createStack([...interactions])
 
             const cursor: IContextBacktrackingPlatformMetadata['backtracking']['cursor'] = createKey(3)
-            const backtracking = new BacktrackingBehaviour({} as IContext)
             const interaction = {blockId: '4', uuid: 'abc-4'} as IBlockInteraction
 
             backtracking.insertInteractionUsing(cursor, interaction, interactionStack)
@@ -131,7 +134,6 @@ describe('BacktrackingBehaviour', () => {
             const interactionStack = cloneDeep(sourceInteractions) as IContextBacktrackingPlatformMetadata['backtracking']['interactionStack']
 
             const cursor: IContextBacktrackingPlatformMetadata['backtracking']['cursor'] = [createStackKey(0, 1), createStackKey(1, 1), createStackKey(1, 2)]
-            const backtracking = new BacktrackingBehaviour({} as IContext)
             const interaction = {blockId: '6', uuid: 'abc-11'} as IBlockInteraction
 
             backtracking.insertInteractionUsing(cursor, interaction, interactionStack)
@@ -159,7 +161,6 @@ describe('BacktrackingBehaviour', () => {
           const interactionStack = cloneDeep(sourceInteractions) as IContextBacktrackingPlatformMetadata['backtracking']['interactionStack']
 
           const cursor: IContextBacktrackingPlatformMetadata['backtracking']['cursor'] = [createStackKey(0, 1), createStackKey(1, 1), createStackKey(1, 2)]
-          const backtracking = new BacktrackingBehaviour({} as IContext)
           const interaction = {blockId: '2', uuid: 'abc-11'} as IBlockInteraction
 
           backtracking.insertInteractionUsing(cursor, interaction, interactionStack)
@@ -184,7 +185,6 @@ describe('BacktrackingBehaviour', () => {
           const interactionStack = cloneDeep(sourceInteractions) as IContextBacktrackingPlatformMetadata['backtracking']['interactionStack']
 
           const cursor: IContextBacktrackingPlatformMetadata['backtracking']['cursor'] = [createStackKey(0, 1), createStackKey(1, 1), createStackKey(1, 2)]
-          const backtracking = new BacktrackingBehaviour({} as IContext)
           const interaction = {blockId: '1', uuid: 'abc-11'} as IBlockInteraction
 
           backtracking.insertInteractionUsing(cursor, interaction, interactionStack)
