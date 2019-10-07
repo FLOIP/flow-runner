@@ -19,7 +19,7 @@ function findFirstTruthyEvaluatingBlockExitOn(block, context) {
         throw new ValidationException_1.default(`Unable to find exits on block ${block.uuid}`);
     }
     const { cursor } = context;
-    if (cursor == null || cursor[1] == null) {
+    if (cursor == null || cursor[0] == null) {
         throw new ValidationException_1.default(`Unable to find cursor on context ${context.id}`);
     }
     const evalContext = createEvalContextFrom(context, block);
@@ -36,6 +36,7 @@ function findDefaultBlockExitOn(block) {
 exports.findDefaultBlockExitOn = findDefaultBlockExitOn;
 function createEvalContextFrom(context, block) {
     const { contact, cursor, mode, languageId: language } = context;
+    const prompt = cursor ? cursor[1] : undefined;
     return {
         contact,
         channel: { mode },
@@ -45,7 +46,7 @@ function createEvalContextFrom(context, block) {
         },
         block: {
             ...block,
-            value: cursor[1].value,
+            value: prompt ? prompt.value : undefined,
         },
     };
 }

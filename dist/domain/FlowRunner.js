@@ -5,6 +5,7 @@ const IBlock_1 = require("../flow-spec/IBlock");
 const IContext_1 = require("../flow-spec/IContext");
 const lodash_1 = require("lodash");
 const uuid_1 = tslib_1.__importDefault(require("uuid"));
+const IdGeneratorUuidV4_1 = tslib_1.__importDefault(require("./IdGeneratorUuidV4"));
 const ValidationException_1 = tslib_1.__importDefault(require("./exceptions/ValidationException"));
 const IPrompt_1 = require("./prompt/IPrompt");
 const MessagePrompt_1 = tslib_1.__importDefault(require("./prompt/MessagePrompt"));
@@ -17,9 +18,10 @@ class BlockRunnerFactoryStore extends Map {
 }
 exports.BlockRunnerFactoryStore = BlockRunnerFactoryStore;
 class FlowRunner {
-    constructor(context, runnerFactoryStore) {
+    constructor(context, runnerFactoryStore, idGenerator = new IdGeneratorUuidV4_1.default()) {
         this.context = context;
         this.runnerFactoryStore = runnerFactoryStore;
+        this.idGenerator = idGenerator;
     }
     initialize() {
         const ctx = this.context;
@@ -188,7 +190,7 @@ class FlowRunner {
     }
     createBlockInteractionFor({ uuid: blockId, type }, flowId, originFlowId, originBlockInteractionId) {
         return {
-            uuid: uuid_1.default.v4(),
+            uuid: this.idGenerator.generate(),
             blockId,
             flowId,
             entryAt: new Date().toISOString(),
