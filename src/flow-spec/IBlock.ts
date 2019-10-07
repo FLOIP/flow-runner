@@ -1,7 +1,7 @@
 import IBlockExit, {IBlockExitTestRequired} from './IBlockExit'
 import {find} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
-import IContext, {CursorInputRequiredType, getActiveFlowFrom} from './IContext'
+import IContext, {getActiveFlowFrom} from './IContext'
 import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
 
 export default interface IBlock {
@@ -35,7 +35,7 @@ export function findFirstTruthyEvaluatingBlockExitOn(block: IBlockWithTestExits,
   }
 
   const {cursor} = context
-  if (cursor == null || cursor[1] == null) {
+  if (cursor == null || cursor[0] == null) {
     throw new ValidationException(`Unable to find cursor on context ${context.id}`)
   }
 
@@ -56,6 +56,8 @@ export function findDefaultBlockExitOn(block: IBlock): IBlockExit {
 // todo: push eval stuff into `Expression.evaluate()` abstraction for evalContext + result handling 👇
 function createEvalContextFrom(context: IContext, block: IBlock) {
   const {contact, cursor, mode, languageId: language} = context
+  const prompt = cursor ? cursor[1] : undefined
+
   return {
     contact,
     channel: {mode},
@@ -65,7 +67,7 @@ function createEvalContextFrom(context: IContext, block: IBlock) {
     },
     block: {
       ...block,
-      value: (cursor as CursorInputRequiredType)[1].value,
+      value: prompt ? prompt.value : undefined,
     },
   }
 }
