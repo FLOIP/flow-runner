@@ -1,12 +1,12 @@
 import {
   cloneDeep,
+  findLastIndex,
   isEqual,
   last,
-  lastIndexOf,
 } from 'lodash'
 import IBehaviour from '../IBehaviour'
 import IBlockInteraction from '../../../flow-spec/IBlockInteraction'
-import IContext, {findBlockOnActiveFlowWith} from '../../../flow-spec/IContext'
+import IContext, {findBlockOnActiveFlowWith, IContextWithCursor, RichCursorType} from '../../../flow-spec/IContext'
 import {
   _append,
   _loop,
@@ -24,12 +24,13 @@ import {
   StackKey,
   moveStackIndexTo,
   createKey,
-  deepTruncateIterationFrom,
+  deepTruncateIterationsFrom,
   deepIndexOfFrom,
   forceGet,
   isEntity,
   truncateIterationFrom,
   STACK_KEY_ITERATION_NUMBER,
+  cloneKeyAndMoveTo,
 } from './HierarchicalIterStack'
 import ValidationException from '../../exceptions/ValidationException'
 import {IFlowNavigator} from '../../FlowRunner'
@@ -154,7 +155,7 @@ export default class BacktrackingBehaviour implements IBehaviour {
     // we jump to a particular interaction
     // which updates context.interactions
     // the only piece that's missing is updating the cursor, because we're already initialized everything
-    // we only need to regenrate hte prompt for this particular interaction
+    // we only need to regenerate the prompt for this particular interaction
     // once the prompt is generated, then we can set that on the context as our new cursor
     //
     // everything else regarding hierarchical cursors has been handled already
@@ -189,14 +190,14 @@ export default class BacktrackingBehaviour implements IBehaviour {
 
 
 
-  jumpTo(interaction: IBlockInteraction, context: IContext) {
+  jumpTo(interaction: IBlockInteraction, context: IContext): RichCursorType {
     const {
       backtracking,
     } = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
 
     // find a key for provided past interaction
     const keyForLastOccurrenceOfInteraction = deepIndexOfFrom(
-      createKey(), // begins search from beginning -- todo: search from right
+      createKey(), // begins search from beginning -- todo: search from right?
       backtracking.interactionStack,
       ({uuid}) => uuid === interaction.uuid)
 
@@ -214,16 +215,34 @@ export default class BacktrackingBehaviour implements IBehaviour {
 
     // jump context.interactions back in time
     context.interactions.splice( // truncate interactions list to pull us back in time; including provided intx
-      lastIndexOf(context.interactions, interaction),
+      findLastIndex(context.interactions, interaction),
       context.interactions.length)
 
+    // todo: implement nestedFlowInteractionIdStack stripper
+    // - pop interactions off this stack until (length <= 0 || interaction.flowId === x.flowId).
+    // - this doesn't work for loops within loops, does it?
+    // - eg. flow a -> flow b -> flow c -> flow a -> flow b -> flow c
+    //       - if we backtrack to interaction on first flow b, we're only going to pop these a single stack back
+    //       - however, we do have our `context.interactions` that we can search for run-flow blocks and pop accordingly
+    //         while running from right
+
     // update interactionStack to match
+
     // todo: should this truncate be inclusive or exclusive?
     //       - it should remove found interaction; aka point should result in none; how does this change references to backtracking.cursor thenceforth?
-    deepTruncateIterationFrom(keyForLastOccurrenceOfInteraction, backtracking.interactionStack)
+
+    const deepestStackKeyForIntx = last(keyForLastOccurrenceOfInteraction)!
+    const keyToTruncateFrom = cloneKeyAndMoveTo(
+      createStackKey(
+        deepestStackKeyForIntx[STACK_KEY_ITERATION_NUMBER],
+        deepestStackKeyForIntx[STACK_KEY_ITERATION_INDEX] - 1), // slide left one so that we free current spot up
+      keyForLastOccurrenceOfInteraction,
+      backtracking.interactionStack)
+
+    deepTruncateIterationsFrom(keyToTruncateFrom, backtracking.interactionStack)
 
     // set backtracking cursor to match
-    backtracking.cursor = keyForLastOccurrenceOfInteraction
+    backtracking.cursor = keyToTruncateFrom // keyForLastOccurrenceOfInteraction // todo: this now points at a null; should it be `keyToTruncateFrom`?
 
 
 
@@ -233,7 +252,16 @@ export default class BacktrackingBehaviour implements IBehaviour {
 
     // todo: This navigateTo() is going to append an interaction onto context.interactions --> verify that context.interactions.splice() accounts for that
 
-    return this.navigator.navigateTo(findBlockOnActiveFlowWith(interaction.uuid, this.context), this.context)
+    return this.navigator.navigateTo(
+      findBlockOnActiveFlowWith(interaction.blockId, this.context),
+      this.context)
+  }
+
+  peek(steps: number = 1) {
+    // todo: this will wrap richCursor creation, something like: ```
+    //       ctx = {cursor: [interactionId, createPromptConfig(intx)]}
+    //       return this.cursorHydrator.hydrateRichCursorFrom(ctx: IContextWithCursor)
+    //       ```
   }
 
   findIndexOfSuggestionFor({blockId}: IBlockInteraction, key: Key, stack: IStack): Key | undefined {
@@ -250,7 +278,7 @@ export default class BacktrackingBehaviour implements IBehaviour {
       return
     }
 
-    const keyForNextIteration = moveStackIndexTo(createStackKey(0, 0), cloneDeep(key)) // todo: use cloneAndMoveTo()
+    const keyForNextIteration = moveStackIndexTo(createStackKey(0, 0), cloneDeep(key)) // todo: use cloneKeyAndMoveTo()
     return deepIndexOfFrom(keyForNextIteration, stack, intx => (intx as IBlockInteraction).blockId === blockId)
   }
 

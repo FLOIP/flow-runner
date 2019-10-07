@@ -1,6 +1,5 @@
 import {cloneDeep} from 'lodash'
 import BacktrackingBehaviour, {
-  // IBacktrackingContext,
   IContextBacktrackingPlatformMetadata,
 } from '../../src/domain/behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
 import IContext from '../../src/flow-spec/IContext'
@@ -15,6 +14,7 @@ import {
   getStackFor,
   IEntity,
 } from '../../src/domain/behaviours/BacktrackingBehaviour/HierarchicalIterStack'
+import IFlow from '../../src/flow-spec/IFlow'
 
 
 describe('BacktrackingBehaviour', () => {
@@ -217,6 +217,95 @@ describe('BacktrackingBehaviour', () => {
   })
 
   describe('findIndexOfSuggestionFor', () => {
+    it.todo('...')
+  })
 
+  describe('jumpTo', () => {
+    let interactions: IBlockInteraction[]
+    let meta: IContextBacktrackingPlatformMetadata['backtracking']
+
+    beforeEach(() => {
+      interactions = [{uuid: 'abc-123'}, {uuid: 'abc-234', blockId: 'block/abc-234'}, {uuid: 'abc-345'}] as IBlockInteraction[]
+
+      backtracking.context.interactions = cloneDeep(interactions)
+      backtracking.context.firstFlowId = 'flow/abc-123'
+      backtracking.context.flows = [{uuid: 'flow/abc-123', blocks: [{uuid: 'block/abc-234'}]} as IFlow]
+      backtracking.context.nestedFlowBlockInteractionIdStack = []
+
+      meta = (backtracking.context.platformMetadata as IContextBacktrackingPlatformMetadata).backtracking
+      meta.interactionStack = createStack(cloneDeep(interactions))
+    })
+
+    it('should initialize ghost stack as a clone of current stack', () => {
+      const expectedGhostStack = createStack(cloneDeep(interactions))
+
+      expect(meta.ghostInteractionStack).toBeUndefined()
+      backtracking.jumpTo({uuid: 'abc-234', blockId: 'block/abc-234'} as IBlockInteraction, backtracking.context)
+      expect(meta.ghostInteractionStack).toEqual(expectedGhostStack)
+      expect(meta.ghostInteractionStack).not.toBe(expectedGhostStack)
+    })
+
+    it('should set cursor to point in time before the interaction we jump to; this gives space to run the block we\'re jumping to in place', () => {
+      expect(meta.cursor).toEqual(createKey())
+      backtracking.jumpTo({uuid: 'abc-234', blockId: 'block/abc-234'} as IBlockInteraction, backtracking.context)
+      expect(meta.cursor).toEqual(createKey(0))
+    })
+
+    it('should truncate interactions off main context interactions list from jumped to onward', () => {
+      expect(backtracking.context.interactions).toEqual(interactions)
+      backtracking.jumpTo({uuid: 'abc-234', blockId: 'block/abc-234'} as IBlockInteraction, backtracking.context)
+      expect(backtracking.context.interactions).toEqual(interactions.slice(0, 1))
+    })
+
+    it('should truncate hierarchical stack to match interactions list', () => {
+      backtracking.jumpTo({uuid: 'abc-234', blockId: 'block/abc-234'} as IBlockInteraction, backtracking.context)
+      expect(meta.interactionStack).toEqual(createStack(interactions.slice(0, 1)))
+    })
+
+    it('should reconcile nestedFlowBlockInteractionIdStack to account for having dived into nested flows', () => {
+      interactions = [
+        {uuid: 'intx-123'},
+        {uuid: 'intx-234'},  //blockId: 'block-234'
+        {uuid: 'intx-345'},
+        {uuid: 'intx-456'},
+        {uuid: 'intx-567'},
+        {uuid: 'intx-678'},
+        {uuid: 'intx-789'},
+        {uuid: 'intx-890'},
+        {uuid: 'intx-901'},
+        {uuid: 'intx-012'},
+      ] as IBlockInteraction[]
+
+      backtracking.context.interactions = cloneDeep(interactions)
+      backtracking.context.firstFlowId = 'flow-123'
+      backtracking.context.flows = [
+        {uuid: 'flow-123', blocks: [{uuid: 'block-123'}, {uuid: 'block-234'}, {uuid: 'block-345'}, {uuid: 'block-456'}]},
+        {uuid: 'flow-234', blocks: [{uuid: 'block-567'}, {uuid: 'block-678'}, {uuid: 'block-789'}]},
+        {uuid: 'flow-345', blocks: [{uuid: 'block-890'}, {uuid: 'block-901'}, {uuid: 'block-012'}]},
+      ] as IFlow[]
+
+      backtracking.context.nestedFlowBlockInteractionIdStack = [
+        'abc-234',
+        'abc-890',
+        'abc-234',
+        'abc-890',
+      ]
+
+      meta = (backtracking.context.platformMetadata as IContextBacktrackingPlatformMetadata).backtracking
+      meta.interactionStack = createStack(cloneDeep(interactions))
+
+
+
+      // need some interaction ids on context.nestedFlowBlockInteractionIdStack
+
+      // need interaction list to intersperse other interactions amongst ^^^ in interactions list
+      // need hstack to match ^^^ (maybe an opportunity to use rebuildIndex()
+      // .
+
+
+
+      // assert: pop off correct number of items
+      // assert: pop off correct number when nesting is repeated
+    })
   })
 })

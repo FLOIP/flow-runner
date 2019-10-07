@@ -172,31 +172,34 @@ export function _loop(stack: IStack, nextIteration: Iteration = []) {
 }
 
 /**
- * Remove tail end of current iteration after cursor and up hierarchy as well. */
-export function deepTruncateIterationFrom(key: Key, stack: IStack) {
+ * Remove tail end of current iteration _after_ cursor and up hierarchy as well. */
+export function deepTruncateIterationsFrom(key: Key, stack: IStack) {
   truncateIterationFrom(key, stack)
+  getStackFor(key, stack)
+    .stack
+    .splice(lodashLast(key)![STACK_KEY_ITERATION_NUMBER] + 1, Number.MAX_VALUE)
 
   if (key.length <= 1) {
     return
   }
 
   // get containing stack + repeat
-  deepTruncateIterationFrom(key.slice(0, -1), getStackFor(key, stack))
+  deepTruncateIterationsFrom(key.slice(0, -1), stack)
 }
 
 /**
- * Remove tail end of current iteration after cursor. */
-export function truncateIterationFrom(key: Key, stack: IStack) {
+ * Remove tail end of current iteration _after_ provided cursor. */
+export function truncateIterationFrom(key: Key, stack: IStack): Iteration {
   if (key.length === 0) {
-    return
+    return []
   }
 
   // get iter + splice from that index
-  getIterationFor(key, stack)
-    .splice(lodashLast(key)![STACK_KEY_ITERATION_INDEX], Number.MAX_VALUE)
+  return getIterationFor(key, stack)
+    .splice(lodashLast(key)![STACK_KEY_ITERATION_INDEX] + 1, Number.MAX_VALUE)
 }
 
-export function cloneAndMoveTo(stackKey: StackKey, key: Key, stack: IStack): Key {
+export function cloneKeyAndMoveTo(stackKey: StackKey, key: Key, stack: IStack): Key {
   const duplicateKey = cloneDeep(key)
 
   const duplicateKeyAtNewPosition = [...duplicateKey.slice(0, -1), stackKey]
@@ -254,7 +257,7 @@ export function findHeadRightFrom(key: Key, stack: IStack, matcher: IEntityMatch
 
   if (!isStackEmpty(containingStack) && matcher(containingStack.head!)) {
     // create a key to [iter:0][i:0] of current stack
-    return cloneAndMoveTo(createStackKey(0, 0), key, stack)
+    return cloneKeyAndMoveTo(createStackKey(0, 0), key, stack)
   }
 
   // containingStack is stack when we're at root
@@ -323,8 +326,10 @@ export function deepIndexOfFrom(key: Key, stack: IStack, matcher: IEntityMatcher
   }
 
   if (!isStack(item)) {
-    return
+    // we need an actual indexOf here -- basically scan left for an entire iteration
+    return deepIndexOfFrom(keyForNextItem, stack, matcher, key)
   }
 
+  // nest one level deeper at current key
   return deepIndexOfFrom(duplicateKey.concat(createStackKey(0, 0)), stack, matcher, key)
 }
