@@ -3,7 +3,7 @@ import IBlock from './IBlock'
 import {find} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
 import SupportedMode from './SupportedMode'
-import {ILanguage} from './ILanguage'
+import ILanguage from './ILanguage'
 
 export default interface IFlow {
   uuid: string // UUID32

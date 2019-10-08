@@ -1,6 +1,6 @@
 import IBlock from './IBlock';
 import SupportedMode from './SupportedMode';
-import { ILanguage } from './ILanguage';
+import ILanguage from './ILanguage';
 export default interface IFlow {
     uuid: string;
     name: string;
