@@ -37,17 +37,14 @@ _defaults:
     blocks: []
     interactionTimeout: 5
     label: My first label
-    languages: [
-      - {
-        "id": "22",
-        "name": "enCA",
-        "abbreviation": "EN",
-        "orgId": "1008107874829627392",
-        "rightToLeft": false,
-        "code": null,
-        "deletedAt": null
-      }
-    ]
+    languages:
+      - id: "22"
+        name: "enCA"
+        abbreviation: "EN"
+        orgId: "1008107874829627392"
+        rightToLeft: false
+        code:
+        deletedAt:
     lastModified: "2020-10-10T00:00:00.000Z"
     name: My first flow
     platformMetadata: {}
