@@ -1,8 +1,9 @@
 import IBlockExit, {IBlockExitTestRequired} from './IBlockExit'
-import {find} from 'lodash'
+import {find, findLast} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
-import IContext, {getActiveFlowFrom} from './IContext'
+import IContext, {findFlowWith, getActiveFlowFrom} from './IContext'
 import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
+import {findBlockWith} from './IFlow'
 
 export default interface IBlock {
   uuid: string // UUID32
@@ -52,6 +53,52 @@ export function findDefaultBlockExitOn(block: IBlock): IBlockExit {
   return exit
 }
 
+export interface IEvalContextBlock {
+  __value__: any
+  time: string
+  __interactionId: string
+}
+
+export function findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx: IContext): IEvalContextBlock | undefined {
+  const intx = findLast(ctx.interactions, ({blockId, flowId}) => {
+    const {name} = findBlockWith(
+      blockId,
+      findFlowWith(flowId, ctx))
+
+    return name === blockName
+  })
+
+  if (intx == null) {
+    return
+  }
+
+  return {
+    __interactionId: intx.uuid,
+    __value__: intx.value,
+    time: intx.entryAt}
+}
+
+export function generateCachedProxyForBlockName(target: object, ctx: IContext) {
+  // create a cache of `{[block.name]: {...}}` for subsequent lookups
+  const expressionBlocksByName: {[k: string]: IEvalContextBlock | undefined} = {}
+
+  // create a proxy that traps get() and attempts a lookup of blocks by name
+  return new Proxy(target, {
+    get(target, prop, _receiver) {
+      if (prop in target) {
+        // @ts-ignore
+        return Reflect.get(...arguments)
+      }
+
+      if (prop in expressionBlocksByName) {
+        return expressionBlocksByName[prop.toString()]
+      }
+
+      return expressionBlocksByName[prop.toString()] =
+        findAndGenerateExpressionBlockFor(prop.toString(), ctx)
+    }
+  })
+}
 
 // todo: push eval stuff into `Expression.evaluate()` abstraction for evalContext + result handling 👇
 function createEvalContextFrom(context: IContext, block: IBlock) {
@@ -61,10 +108,10 @@ function createEvalContextFrom(context: IContext, block: IBlock) {
   return {
     contact,
     channel: {mode},
-    flow: {
+    flow: generateCachedProxyForBlockName({
       ...getActiveFlowFrom(context),
       language, // todo: why isn't this languageId?
-    },
+    }, context),
     block: {
       ...block,
       value: prompt ? prompt.value : undefined,
