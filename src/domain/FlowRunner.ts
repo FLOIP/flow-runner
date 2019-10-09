@@ -386,6 +386,9 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator {
     }
   }
 
+  /**
+   * todo: deprecate block exit generation
+   * @deprecated */
   private createBlockExitFor({uuid: destinationBlock}: IBlock): IBlockExit {
     return {
       uuid: uuid.v4(),

@@ -148,7 +148,7 @@ describe('FlowRunner/navigateTo', () => {
       it('should be from nested flow when nested once', () => {
         const
             ctx = dataset.contexts[2], // RunFlow->(Message)->Message
-            block = ctx.flows[1].blocks[0], // todo: actually, ths needs to be the first block on the nested flow!
+            block = ctx.flows[1].blocks[0], // todo: actually, this needs to be the first block on the nested flow!
             runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
               ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 

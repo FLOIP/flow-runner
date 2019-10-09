@@ -1,12 +1,13 @@
 import {
   cloneDeep,
   findLastIndex,
+  forEachRight,
   isEqual,
   last,
 } from 'lodash'
 import IBehaviour from '../IBehaviour'
 import IBlockInteraction from '../../../flow-spec/IBlockInteraction'
-import IContext, {findBlockOnActiveFlowWith, IContextWithCursor, RichCursorType} from '../../../flow-spec/IContext'
+import IContext, {findBlockOnActiveFlowWith, RichCursorType} from '../../../flow-spec/IContext'
 import {
   _append,
   _loop,
@@ -68,7 +69,8 @@ export default class BacktrackingBehaviour implements IBehaviour {
     if (meta.backtracking == null) {
       meta.backtracking = {
         cursor: createKey(),
-        interactionStack: createStack()}
+        interactionStack: createStack()
+      }
     }
 
     if (meta.backtracking.interactionStack == null
@@ -214,17 +216,14 @@ export default class BacktrackingBehaviour implements IBehaviour {
     backtracking.ghostInteractionStack = cloneDeep(backtracking.interactionStack)
 
     // jump context.interactions back in time
-    context.interactions.splice( // truncate interactions list to pull us back in time; including provided intx
+    const discarded = context.interactions.splice( // truncate interactions list to pull us back in time; including provided intx
       findLastIndex(context.interactions, interaction),
       context.interactions.length)
 
-    // todo: implement nestedFlowInteractionIdStack stripper
-    // - pop interactions off this stack until (length <= 0 || interaction.flowId === x.flowId).
-    // - this doesn't work for loops within loops, does it?
-    // - eg. flow a -> flow b -> flow c -> flow a -> flow b -> flow c
-    //       - if we backtrack to interaction on first flow b, we're only going to pop these a single stack back
-    //       - however, we do have our `context.interactions` that we can search for run-flow blocks and pop accordingly
-    //         while running from right
+    // step out of nested flows that we've truncated
+    forEachRight(discarded, intx => intx.uuid === last(context.nestedFlowBlockInteractionIdStack)
+        ? context.nestedFlowBlockInteractionIdStack.pop()
+        : null)
 
     // update interactionStack to match
 
@@ -251,13 +250,14 @@ export default class BacktrackingBehaviour implements IBehaviour {
 
 
     // todo: This navigateTo() is going to append an interaction onto context.interactions --> verify that context.interactions.splice() accounts for that
+    // todo: this should provide a sourceId="" in meta so that we can tie these together
 
     return this.navigator.navigateTo(
       findBlockOnActiveFlowWith(interaction.blockId, this.context),
       this.context)
   }
 
-  peek(steps: number = 1) {
+  peek(_steps: number = 1) {
     // todo: this will wrap richCursor creation, something like: ```
     //       ctx = {cursor: [interactionId, createPromptConfig(intx)]}
     //       return this.cursorHydrator.hydrateRichCursorFrom(ctx: IContextWithCursor)
@@ -288,7 +288,8 @@ export default class BacktrackingBehaviour implements IBehaviour {
         cursor: key,
         interactionStack,
         ghostInteractionStack
-      }} = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
+      }
+    } = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
 
     if (ghostInteractionStack == null) { // can't suggest when we don't have ghost interactions from the past
       return
@@ -315,7 +316,7 @@ export default class BacktrackingBehaviour implements IBehaviour {
    * A hierarchical deep splice to remove items between two keys, hoisting deepest iteration to main depth.
    * ghost=[[0, 1], [1, 3], [0, 1], [1, 2]]
    * main=[[0, 1], [1, 4]] */
-  syncGhost(keyForSuggestion: Key, key: Key, ghost: IStack) {//: Key {
+  syncGhost(keyForSuggestion: Key, key: Key, ghost: IStack) { // : Key {
     // todo: refactor this into stack::deepSplice(): Item[]
     //       if we provide items (remainderOfCurrentGhostIteration), this becomes two logical pieces splice() + deepSplice()
 
@@ -324,7 +325,7 @@ export default class BacktrackingBehaviour implements IBehaviour {
     }
 
     if (keyForSuggestion.length === key.length && keyForSuggestion.toString() === key.toString()) {
-      return //keyForSuggestion
+      return // keyForSuggestion
     }
 
     let isAtGreaterDepth = keyForSuggestion.length > key.length
@@ -365,7 +366,8 @@ export default class BacktrackingBehaviour implements IBehaviour {
         cursor: key,
         interactionStack,
         ghostInteractionStack
-      }} = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
+      }
+    } = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
 
     this.insertInteractionUsing(key, interaction, interactionStack)
 
