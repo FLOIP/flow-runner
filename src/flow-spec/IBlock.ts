@@ -103,7 +103,9 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext) {
 // todo: push eval stuff into `Expression.evaluate()` abstraction for evalContext + result handling 👇
 function createEvalContextFrom(context: IContext, block: IBlock) {
   const {contact, cursor, mode, languageId: language} = context
-  const prompt = cursor ? cursor[1] : undefined
+  const prompt = cursor != null
+    ? cursor[1]
+    : undefined
 
   return {
     contact,
@@ -114,7 +116,9 @@ function createEvalContextFrom(context: IContext, block: IBlock) {
     }, context),
     block: {
       ...block,
-      value: prompt ? prompt.value : undefined,
+      value: prompt != null
+        ? prompt.value
+        : undefined,
     },
   }
 }

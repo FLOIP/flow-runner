@@ -108,9 +108,9 @@ describe('FlowRunner', () => {
       expect(cursor).toBeFalsy()
     })
 
-    describe('case block issue', () => {
-      it('shouldnt crash like that', () => {
-        const context: IContext = require('../__test_fixtures__/fixtures/case-block-eval-issue.json')
+    describe('case block unable to find cursor', () => {
+      it('shouldnt raise an except requiring prompt', () => {
+        const context: IContext = require('../__test_fixtures__/fixtures/2019-10-08-case-block-eval-issue.json')
         const runner = new FlowRunner(
           context,
           new BlockRunnerFactoryStore([
@@ -122,6 +122,24 @@ describe('FlowRunner', () => {
             ['Core\\Case', (block, innerContext) => new CaseBlockRunner(block as ICaseBlock, innerContext)]]))
 
         expect(FlowRunner.prototype.run.bind(runner)).toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')
+      })
+    })
+
+    xdescribe('case block always evaluates to false', () => {
+      it('shouldnt raise an except requiring prompt', () => {
+        const context: IContext = require('../__test_fixtures__/fixtures/2019-10-09-case-block-always-false.json')
+        const runner = new FlowRunner(
+          context,
+          new BlockRunnerFactoryStore([
+            ['MobilePrimitives\\Message', (block, innerContext) => new MessageBlockRunner(block as IMessageBlock, innerContext)],
+            ['MobilePrimitives\\OpenResponse', (block, innerContext) => new OpenResponseBlockRunner(block as IOpenResponseBlock, innerContext)],
+            ['MobilePrimitives\\NumericResponse', (block, innerContext) => new NumericResponseBlockRunner(block as INumericResponseBlock, innerContext)],
+            ['MobilePrimitives\\SelectOneResponse', (block, innerContext) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, innerContext)],
+            ['MobilePrimitives\\SelectManyResponse', (block, innerContext) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, innerContext)],
+            ['Core\\Case', (block, innerContext) => new CaseBlockRunner(block as ICaseBlock, innerContext)]]))
+
+        // todo: update context + finish test once @george has resolved removal of `.value` lookups
+        expect(FlowRunner.prototype.run.bind(runner)).not.toThrow()
       })
     })
   })
