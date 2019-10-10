@@ -7,7 +7,10 @@ import {
 } from 'lodash'
 import IBehaviour from '../IBehaviour'
 import IBlockInteraction from '../../../flow-spec/IBlockInteraction'
-import IContext, {findBlockOnActiveFlowWith, RichCursorType} from '../../../flow-spec/IContext'
+import IContext, {
+  findBlockOnActiveFlowWith,
+  RichCursorType,
+} from '../../../flow-spec/IContext'
 import {
   _append,
   _loop,
@@ -249,11 +252,14 @@ export default class BacktrackingBehaviour implements IBehaviour {
       this.context)
   }
 
-  peek(_steps: number = 1) {
+  peek(_steps = 1) {// : RichCursorInputRequiredType {
     // todo: this will wrap richCursor creation, something like: ```
     //       ctx = {cursor: [interactionId, createPromptConfig(intx)]}
     //       return this.cursorHydrator.hydrateRichCursorFrom(ctx: IContextWithCursor)
     //       ```
+
+
+
   }
 
   findIndexOfSuggestionFor({blockId}: IBlockInteraction, key: Key, stack: IStack): Key | undefined {
@@ -274,7 +280,7 @@ export default class BacktrackingBehaviour implements IBehaviour {
     return deepIndexOfFrom(keyForNextIteration, stack, intx => (intx as IBlockInteraction).blockId === blockId)
   }
 
-  postInteractionCreate(interaction: IBlockInteraction, _context: IContext): void {
+  postInteractionCreate(interaction: IBlockInteraction, _context: IContext): IBlockInteraction {
     const {
       backtracking: {
         cursor: key,
@@ -284,7 +290,7 @@ export default class BacktrackingBehaviour implements IBehaviour {
     } = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
 
     if (ghostInteractionStacks.length === 0) { // can't suggest when we don't have ghost interactions from the past
-      return
+      return interaction
     }
 
     if (!this.hasIndex()) {
@@ -293,7 +299,7 @@ export default class BacktrackingBehaviour implements IBehaviour {
 
     const keyForSuggestion = this.findIndexOfSuggestionFor(interaction, key, interactionStack)
     if (keyForSuggestion == null) {
-      return
+      return interaction
     }
 
     interaction.value = (getEntityAt(keyForSuggestion, interactionStack) as IBlockInteraction).value
@@ -303,6 +309,8 @@ export default class BacktrackingBehaviour implements IBehaviour {
       ghostInteractionStacks.forEach(ghostInteractionStack => // todo: fix up syncGhost now that we're multi-tracking
           this.syncGhostTo(key, keyForSuggestion, ghostInteractionStack)) // todo: reverse these keys to match signature?!
     }
+
+    return interaction
   }
 
   /**

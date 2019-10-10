@@ -12,6 +12,6 @@ export default interface IBehaviour {
   context: IContext
   navigator: IFlowNavigator
 
-  postInteractionCreate(interaction: IBlockInteraction, context: IContext): void
+  postInteractionCreate(interaction: IBlockInteraction, context: IContext): IBlockInteraction
   postInteractionComplete(interaction: IBlockInteraction, context: IContext): void
 }

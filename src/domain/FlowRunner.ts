@@ -175,19 +175,6 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator {
   }
 
   hydrateRichCursorFrom(ctx: IContextWithCursor): RichCursorType {
-    /**
-     * todo: to properly facilitate json-ification of any given `ctx`, we'll want this to also hydrate
-     *       `cursor[1]<IPrompt>` from an underlying data structure here
-     * todo: to facilitate an alternate underlying data structure for Prompt, let's add
-     *       ```
-     *       runner.createPromptFromCursor(): IPrompt<IPromptExpectationTypes> | null
-     *       ```
-     *       - There is one additional complication with toggling between these two:
-     *         We now need to type our IPromptConfig?
-     *         As in, we'll likely want to return a config definition from our block runner, but have the instantiation
-     *         handled by the runner? Another site for type injection.
-     *       - Cursor would then hold a union type of the different config types we know of where config has a type
-     **/
     const {cursor} = ctx
     const interaction = findInteractionWith(cursor[0], ctx)
     return [interaction, this.createPromptFrom(cursor[1], interaction)]
@@ -199,8 +186,10 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator {
     originFlowId?: string,
     originBlockInteractionId?: string,
   ): RichCursorType {
-    const interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
-    // interaction = behaviours.postCreateInteraction()
+    let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
+
+    Object.values(this.behaviours).forEach(b =>
+      interaction = b.postInteractionCreate(interaction, this.context))
 
     const runner = this.createBlockRunnerFor(block, this.context)
     const promptConfig = runner.initialize(interaction)
@@ -225,6 +214,9 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator {
     if (richCursor[1] != null) {
       richCursor[1].config.isSubmitted = true
     }
+
+    Object.values(this.behaviours).forEach(b =>
+      b.postInteractionComplete(richCursor[0], this.context))
 
     return exit
   }
@@ -382,7 +374,6 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator {
       // Nested flows:
       originFlowId,
       originBlockInteractionId,
-      platformMetadata: {},
     }
   }
 
