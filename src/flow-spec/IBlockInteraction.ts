@@ -1,6 +1,3 @@
-// import UUID64 from "../model/UUID64";
-// import UUID32 from "../model/UUID32";
-
 export default interface IBlockInteraction {
   uuid: string // UUID64
   blockId: string // UUID32
@@ -14,8 +11,6 @@ export default interface IBlockInteraction {
 
   originBlockInteractionId?: string // UUID64
   originFlowId?: string // UUID64
-
-  platformMetadata: object
 }
 
 export interface IBlockInteractionDetails {
