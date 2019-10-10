@@ -232,23 +232,7 @@ export function createStackKeyForLastIterAndLastIndexOf({stack}: IStack): StackK
  *                otherwise: undefined
  */
 
-// what do we want to receive from findHeadRight? Options:
-// - empty list: implying we're at root
-//
-// ideal:
-// - get the stack at {key}, append to the stack a new iteration with the interaction on it
-//
-// hurdles:
-// - index of stack at root is nil, because it's the container
-//
-// wait…
-// - if we return a key pointing to the iteration that we found a match for, this may be the most obvious
-// - I don't think we want to need to need a forceGet from external api method -- right?
-// - let's say for a root head the is a match, we return a key to the root head -- is this easy?
-// - the tricky part here is that we're inherently creating the possibility that it could be a pointer to either
-//   an interaction or a stack -- stack may be surprising, but it's because we are matching on a particular UUID
-//   but this could be due to nested iterations?
-// todo: prove it! what exactly is our domain logic where we'd nested at [0,0] ? I don't think it's possible,
+// todo: what exactly is our domain logic where we'd nested at [0,0] ? I don't think it's possible,
 //       because right now we're going to append an iteration to containing stack when this happens
 //       as a method of stepping out
 

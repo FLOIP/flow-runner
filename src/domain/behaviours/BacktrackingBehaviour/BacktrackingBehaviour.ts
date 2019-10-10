@@ -158,44 +158,6 @@ export default class BacktrackingBehaviour implements IBehaviour {
     key.push(createStackKey(1, 0))
   }
 
-    // we jump to a particular interaction
-    // which updates context.interactions
-    // the only piece that's missing is updating the cursor, because we're already initialized everything
-    // we only need to regenerate the prompt for this particular interaction
-    // once the prompt is generated, then we can set that on the context as our new cursor
-    //
-    // everything else regarding hierarchical cursors has been handled already
-    //
-    // so the hook that we need is basically the second half of initializeOneBlock()
-    // there's a weird thing here, where if we were to call initializeOneBlock
-    //  we'd get a new interaction
-    //  and our postCreateInteraction would get called --- except, we wouldn't really know where it's getting called FROM
-    //
-    //
-    //
-    // FlowRunner.navigateTo(block: IBlock, ctx: IContext)
-    //
-    //     -> FlowRunner.initializeOneBlock(
-    //             block: IBlock,
-    //             flowId: string,
-    //             originFlowId?: string,
-    //             originBlockInteractionId?: string)
-    //
-    //         -> behaviours.postInteractionCreate(): IBlockInteraction
-    //
-    //
-    //
-    // Now, we run into the issue where jumping back to a place that should step out of our nestedFlow stack breaks things
-    // -> nestedFlowBlockInteractionIdStack
-    //     -> when jumpTo()-ing: need to pop these off until flowId matches
-    //
-    // Question: when calling jumpTo() from the outside, what does that UX look like? And how does that tie nav() + init() + post() together?
-    //
-    // If we reuse navigate to, then we get interaction.push(), lastIntx.exitAt, ctx.cursor, return richCursor all for free
-    //   - last.exitAt is a bit of an issue, but we can always use backtracking-meta on intx to store originalExitAt .
-
-
-
   jumpTo(interaction: IBlockInteraction, context: IContext): RichCursorType {
     const {
       backtracking,
