@@ -22,4 +22,23 @@ export interface IEvalContextBlock {
 }
 export declare function findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx: IContext): IEvalContextBlock | undefined;
 export declare function generateCachedProxyForBlockName(target: object, ctx: IContext): object;
+export declare function createEvalContextFrom(context: IContext): {
+    contact: import("./IContact").default;
+    channel: {
+        mode: import("./SupportedMode").SupportedMode;
+    };
+    flow: object;
+    block: {
+        value: any;
+    } | {
+        value: any;
+        uuid: string;
+        name: string;
+        label?: string | undefined;
+        semanticLabel?: string | undefined;
+        type: string;
+        config: object;
+        exits: IBlockExit[];
+    };
+};
 //# sourceMappingURL=IBlock.d.ts.map
