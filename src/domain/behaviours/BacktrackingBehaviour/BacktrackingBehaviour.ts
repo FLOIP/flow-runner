@@ -44,8 +44,8 @@ export interface IBacktrackingContext {
    * Hierarchical list of interactions */
   interactionStack: IStack
   /**
-   * Ghost list of interactions; we follow this stack when stepping forward after a backtrack to receive suggestions. */
-  ghostInteractionStack?: IStack
+   * Ghost lists of interactions; we follow these stacks when stepping forward after a backtrack to receive suggestions. */
+  ghostInteractionStacks: IStack[]
 }
 
 export interface IContextBacktrackingPlatformMetadata {
@@ -69,7 +69,8 @@ export default class BacktrackingBehaviour implements IBehaviour {
     if (meta.backtracking == null) {
       meta.backtracking = {
         cursor: createKey(),
-        interactionStack: createStack()
+        interactionStack: createStack(),
+        ghostInteractionStacks: [],
       }
     }
 
@@ -207,13 +208,10 @@ export default class BacktrackingBehaviour implements IBehaviour {
       throw new ValidationException('Unable to find destination interaction in backtracking stack for jumpTo()')
     }
 
-
     // todo: if something hasn't changed, can we extend this ghost rather than creating anew?
 
-
-
     // create ghost stack to follow after jumping back
-    backtracking.ghostInteractionStack = cloneDeep(backtracking.interactionStack)
+    backtracking.ghostInteractionStacks.push(cloneDeep(backtracking.interactionStack))
 
     // jump context.interactions back in time
     const discarded = context.interactions.splice( // truncate interactions list to pull us back in time; including provided intx
@@ -242,12 +240,6 @@ export default class BacktrackingBehaviour implements IBehaviour {
 
     // set backtracking cursor to match
     backtracking.cursor = keyToTruncateFrom // keyForLastOccurrenceOfInteraction // todo: this now points at a null; should it be `keyToTruncateFrom`?
-
-
-
-
-
-
 
     // todo: This navigateTo() is going to append an interaction onto context.interactions --> verify that context.interactions.splice() accounts for that
     // todo: this should provide a sourceId="" in meta so that we can tie these together
@@ -287,11 +279,11 @@ export default class BacktrackingBehaviour implements IBehaviour {
       backtracking: {
         cursor: key,
         interactionStack,
-        ghostInteractionStack
+        ghostInteractionStacks
       }
     } = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
 
-    if (ghostInteractionStack == null) { // can't suggest when we don't have ghost interactions from the past
+    if (ghostInteractionStacks.length === 0) { // can't suggest when we don't have ghost interactions from the past
       return
     }
 
@@ -308,7 +300,8 @@ export default class BacktrackingBehaviour implements IBehaviour {
 
     // need to splice out things between key + keyForSuggestion so that key points to both interaction and suggestion
     if (keyForSuggestion.join() !== key.join()) {
-      this.syncGhost(key, keyForSuggestion, ghostInteractionStack)
+      ghostInteractionStacks.forEach(ghostInteractionStack => // todo: fix up syncGhost now that we're multi-tracking
+          this.syncGhostTo(key, keyForSuggestion, ghostInteractionStack)) // todo: reverse these keys to match signature?!
     }
   }
 
@@ -316,7 +309,7 @@ export default class BacktrackingBehaviour implements IBehaviour {
    * A hierarchical deep splice to remove items between two keys, hoisting deepest iteration to main depth.
    * ghost=[[0, 1], [1, 3], [0, 1], [1, 2]]
    * main=[[0, 1], [1, 4]] */
-  syncGhost(keyForSuggestion: Key, key: Key, ghost: IStack) { // : Key {
+  syncGhostTo(key: Key, keyForSuggestion: Key, ghost: IStack) { // : Key {
     // todo: refactor this into stack::deepSplice(): Item[]
     //       if we provide items (remainderOfCurrentGhostIteration), this becomes two logical pieces splice() + deepSplice()
 
@@ -332,31 +325,36 @@ export default class BacktrackingBehaviour implements IBehaviour {
     let stackKeyForSuggestion: StackKey = last(keyForSuggestion)!
     // find our keepers = remainderOfCurrentGhostIteration
     const iterationForSuggestion = getIterationFor(keyForSuggestion, ghost)
-    const remainderOfCurrentGhostIteration = iterationForSuggestion.slice(stackKeyForSuggestion[STACK_KEY_ITERATION_INDEX])
+    const remainderOfCurrentGhostIteration = iterationForSuggestion.splice(stackKeyForSuggestion[STACK_KEY_ITERATION_INDEX], Number.MAX_VALUE)
 
     // discard iterations up to + including one with keepers
+    let wasEmptyStackLeftOver = false
     if (isAtGreaterDepth) {
       const {stack} = getStackFor(keyForSuggestion, ghost)
       stack.splice(0, stackKeyForSuggestion[STACK_KEY_ITERATION_NUMBER] + 1)
+      wasEmptyStackLeftOver = stack.length === 0
       keyForSuggestion.pop() // update suggestion key to point to containing stack
     }
 
     // splice keepers onto containing stack at suggestedKeyIterAndIndex; discarding # of items between
     stackKeyForSuggestion = last(keyForSuggestion)!
-    const containingIterationForSuggestion = getIterationFor(keyForSuggestion, ghost)
+    const deepestStackKeyIndex = keyForSuggestion.length === key.length
+        ? last(key)![STACK_KEY_ITERATION_INDEX]
+        : stackKeyForSuggestion[STACK_KEY_ITERATION_INDEX]
     isAtGreaterDepth = keyForSuggestion.length > key.length
     const itemsBetweenKeyAndGhost = isAtGreaterDepth
-      ? 0 // when still different depth(post-pop())
-      : (stackKeyForSuggestion[STACK_KEY_ITERATION_INDEX] - last(key)![STACK_KEY_ITERATION_INDEX]) // {sugKey's index} - {key's index} when same depth
+        ? 0 // when still different depth after .pop()
+        : (stackKeyForSuggestion[STACK_KEY_ITERATION_INDEX] - deepestStackKeyIndex) // {sugKey's index} - {key's index} when same depth
 
+    const containingIterationForSuggestion = getIterationFor(keyForSuggestion, ghost)
     containingIterationForSuggestion.splice(
-      stackKeyForSuggestion[STACK_KEY_ITERATION_NUMBER],
-      itemsBetweenKeyAndGhost,
-      ...remainderOfCurrentGhostIteration)
+        deepestStackKeyIndex,
+        itemsBetweenKeyAndGhost + (wasEmptyStackLeftOver ? 1 : 0),
+        ...remainderOfCurrentGhostIteration)
 
     // when still at greater depth: repeat the ordeal
     if (isAtGreaterDepth) {
-      this.syncGhost(keyForSuggestion, key, ghost)
+      this.syncGhostTo(key, keyForSuggestion, ghost)
     }
   }
 
@@ -365,28 +363,30 @@ export default class BacktrackingBehaviour implements IBehaviour {
       backtracking: {
         cursor: key,
         interactionStack,
-        ghostInteractionStack
+        ghostInteractionStacks
       }
     } = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
 
     this.insertInteractionUsing(key, interaction, interactionStack)
 
-    if (ghostInteractionStack == null) { // can't suggest when we don't have ghost interactions from the past
+    if (ghostInteractionStacks.length === 0) { // can't suggest when we don't have ghost interactions from the past
       return
     }
 
-    // update ghost to account for changes while stepping forward
-    const ghostIntx = forceGet(key, ghostInteractionStack) // todo: this should actually be a deepFindFrom() w/in current iteration
-    // when ghost is absent or ghost value matches
-    if (!isEntity(ghostIntx)
-      || isEqual(interaction.value, (ghostIntx as IBlockInteraction).value)) {
-      return // do nothing
-    }
+    ghostInteractionStacks.forEach(ghostInteractionStack => {
+      // update ghost to account for changes while stepping forward
+      const ghostIntx = forceGet(key, ghostInteractionStack) // todo: this should actually be a deepFindFrom() w/in current iteration
+      // when ghost is absent or ghost value matches
+      if (!isEntity(ghostIntx)
+          || isEqual(interaction.value, (ghostIntx as IBlockInteraction).value)) {
+        return // do nothing
+      }
 
-    // when interaction's value differs from interaction@ghost's value
-    // remove the possibility of suggesting from future -- todo: verify this logic -- can we be this destructive?
+      // when interaction's value differs from interaction@ghost's value
+      // remove the possibility of suggesting from future -- todo: verify this logic -- can we be this destructive?
 
-    // assumption: keys point to same points in both ghost and main stacks
-    truncateIterationFrom(key, ghostInteractionStack) // todo: should this be inclusive or exclusive?
+      // assumption: keys point to same points in both ghost and main stacks
+      truncateIterationFrom(key, ghostInteractionStack) // todo: should this be inclusive or exclusive?
+    })
   }
 }

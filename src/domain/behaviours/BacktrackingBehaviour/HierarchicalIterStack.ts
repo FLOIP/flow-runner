@@ -69,7 +69,7 @@ export function _findHeadOn(stack: IStack): IEntity | undefined {
  * {stack: [[1, 2, {stack: [[3, 4], [3]]}]]} --> [['stack', 0, 3], ['stack', 1, 0]]
  *                                   ^
  */
-export function createKey(index: number = -1, iteration: number = 0): Key {
+export function createKey(index = -1, iteration = 0): Key {
   return [createStackKey(iteration, index)] // `-1` so that the typing needn't allow nulls, it's a non-existent value.
 }
 
@@ -253,7 +253,7 @@ export function createStackKeyForLastIterAndLastIndexOf({stack}: IStack): StackK
 //       as a method of stepping out
 
 export function findHeadRightFrom(key: Key, stack: IStack, matcher: IEntityMatcher): Key | undefined {
-  let containingStack = getStackFor(key, stack)
+  const containingStack = getStackFor(key, stack)
 
   if (!isStackEmpty(containingStack) && matcher(containingStack.head!)) {
     // create a key to [iter:0][i:0] of current stack

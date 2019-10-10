@@ -15,7 +15,7 @@ import {
   IEntity,
 } from '../../src/domain/behaviours/BacktrackingBehaviour/HierarchicalIterStack'
 import IFlow from '../../src/flow-spec/IFlow'
-import IRunFlowBlockConfig from "../../src/model/block/IRunFlowBlockConfig";
+import IRunFlowBlockConfig from "../../src/model/block/IRunFlowBlockConfig"
 
 
 describe('BacktrackingBehaviour', () => {
@@ -240,10 +240,10 @@ describe('BacktrackingBehaviour', () => {
     it('should initialize ghost stack as a clone of current stack', () => {
       const expectedGhostStack = createStack(cloneDeep(interactions))
 
-      expect(meta.ghostInteractionStack).toBeUndefined()
+      expect(meta.ghostInteractionStacks).toEqual([])
       backtracking.jumpTo({uuid: 'abc-234', blockId: 'block/abc-234'} as IBlockInteraction, backtracking.context)
-      expect(meta.ghostInteractionStack).toEqual(expectedGhostStack)
-      expect(meta.ghostInteractionStack).not.toBe(expectedGhostStack)
+      expect(meta.ghostInteractionStacks).toEqual([expectedGhostStack])
+      expect(meta.ghostInteractionStacks).not.toBe(meta.interactionStack)
     })
 
     it('should set cursor to point in time before the interaction we jump to; this gives space to run the block we\'re jumping to in place', () => {
@@ -323,5 +323,119 @@ describe('BacktrackingBehaviour', () => {
         expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual([])
       })
     })
+  })
+
+  describe('syncGhost', () => {
+    // key:   [1, 2, 3, 4, 5]
+    //                  ^
+    //
+    // ghost: [1, 2, 3, 8, 9, 4, 5] - forward; remove 8, 9
+    //                        ^
+    //        [1, 2, 3, 4, 5] - matches; leave as is
+    //                  ^
+    //        [1, 2, 3, [[7, 4, 5]]] - nested once + on first iteration; pull first iteration out + flatten it, remove those in between
+    //                       ^
+    //        [1, 2, 3, [[7, 8]
+    //                   [7, 8]
+    //                   [7, 4, 8]
+    //                   [7, 4, 5, 8]
+    //                  ]] - nested multiple times + on non-first iteration + iterations exist after it;
+    //
+    // We want to begin collapsing the hierarchy and slurp these out into the parent iteration, because keys need to match.
+
+    it('should at least execute', () => {
+      backtracking.syncGhostTo(createKey(), createKey(), createStack())
+    })
+
+    describe('when key for suggestion is ahead by a couple indices', () => {
+      it('should yank the items in between', () => {
+        const keyForSuggestion = createKey(5)
+        const key = createKey(3)
+        const ghost = createStack([{uuid: '1'}, {uuid: '2'}, {uuid: '3'}, {uuid: '8'}, {uuid: '9'}, {uuid: '4'}, {uuid: '5'}])
+
+        backtracking.syncGhostTo(key, keyForSuggestion, ghost)
+        expect(ghost).toEqual(createStack([{uuid: '1'}, {uuid: '2'}, {uuid: '3'}, {uuid: '4'}, {uuid: '5'}]))
+      })
+    })
+
+    describe('when keys match', () => {
+      it('should leave keys alone', () => {
+        const keyForSuggestion = createKey(3)
+        const key = createKey(3)
+        const ghost = createStack(['1', '2', '3', '4', '5'].map(uuid => ({uuid})))
+
+        backtracking.syncGhostTo(key, keyForSuggestion, ghost)
+        expect(keyForSuggestion).toEqual(createKey(3))
+        expect(key).toEqual(createKey(3))
+      })
+
+      it('should leave ghost stack alone', () => {
+        const keyForSuggestion = createKey(3)
+        const key = createKey(3)
+        const ghost = createStack(['1', '2', '3', '4', '5'].map(uuid => ({uuid})))
+
+        backtracking.syncGhostTo(key, keyForSuggestion, ghost)
+        expect(ghost).toEqual(createStack(['1', '2', '3', '4', '5'].map(uuid => ({uuid}))))
+      })
+    })
+
+    describe('when key for suggestion is nested once + on first iteration', () => {
+      // [1, 2, 3, [[7, 4, 5]]]
+      it('should hoist nested iteration into containing iteration, and remove items in between key + key for suggestion', () => {
+        const keyForSuggestion = [createStackKey(0, 3), createStackKey(0, 1)]
+        const key = createKey(3)
+        const ghost = createStack([{uuid: '1'}, {uuid: '2'}, {uuid: '3'}, createStack([{uuid: '7'}, {uuid: '4'}, {uuid: '5'}])])
+
+        backtracking.syncGhostTo(key, keyForSuggestion, ghost)
+        expect(ghost).toEqual(createStack(['1', '2', '3', '4', '5'].map(uuid => ({uuid}))))
+      })
+    })
+
+    describe('when key for suggestion is nested multiple times deeper + on non-first iteration + iterations exist afterwards', () => {
+      // [1, 2, 3, [[7, 8],
+      //            [7, 8],
+      //            [7, [[8, 4],
+      //                     ^
+      //                 [8, 4]],
+      //            [7, 8, 4, 5],
+      //           ]]
+
+      // Result:
+      // [1, 2, 3, 4, [
+      //           ^
+      //                [ [[8, 4]] ],
+      //                [7, 8, 4, 5],
+      //              ]
+
+      // Currently, we end up with `[[8, 4]]` lying immediately between 4 + last stack, rather than inside of last stack
+      it(`should remove iterations before iteration having key for suggestion 
+            + hoist iteration having key for suggestion to match key 
+            + remove items in between key + key for suggestion
+            + leave subsequent iterations intact
+            + leave trailing items intact
+            `, () => {
+        const keyForSuggestion = [createStackKey(0, 3), createStackKey(2, 1), createStackKey(0, 1)]
+        const key = createKey(3)
+        const ghost = createStack([
+          {uuid: '1'}, {uuid: '2'}, {uuid: '3'}, createStackFrom([
+            [{uuid: '7'}, {uuid: '8'}],
+            [{uuid: '7'}, {uuid: '8'}],
+            [{uuid: '7'}, createStackFrom([
+              [{uuid: '8'}, {uuid: '4'}],
+              [{uuid: '8'}, {uuid: '4'}]])],
+            [{uuid: '7'}, {uuid: '8'}, {uuid: '4'}, {uuid: '5'}]])])
+
+        backtracking.syncGhostTo(key, keyForSuggestion, ghost)
+        expect(ghost).toEqual(createStack([
+            {uuid: '1'}, {uuid: '2'}, {uuid: '3'}, {uuid: '4'}, createStackFrom([
+                [createStack([{uuid: '8'}, {uuid: '4'}])], // todo: is this right? should we be flattening more carefully? do we want our 7 in front still?
+                [{uuid: '7'}, {uuid: '8'}, {uuid: '4'}, {uuid: '5'}]])]))
+      })
+    })
+
+    it.todo('should update head on ghost when splicing and dicing')
+    it.todo('should behave predictably when key to match points to deep nesting')
+    it.todo('should behave predictably when key to match points to element in main iteration')
+    it.todo('should behave predictably when key to match point to start of everything')
   })
 })
