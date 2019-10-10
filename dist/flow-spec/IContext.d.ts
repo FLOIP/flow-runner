@@ -29,6 +29,7 @@ export default interface IContext {
     flows: IFlow[];
     firstFlowId: string;
     resources: IResources;
+    platformMetadata: object;
 }
 export interface IContextWithCursor extends IContext {
     cursor: CursorType;

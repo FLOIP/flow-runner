@@ -21,6 +21,7 @@ function createContextDataObjectFor(contact, userId, flows, languageId, mode) {
         flows,
         firstFlowId: flows[0].uuid,
         resources: [],
+        platformMetadata: {}
     };
 }
 exports.createContextDataObjectFor = createContextDataObjectFor;

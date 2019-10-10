@@ -5,15 +5,25 @@ import IBlockInteraction from '../flow-spec/IBlockInteraction';
 import IBlockExit from '../flow-spec/IBlockExit';
 import IFlowRunner, { IBlockRunnerFactoryStore } from './IFlowRunner';
 import IIdGenerator from './IIdGenerator';
+import IBehaviour, { IBehaviourConstructor } from './behaviours/IBehaviour';
 export declare class BlockRunnerFactoryStore extends Map<string, {
     (block: IBlock, ctx: IContext): IBlockRunner;
 }> implements IBlockRunnerFactoryStore {
 }
-export default class FlowRunner implements IFlowRunner {
+export interface IFlowNavigator {
+    navigateTo(block: IBlock, ctx: IContext): RichCursorType;
+}
+export default class FlowRunner implements IFlowRunner, IFlowNavigator {
     context: IContext;
     runnerFactoryStore: IBlockRunnerFactoryStore;
     protected idGenerator: IIdGenerator;
-    constructor(context: IContext, runnerFactoryStore: IBlockRunnerFactoryStore, idGenerator?: IIdGenerator);
+    behaviours: {
+        [key: string]: IBehaviour;
+    };
+    constructor(context: IContext, runnerFactoryStore: IBlockRunnerFactoryStore, idGenerator?: IIdGenerator, behaviours?: {
+        [key: string]: IBehaviour;
+    });
+    initializeBehaviours(behaviourConstructors: IBehaviourConstructor[]): void;
     initialize(): RichCursorType | undefined;
     isInitialized(ctx: IContext): boolean;
     run(): RichCursorInputRequiredType | undefined;
