@@ -38,7 +38,6 @@ export class Resource implements IResource {
     return this._getValueByContentType(SupportedContentType.IMAGE)
   }
 
-  // todo: should this be creating a context in the same way we do for expressions?
   getText(): string {
     return EvaluatorFactory.create()
       .evaluate(
