@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc --declaration",
+    "clean": "rm tsconfig.tsbuildinfo && rm -rf dist/",
     "deploy": "# increase version && commit && tag && push",
     "test": "yarn tsc-test && yarn jest",
     "tsc-test": "tsc --project . --noEmit"
