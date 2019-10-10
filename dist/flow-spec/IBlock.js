@@ -23,7 +23,7 @@ function findFirstTruthyEvaluatingBlockExitOn(block, context) {
     if (cursor == null || cursor[0] == null) {
         throw new ValidationException_1.default(`Unable to find cursor on context ${context.id}`);
     }
-    const evalContext = createEvalContextFrom(context, block);
+    const evalContext = createEvalContextFrom(context);
     return lodash_1.find(exits, ({ test }) => evaluateToBool(String(test), evalContext));
 }
 exports.findFirstTruthyEvaluatingBlockExitOn = findFirstTruthyEvaluatingBlockExitOn;
@@ -46,7 +46,7 @@ function findAndGenerateExpressionBlockFor(blockName, ctx) {
     return {
         __interactionId: intx.uuid,
         __value__: intx.value,
-        time: intx.entryAt
+        time: intx.entryAt,
     };
 }
 exports.findAndGenerateExpressionBlockFor = findAndGenerateExpressionBlockFor;
@@ -66,25 +66,35 @@ function generateCachedProxyForBlockName(target, ctx) {
     });
 }
 exports.generateCachedProxyForBlockName = generateCachedProxyForBlockName;
-function createEvalContextFrom(context, block) {
+function createEvalContextFrom(context) {
     const { contact, cursor, mode, languageId: language } = context;
-    const prompt = cursor ? cursor[1] : undefined;
+    let flow;
+    let block;
+    let prompt;
+    if (cursor != null) {
+        flow = IContext_1.getActiveFlowFrom(context);
+        block = IFlow_1.findBlockWith(IContext_1.findInteractionWith(cursor[0], context).blockId, flow);
+        prompt = cursor[1];
+    }
     return {
         contact,
         channel: { mode },
         flow: generateCachedProxyForBlockName({
-            ...IContext_1.getActiveFlowFrom(context),
+            ...flow,
             language,
         }, context),
         block: {
             ...block,
-            value: prompt ? prompt.value : undefined,
+            value: prompt != null
+                ? prompt.value
+                : undefined,
         },
     };
 }
+exports.createEvalContextFrom = createEvalContextFrom;
 function evaluateToBool(expr, ctx) {
-    const evaluator = floip_expression_evaluator_ts_1.EvaluatorFactory.create();
-    const result = evaluator.evaluate(expr, ctx);
-    return JSON.parse(result.toLocaleLowerCase());
+    const result = floip_expression_evaluator_ts_1.EvaluatorFactory.create()
+        .evaluate(expr, ctx);
+    return JSON.parse(result.toLowerCase());
 }
 //# sourceMappingURL=IBlock.js.map

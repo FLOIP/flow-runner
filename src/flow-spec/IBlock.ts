@@ -1,12 +1,12 @@
 import IBlockExit, {IBlockExitTestRequired} from './IBlockExit'
 import {find, findLast} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
-import IContext, {findFlowWith, getActiveFlowFrom} from './IContext'
+import IContext, {CursorType, findFlowWith, findInteractionWith, getActiveFlowFrom} from './IContext'
 import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
-import {findBlockWith} from './IFlow'
+import IFlow, {findBlockWith} from './IFlow'
 
 export default interface IBlock {
-  uuid: string // UUID32
+  uuid: string
   name: string
   label?: string
   semanticLabel?: string
@@ -40,7 +40,7 @@ export function findFirstTruthyEvaluatingBlockExitOn(block: IBlockWithTestExits,
     throw new ValidationException(`Unable to find cursor on context ${context.id}`)
   }
 
-  const evalContext = createEvalContextFrom(context, block)
+  const evalContext = createEvalContextFrom(context)
   return find<IBlockExitTestRequired>(exits, ({test}) => evaluateToBool(String(test), evalContext))
 }
 
@@ -75,7 +75,8 @@ export function findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx
   return {
     __interactionId: intx.uuid,
     __value__: intx.value,
-    time: intx.entryAt}
+    time: intx.entryAt,
+  }
 }
 
 export function generateCachedProxyForBlockName(target: object, ctx: IContext) {
@@ -101,17 +102,23 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext) {
 }
 
 // todo: push eval stuff into `Expression.evaluate()` abstraction for evalContext + result handling 👇
-function createEvalContextFrom(context: IContext, block: IBlock) {
+export function createEvalContextFrom(context: IContext) {
   const {contact, cursor, mode, languageId: language} = context
-  const prompt = cursor != null
-    ? cursor[1]
-    : undefined
+  let flow: IFlow | undefined
+  let block: IBlock | undefined
+  let prompt: CursorType[1]
+
+  if (cursor != null) {
+    flow = getActiveFlowFrom(context)
+    block = findBlockWith(findInteractionWith(cursor[0], context).blockId, flow)
+    prompt = cursor[1]
+  }
 
   return {
     contact,
     channel: {mode},
     flow: generateCachedProxyForBlockName({
-      ...getActiveFlowFrom(context),
+      ...flow,
       language, // todo: why isn't this languageId?
     }, context),
     block: {
@@ -124,8 +131,8 @@ function createEvalContextFrom(context: IContext, block: IBlock) {
 }
 
 function evaluateToBool(expr: string, ctx: object) {
-  const evaluator = EvaluatorFactory.create()
-  const result = evaluator.evaluate(expr, ctx)
+  const result = EvaluatorFactory.create()
+    .evaluate(expr, ctx)
 
-  return JSON.parse(result.toLocaleLowerCase())
+  return JSON.parse(result.toLowerCase())
 }
