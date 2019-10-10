@@ -68,7 +68,9 @@ function generateCachedProxyForBlockName(target, ctx) {
 exports.generateCachedProxyForBlockName = generateCachedProxyForBlockName;
 function createEvalContextFrom(context, block) {
     const { contact, cursor, mode, languageId: language } = context;
-    const prompt = cursor ? cursor[1] : undefined;
+    const prompt = cursor != null
+        ? cursor[1]
+        : undefined;
     return {
         contact,
         channel: { mode },
@@ -78,7 +80,9 @@ function createEvalContextFrom(context, block) {
         }, context),
         block: {
             ...block,
-            value: prompt ? prompt.value : undefined,
+            value: prompt != null
+                ? prompt.value
+                : undefined,
         },
     };
 }
