@@ -28,6 +28,17 @@ import SelectOnePrompt from './prompt/SelectOnePrompt'
 import SelectManyPrompt from './prompt/SelectManyPrompt'
 import BacktrackingBehaviour from './behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
 import IBehaviour, {IBehaviourConstructor} from './behaviours/IBehaviour'
+import MessageBlockRunner from './runners/MessageBlockRunner'
+import IMessageBlock from '../model/block/IMessageBlock'
+import OpenResponseBlockRunner from './runners/OpenResponseBlockRunner'
+import IOpenResponseBlock from '../model/block/IOpenResponseBlock'
+import NumericResponseBlockRunner from './runners/NumericResponseBlockRunner'
+import INumericResponseBlock from '../model/block/INumericResponseBlock'
+import SelectOneResponseBlockRunner from './runners/SelectOneResponseBlockRunner'
+import ISelectOneResponseBlock from '../model/block/ISelectOneResponseBlock'
+import SelectManyResponseBlockRunner from './runners/SelectManyResponseBlockRunner'
+import CaseBlockRunner from './runners/CaseBlockRunner'
+import ICaseBlock from '../model/block/ICaseBlock'
 
 
 export class BlockRunnerFactoryStore
@@ -53,10 +64,20 @@ export const NON_INTERACTIVE_BLOCK_TYPES = [
   'Core\\RunFlowBlock',
 ]
 
+export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
+  return new BlockRunnerFactoryStore([
+    ['MobilePrimitives\\Message', (block, innerContext) => new MessageBlockRunner(block as IMessageBlock, innerContext)],
+    ['MobilePrimitives\\OpenResponse', (block, innerContext) => new OpenResponseBlockRunner(block as IOpenResponseBlock, innerContext)],
+    ['MobilePrimitives\\NumericResponse', (block, innerContext) => new NumericResponseBlockRunner(block as INumericResponseBlock, innerContext)],
+    ['MobilePrimitives\\SelectOneResponse', (block, innerContext) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, innerContext)],
+    ['MobilePrimitives\\SelectManyResponse', (block, innerContext) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, innerContext)],
+    ['Core\\Case', (block, innerContext) => new CaseBlockRunner(block as ICaseBlock, innerContext)]])
+}
+
 export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   constructor(
     public context: IContext,
-    public runnerFactoryStore: IBlockRunnerFactoryStore,
+    public runnerFactoryStore: IBlockRunnerFactoryStore = createDefaultBlockRunnerStore(),
     protected idGenerator: IIdGenerator = new IdGeneratorUuidV4(),
     public behaviours: { [key: string]: IBehaviour } = {},
   ) {
