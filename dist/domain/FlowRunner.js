@@ -22,6 +22,10 @@ exports.BlockRunnerFactoryStore = BlockRunnerFactoryStore;
 const DEFAULT_BEHAVIOUR_TYPES = [
     BacktrackingBehaviour_1.default,
 ];
+exports.NON_INTERACTIVE_BLOCK_TYPES = [
+    'Core\\Case',
+    'Core\\RunFlowBlock',
+];
 class FlowRunner {
     constructor(context, runnerFactoryStore, idGenerator = new IdGeneratorUuidV4_1.default(), behaviours = {}) {
         this.context = context;
@@ -32,7 +36,7 @@ class FlowRunner {
     }
     initializeBehaviours(behaviourConstructors) {
         behaviourConstructors.forEach(b => this.behaviours[lodash_1.lowerFirst(lodash_1.trimEnd(b.name, 'Behaviour|Behavior'))]
-            = new b(this.context, this));
+            = new b(this.context, this, this));
     }
     initialize() {
         const ctx = this.context;
@@ -104,10 +108,7 @@ class FlowRunner {
     initializeOneBlock(block, flowId, originFlowId, originBlockInteractionId) {
         let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId);
         Object.values(this.behaviours).forEach(b => interaction = b.postInteractionCreate(interaction, this.context));
-        const runner = this.createBlockRunnerFor(block, this.context);
-        const promptConfig = runner.initialize(interaction);
-        const prompt = this.createPromptFrom(promptConfig, interaction);
-        return [interaction, prompt];
+        return [interaction, this.buildPromptFor(block, interaction)];
     }
     runActiveBlockOn(richCursor, block) {
         if (richCursor[1] != null) {
@@ -226,6 +227,11 @@ class FlowRunner {
             tag: '',
             test: '',
         };
+    }
+    buildPromptFor(block, interaction) {
+        const runner = this.createBlockRunnerFor(block, this.context);
+        const promptConfig = runner.initialize(interaction);
+        return this.createPromptFrom(promptConfig, interaction);
     }
     createPromptFrom(config, interaction) {
         if (config == null || interaction == null) {

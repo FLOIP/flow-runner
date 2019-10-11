@@ -5,6 +5,7 @@ import IBlockInteraction from '../flow-spec/IBlockInteraction';
 import IBlockExit from '../flow-spec/IBlockExit';
 import IFlowRunner, { IBlockRunnerFactoryStore } from './IFlowRunner';
 import IIdGenerator from './IIdGenerator';
+import IPrompt, { IBasePromptConfig, IPromptConfig } from './prompt/IPrompt';
 import IBehaviour, { IBehaviourConstructor } from './behaviours/IBehaviour';
 export declare class BlockRunnerFactoryStore extends Map<string, {
     (block: IBlock, ctx: IContext): IBlockRunner;
@@ -13,7 +14,11 @@ export declare class BlockRunnerFactoryStore extends Map<string, {
 export interface IFlowNavigator {
     navigateTo(block: IBlock, ctx: IContext): RichCursorType;
 }
-export default class FlowRunner implements IFlowRunner, IFlowNavigator {
+export interface IPromptBuilder {
+    buildPromptFor(block: IBlock, interaction: IBlockInteraction): IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined;
+}
+export declare const NON_INTERACTIVE_BLOCK_TYPES: string[];
+export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     context: IContext;
     runnerFactoryStore: IBlockRunnerFactoryStore;
     protected idGenerator: IIdGenerator;
@@ -42,6 +47,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator {
     findNextBlockFrom(interaction: IBlockInteraction, ctx: IContext): IBlock | undefined;
     private createBlockInteractionFor;
     private createBlockExitFor;
+    buildPromptFor(block: IBlock, interaction: IBlockInteraction): IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined;
     private createPromptFrom;
 }
 //# sourceMappingURL=FlowRunner.d.ts.map
