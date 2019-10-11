@@ -130,8 +130,5 @@ function evaluateToBool(expr: string, ctx: object): boolean {
   const result = EvaluatorFactory.create()
     .evaluate(expr, ctx)
 
-  const lowered = result.toLocaleLowerCase()
-  const parsed = JSON.parse(lowered)
-  return parsed
-  // return JSON.parse(result.toLowerCase())
+  return JSON.parse(result.toLowerCase())
 }
