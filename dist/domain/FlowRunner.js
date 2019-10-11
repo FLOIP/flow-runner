@@ -16,6 +16,12 @@ const OpenPrompt_1 = tslib_1.__importDefault(require("./prompt/OpenPrompt"));
 const SelectOnePrompt_1 = tslib_1.__importDefault(require("./prompt/SelectOnePrompt"));
 const SelectManyPrompt_1 = tslib_1.__importDefault(require("./prompt/SelectManyPrompt"));
 const BacktrackingBehaviour_1 = tslib_1.__importDefault(require("./behaviours/BacktrackingBehaviour/BacktrackingBehaviour"));
+const MessageBlockRunner_1 = tslib_1.__importDefault(require("./runners/MessageBlockRunner"));
+const OpenResponseBlockRunner_1 = tslib_1.__importDefault(require("./runners/OpenResponseBlockRunner"));
+const NumericResponseBlockRunner_1 = tslib_1.__importDefault(require("./runners/NumericResponseBlockRunner"));
+const SelectOneResponseBlockRunner_1 = tslib_1.__importDefault(require("./runners/SelectOneResponseBlockRunner"));
+const SelectManyResponseBlockRunner_1 = tslib_1.__importDefault(require("./runners/SelectManyResponseBlockRunner"));
+const CaseBlockRunner_1 = tslib_1.__importDefault(require("./runners/CaseBlockRunner"));
 class BlockRunnerFactoryStore extends Map {
 }
 exports.BlockRunnerFactoryStore = BlockRunnerFactoryStore;
@@ -26,8 +32,19 @@ exports.NON_INTERACTIVE_BLOCK_TYPES = [
     'Core\\Case',
     'Core\\RunFlowBlock',
 ];
+function createDefaultBlockRunnerStore() {
+    return new BlockRunnerFactoryStore([
+        ['MobilePrimitives\\Message', (block, innerContext) => new MessageBlockRunner_1.default(block, innerContext)],
+        ['MobilePrimitives\\OpenResponse', (block, innerContext) => new OpenResponseBlockRunner_1.default(block, innerContext)],
+        ['MobilePrimitives\\NumericResponse', (block, innerContext) => new NumericResponseBlockRunner_1.default(block, innerContext)],
+        ['MobilePrimitives\\SelectOneResponse', (block, innerContext) => new SelectOneResponseBlockRunner_1.default(block, innerContext)],
+        ['MobilePrimitives\\SelectManyResponse', (block, innerContext) => new SelectManyResponseBlockRunner_1.default(block, innerContext)],
+        ['Core\\Case', (block, innerContext) => new CaseBlockRunner_1.default(block, innerContext)]
+    ]);
+}
+exports.createDefaultBlockRunnerStore = createDefaultBlockRunnerStore;
 class FlowRunner {
-    constructor(context, runnerFactoryStore, idGenerator = new IdGeneratorUuidV4_1.default(), behaviours = {}) {
+    constructor(context, runnerFactoryStore = createDefaultBlockRunnerStore(), idGenerator = new IdGeneratorUuidV4_1.default(), behaviours = {}) {
         this.context = context;
         this.runnerFactoryStore = runnerFactoryStore;
         this.idGenerator = idGenerator;

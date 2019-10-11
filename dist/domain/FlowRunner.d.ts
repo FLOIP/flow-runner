@@ -18,6 +18,7 @@ export interface IPromptBuilder {
     buildPromptFor(block: IBlock, interaction: IBlockInteraction): IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined;
 }
 export declare const NON_INTERACTIVE_BLOCK_TYPES: string[];
+export declare function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore;
 export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     context: IContext;
     runnerFactoryStore: IBlockRunnerFactoryStore;
@@ -25,7 +26,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     behaviours: {
         [key: string]: IBehaviour;
     };
-    constructor(context: IContext, runnerFactoryStore: IBlockRunnerFactoryStore, idGenerator?: IIdGenerator, behaviours?: {
+    constructor(context: IContext, runnerFactoryStore?: IBlockRunnerFactoryStore, idGenerator?: IIdGenerator, behaviours?: {
         [key: string]: IBehaviour;
     });
     initializeBehaviours(behaviourConstructors: IBehaviourConstructor[]): void;
