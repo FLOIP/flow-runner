@@ -1,5 +1,10 @@
 import {cloneDeep} from 'lodash'
-import {generateCachedProxyForBlockName, IEvalContextBlock} from '../../src'
+import {
+  findFirstTruthyEvaluatingBlockExitOn,
+  generateCachedProxyForBlockName, IBlockExitTestRequired,
+  IBlockWithTestExits,
+  IEvalContextBlock,
+} from '../../src'
 import IContext from '../../src/flow-spec/IContext'
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 
@@ -14,6 +19,35 @@ describe('IBlock', () => {
       __interactionId: 'abc-123',
       __value__: 'my first value',
       time: (new Date).toISOString()}
+  })
+
+  describe('findFirstTruthyEvaluatingBlockExitOn', () => {
+    it('should return first truthy exit', () => {
+      const exit = findFirstTruthyEvaluatingBlockExitOn({exits: [
+          {test: '@(true = false)'},
+          {test: '@(true = false)'},
+          {test: '@(true = true)'},
+          {test: '@(true = false)'},
+          {test: '@(true = false)'},
+        ] as IBlockExitTestRequired[]
+      } as IBlockWithTestExits, {} as IContext)
+
+      expect(exit).toEqual({test: '@(true = true)'})
+    })
+
+    it('should not return first _non-default_ truthy exit', () => {
+      const exit = findFirstTruthyEvaluatingBlockExitOn({exits: [
+          {test: '@(true = false)'},
+          {test: '@(true = false)'},
+          {test: '@(true = true)', default: true},
+          {test: '@(true = true)'},
+          {test: '@(true = false)'},
+          {test: '@(true = false)'},
+        ] as IBlockExitTestRequired[]
+      } as IBlockWithTestExits, {} as IContext)
+
+      expect(exit).toEqual({test: '@(true = true)'})
+    })
   })
 
   describe('generateCachedProxyForBlockName', () => {

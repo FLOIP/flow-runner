@@ -35,13 +35,9 @@ export function findFirstTruthyEvaluatingBlockExitOn(block: IBlockWithTestExits,
     throw new ValidationException(`Unable to find exits on block ${block.uuid}`)
   }
 
-  const {cursor} = context
-  if (cursor == null || cursor[0] == null) {
-    throw new ValidationException(`Unable to find cursor on context ${context.id}`)
-  }
-
   const evalContext = createEvalContextFrom(context)
-  return find<IBlockExitTestRequired>(exits, ({test}) => evaluateToBool(String(test), evalContext))
+  return find<IBlockExitTestRequired>(exits, ({test, default: isDefault = false}) =>
+    !isDefault && evaluateToBool(String(test), evalContext))
 }
 
 export function findDefaultBlockExitOn(block: IBlock): IBlockExit {
@@ -130,9 +126,12 @@ export function createEvalContextFrom(context: IContext) {
   }
 }
 
-function evaluateToBool(expr: string, ctx: object) {
+function evaluateToBool(expr: string, ctx: object): boolean {
   const result = EvaluatorFactory.create()
     .evaluate(expr, ctx)
 
-  return JSON.parse(result.toLowerCase())
+  const lowered = result.toLocaleLowerCase()
+  const parsed = JSON.parse(lowered)
+  return parsed
+  // return JSON.parse(result.toLowerCase())
 }

@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc --declaration",
     "clean": "rm tsconfig.tsbuildinfo && rm -rf dist/",
-    "deploy": "# increase version && commit && tag && push",
+    "deploy": "yarn clean && yarn build && git commit dist/ -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD",
     "test": "yarn tsc-test && yarn jest",
     "tsc-test": "tsc --project . --noEmit"
   },
