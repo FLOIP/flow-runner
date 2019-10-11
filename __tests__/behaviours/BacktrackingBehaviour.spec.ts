@@ -16,7 +16,8 @@ import {
 } from '../../src/domain/behaviours/BacktrackingBehaviour/HierarchicalIterStack'
 import IFlow from '../../src/flow-spec/IFlow'
 import IRunFlowBlockConfig from "../../src/model/block/IRunFlowBlockConfig"
-import {IBasePromptConfig, IPromptConfig, NON_INTERACTIVE_BLOCK_TYPES} from '../../src'
+import {IBasePromptConfig, IPromptConfig} from '../../src'
+import {NON_INTERACTIVE_BLOCK_TYPES} from '../../src/domain/FlowRunner'
 import IPrompt from '../../src/domain/prompt/IPrompt'
 import IBlock from '../../src/flow-spec/IBlock'
 
