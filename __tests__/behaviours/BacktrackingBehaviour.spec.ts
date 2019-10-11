@@ -1,4 +1,4 @@
-import {cloneDeep} from 'lodash'
+import {cloneDeep, first, last} from 'lodash'
 import BacktrackingBehaviour, {
   IContextBacktrackingPlatformMetadata,
 } from '../../src/domain/behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
@@ -16,6 +16,9 @@ import {
 } from '../../src/domain/behaviours/BacktrackingBehaviour/HierarchicalIterStack'
 import IFlow from '../../src/flow-spec/IFlow'
 import IRunFlowBlockConfig from "../../src/model/block/IRunFlowBlockConfig"
+import {IBasePromptConfig, IPromptConfig, NON_INTERACTIVE_BLOCK_TYPES} from '../../src'
+import IPrompt from '../../src/domain/prompt/IPrompt'
+import IBlock from '../../src/flow-spec/IBlock'
 
 
 describe('BacktrackingBehaviour', () => {
@@ -24,7 +27,9 @@ describe('BacktrackingBehaviour', () => {
   beforeEach(() => {
     backtracking = new BacktrackingBehaviour(
       {platformMetadata: {}} as IContext,
-      {navigateTo: (_b, _c) => [{} as IBlockInteraction, undefined]})
+      {navigateTo: (_b, _c) => [{} as IBlockInteraction, undefined]},
+      {buildPromptFor: (_b: IBlock, _i: IBlockInteraction):
+          IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined => undefined})
   })
 
   describe('constructor', () => {
@@ -437,5 +442,71 @@ describe('BacktrackingBehaviour', () => {
     it.todo('should behave predictably when key to match points to deep nesting')
     it.todo('should behave predictably when key to match points to element in main iteration')
     it.todo('should behave predictably when key to match point to start of everything')
+  })
+
+  describe('peek', () => {
+    let pseudoPrompt: IPrompt<any>
+
+    beforeEach(() => {
+      backtracking.context = {
+        interactions: [
+          {uuid: 'intx-123'},
+          {uuid: 'intx-234'},
+          {uuid: 'intx-345', flowId: 'flow-123', blockId: 'block-123', value: 'value #345'},
+          {uuid: 'intx-456'},
+          {uuid: 'intx-567'},
+          {uuid: 'intx-678', flowId: 'flow-123', blockId: 'block-123', value: 'value #678'},
+        ] as IBlockInteraction[],
+        flows: [
+          {uuid: 'flow-123', blocks: [{uuid: 'block-123'} as IBlock]} as IFlow
+        ] as IFlow[],
+      } as IContext
+
+      pseudoPrompt = {} as IPrompt<any>
+
+      jest.spyOn(backtracking.promptBuilder, 'buildPromptFor')
+        .mockReturnValue(pseudoPrompt)
+    })
+
+    it('should return prompt for last interaction when no args provided', () => {
+      const block: IBlock = backtracking.context.flows[0].blocks[0]
+      const interaction: IBlockInteraction = last(backtracking.context.interactions)!
+
+      const prompt = backtracking.peek()!
+      expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
+      expect(interaction.value).toBeTruthy()
+      expect(prompt).toBe(pseudoPrompt)
+      expect(prompt.value).toEqual(interaction.value)
+    })
+
+    it('should use interaction `steps` places from the end of interactions list', () => {
+      const block: IBlock = backtracking.context.flows[0].blocks[0]
+      const interaction: IBlockInteraction = backtracking.context.interactions[2]
+
+      const prompt = backtracking.peek(4)!
+      expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
+      expect(interaction.value).toBeTruthy()
+      expect(prompt).toBe(pseudoPrompt)
+      expect(prompt.value).toEqual(interaction.value)
+    })
+
+    it('should skip over non-interactive blocks', () => {
+      backtracking.context.interactions[3].type = first(NON_INTERACTIVE_BLOCK_TYPES)!
+      backtracking.context.interactions[4].type = first(NON_INTERACTIVE_BLOCK_TYPES)!
+
+      const block: IBlock = backtracking.context.flows[0].blocks[0]
+      const interaction: IBlockInteraction = backtracking.context.interactions[2]
+
+      const prompt = backtracking.peek(2)!
+      expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
+      expect(interaction.value).toBeTruthy()
+      expect(prompt).toBe(pseudoPrompt)
+      expect(prompt.value).toEqual(interaction.value)
+    })
+
+    it('should raise when trying to step back further than can be stepped', () => {
+      expect(BacktrackingBehaviour.prototype.peek.bind(backtracking, 7))
+        .toThrow('Unable to backtrack to an interaction that far back {"steps":7}')
+    })
   })
 })

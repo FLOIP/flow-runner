@@ -1,7 +1,9 @@
 import {
   cloneDeep,
   findLastIndex,
+  findLast,
   forEachRight,
+  includes,
   isEqual,
   last,
 } from 'lodash'
@@ -9,6 +11,7 @@ import IBehaviour from '../IBehaviour'
 import IBlockInteraction from '../../../flow-spec/IBlockInteraction'
 import IContext, {
   findBlockOnActiveFlowWith,
+  findFlowWith,
   RichCursorType,
 } from '../../../flow-spec/IContext'
 import {
@@ -37,7 +40,9 @@ import {
   cloneKeyAndMoveTo,
 } from './HierarchicalIterStack'
 import ValidationException from '../../exceptions/ValidationException'
-import {IFlowNavigator} from '../../FlowRunner'
+import {IFlowNavigator, IPromptBuilder, NON_INTERACTIVE_BLOCK_TYPES} from '../../FlowRunner'
+import IPrompt, {IBasePromptConfig, IPromptConfig} from '../../prompt/IPrompt'
+import {findBlockWith} from '../../..'
 
 export interface IBacktrackingContext {
   /**
@@ -58,10 +63,17 @@ export interface IContextBacktrackingPlatformMetadata {
 type BacktrackingCursor = IBacktrackingContext['cursor']
 type BacktrackingIntxStack = IBacktrackingContext['interactionStack']
 
-export default class BacktrackingBehaviour implements IBehaviour {
+export interface IBackTrackingBehaviour extends IBehaviour{
+  rebuildIndex(): void
+  jumpTo(interaction: IBlockInteraction, context: IContext): RichCursorType // todo: this should likely take in steps rather than interaction itself
+  peek(steps?: number): IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined
+}
+
+export default class BacktrackingBehaviour implements IBackTrackingBehaviour {
   constructor(
     public context: IContext,
-    public navigator: IFlowNavigator) {
+    public navigator: IFlowNavigator,
+    public promptBuilder: IPromptBuilder) {
 
     this.initializeBacktrackingContext()
   }
@@ -214,14 +226,29 @@ export default class BacktrackingBehaviour implements IBehaviour {
       this.context)
   }
 
-  peek(_steps = 1) {// : RichCursorInputRequiredType {
-    // todo: this will wrap richCursor creation, something like: ```
-    //       ctx = {cursor: [interactionId, createPromptConfig(intx)]}
-    //       return this.cursorHydrator.hydrateRichCursorFrom(ctx: IContextWithCursor)
-    //       ```
+  peek(steps = 1) {
+    let _steps = steps
+    const intx = findLast(this.context.interactions, ({type}) =>
+      !includes(NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0)
 
+    if (intx == null || _steps > 0) {
+      throw new ValidationException(`Unable to backtrack to an interaction that far back ${JSON.stringify({steps})}`)
+    }
 
+    const block = findBlockWith(
+      intx.blockId,
+      findFlowWith(intx.flowId, this.context))
 
+    const prompt = this.promptBuilder.buildPromptFor(block, intx)
+    if (prompt == null) {
+      throw new ValidationException(`Unable to build a prompt for ${JSON.stringify({
+        context: this.context.id,
+        intx,
+        block
+      })}`)
+    }
+
+    return Object.assign(prompt, {value: intx.value})
   }
 
   findIndexOfSuggestionFor({blockId}: IBlockInteraction, key: Key, stack: IStack): Key | undefined {
@@ -264,6 +291,7 @@ export default class BacktrackingBehaviour implements IBehaviour {
       return interaction
     }
 
+    // todo: this should be looking at ghostInteractionStacks and not interactionStack ???
     interaction.value = (getEntityAt(keyForSuggestion, interactionStack) as IBlockInteraction).value
 
     // need to splice out things between key + keyForSuggestion so that key points to both interaction and suggestion

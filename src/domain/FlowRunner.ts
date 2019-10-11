@@ -39,11 +39,21 @@ export interface IFlowNavigator {
   navigateTo(block: IBlock, ctx: IContext): RichCursorType
 }
 
+export interface IPromptBuilder {
+  buildPromptFor(block: IBlock, interaction: IBlockInteraction):
+    IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined
+}
+
 const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
   BacktrackingBehaviour,
 ]
 
-export default class FlowRunner implements IFlowRunner, IFlowNavigator {
+export const NON_INTERACTIVE_BLOCK_TYPES = [
+  'Core\\Case',
+  'Core\\RunFlowBlock',
+]
+
+export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   constructor(
     public context: IContext,
     public runnerFactoryStore: IBlockRunnerFactoryStore,
@@ -62,7 +72,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator {
   initializeBehaviours(behaviourConstructors: IBehaviourConstructor[]) {
     behaviourConstructors.forEach(b =>
       this.behaviours[lowerFirst(trimEnd(b.name, 'Behaviour|Behavior'))]
-        = new b(this.context, this))
+        = new b(this.context, this, this))
   }
 
   /**
@@ -191,11 +201,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator {
     Object.values(this.behaviours).forEach(b =>
       interaction = b.postInteractionCreate(interaction, this.context))
 
-    const runner = this.createBlockRunnerFor(block, this.context)
-    const promptConfig = runner.initialize(interaction)
-    const prompt = this.createPromptFrom(promptConfig, interaction)
-
-    return [interaction, prompt]
+    return [interaction, this.buildPromptFor(block, interaction)]
   }
 
   runActiveBlockOn(richCursor: RichCursorType, block: IBlock): IBlockExit {
@@ -390,6 +396,14 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator {
       tag: '',
       test: '',
     }
+  }
+
+  buildPromptFor(block: IBlock, interaction: IBlockInteraction):
+    IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined {
+
+    const runner = this.createBlockRunnerFor(block, this.context)
+    const promptConfig = runner.initialize(interaction)
+    return this.createPromptFrom(promptConfig, interaction)
   }
 
   private createPromptFrom(config?: IPromptConfig<any>, interaction?: IBlockInteraction):
