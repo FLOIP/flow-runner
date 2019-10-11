@@ -19,12 +19,8 @@ function findFirstTruthyEvaluatingBlockExitOn(block, context) {
     if (exits.length === 0) {
         throw new ValidationException_1.default(`Unable to find exits on block ${block.uuid}`);
     }
-    const { cursor } = context;
-    if (cursor == null || cursor[0] == null) {
-        throw new ValidationException_1.default(`Unable to find cursor on context ${context.id}`);
-    }
     const evalContext = createEvalContextFrom(context);
-    return lodash_1.find(exits, ({ test }) => evaluateToBool(String(test), evalContext));
+    return lodash_1.find(exits, ({ test, default: isDefault = false }) => !isDefault && evaluateToBool(String(test), evalContext));
 }
 exports.findFirstTruthyEvaluatingBlockExitOn = findFirstTruthyEvaluatingBlockExitOn;
 function findDefaultBlockExitOn(block) {
@@ -95,6 +91,8 @@ exports.createEvalContextFrom = createEvalContextFrom;
 function evaluateToBool(expr, ctx) {
     const result = floip_expression_evaluator_ts_1.EvaluatorFactory.create()
         .evaluate(expr, ctx);
-    return JSON.parse(result.toLowerCase());
+    const lowered = result.toLocaleLowerCase();
+    const parsed = JSON.parse(lowered);
+    return parsed;
 }
 //# sourceMappingURL=IBlock.js.map
