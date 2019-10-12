@@ -3,7 +3,7 @@ import IDataset, {createDefaultDataset} from '../__test_fixtures__/fixtures/IDat
 import FlowRunner, {BlockRunnerFactoryStore} from '../src/domain/FlowRunner'
 import MessageBlockRunner from '../src/domain/runners/MessageBlockRunner'
 import IMessageBlock from '../src/model/block/IMessageBlock'
-import {RichCursorInputRequiredType} from '../src'
+import {createContextDataObjectFor, RichCursorInputRequiredType, SupportedMode} from '../src'
 import IContext from '../src/flow-spec/IContext'
 import ValidationException from '../src/domain/exceptions/ValidationException'
 import {deserialize, plainToClass, serialize} from 'class-transformer'
@@ -17,6 +17,8 @@ import SelectOneResponseBlockRunner from '../src/domain/runners/SelectOneRespons
 import SelectManyResponseBlockRunner from '../src/domain/runners/SelectManyResponseBlockRunner'
 import CaseBlockRunner from '../src/domain/runners/CaseBlockRunner'
 import ICaseBlock from '../src/model/block/ICaseBlock'
+import IContact from '../src/flow-spec/IContact'
+import SelectOnePrompt from '../src/domain/prompt/SelectOnePrompt'
 
 
 describe('FlowRunner', () => {
@@ -140,6 +142,29 @@ describe('FlowRunner', () => {
 
         // todo: update context + finish test once @george has resolved removal of `.value` lookups
         expect(FlowRunner.prototype.run.bind(runner)).not.toThrow()
+      })
+    })
+
+    describe('VMO-1484-case-branching-improperly', () => {
+      it('should hit specified branch', () => {
+        const {flows, resources}: IContext = require('../__test_fixtures__/fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
+
+        const context = createContextDataObjectFor(
+          {id: '1'} as IContact,
+          'user-1234',
+          flows,
+          'en_US',
+          SupportedMode.OFFLINE,
+          resources)
+
+        const runner = new FlowRunner(context)
+        let [, prompt]: RichCursorInputRequiredType = runner.run()!
+        prompt.value = (prompt as SelectOnePrompt).config.choices[1].key // cats
+
+        // prompt = runner.run()![1]
+        // prompt.value = 17 // age
+
+
       })
     })
   })

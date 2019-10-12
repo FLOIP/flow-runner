@@ -9,7 +9,7 @@ import ValidationException from '../domain/exceptions/ValidationException'
 import DeliveryStatus from './DeliveryStatus'
 import SupportedMode from './SupportedMode'
 import uuid from 'uuid'
-import {IResources} from '..'
+import {IResourceDefinition, IResources} from '..'
 
 
 export type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined]
@@ -56,7 +56,8 @@ export function createContextDataObjectFor(
   userId: string,
   flows: IFlow[],
   languageId: string,
-  mode: SupportedMode): IContext {
+  mode: SupportedMode,
+  resources: IResourceDefinition[] = []): IContext {
 
   return {
     id: uuid.v4(),
@@ -75,7 +76,7 @@ export function createContextDataObjectFor(
     flows,
     firstFlowId: flows[0].uuid,
 
-    resources: [],
+    resources,
     platformMetadata: {}
   }
 }
