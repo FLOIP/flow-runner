@@ -6,7 +6,7 @@ const lodash_1 = require("lodash");
 const ValidationException_1 = tslib_1.__importDefault(require("../domain/exceptions/ValidationException"));
 const DeliveryStatus_1 = tslib_1.__importDefault(require("./DeliveryStatus"));
 const uuid_1 = tslib_1.__importDefault(require("uuid"));
-function createContextDataObjectFor(contact, userId, flows, languageId, mode) {
+function createContextDataObjectFor(contact, userId, flows, languageId, mode, resources = []) {
     return {
         id: uuid_1.default.v4(),
         createdAt: new Date().toISOString(),
@@ -20,7 +20,7 @@ function createContextDataObjectFor(contact, userId, flows, languageId, mode) {
         nestedFlowBlockInteractionIdStack: [],
         flows,
         firstFlowId: flows[0].uuid,
-        resources: [],
+        resources,
         platformMetadata: {}
     };
 }

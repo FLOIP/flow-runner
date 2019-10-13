@@ -58,6 +58,17 @@ function generateCachedProxyForBlockName(target, ctx) {
             }
             return expressionBlocksByName[prop.toString()] =
                 findAndGenerateExpressionBlockFor(prop.toString(), ctx);
+        },
+        has(target, prop) {
+            if (prop in target) {
+                return true;
+            }
+            if (prop in expressionBlocksByName) {
+                return true;
+            }
+            expressionBlocksByName[prop.toString()] =
+                findAndGenerateExpressionBlockFor(prop.toString(), ctx);
+            return prop in expressionBlocksByName;
         }
     });
 }
@@ -91,8 +102,6 @@ exports.createEvalContextFrom = createEvalContextFrom;
 function evaluateToBool(expr, ctx) {
     const result = floip_expression_evaluator_ts_1.EvaluatorFactory.create()
         .evaluate(expr, ctx);
-    const lowered = result.toLocaleLowerCase();
-    const parsed = JSON.parse(lowered);
-    return parsed;
+    return JSON.parse(result.toLowerCase());
 }
 //# sourceMappingURL=IBlock.js.map
