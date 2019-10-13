@@ -15,7 +15,6 @@ const NumericPrompt_1 = tslib_1.__importDefault(require("./prompt/NumericPrompt"
 const OpenPrompt_1 = tslib_1.__importDefault(require("./prompt/OpenPrompt"));
 const SelectOnePrompt_1 = tslib_1.__importDefault(require("./prompt/SelectOnePrompt"));
 const SelectManyPrompt_1 = tslib_1.__importDefault(require("./prompt/SelectManyPrompt"));
-const BacktrackingBehaviour_1 = tslib_1.__importDefault(require("./behaviours/BacktrackingBehaviour/BacktrackingBehaviour"));
 const MessageBlockRunner_1 = tslib_1.__importDefault(require("./runners/MessageBlockRunner"));
 const OpenResponseBlockRunner_1 = tslib_1.__importDefault(require("./runners/OpenResponseBlockRunner"));
 const NumericResponseBlockRunner_1 = tslib_1.__importDefault(require("./runners/NumericResponseBlockRunner"));
@@ -25,9 +24,7 @@ const CaseBlockRunner_1 = tslib_1.__importDefault(require("./runners/CaseBlockRu
 class BlockRunnerFactoryStore extends Map {
 }
 exports.BlockRunnerFactoryStore = BlockRunnerFactoryStore;
-const DEFAULT_BEHAVIOUR_TYPES = [
-    BacktrackingBehaviour_1.default,
-];
+const DEFAULT_BEHAVIOUR_TYPES = [];
 exports.NON_INTERACTIVE_BLOCK_TYPES = [
     'Core\\Case',
     'Core\\RunFlowBlock',
