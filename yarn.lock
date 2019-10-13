@@ -1714,8 +1714,8 @@ flatted@^2.0.0:
   integrity sha512-a1hQMktqW9Nmqr5aktAux3JMNqaucxGcjtjWnZLHX7yyPCmlSV3M54nGYbqT8K+0GhF3NBgmJCc3ma+WOgX8Jg==
 
 "floip-expression-evaluator-ts@https://bitbucket.org/voto/floip-expression-evaluator-ts.git#semver:v1":
-  version "1.1.1"
-  resolved "https://bitbucket.org/voto/floip-expression-evaluator-ts.git#d8c803abce104aa18206e98981b7f064f4a1e543"
+  version "1.1.2"
+  resolved "https://bitbucket.org/voto/floip-expression-evaluator-ts.git#5e676ee1f86ffceb187967e3e7b91af35e151ecf"
   dependencies:
     floip-parser "https://bitbucket.org/voto/floip-expression-evaluator#semver:>=1.6"
     moment "^2.24.0"

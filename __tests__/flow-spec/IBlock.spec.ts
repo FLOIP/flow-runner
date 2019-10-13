@@ -18,7 +18,10 @@ describe('IBlock', () => {
     target = {
       __interactionId: 'abc-123',
       __value__: 'my first value',
-      time: (new Date).toISOString()}
+      time: (new Date).toISOString(),
+      value: 'my first value',
+      text: 'my text'
+    } 
   })
 
   describe('findFirstTruthyEvaluatingBlockExitOn', () => {

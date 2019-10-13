@@ -4,6 +4,7 @@ import ValidationException from '../domain/exceptions/ValidationException'
 import IContext, {CursorType, findFlowWith, findInteractionWith, getActiveFlowFrom} from './IContext'
 import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
 import IFlow, {findBlockWith} from './IFlow'
+import ResourceResolver from '../domain/ResourceResolver'
 
 export default interface IBlock {
   uuid: string
@@ -53,6 +54,8 @@ export interface IEvalContextBlock {
   __value__: any
   time: string
   __interactionId: string
+  value: any
+  text: string
 }
 
 export function findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx: IContext): IEvalContextBlock | undefined {
@@ -68,10 +71,14 @@ export function findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx
     return
   }
 
+  const resource = new ResourceResolver(ctx).resolve(intx.blockId)
+
   return {
     __interactionId: intx.uuid,
     __value__: intx.value,
+    value: intx.value,
     time: intx.entryAt,
+    text: resource.hasText() ? resource.getText() : ''
   }
 }
 

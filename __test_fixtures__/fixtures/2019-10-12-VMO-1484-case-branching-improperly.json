@@ -49,7 +49,7 @@
             "io_viamo": {
               "type": "MultipleChoiceQuestionBlock",
               "customData": {
-                "title": "Dogs/Cats",
+                "title": "Dogs_or_Cats",
                 "label": "",
                 "tags": [],
                 "reviewed": {
@@ -255,7 +255,7 @@
               "ussdContent": [],
               "socialContent": [],
               "clipboardContent": {
-                "209061": "You picked cats. Boo."
+                "209061": "You picked cats. Boo. @(flow.Dogs_or_Cats.text)"
               },
               "smsAutogenLangs": [
                 209061
