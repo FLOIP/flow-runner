@@ -1,9 +1,9 @@
 import IBlockRunner from './IBlockRunner'
 import {
   findDefaultBlockExitOn,
-  findFirstTruthyEvaluatingBlockExitOn,
   IBlockExitTestRequired,
 } from '../..'
+import {findFirstTruthyEvaluatingBlockExitOn} from '../../flow-spec/IBlock'
 import IContext from '../../flow-spec/IContext'
 import ICaseBlock from '../../model/block/ICaseBlock'
 
