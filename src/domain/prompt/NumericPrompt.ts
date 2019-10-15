@@ -6,6 +6,10 @@ import ValidationException from '../exceptions/ValidationException'
 export default class NumericPrompt extends BasePrompt<INumericPromptConfig & IBasePromptConfig> {
 
   validate(val: number): boolean {
+    if (Number.isNaN(val) || val === null) {
+      return false
+    }
+
     const {min, max} = this.config
 
     if (min != null && val < min) {
