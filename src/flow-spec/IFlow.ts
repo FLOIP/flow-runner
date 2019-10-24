@@ -7,6 +7,7 @@ import ILanguage from './ILanguage'
 
 export default interface IFlow {
   uuid: string // UUID32
+  orgId: string
   name: string
   label?: string
   lastModified: string // UTC like: 2016-12-25 13:42:05.234598

@@ -7,6 +7,7 @@ export default interface IBlockInteraction {
   hasResponse: boolean
   value?: string | number
   details: IBlockInteractionDetails // json (?) can we type this at all?
+  selectedExitId: string | null
   type: string
 
   originBlockInteractionId?: string // UUID64
@@ -14,5 +15,4 @@ export default interface IBlockInteraction {
 }
 
 export interface IBlockInteractionDetails {
-  selectedExitId: string | null
 }
