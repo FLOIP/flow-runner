@@ -28,6 +28,7 @@ export default interface IContext {
   deliveryStatus: DeliveryStatus
 
   userId?: string
+  orgId?: string
   mode: SupportedMode
   languageId: string
 
@@ -54,6 +55,7 @@ export interface IContextInputRequired extends IContext {
 export function createContextDataObjectFor(
   contact: IContact,
   userId: string,
+  orgId: string,
   flows: IFlow[],
   languageId: string,
   mode: SupportedMode,
@@ -65,6 +67,7 @@ export function createContextDataObjectFor(
     deliveryStatus: DeliveryStatus.QUEUED,
 
     userId,
+    orgId,
     mode,
     languageId,
 
