@@ -7,11 +7,11 @@ export default interface IBlockInteraction {
     hasResponse: boolean;
     value?: string | number;
     details: IBlockInteractionDetails;
+    selectedExitId: string | null;
     type: string;
     originBlockInteractionId?: string;
     originFlowId?: string;
 }
 export interface IBlockInteractionDetails {
-    selectedExitId: string | null;
 }
 //# sourceMappingURL=IBlockInteraction.d.ts.map

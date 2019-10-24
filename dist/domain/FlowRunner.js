@@ -131,7 +131,7 @@ class FlowRunner {
         }
         const exit = this.createBlockRunnerFor(block, this.context)
             .run(richCursor);
-        richCursor[0].details.selectedExitId = exit.uuid;
+        richCursor[0].selectedExitId = exit.uuid;
         if (richCursor[1] != null) {
             richCursor[1].config.isSubmitted = true;
         }
@@ -180,7 +180,7 @@ class FlowRunner {
         if (runFlowBlock.exits.length === 1) {
             runFlowBlock.exits.push(this.createBlockExitFor(firstNestedBlock));
         }
-        runFlowInteraction.details.selectedExitId = lodash_2.last(runFlowBlock.exits).uuid;
+        runFlowInteraction.selectedExitId = lodash_2.last(runFlowBlock.exits).uuid;
         return firstNestedBlock;
     }
     stepOut(ctx) {
@@ -192,7 +192,7 @@ class FlowRunner {
         const { blockId: lastRunFlowBlockId } = IContext_1.findInteractionWith(lastParentInteractionId, ctx);
         const lastRunFlowBlock = IContext_1.findBlockOnActiveFlowWith(lastRunFlowBlockId, ctx);
         const { uuid: runFlowBlockFirstExitId, destinationBlock } = lodash_2.first(lastRunFlowBlock.exits);
-        lodash_2.last(interactions).details.selectedExitId = runFlowBlockFirstExitId;
+        lodash_2.last(interactions).selectedExitId = runFlowBlockFirstExitId;
         if (destinationBlock == null) {
             return;
         }
@@ -208,11 +208,11 @@ class FlowRunner {
         return this.findNextBlockFrom(interaction, ctx);
     }
     findNextBlockFrom(interaction, ctx) {
-        if (interaction.details.selectedExitId == null) {
+        if (interaction.selectedExitId == null) {
             throw new ValidationException_1.default('Unable to navigate past incomplete interaction; did you forget to call runner.run()?');
         }
         const block = IContext_1.findBlockOnActiveFlowWith(interaction.blockId, ctx);
-        const { destinationBlock } = IBlock_1.findBlockExitWith(interaction.details.selectedExitId, block);
+        const { destinationBlock } = IBlock_1.findBlockExitWith(interaction.selectedExitId, block);
         const { blocks } = IContext_1.getActiveFlowFrom(ctx);
         return lodash_2.find(blocks, { uuid: destinationBlock });
     }
@@ -225,7 +225,8 @@ class FlowRunner {
             exitAt: undefined,
             hasResponse: false,
             value: undefined,
-            details: { selectedExitId: null },
+            selectedExitId: null,
+            details: {},
             type,
             originFlowId,
             originBlockInteractionId,
