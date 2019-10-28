@@ -24,7 +24,7 @@ export default class NumericResponseBlockRunner implements IBlockRunner {
       min,
       max,
 
-      value: value as INumericPromptConfig['value'] // todo: need to update other runner types to either do this or implement some other way
+      value: value as INumericPromptConfig['value'],
     }
   }
 
