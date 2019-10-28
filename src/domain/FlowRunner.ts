@@ -26,8 +26,9 @@ import NumericPrompt from './prompt/NumericPrompt'
 import OpenPrompt from './prompt/OpenPrompt'
 import SelectOnePrompt from './prompt/SelectOnePrompt'
 import SelectManyPrompt from './prompt/SelectManyPrompt'
-// import BacktrackingBehaviour from './behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
 import IBehaviour, {IBehaviourConstructor} from './behaviours/IBehaviour'
+// import BacktrackingBehaviour from './behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
+import BasicBacktrackingBehaviour from './behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour'
 import MessageBlockRunner from './runners/MessageBlockRunner'
 import IMessageBlock from '../model/block/IMessageBlock'
 import OpenResponseBlockRunner from './runners/OpenResponseBlockRunner'
@@ -56,6 +57,7 @@ export interface IPromptBuilder {
 }
 
 const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
+  BasicBacktrackingBehaviour,
   // BacktrackingBehaviour,
 ]
 
