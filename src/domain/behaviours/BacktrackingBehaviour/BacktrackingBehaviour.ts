@@ -63,10 +63,12 @@ export interface IContextBacktrackingPlatformMetadata {
 type BacktrackingCursor = IBacktrackingContext['cursor']
 type BacktrackingIntxStack = IBacktrackingContext['interactionStack']
 
-export interface IBackTrackingBehaviour extends IBehaviour{
+export interface IBackTrackingBehaviour extends IBehaviour {
   rebuildIndex(): void
+  // generates new prompt from new interaction + resets state to what was `interaction`'s moment
   jumpTo(interaction: IBlockInteraction, context: IContext): RichCursorType // todo: this should likely take in steps rather than interaction itself
-  peek(steps?: number): IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined
+  // regenerates prompt from previous interaction
+  peek(steps?: number): IPrompt<IPromptConfig<any> & IBasePromptConfig>
 }
 
 export default class BacktrackingBehaviour implements IBackTrackingBehaviour {
@@ -226,7 +228,7 @@ export default class BacktrackingBehaviour implements IBackTrackingBehaviour {
       this.context)
   }
 
-  peek(steps = 1) {
+  peek(steps = 1): IPrompt<IPromptConfig<any> & IBasePromptConfig> {
     let _steps = steps
     const intx = findLast(this.context.interactions, ({type}) =>
       !includes(NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0)
@@ -273,7 +275,7 @@ export default class BacktrackingBehaviour implements IBackTrackingBehaviour {
     const {
       backtracking: {
         cursor: key,
-        interactionStack,
+        // interactionStack,
         ghostInteractionStacks
       }
     } = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
@@ -286,13 +288,18 @@ export default class BacktrackingBehaviour implements IBackTrackingBehaviour {
       this.rebuildIndex()
     }
 
-    const keyForSuggestion = this.findIndexOfSuggestionFor(interaction, key, interactionStack)
+    const lastGhost = last(ghostInteractionStacks)
+    if (lastGhost == null) {
+      throw new Error('whups no ghost')
+    }
+
+    const keyForSuggestion = this.findIndexOfSuggestionFor(interaction, key, lastGhost)
     if (keyForSuggestion == null) {
       return interaction
     }
 
     // todo: this should be looking at ghostInteractionStacks and not interactionStack ???
-    interaction.value = (getEntityAt(keyForSuggestion, interactionStack) as IBlockInteraction).value
+    interaction.value = (getEntityAt(keyForSuggestion, lastGhost) as IBlockInteraction).value
 
     // need to splice out things between key + keyForSuggestion so that key points to both interaction and suggestion
     if (keyForSuggestion.join() !== key.join()) {

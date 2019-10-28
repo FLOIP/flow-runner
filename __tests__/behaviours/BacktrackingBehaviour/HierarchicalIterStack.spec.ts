@@ -1,11 +1,10 @@
 import {
   _append,
-  _loop,
   createStack,
   createStackFrom, createStackKey, deepTruncateIterationsFrom,
   IEntity,
   IStack, Key, truncateIterationFrom,
-} from '../../src/domain/behaviours/BacktrackingBehaviour/HierarchicalIterStack'
+} from '../../../src/domain/behaviours/BacktrackingBehaviour/HierarchicalIterStack'
 
 
 describe('HierarchicalIterStack', () => {
