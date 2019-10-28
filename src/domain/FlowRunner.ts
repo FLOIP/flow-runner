@@ -345,7 +345,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     const lastRunFlowBlock = findBlockOnActiveFlowWith(lastRunFlowBlockId, ctx)
     const {uuid: runFlowBlockFirstExitId, destinationBlock} = first(lastRunFlowBlock.exits) as IBlockExit
 
-    (last(interactions) as IBlockInteraction).details.selectedExitId = runFlowBlockFirstExitId
+    ;(last(interactions) as IBlockInteraction).details.selectedExitId = runFlowBlockFirstExitId
 
     if (destinationBlock == null) {
       return
