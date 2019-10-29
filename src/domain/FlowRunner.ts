@@ -14,7 +14,6 @@ import IBlockRunner from './runners/IBlockRunner'
 import IBlockInteraction from '../flow-spec/IBlockInteraction'
 import IBlockExit from '../flow-spec/IBlockExit'
 import {find, first, last} from 'lodash'
-import uuid from 'uuid'
 import IFlowRunner, {IBlockRunnerFactoryStore} from './IFlowRunner'
 import IIdGenerator from './IIdGenerator'
 import IdGeneratorUuidV4 from './IdGeneratorUuidV4'
@@ -221,8 +220,8 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
   ): RichCursorType {
     let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
 
-    Object.values(this.behaviours).forEach(b =>
-      interaction = b.postInteractionCreate(interaction, this.context))
+    Object.values(this.behaviours)
+      .forEach(b => interaction = b.postInteractionCreate(interaction, this.context))
 
     return [interaction, this.buildPromptFor(block, interaction)]
   }
@@ -244,8 +243,8 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
       richCursor[1].config.isSubmitted = true
     }
 
-    Object.values(this.behaviours).forEach(b =>
-      b.postInteractionComplete(richCursor[0], this.context))
+    Object.values(this.behaviours)
+      .forEach(b => b.postInteractionComplete(richCursor[0], this.context))
 
     return exit
   }
@@ -259,7 +258,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     return factory(block, ctx)
   }
 
-  navigateTo(block: IBlock, ctx: IContext): RichCursorType {
+  navigateTo(block: IBlock, ctx: IContext, navigatedAt: Date = new Date): RichCursorType {
     const {interactions, nestedFlowBlockInteractionIdStack} = ctx
     const flowId = getActiveFlowIdFrom(ctx)
     const originInteractionId = last(nestedFlowBlockInteractionIdStack)
@@ -275,7 +274,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
 
     const lastInteraction = last(interactions)
     if (lastInteraction != null) {
-      lastInteraction.exitAt = new Date().toISOString()
+      lastInteraction.exitAt = navigatedAt.toISOString()
     }
 
     interactions.push(richCursor[0])
@@ -314,12 +313,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
       return undefined
     }
 
-    if (runFlowBlock.exits.length === 1) {
-      // todo: how does clipboard-web do this? Seems problematic if we were to ever refetch this flow
-      runFlowBlock.exits.push(this.createBlockExitFor(firstNestedBlock))
-    }
-
-    runFlowInteraction.details.selectedExitId = (last(runFlowBlock.exits) as IBlockExit).uuid
+    runFlowInteraction.details.selectedExitId = runFlowBlock.exits[0].uuid
 
     return firstNestedBlock
   }
@@ -336,7 +330,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
    *       to next block; when stepping IN, we need an explicit navigation to inject RunFlow in between
    *       the two Flows. */
   stepOut(ctx: IContext): IBlock | undefined {
-    const {interactions, nestedFlowBlockInteractionIdStack} = ctx
+    const {nestedFlowBlockInteractionIdStack} = ctx
 
     if (nestedFlowBlockInteractionIdStack.length === 0) {
       return
@@ -345,9 +339,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     const lastParentInteractionId = nestedFlowBlockInteractionIdStack.pop() as string
     const {blockId: lastRunFlowBlockId} = findInteractionWith(lastParentInteractionId, ctx)
     const lastRunFlowBlock = findBlockOnActiveFlowWith(lastRunFlowBlockId, ctx)
-    const {uuid: runFlowBlockFirstExitId, destinationBlock} = first(lastRunFlowBlock.exits) as IBlockExit
-
-    ;(last(interactions) as IBlockInteraction).details.selectedExitId = runFlowBlockFirstExitId
+    const {destinationBlock} = first(lastRunFlowBlock.exits) as IBlockExit
 
     if (destinationBlock == null) {
       return
@@ -403,21 +395,6 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
       // Nested flows:
       originFlowId,
       originBlockInteractionId,
-    }
-  }
-
-  /**
-   * todo: deprecate block exit generation
-   * @deprecated */
-  private createBlockExitFor({uuid: destinationBlock}: IBlock): IBlockExit {
-    return {
-      uuid: uuid.v4(),
-      destinationBlock: destinationBlock,
-      config: {},
-      label: '',
-      semanticLabel: '',
-      tag: '',
-      test: '',
     }
   }
 
