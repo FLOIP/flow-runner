@@ -1,3 +1,5 @@
+import "reflect-metadata"
+
 export * from './domain/IFlowRunner'
 export * from './domain/IResourceResolver'
 export * from './domain/FlowRunner'

@@ -1,6 +1,6 @@
 import ResourceResolver from '../src/domain/ResourceResolver'
 import {
-  createContextFor,
+  createContextDataObjectFor,
   IResource,
   IResourceDefinition,
   IResourceDefinitionContentTypeSpecific,
@@ -18,7 +18,7 @@ describe('ResourceResolver', () => {
   let ctx: IContext
 
   beforeEach(() => {
-    ctx = createContextFor(
+    ctx = createContextDataObjectFor(
       {id: 'contact-123', name: 'Bert'},
       'user-123',
       [{uuid: 'flow-123'} as IFlow],

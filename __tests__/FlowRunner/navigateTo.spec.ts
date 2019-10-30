@@ -2,18 +2,12 @@ import {last} from 'lodash'
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
-import {createTextResourceVariantWith, findInteractionWith, Resource, RichCursorType} from '../../src'
+import {findInteractionWith, RichCursorType} from '../../src'
 import {IBasePromptConfig, KnownPrompts} from '../../src';
 import {createStaticFirstExitBlockRunnerFor} from "../../__test_fixtures__/fixtures/BlockRunner";
 import {INumericPromptConfig} from '../../src';
-import IContext from '../../src/flow-spec/IContext'
 
 // todo: abstract some of the setup
-
-function createTextResourceFor(resourceAsString: string, ctx: IContext) {
-  const values = [createTextResourceVariantWith(resourceAsString, ctx)]
-  return new Resource(resourceAsString, values, ctx)
-}
 
 describe('FlowRunner/navigateTo', () => {
   let dataset: IDataset
@@ -59,7 +53,7 @@ describe('FlowRunner/navigateTo', () => {
           previousIntxId = 'some-fake-block-interaction-uuid',
           promptConfig: INumericPromptConfig & IBasePromptConfig = {
             kind: KnownPrompts.Numeric,
-            prompt: createTextResourceFor('What age are you at?', ctx),
+            prompt: 'What age are you at?',
             value: null,
             isResponseRequired: false,
             isSubmitted: false,
@@ -88,7 +82,7 @@ describe('FlowRunner/navigateTo', () => {
       const
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
-          messageBlockRunner = createStaticFirstExitBlockRunnerFor(block),
+          messageBlockRunner = createStaticFirstExitBlockRunnerFor(block, ctx),
 
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
             ['MobilePrimitives\\Message', () => messageBlockRunner]])),
@@ -96,7 +90,7 @@ describe('FlowRunner/navigateTo', () => {
           startSpy = jest.spyOn(messageBlockRunner, 'initialize')
               .mockImplementation((): INumericPromptConfig & IBasePromptConfig => ({
                 kind: KnownPrompts.Numeric,
-                prompt: createTextResourceFor('What age are you at?', ctx),
+                prompt: 'What age are you at?',
                 value: null,
                 isResponseRequired: false,
                 isSubmitted: false,
@@ -253,7 +247,7 @@ describe('FlowRunner/navigateTo', () => {
       expect(ctx.interactions.length).toBeGreaterThan(0)
       expect(lastIntx.exitAt).toBeNull()
       runner.navigateTo(block, ctx)
-      expect(lastIntx.exitAt).toBeInstanceOf(Date)
+      expect(lastIntx.exitAt).toBe(new Date().toISOString()) // todo: this is a fragile time-sensitive test; make it not so
     })
   })
 })

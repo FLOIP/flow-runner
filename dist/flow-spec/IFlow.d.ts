@@ -1,5 +1,6 @@
 import IBlock from './IBlock';
 import SupportedMode from './SupportedMode';
+import ILanguage from './ILanguage';
 export default interface IFlow {
     uuid: string;
     name: string;
@@ -8,7 +9,7 @@ export default interface IFlow {
     interactionTimeout: number;
     platformMetadata: object;
     supportedModes: SupportedMode[];
-    languages: string[];
+    languages: ILanguage[];
     blocks: IBlock[];
     firstBlockId: string;
     exitBlockId?: string;

@@ -14,9 +14,9 @@ export declare type RichCursorInputRequiredType = [IBlockInteraction, IPrompt<IP
 export declare type RichCursorNoInputRequiredType = [IBlockInteraction, undefined];
 export default interface IContext {
     id: string;
-    createdAt: Date;
-    entryAt?: Date;
-    exitAt?: Date;
+    createdAt: string;
+    entryAt?: string;
+    exitAt?: string;
     deliveryStatus: DeliveryStatus;
     userId?: string;
     mode: SupportedMode;
@@ -36,7 +36,7 @@ export interface IContextWithCursor extends IContext {
 export interface IContextInputRequired extends IContext {
     cursor: CursorInputRequiredType;
 }
-export declare function createContextFor(contact: IContact, userId: string, flows: IFlow[], languageId: string, mode: SupportedMode): IContext;
+export declare function createContextDataObjectFor(contact: IContact, userId: string, flows: IFlow[], languageId: string, mode: SupportedMode): IContext;
 export declare function findInteractionWith(uuid: string, { interactions }: IContext): IBlockInteraction;
 export declare function findFlowWith(uuid: string, { flows }: IContext): IFlow;
 export declare function findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock;

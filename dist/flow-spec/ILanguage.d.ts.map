@@ -1,0 +1,1 @@
+{"version":3,"file":"ILanguage.d.ts","sourceRoot":"","sources":["../../src/flow-spec/ILanguage.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,WAAW,SAAS;IAChC,EAAE,EAAE,MAAM,CAAC;IACX,IAAI,EAAE,MAAM,CAAC;IACb,YAAY,EAAE,MAAM,CAAC;IACrB,KAAK,EAAE,MAAM,CAAC;IACd,WAAW,EAAE,OAAO,CAAC;IACrB,IAAI,CAAC,EAAE,MAAM,CAAC;IACd,SAAS,CAAC,EAAE,MAAM,CAAC;CACpB"}

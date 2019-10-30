@@ -7,8 +7,6 @@ import {
 import IBlockExit from '../../flow-spec/IBlockExit'
 import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock'
 import IContext from '../../flow-spec/IContext'
-import ResourceResolver from '../ResourceResolver'
-import IResourceResolver from '../IResourceResolver'
 import {last} from 'lodash'
 
 export default class SelectOneResponseBlockRunner implements IBlockRunner {
@@ -18,16 +16,15 @@ export default class SelectOneResponseBlockRunner implements IBlockRunner {
 
   initialize(): ISelectOnePromptConfig {
     const {prompt, choices} = this.block.config
-    const resources: IResourceResolver = new ResourceResolver(this.context)
 
     return {
       kind: KnownPrompts.SelectOne,
-      prompt: resources.resolve(prompt),
+      prompt,
       isResponseRequired: true,
       choices: Object.keys(choices)
         .map(key => ({
           key,
-          value: resources.resolve(choices[key]),
+          value: choices[key],
         })),
     }
   }

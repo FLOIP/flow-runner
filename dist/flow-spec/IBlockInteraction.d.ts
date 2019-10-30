@@ -2,8 +2,8 @@ export default interface IBlockInteraction {
     uuid: string;
     blockId: string;
     flowId: string;
-    entryAt: Date;
-    exitAt?: Date;
+    entryAt: string;
+    exitAt?: string;
     hasResponse: boolean;
     value?: string | number;
     details: IBlockInteractionDetails;

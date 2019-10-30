@@ -1,20 +1,22 @@
 {
   "name": "flowrunner-core-ts",
-  "version": "0.0.26",
+  "version": "0.0.40",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "repository": "git@bitbucket.org:voto/flowrunner-core-ts.git",
   "author": "bzabos <b.zabos@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc --declaration",
+    "build": "tsc --declaration && yarn version --patch",
     "deploy": "# increase version && commit && tag && push",
     "test": "yarn tsc-test && yarn jest",
     "tsc-test": "tsc --project . --noEmit"
   },
   "dependencies": {
+    "class-transformer": "^0.2.3",
     "floip-expression-evaluator-ts": "https://bitbucket.org/voto/floip-expression-evaluator-ts.git#semver:v1",
     "lodash": "^4.17.14",
+    "reflect-metadata": "^0.1.13",
     "tslib": "^1.10.0",
     "uuid": "^3.3.2"
   },

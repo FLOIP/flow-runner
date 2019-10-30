@@ -4,6 +4,7 @@ import IBlockRunner from './runners/IBlockRunner';
 import IBlockInteraction from '../flow-spec/IBlockInteraction';
 import IBlockExit from '../flow-spec/IBlockExit';
 import IFlowRunner, { IBlockRunnerFactoryStore } from './IFlowRunner';
+import IIdGenerator from './IIdGenerator';
 export declare class BlockRunnerFactoryStore extends Map<string, {
     (block: IBlock, ctx: IContext): IBlockRunner;
 }> implements IBlockRunnerFactoryStore {
@@ -11,7 +12,8 @@ export declare class BlockRunnerFactoryStore extends Map<string, {
 export default class FlowRunner implements IFlowRunner {
     context: IContext;
     runnerFactoryStore: IBlockRunnerFactoryStore;
-    constructor(context: IContext, runnerFactoryStore: IBlockRunnerFactoryStore);
+    protected idGenerator: IIdGenerator;
+    constructor(context: IContext, runnerFactoryStore: IBlockRunnerFactoryStore, idGenerator?: IIdGenerator);
     initialize(): RichCursorType | undefined;
     isInitialized(ctx: IContext): boolean;
     run(): RichCursorInputRequiredType | undefined;

@@ -5,8 +5,8 @@ export default interface IBlockInteraction {
   uuid: string // UUID64
   blockId: string // UUID32
   flowId: string // UUID32
-  entryAt: Date
-  exitAt?: Date
+  entryAt: string
+  exitAt?: string
   hasResponse: boolean
   value?: string | number
   details: IBlockInteractionDetails // json (?) can we type this at all?

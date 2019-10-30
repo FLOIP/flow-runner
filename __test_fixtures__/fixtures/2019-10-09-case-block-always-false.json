@@ -1,0 +1,758 @@
+{
+  "uuid": "5b8c87d6-de90-4bc4-8668-4f040000006b",
+  "name": "Case Block",
+  "label": "",
+  "lastModified": "2019-10-04 21:05:25.000000+00:00",
+  "interactionTimeout": 172800,
+  "supportedModes": [],
+  "languages": [
+    "22"
+  ],
+  "platformMetadata": {
+    "io_viamo": {
+      "orgId": "1008107874829627392",
+      "treeId": "113"
+    }
+  },
+  "blocks": [
+    {
+      "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
+      "name": "1570221906056_83",
+      "label": "Choose One",
+      "semanticLabel": "",
+      "config": {
+        "choices": {
+          "true": "29841127-3247-4618-8e53-cdc400000000",
+          "false": "29841127-3247-4618-8e53-db0800000000",
+          "whyNotOption3?": "29841127-3247-4618-8e53-eaa800000000",
+          "unchoosable(SeriouslyThisBreaksTheTree)": "29841127-3247-4618-8e53-f8e800000000"
+        },
+        "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573"
+      },
+      "platformMetadata": {
+        "io_viamo": {
+          "type": "MultipleChoiceQuestionBlock",
+          "customData": {
+            "title": "Choose One",
+            "label": "",
+            "tags": [],
+            "reviewed": {
+              "22": false
+            },
+            "branching": 1,
+            "addExitForNoResponse": 0,
+            "choices": [
+              "True",
+              "False",
+              "Why Not Option 3?",
+              "Unchoosable (Seriously this breaks the tree)"
+            ],
+            "numChoices": 4
+          },
+          "uiData": {
+            "xPosition": 533,
+            "yPosition": 50,
+            "numConnections": 4,
+            "outputNames": [
+              "True",
+              "False",
+              "Why Not Option 3?",
+              "Unchoosable (Seriously this breaks the tree)"
+            ],
+            "fieldLabels": [
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          "audioFiles": [],
+          "smsContent": [],
+          "ussdContent": [],
+          "socialContent": [],
+          "clipboardContent": {
+            "22": "Choose one"
+          },
+          "smsAutogenLangs": [
+            22
+          ],
+          "ussdAutogenLangs": [
+            22
+          ],
+          "socialAutogenLangs": [
+            22
+          ],
+          "clipboardAutogenLangs": [],
+          "jsKey": "block_1570221906056_83"
+        }
+      },
+      "exits": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915c54a60ed",
+          "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf940b278e",
+          "tag": "True",
+          "label": "29841127-3247-4610-8037-c915c54a60ed",
+          "semanticLabel": "",
+          "test": "@(OR(AND(channel.mode = 'ivr', block.value = '1'), AND(channel.mode != 'ivr', OR(block.value = '1', LOWER(block.value) = 'true'))))"
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915c54a60ee",
+          "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf940b278e",
+          "tag": "False",
+          "label": "29841127-3247-4610-8037-c915c54a60ee",
+          "semanticLabel": "",
+          "test": "@(OR(AND(channel.mode = 'ivr', block.value = '2'), AND(channel.mode != 'ivr', OR(block.value = '2', LOWER(block.value) = 'false'))))"
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915c54a60ef",
+          "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf940b278e",
+          "tag": "Why Not Option 3?",
+          "label": "29841127-3247-4610-8037-c915c54a60ef",
+          "semanticLabel": "",
+          "test": "@(OR(AND(channel.mode = 'ivr', block.value = '3'), AND(channel.mode != 'ivr', OR(block.value = '3', LOWER(block.value) = 'why not option 3?'))))"
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915c54a60f0",
+          "destinationBlock": null,
+          "tag": "Unchoosable (Seriously this breaks the tree)",
+          "label": "29841127-3247-4610-8037-c915c54a60f0",
+          "semanticLabel": "",
+          "test": "@(OR(AND(channel.mode = 'ivr', block.value = '4'), AND(channel.mode != 'ivr', OR(block.value = '4', LOWER(block.value) = 'unchoosable (seriously this breaks the tree)'))))"
+        }
+      ],
+      "type": "MobilePrimitives\\SelectOneResponse"
+    },
+    {
+      "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
+      "name": "1570221922572_66",
+      "label": "True",
+      "semanticLabel": "",
+      "config": {
+        "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2"
+      },
+      "platformMetadata": {
+        "io_viamo": {
+          "type": "MessageBlock",
+          "customData": {
+            "title": "True",
+            "label": "",
+            "tags": [],
+            "reviewed": {
+              "22": false
+            }
+          },
+          "uiData": {
+            "xPosition": 213,
+            "yPosition": 558,
+            "numConnections": 1
+          },
+          "audioFiles": [],
+          "smsContent": [],
+          "ussdContent": [],
+          "socialContent": [],
+          "clipboardContent": {
+            "22": "You Selected True"
+          },
+          "smsAutogenLangs": [
+            22
+          ],
+          "ussdAutogenLangs": [
+            22
+          ],
+          "socialAutogenLangs": [
+            22
+          ],
+          "clipboardAutogenLangs": [],
+          "jsKey": "block_1570221922572_66"
+        }
+      },
+      "exits": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915cf227e89",
+          "destinationBlock": null,
+          "tag": "1",
+          "label": "29841127-3247-4610-8037-c915cf227e89",
+          "semanticLabel": ""
+        }
+      ],
+      "type": "MobilePrimitives\\Message"
+    },
+    {
+      "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf940b278e",
+      "name": "1570221931334_54",
+      "label": "If any of the following are true...",
+      "semanticLabel": "",
+      "config": [],
+      "platformMetadata": {
+        "io_viamo": {
+          "type": "DecisionBranchBlock",
+          "customData": {
+            "title": "If any of the following are true...",
+            "label": "",
+            "tags": [],
+            "reviewed": {
+              "22": false
+            },
+            "questionBlocks": [
+              {
+                "jsKey": "block_1570221906056_83",
+                "choice": 1,
+                "directorySelectionFieldValue": null,
+                "directorySelectionFieldName": null
+              },
+              {
+                "jsKey": "block_1570221906056_83",
+                "choice": 4,
+                "directorySelectionFieldValue": null,
+                "directorySelectionFieldName": null
+              }
+            ],
+            "logic": "any"
+          },
+          "uiData": {
+            "outputNames": [
+              "trees.output-true",
+              "trees.output-false"
+            ],
+            "xPosition": 526,
+            "yPosition": 250,
+            "numConnections": 2
+          },
+          "audioFiles": [],
+          "smsContent": [],
+          "ussdContent": [],
+          "socialContent": [],
+          "clipboardContent": [],
+          "smsAutogenLangs": [
+            22
+          ],
+          "ussdAutogenLangs": [
+            22
+          ],
+          "socialAutogenLangs": [
+            22
+          ],
+          "clipboardAutogenLangs": [],
+          "jsKey": "block_1570221931334_54"
+        }
+      },
+      "exits": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915d45b7379",
+          "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
+          "tag": "TRUE",
+          "label": "29841127-3247-4610-8037-c915d45b7379",
+          "semanticLabel": "",
+          "test": "@(OR(flow.1570221906056_83.value = 1, flow.1570221906056_83.value = 4))"
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915d45b737a",
+          "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf9437b3e0",
+          "tag": "FALSE",
+          "label": "29841127-3247-4610-8037-c915d45b737a",
+          "semanticLabel": "",
+          "default": true
+        }
+      ],
+      "type": "Core\\Case"
+    },
+    {
+      "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9437b3e0",
+      "name": "1570221960529_60",
+      "label": "If all of the following are true...",
+      "semanticLabel": "",
+      "config": [],
+      "platformMetadata": {
+        "io_viamo": {
+          "type": "DecisionBranchBlock",
+          "customData": {
+            "title": "If all of the following are true...",
+            "label": "",
+            "tags": [],
+            "reviewed": {
+              "22": false
+            },
+            "questionBlocks": [
+              {
+                "jsKey": "block_1570221906056_83",
+                "choice": 2,
+                "directorySelectionFieldValue": null,
+                "directorySelectionFieldName": null
+              },
+              {
+                "jsKey": "block_1570221906056_83",
+                "choice": 4,
+                "directorySelectionFieldValue": null,
+                "directorySelectionFieldName": null
+              }
+            ],
+            "logic": "any"
+          },
+          "uiData": {
+            "outputNames": [
+              "trees.output-true",
+              "trees.output-false"
+            ],
+            "xPosition": 680,
+            "yPosition": 413,
+            "numConnections": 2
+          },
+          "audioFiles": [],
+          "smsContent": [],
+          "ussdContent": [],
+          "socialContent": [],
+          "clipboardContent": [],
+          "smsAutogenLangs": [
+            22
+          ],
+          "ussdAutogenLangs": [
+            22
+          ],
+          "socialAutogenLangs": [
+            22
+          ],
+          "clipboardAutogenLangs": [],
+          "jsKey": "block_1570221960529_60"
+        }
+      },
+      "exits": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915e5c24381",
+          "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
+          "tag": "TRUE",
+          "label": "29841127-3247-4610-8037-c915e5c24381",
+          "semanticLabel": "",
+          "test": "@(OR(flow.1570221906056_83.value = 2, flow.1570221906056_83.value = 4))"
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915e5c24382",
+          "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
+          "tag": "FALSE",
+          "label": "29841127-3247-4610-8037-c915e5c24382",
+          "semanticLabel": "",
+          "default": true
+        }
+      ],
+      "type": "Core\\Case"
+    },
+    {
+      "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
+      "name": "1570221972402_58",
+      "label": "False",
+      "semanticLabel": "",
+      "config": {
+        "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2"
+      },
+      "platformMetadata": {
+        "io_viamo": {
+          "type": "MessageBlock",
+          "customData": {
+            "title": "False",
+            "label": "",
+            "tags": [],
+            "reviewed": {
+              "22": false
+            }
+          },
+          "uiData": {
+            "xPosition": 508,
+            "yPosition": 625,
+            "numConnections": 1
+          },
+          "audioFiles": [],
+          "smsContent": [],
+          "ussdContent": [],
+          "socialContent": [],
+          "clipboardContent": {
+            "22": "You selected False"
+          },
+          "smsAutogenLangs": [
+            22
+          ],
+          "ussdAutogenLangs": [
+            22
+          ],
+          "socialAutogenLangs": [
+            22
+          ],
+          "clipboardAutogenLangs": [],
+          "jsKey": "block_1570221972402_58"
+        }
+      },
+      "exits": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915ecd5efc9",
+          "destinationBlock": null,
+          "tag": "1",
+          "label": "29841127-3247-4610-8037-c915ecd5efc9",
+          "semanticLabel": ""
+        }
+      ],
+      "type": "MobilePrimitives\\Message"
+    },
+    {
+      "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
+      "name": "1570221973072_23",
+      "label": "Option 3",
+      "semanticLabel": "",
+      "config": {
+        "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757"
+      },
+      "platformMetadata": {
+        "io_viamo": {
+          "type": "MessageBlock",
+          "customData": {
+            "title": "Option 3",
+            "label": "",
+            "tags": [],
+            "reviewed": {
+              "22": false
+            }
+          },
+          "uiData": {
+            "xPosition": 908,
+            "yPosition": 603,
+            "numConnections": 1
+          },
+          "audioFiles": [],
+          "smsContent": [],
+          "ussdContent": [],
+          "socialContent": [],
+          "clipboardContent": {
+            "22": "You can't have it both ways"
+          },
+          "smsAutogenLangs": [
+            22
+          ],
+          "ussdAutogenLangs": [
+            22
+          ],
+          "socialAutogenLangs": [
+            22
+          ],
+          "clipboardAutogenLangs": [],
+          "jsKey": "block_1570221973072_23"
+        }
+      },
+      "exits": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915ed3c1dfd",
+          "destinationBlock": null,
+          "tag": "1",
+          "label": "29841127-3247-4610-8037-c915ed3c1dfd",
+          "semanticLabel": ""
+        }
+      ],
+      "type": "MobilePrimitives\\Message"
+    }
+  ],
+  "resources": [
+    {
+      "uuid": "29841127-3247-4618-8e53-cdc400000000",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "True"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4618-8e53-db0800000000",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "False"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4618-8e53-eaa800000000",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "Why Not Option 3?"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4618-8e53-f8e800000000",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "Unchoosable (Seriously this breaks the tree)"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915c54a60ed",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "True"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915c54a60ee",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "False"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915c54a60ef",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "Why Not Option 3?"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915c54a60f0",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "Unchoosable (Seriously this breaks the tree)"
+        }
+      ]
+    },
+    {
+      "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "offline"
+          ],
+          "value": "Choose one"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915cf227e89",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "offline"
+          ],
+          "value": "You Selected True"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915d45b7379",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "TRUE"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915d45b737a",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "FALSE"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915e5c24381",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "TRUE"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915e5c24382",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "FALSE"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915ecd5efc9",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "offline"
+          ],
+          "value": "You selected False"
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915ed3c1dfd",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
+      "values": [
+        {
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "offline"
+          ],
+          "value": "You can't have it both ways"
+        }
+      ]
+    }
+  ]
+}

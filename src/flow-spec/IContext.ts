@@ -22,9 +22,9 @@ export type RichCursorNoInputRequiredType = [IBlockInteraction, undefined]
 
 export default interface IContext {
   id: string
-  createdAt: Date
-  entryAt?: Date
-  exitAt?: Date
+  createdAt: string
+  entryAt?: string
+  exitAt?: string
   deliveryStatus: DeliveryStatus
 
   userId?: string
@@ -38,7 +38,7 @@ export default interface IContext {
   cursor?: CursorType
 
   flows: IFlow[]
-  firstFlowId: string,
+  firstFlowId: string
   resources: IResources
 }
 
@@ -50,7 +50,7 @@ export interface IContextInputRequired extends IContext {
   cursor: CursorInputRequiredType
 }
 
-export function createContextFor(
+export function createContextDataObjectFor(
   contact: IContact,
   userId: string,
   flows: IFlow[],
@@ -59,7 +59,7 @@ export function createContextFor(
 
   return {
     id: uuid.v4(),
-    createdAt: new Date,
+    createdAt: new Date().toISOString(),
     deliveryStatus: DeliveryStatus.QUEUED,
 
     userId,

@@ -15,6 +15,8 @@ import IBlockExit from '../flow-spec/IBlockExit'
 import {find, first, last} from 'lodash'
 import uuid from 'uuid'
 import IFlowRunner, {IBlockRunnerFactoryStore} from './IFlowRunner'
+import IIdGenerator from './IIdGenerator'
+import IdGeneratorUuidV4 from './IdGeneratorUuidV4'
 import ValidationException from './exceptions/ValidationException'
 import IPrompt, {IBasePromptConfig, IPromptConfig, KnownPrompts} from './prompt/IPrompt'
 import MessagePrompt from './prompt/MessagePrompt'
@@ -33,7 +35,8 @@ export class BlockRunnerFactoryStore
 export default class FlowRunner implements IFlowRunner {
   constructor(
     public context: IContext,
-    public runnerFactoryStore: IBlockRunnerFactoryStore) {}
+    public runnerFactoryStore: IBlockRunnerFactoryStore,
+    protected idGenerator: IIdGenerator = new IdGeneratorUuidV4() ) {}
 
   /**
    * We want to call start when we don't have a prompt needing work to be done. */
@@ -46,7 +49,7 @@ export default class FlowRunner implements IFlowRunner {
     }
 
     ctx.deliveryStatus = DeliveryStatus.IN_PROGRESS
-    ctx.entryAt = new Date
+    ctx.entryAt = new Date().toISOString()
 
     return this.navigateTo(block, this.context) // kick-start by navigating to first block
   }
@@ -134,10 +137,10 @@ export default class FlowRunner implements IFlowRunner {
     // todo: set exitAt on context
     // todo: set delivery status on context as COMPLETE
 
-    (last(ctx.interactions) as IBlockInteraction).exitAt = new Date
+    (last(ctx.interactions) as IBlockInteraction).exitAt = new Date().toISOString()
     delete ctx.cursor
     ctx.deliveryStatus = DeliveryStatus.FINISHED_COMPLETE
-    ctx.exitAt = new Date
+    ctx.exitAt = new Date().toISOString()
   }
 
   dehydrateCursor(richCursor: RichCursorType): CursorType {
@@ -222,7 +225,7 @@ export default class FlowRunner implements IFlowRunner {
 
     const lastInteraction = last(interactions)
     if (lastInteraction != null) {
-      lastInteraction.exitAt = new Date
+      lastInteraction.exitAt = new Date().toISOString()
     }
 
     interactions.push(richCursor[0])
@@ -337,10 +340,10 @@ export default class FlowRunner implements IFlowRunner {
     originBlockInteractionId: string | undefined): IBlockInteraction {
 
     return {
-      uuid: uuid.v4(),
+      uuid: this.idGenerator.generate(),
       blockId,
       flowId,
-      entryAt: new Date,
+      entryAt: new Date().toISOString(),
       exitAt: undefined,
       hasResponse: false,
       value: undefined,

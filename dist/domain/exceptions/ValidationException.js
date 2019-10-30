@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class default_1 extends Error {
+class ValidationException extends Error {
 }
-exports.default = default_1;
+exports.default = ValidationException;
 //# sourceMappingURL=ValidationException.js.map

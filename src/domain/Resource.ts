@@ -1,8 +1,8 @@
-import {pick} from 'lodash'
 import {IResource, IResourceDefinitionContentTypeSpecific, SupportedContentType} from './IResourceResolver'
 import ResourceNotFoundException from './exceptions/ResourceNotFoundException'
 import IContext from '../flow-spec/IContext'
 import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
+import {createEvalContextFrom} from '..'
 
 export class Resource implements IResource {
   constructor(
@@ -42,7 +42,7 @@ export class Resource implements IResource {
     return EvaluatorFactory.create()
       .evaluate(
         this._getValueByContentType(SupportedContentType.TEXT),
-        pick(this.context, ['contact']))
+        createEvalContextFrom(this.context))
   }
 
   getVideo(): string {

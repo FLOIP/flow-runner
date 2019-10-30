@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const lodash_1 = require("lodash");
 const IResourceResolver_1 = require("./IResourceResolver");
 const ResourceNotFoundException_1 = tslib_1.__importDefault(require("./exceptions/ResourceNotFoundException"));
 const floip_expression_evaluator_ts_1 = require("floip-expression-evaluator-ts");
+const __1 = require("..");
 class Resource {
     constructor(uuid, values, context) {
         this.uuid = uuid;
@@ -33,7 +33,7 @@ class Resource {
     }
     getText() {
         return floip_expression_evaluator_ts_1.EvaluatorFactory.create()
-            .evaluate(this._getValueByContentType(IResourceResolver_1.SupportedContentType.TEXT), lodash_1.pick(this.context, ['contact']));
+            .evaluate(this._getValueByContentType(IResourceResolver_1.SupportedContentType.TEXT), __1.createEvalContextFrom(this.context));
     }
     getVideo() {
         return this._getValueByContentType(IResourceResolver_1.SupportedContentType.VIDEO);

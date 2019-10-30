@@ -23,7 +23,7 @@ _defaults:
     type: Core\RunFlow
 
   - &defaults/intx
-    entryAt: 2020-10-10
+    entryAt: "2020-10-10T00:00:00.000Z"
     exitAt:
     hasResponse: false
     value:
@@ -37,8 +37,15 @@ _defaults:
     blocks: []
     interactionTimeout: 5
     label: My first label
-    languages: [en]
-    lastModified: 2020-10-10
+    languages:
+      - id: "22"
+        name: "enCA"
+        abbreviation: "EN"
+        orgId: "1008107874829627392"
+        rightToLeft: false
+        code:
+        deletedAt:
+    lastModified: "2020-10-10T00:00:00.000Z"
     name: My first flow
     platformMetadata: {}
     supportedModes: [text]
@@ -93,6 +100,7 @@ _blocks:
   - &block/Message->(Message)/5e5d397a-a606-49e0-9a4d-8553a1af52aa
     <<: *defaults/blocks/Message
     uuid: &blockId/Message->(Message)/5e5d397a-a606-49e0-9a4d-8553a1af52aa 5e5d397a-a606-49e0-9a4d-8553a1af52aa
+    name: '1570221906056_83'
     exits:
       - *exit/->Message/5670b311-0895-43ba-acc4-07136cf64591
 
@@ -150,6 +158,9 @@ _block_interactions:
     <<: *defaults/intx
     uuid: &intxId/Message->Message/09894745-38ba-456f-aab4-720b7d09d5b3 09894745-38ba-456f-aab4-720b7d09d5b3
     blockId: *blockId/Message->(Message)/5e5d397a-a606-49e0-9a4d-8553a1af52aa
+    flowId: *flowId/(Message|Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+    value: Test value
+    entryAt: "2023-10-10T23:23:23.023Z"
     details:
       selectedExitId: *exitId/->Message/5670b311-0895-43ba-acc4-07136cf64591
 
@@ -157,6 +168,7 @@ _block_interactions:
     <<: *defaults/intx
     uuid: &intxId/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
     blockId: *blockId/Message->(Message)/cb1b04a3-6447-4e33-a449-a6e3107e7531
+    flowId: *flowId/(Message|Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
     details:
       selectedExitId: *exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
 

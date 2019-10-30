@@ -1,0 +1,1009 @@
+{
+  "id": "cedc429f-4b18-4a1f-9429-862b1c9cf53b",
+  "createdAt": "2019-10-07T15:55:01.804Z",
+  "deliveryStatus": 3,
+  "userId": "15",
+  "mode": "offline",
+  "languageId": "22",
+  "contact": {
+    "id": "0"
+  },
+  "sessionVars": {},
+  "interactions": [
+    {
+      "uuid": "ed14426a-9542-4af6-b575-dfc347aab923",
+      "blockId": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
+      "flowId": "5b8c87d6-de90-4bc4-8668-4f040000006b",
+      "entryAt": "2019-10-07T15:55:01.805Z",
+      "hasResponse": true,
+      "value": "true",
+      "details": {
+        "selectedExitId": "29841127-3247-4610-8037-c915c54a60ed"
+      },
+      "type": "MobilePrimitives\\SelectOneResponse"
+    }
+  ],
+  "nestedFlowBlockInteractionIdStack": [],
+  "flows": [
+    {
+      "blocks": [
+        {
+          "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
+          "name": "1570221906056_83",
+          "type": "MobilePrimitives\\SelectOneResponse",
+          "config": {
+            "choices": {
+              "true": "29841127-3247-4612-84dd-877400000000",
+              "false": "29841127-3247-4612-84dd-a24000000000",
+              "whyNotOption3?": "29841127-3247-4612-84dd-bb8000000000",
+              "unchoosable(SeriouslyThisBreaksTheTree)": "29841127-3247-4612-84dd-d7c000000000"
+            },
+            "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573"
+          },
+          "exits": [
+            {
+              "config": {},
+              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf940b278e",
+              "label": "29841127-3247-4610-8037-c915c54a60ed",
+              "semanticLabel": "",
+              "tag": "True",
+              "test": "@(OR(AND(channel.mode = 'ivr', block.value = '1'), AND(channel.mode != 'ivr', OR(block.value = '1', LOWER(block.value) = 'true'))))",
+              "uuid": "29841127-3247-4610-8037-c915c54a60ed"
+            },
+            {
+              "config": {},
+              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf940b278e",
+              "label": "29841127-3247-4610-8037-c915c54a60ee",
+              "semanticLabel": "",
+              "tag": "False",
+              "test": "@(OR(AND(channel.mode = 'ivr', block.value = '2'), AND(channel.mode != 'ivr', OR(block.value = '2', LOWER(block.value) = 'false'))))",
+              "uuid": "29841127-3247-4610-8037-c915c54a60ee"
+            },
+            {
+              "config": {},
+              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf940b278e",
+              "label": "29841127-3247-4610-8037-c915c54a60ef",
+              "semanticLabel": "",
+              "tag": "Why Not Option 3?",
+              "test": "@(OR(AND(channel.mode = 'ivr', block.value = '3'), AND(channel.mode != 'ivr', OR(block.value = '3', LOWER(block.value) = 'why not option 3?'))))",
+              "uuid": "29841127-3247-4610-8037-c915c54a60ef"
+            },
+            {
+              "config": {},
+              "destinationBlock": null,
+              "label": "29841127-3247-4610-8037-c915c54a60f0",
+              "semanticLabel": "",
+              "tag": "Unchoosable (Seriously this breaks the tree)",
+              "test": "@(OR(AND(channel.mode = 'ivr', block.value = '4'), AND(channel.mode != 'ivr', OR(block.value = '4', LOWER(block.value) = 'unchoosable (seriously this breaks the tree)'))))",
+              "uuid": "29841127-3247-4610-8037-c915c54a60f0"
+            }
+          ]
+        },
+        {
+          "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
+          "name": "1570221922572_66",
+          "type": "MobilePrimitives\\Message",
+          "config": {
+            "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2"
+          },
+          "exits": [
+            {
+              "config": {},
+              "destinationBlock": null,
+              "label": "29841127-3247-4610-8037-c915cf227e89",
+              "semanticLabel": "",
+              "tag": "1",
+              "test": null,
+              "uuid": "29841127-3247-4610-8037-c915cf227e89"
+            }
+          ]
+        },
+        {
+          "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf940b278e",
+          "name": "1570221931334_54",
+          "type": "Core\\Case",
+          "config": {},
+          "exits": [
+            {
+              "config": {},
+              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
+              "label": "29841127-3247-4610-8037-c915d45b7379",
+              "semanticLabel": "",
+              "tag": "TRUE",
+              "test": "@(OR(flow.1570221906056_83.value = 1, flow.1570221906056_83.value = 4))",
+              "uuid": "29841127-3247-4610-8037-c915d45b7379"
+            },
+            {
+              "config": {},
+              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf9437b3e0",
+              "label": "29841127-3247-4610-8037-c915d45b737a",
+              "semanticLabel": "",
+              "tag": "FALSE",
+              "test": null,
+              "uuid": "29841127-3247-4610-8037-c915d45b737a"
+            }
+          ]
+        },
+        {
+          "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9437b3e0",
+          "name": "1570221960529_60",
+          "type": "Core\\Case",
+          "config": {},
+          "exits": [
+            {
+              "config": {},
+              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
+              "label": "29841127-3247-4610-8037-c915e5c24381",
+              "semanticLabel": "",
+              "tag": "TRUE",
+              "test": "@(OR(flow.1570221906056_83.value = 2, flow.1570221906056_83.value = 4))",
+              "uuid": "29841127-3247-4610-8037-c915e5c24381"
+            },
+            {
+              "config": {},
+              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
+              "label": "29841127-3247-4610-8037-c915e5c24382",
+              "semanticLabel": "",
+              "tag": "FALSE",
+              "test": null,
+              "uuid": "29841127-3247-4610-8037-c915e5c24382"
+            }
+          ]
+        },
+        {
+          "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
+          "name": "1570221972402_58",
+          "type": "MobilePrimitives\\Message",
+          "config": {
+            "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2"
+          },
+          "exits": [
+            {
+              "config": {},
+              "destinationBlock": null,
+              "label": "29841127-3247-4610-8037-c915ecd5efc9",
+              "semanticLabel": "",
+              "tag": "1",
+              "test": null,
+              "uuid": "29841127-3247-4610-8037-c915ecd5efc9"
+            }
+          ]
+        },
+        {
+          "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
+          "name": "1570221973072_23",
+          "type": "MobilePrimitives\\Message",
+          "config": {
+            "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757"
+          },
+          "exits": [
+            {
+              "config": {},
+              "destinationBlock": null,
+              "label": "29841127-3247-4610-8037-c915ed3c1dfd",
+              "semanticLabel": "",
+              "tag": "1",
+              "test": null,
+              "uuid": "29841127-3247-4610-8037-c915ed3c1dfd"
+            }
+          ]
+        }
+      ],
+      "exitBlockId": null,
+      "firstBlockId": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
+      "interactionTimeout": 172800,
+      "label": "",
+      "languages": {
+        "0": "22"
+      },
+      "lastModified": "2019-10-04 21:05:25.000000+00:00",
+      "name": "Case Block",
+      "platformMetadata": {},
+      "supportedModes": {},
+      "uuid": "5b8c87d6-de90-4bc4-8668-4f040000006b",
+      "resources": [
+        {
+          "uuid": "29841127-3247-4612-84dd-877400000000",
+          "values": [
+            {
+              "uuid": "29841127-3247-4612-84dd-877400000000;22;text;ivr;sms;ussd;rich_messaging;offline",
+              "resourceUuid": "29841127-3247-4612-84dd-877400000000",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "ivr",
+                "sms",
+                "ussd",
+                "rich_messaging",
+                "offline"
+              ],
+              "value": "True",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "29841127-3247-4612-84dd-a24000000000",
+          "values": [
+            {
+              "uuid": "29841127-3247-4612-84dd-a24000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
+              "resourceUuid": "29841127-3247-4612-84dd-a24000000000",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "ivr",
+                "sms",
+                "ussd",
+                "rich_messaging",
+                "offline"
+              ],
+              "value": "False",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "29841127-3247-4612-84dd-bb8000000000",
+          "values": [
+            {
+              "uuid": "29841127-3247-4612-84dd-bb8000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
+              "resourceUuid": "29841127-3247-4612-84dd-bb8000000000",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "ivr",
+                "sms",
+                "ussd",
+                "rich_messaging",
+                "offline"
+              ],
+              "value": "Why Not Option 3?",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "29841127-3247-4612-84dd-d7c000000000",
+          "values": [
+            {
+              "uuid": "29841127-3247-4612-84dd-d7c000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
+              "resourceUuid": "29841127-3247-4612-84dd-d7c000000000",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "ivr",
+                "sms",
+                "ussd",
+                "rich_messaging",
+                "offline"
+              ],
+              "value": "Unchoosable (Seriously this breaks the tree)",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915c54a60ed",
+          "values": [
+            {
+              "uuid": "29841127-3247-4610-8037-c915c54a60ed;22;text;ivr;sms;ussd;rich_messaging;offline",
+              "resourceUuid": "29841127-3247-4610-8037-c915c54a60ed",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "ivr",
+                "sms",
+                "ussd",
+                "rich_messaging",
+                "offline"
+              ],
+              "value": "True",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915c54a60ee",
+          "values": [
+            {
+              "uuid": "29841127-3247-4610-8037-c915c54a60ee;22;text;ivr;sms;ussd;rich_messaging;offline",
+              "resourceUuid": "29841127-3247-4610-8037-c915c54a60ee",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "ivr",
+                "sms",
+                "ussd",
+                "rich_messaging",
+                "offline"
+              ],
+              "value": "False",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915c54a60ef",
+          "values": [
+            {
+              "uuid": "29841127-3247-4610-8037-c915c54a60ef;22;text;ivr;sms;ussd;rich_messaging;offline",
+              "resourceUuid": "29841127-3247-4610-8037-c915c54a60ef",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "ivr",
+                "sms",
+                "ussd",
+                "rich_messaging",
+                "offline"
+              ],
+              "value": "Why Not Option 3?",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915c54a60f0",
+          "values": [
+            {
+              "uuid": "29841127-3247-4610-8037-c915c54a60f0;22;text;ivr;sms;ussd;rich_messaging;offline",
+              "resourceUuid": "29841127-3247-4610-8037-c915c54a60f0",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "ivr",
+                "sms",
+                "ussd",
+                "rich_messaging",
+                "offline"
+              ],
+              "value": "Unchoosable (Seriously this breaks the tree)",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
+          "values": [
+            {
+              "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573;22;text;offline",
+              "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "offline"
+              ],
+              "value": "Choose one",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915cf227e89",
+          "values": [
+            {
+              "uuid": "29841127-3247-4610-8037-c915cf227e89;22;text;ivr;sms;ussd;rich_messaging;offline",
+              "resourceUuid": "29841127-3247-4610-8037-c915cf227e89",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "ivr",
+                "sms",
+                "ussd",
+                "rich_messaging",
+                "offline"
+              ],
+              "value": "1",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
+          "values": [
+            {
+              "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2;22;text;offline",
+              "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "offline"
+              ],
+              "value": "You Selected True",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915d45b7379",
+          "values": [
+            {
+              "uuid": "29841127-3247-4610-8037-c915d45b7379;22;text;ivr;sms;ussd;rich_messaging;offline",
+              "resourceUuid": "29841127-3247-4610-8037-c915d45b7379",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "ivr",
+                "sms",
+                "ussd",
+                "rich_messaging",
+                "offline"
+              ],
+              "value": "TRUE",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915d45b737a",
+          "values": [
+            {
+              "uuid": "29841127-3247-4610-8037-c915d45b737a;22;text;ivr;sms;ussd;rich_messaging;offline",
+              "resourceUuid": "29841127-3247-4610-8037-c915d45b737a",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "ivr",
+                "sms",
+                "ussd",
+                "rich_messaging",
+                "offline"
+              ],
+              "value": "FALSE",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915e5c24381",
+          "values": [
+            {
+              "uuid": "29841127-3247-4610-8037-c915e5c24381;22;text;ivr;sms;ussd;rich_messaging;offline",
+              "resourceUuid": "29841127-3247-4610-8037-c915e5c24381",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "ivr",
+                "sms",
+                "ussd",
+                "rich_messaging",
+                "offline"
+              ],
+              "value": "TRUE",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915e5c24382",
+          "values": [
+            {
+              "uuid": "29841127-3247-4610-8037-c915e5c24382;22;text;ivr;sms;ussd;rich_messaging;offline",
+              "resourceUuid": "29841127-3247-4610-8037-c915e5c24382",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "ivr",
+                "sms",
+                "ussd",
+                "rich_messaging",
+                "offline"
+              ],
+              "value": "FALSE",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915ecd5efc9",
+          "values": [
+            {
+              "uuid": "29841127-3247-4610-8037-c915ecd5efc9;22;text;ivr;sms;ussd;rich_messaging;offline",
+              "resourceUuid": "29841127-3247-4610-8037-c915ecd5efc9",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "ivr",
+                "sms",
+                "ussd",
+                "rich_messaging",
+                "offline"
+              ],
+              "value": "1",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
+          "values": [
+            {
+              "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2;22;text;offline",
+              "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "offline"
+              ],
+              "value": "You selected False",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "29841127-3247-4610-8037-c915ed3c1dfd",
+          "values": [
+            {
+              "uuid": "29841127-3247-4610-8037-c915ed3c1dfd;22;text;ivr;sms;ussd;rich_messaging;offline",
+              "resourceUuid": "29841127-3247-4610-8037-c915ed3c1dfd",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "ivr",
+                "sms",
+                "ussd",
+                "rich_messaging",
+                "offline"
+              ],
+              "value": "1",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        },
+        {
+          "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
+          "values": [
+            {
+              "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757;22;text;offline",
+              "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
+              "languageId": "22",
+              "contentType": "text",
+              "modes": [
+                "offline"
+              ],
+              "value": "You can't have it both ways",
+              "fileName": null,
+              "hasBeenFetched": true
+            }
+          ]
+        }
+      ],
+      "iconColor": "#b949e2",
+      "runCount": 7,
+      "sessions": []
+    }
+  ],
+  "firstFlowId": "5b8c87d6-de90-4bc4-8668-4f040000006b",
+  "resources": [
+    {
+      "uuid": "29841127-3247-4612-84dd-877400000000",
+      "values": [
+        {
+          "uuid": "29841127-3247-4612-84dd-877400000000;22;text;ivr;sms;ussd;rich_messaging;offline",
+          "resourceUuid": "29841127-3247-4612-84dd-877400000000",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "True",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4612-84dd-a24000000000",
+      "values": [
+        {
+          "uuid": "29841127-3247-4612-84dd-a24000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
+          "resourceUuid": "29841127-3247-4612-84dd-a24000000000",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "False",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4612-84dd-bb8000000000",
+      "values": [
+        {
+          "uuid": "29841127-3247-4612-84dd-bb8000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
+          "resourceUuid": "29841127-3247-4612-84dd-bb8000000000",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "Why Not Option 3?",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4612-84dd-d7c000000000",
+      "values": [
+        {
+          "uuid": "29841127-3247-4612-84dd-d7c000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
+          "resourceUuid": "29841127-3247-4612-84dd-d7c000000000",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "Unchoosable (Seriously this breaks the tree)",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915c54a60ed",
+      "values": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915c54a60ed;22;text;ivr;sms;ussd;rich_messaging;offline",
+          "resourceUuid": "29841127-3247-4610-8037-c915c54a60ed",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "True",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915c54a60ee",
+      "values": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915c54a60ee;22;text;ivr;sms;ussd;rich_messaging;offline",
+          "resourceUuid": "29841127-3247-4610-8037-c915c54a60ee",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "False",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915c54a60ef",
+      "values": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915c54a60ef;22;text;ivr;sms;ussd;rich_messaging;offline",
+          "resourceUuid": "29841127-3247-4610-8037-c915c54a60ef",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "Why Not Option 3?",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915c54a60f0",
+      "values": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915c54a60f0;22;text;ivr;sms;ussd;rich_messaging;offline",
+          "resourceUuid": "29841127-3247-4610-8037-c915c54a60f0",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "Unchoosable (Seriously this breaks the tree)",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
+      "values": [
+        {
+          "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573;22;text;offline",
+          "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "offline"
+          ],
+          "value": "Choose one",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915cf227e89",
+      "values": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915cf227e89;22;text;ivr;sms;ussd;rich_messaging;offline",
+          "resourceUuid": "29841127-3247-4610-8037-c915cf227e89",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "1",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
+      "values": [
+        {
+          "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2;22;text;offline",
+          "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "offline"
+          ],
+          "value": "You Selected True",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915d45b7379",
+      "values": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915d45b7379;22;text;ivr;sms;ussd;rich_messaging;offline",
+          "resourceUuid": "29841127-3247-4610-8037-c915d45b7379",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "TRUE",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915d45b737a",
+      "values": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915d45b737a;22;text;ivr;sms;ussd;rich_messaging;offline",
+          "resourceUuid": "29841127-3247-4610-8037-c915d45b737a",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "FALSE",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915e5c24381",
+      "values": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915e5c24381;22;text;ivr;sms;ussd;rich_messaging;offline",
+          "resourceUuid": "29841127-3247-4610-8037-c915e5c24381",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "TRUE",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915e5c24382",
+      "values": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915e5c24382;22;text;ivr;sms;ussd;rich_messaging;offline",
+          "resourceUuid": "29841127-3247-4610-8037-c915e5c24382",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "FALSE",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915ecd5efc9",
+      "values": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915ecd5efc9;22;text;ivr;sms;ussd;rich_messaging;offline",
+          "resourceUuid": "29841127-3247-4610-8037-c915ecd5efc9",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "1",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
+      "values": [
+        {
+          "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2;22;text;offline",
+          "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "offline"
+          ],
+          "value": "You selected False",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "29841127-3247-4610-8037-c915ed3c1dfd",
+      "values": [
+        {
+          "uuid": "29841127-3247-4610-8037-c915ed3c1dfd;22;text;ivr;sms;ussd;rich_messaging;offline",
+          "resourceUuid": "29841127-3247-4610-8037-c915ed3c1dfd",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "ivr",
+            "sms",
+            "ussd",
+            "rich_messaging",
+            "offline"
+          ],
+          "value": "1",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    },
+    {
+      "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
+      "values": [
+        {
+          "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757;22;text;offline",
+          "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
+          "languageId": "22",
+          "contentType": "text",
+          "modes": [
+            "offline"
+          ],
+          "value": "You can't have it both ways",
+          "fileName": null,
+          "hasBeenFetched": true
+        }
+      ]
+    }
+  ],
+  "entryAt": "2019-10-07T15:55:01.805Z",
+  "cursor": [
+    "ed14426a-9542-4af6-b575-dfc347aab923",
+    {
+      "kind": "SelectOne",
+      "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
+      "isResponseRequired": true,
+      "choices": [
+        {
+          "key": "true",
+          "value": "29841127-3247-4612-84dd-877400000000"
+        },
+        {
+          "key": "false",
+          "value": "29841127-3247-4612-84dd-a24000000000"
+        },
+        {
+          "key": "whyNotOption3?",
+          "value": "29841127-3247-4612-84dd-bb8000000000"
+        },
+        {
+          "key": "unchoosable(SeriouslyThisBreaksTheTree)",
+          "value": "29841127-3247-4612-84dd-d7c000000000"
+        }
+      ],
+      "value": "true",
+      "isSubmitted": true
+    }
+  ]
+}

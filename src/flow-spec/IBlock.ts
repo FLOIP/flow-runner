@@ -1,11 +1,12 @@
 import IBlockExit, {IBlockExitTestRequired} from './IBlockExit'
-import {find} from 'lodash'
+import {find, findLast} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
-import IContext, {CursorInputRequiredType, getActiveFlowFrom} from './IContext'
+import IContext, {CursorType, findFlowWith, findInteractionWith, getActiveFlowFrom} from './IContext'
 import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
+import IFlow, {findBlockWith} from './IFlow'
 
 export default interface IBlock {
-  uuid: string // UUID32
+  uuid: string
   name: string
   label?: string
   semanticLabel?: string
@@ -35,11 +36,11 @@ export function findFirstTruthyEvaluatingBlockExitOn(block: IBlockWithTestExits,
   }
 
   const {cursor} = context
-  if (cursor == null || cursor[1] == null) {
+  if (cursor == null || cursor[0] == null) {
     throw new ValidationException(`Unable to find cursor on context ${context.id}`)
   }
 
-  const evalContext = createEvalContextFrom(context, block)
+  const evalContext = createEvalContextFrom(context)
   return find<IBlockExitTestRequired>(exits, ({test}) => evaluateToBool(String(test), evalContext))
 }
 
@@ -52,27 +53,86 @@ export function findDefaultBlockExitOn(block: IBlock): IBlockExit {
   return exit
 }
 
+export interface IEvalContextBlock {
+  __value__: any
+  time: string
+  __interactionId: string
+}
+
+export function findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx: IContext): IEvalContextBlock | undefined {
+  const intx = findLast(ctx.interactions, ({blockId, flowId}) => {
+    const {name} = findBlockWith(
+      blockId,
+      findFlowWith(flowId, ctx))
+
+    return name === blockName
+  })
+
+  if (intx == null) {
+    return
+  }
+
+  return {
+    __interactionId: intx.uuid,
+    __value__: intx.value,
+    time: intx.entryAt,
+  }
+}
+
+export function generateCachedProxyForBlockName(target: object, ctx: IContext) {
+  // create a cache of `{[block.name]: {...}}` for subsequent lookups
+  const expressionBlocksByName: {[k: string]: IEvalContextBlock | undefined} = {}
+
+  // create a proxy that traps get() and attempts a lookup of blocks by name
+  return new Proxy(target, {
+    get(target, prop, _receiver) {
+      if (prop in target) {
+        // @ts-ignore
+        return Reflect.get(...arguments)
+      }
+
+      if (prop in expressionBlocksByName) {
+        return expressionBlocksByName[prop.toString()]
+      }
+
+      return expressionBlocksByName[prop.toString()] =
+        findAndGenerateExpressionBlockFor(prop.toString(), ctx)
+    }
+  })
+}
 
 // todo: push eval stuff into `Expression.evaluate()` abstraction for evalContext + result handling 👇
-function createEvalContextFrom(context: IContext, block: IBlock) {
+export function createEvalContextFrom(context: IContext) {
   const {contact, cursor, mode, languageId: language} = context
+  let flow: IFlow | undefined
+  let block: IBlock | undefined
+  let prompt: CursorType[1]
+
+  if (cursor != null) {
+    flow = getActiveFlowFrom(context)
+    block = findBlockWith(findInteractionWith(cursor[0], context).blockId, flow)
+    prompt = cursor[1]
+  }
+
   return {
     contact,
     channel: {mode},
-    flow: {
-      ...getActiveFlowFrom(context),
+    flow: generateCachedProxyForBlockName({
+      ...flow,
       language, // todo: why isn't this languageId?
-    },
+    }, context),
     block: {
       ...block,
-      value: (cursor as CursorInputRequiredType)[1].value,
+      value: prompt != null
+        ? prompt.value
+        : undefined,
     },
   }
 }
 
 function evaluateToBool(expr: string, ctx: object) {
-  const evaluator = EvaluatorFactory.create()
-  const result = evaluator.evaluate(expr, ctx)
+  const result = EvaluatorFactory.create()
+    .evaluate(expr, ctx)
 
-  return JSON.parse(result.toLocaleLowerCase())
+  return JSON.parse(result.toLowerCase())
 }

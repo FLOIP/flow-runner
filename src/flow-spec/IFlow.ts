@@ -3,6 +3,7 @@ import IBlock from './IBlock'
 import {find} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
 import SupportedMode from './SupportedMode'
+import ILanguage from './ILanguage'
 
 export default interface IFlow {
   uuid: string // UUID32
@@ -13,7 +14,7 @@ export default interface IFlow {
   platformMetadata: object
 
   supportedModes: SupportedMode[]
-  languages: string[] // eunm for ISO 639-3 codes
+  languages: ILanguage[] // eunm for ISO 639-3 codes
   blocks: IBlock[]
 
   firstBlockId: string
