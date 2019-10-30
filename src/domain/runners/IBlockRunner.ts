@@ -9,7 +9,7 @@ export default interface IBlockRunner {
   block: IBlock
   context: IContext
 
-  initialize(interaction?: IBlockInteraction): IPromptConfig<any> | undefined
+  initialize(interaction: IBlockInteraction): IPromptConfig<any> | undefined
 
-  run(cursor?: RichCursorType): IBlockExit
+  run(cursor: RichCursorType): IBlockExit
 }

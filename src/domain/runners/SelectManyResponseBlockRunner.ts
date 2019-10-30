@@ -1,7 +1,6 @@
 import IBlockRunner from './IBlockRunner'
 import {
   findFirstTruthyEvaluatingBlockExitOn, IBlockExitTestRequired,
-  ISelectOnePromptConfig,
   KnownPrompts,
 } from '../..'
 import IBlockExit from '../../flow-spec/IBlockExit'
@@ -10,18 +9,19 @@ import IContext from '../../flow-spec/IContext'
 import ResourceResolver from '../ResourceResolver'
 import IResourceResolver from '../IResourceResolver'
 import {last} from 'lodash'
+import {ISelectManyPromptConfig} from '../prompt/ISelectManyPromptConfig'
 
-export default class SelectOneResponseBlockRunner implements IBlockRunner {
+export default class SelectManyResponseBlockRunner implements IBlockRunner {
   constructor(public block: ISelectOneResponseBlock,
               public context: IContext) {
   }
 
-  initialize(): ISelectOnePromptConfig {
+  initialize(): ISelectManyPromptConfig {
     const {prompt, choices} = this.block.config
     const resources: IResourceResolver = new ResourceResolver(this.context)
 
     return {
-      kind: KnownPrompts.SelectOne,
+      kind: KnownPrompts.SelectMany,
       prompt: resources.resolve(prompt),
       isResponseRequired: true,
       choices: Object.keys(choices)

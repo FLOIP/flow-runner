@@ -22,6 +22,7 @@ import DeliveryStatus from '../flow-spec/DeliveryStatus'
 import NumericPrompt from './prompt/NumericPrompt'
 import OpenPrompt from './prompt/OpenPrompt'
 import SelectOnePrompt from './prompt/SelectOnePrompt'
+import SelectManyPrompt from './prompt/SelectManyPrompt'
 
 
 export class BlockRunnerFactoryStore
@@ -377,6 +378,7 @@ export default class FlowRunner implements IFlowRunner {
       [KnownPrompts.Numeric]: NumericPrompt,
       [KnownPrompts.Open]: OpenPrompt,
       [KnownPrompts.SelectOne]: SelectOnePrompt,
+      [KnownPrompts.SelectMany]: SelectManyPrompt,
     }[config.kind]
 
     // @ts-ignore
