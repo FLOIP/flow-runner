@@ -6,6 +6,7 @@ export default interface IBlockInteraction {
   exitAt?: string
   hasResponse: boolean
   value?: string | number
+  selectedExitId: string | null
   details: IBlockInteractionDetails // json (?) can we type this at all?
   type: string
 
@@ -14,5 +15,4 @@ export default interface IBlockInteraction {
 }
 
 export interface IBlockInteractionDetails {
-  selectedExitId: string | null
 }

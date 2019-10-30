@@ -73,6 +73,6 @@ describe('FlowRunner/stepInto', () => {
       runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
 
     runner.stepInto(block, ctx)
-    expect(runFlowBlockIntx.details.selectedExitId).toBe(block.exits[0].uuid)
+    expect(runFlowBlockIntx.selectedExitId).toBe(block.exits[0].uuid)
   })
 })

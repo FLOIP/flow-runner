@@ -237,7 +237,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     const exit = this.createBlockRunnerFor(block, this.context)
       .run(richCursor)
 
-    richCursor[0].details.selectedExitId = exit.uuid
+    richCursor[0].selectedExitId = exit.uuid
 
     if (richCursor[1] != null) {
       richCursor[1].config.isSubmitted = true
@@ -313,7 +313,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
       return undefined
     }
 
-    runFlowInteraction.details.selectedExitId = runFlowBlock.exits[0].uuid
+    runFlowInteraction.selectedExitId = runFlowBlock.exits[0].uuid
 
     return firstNestedBlock
   }
@@ -362,14 +362,14 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
   }
 
   findNextBlockFrom(interaction: IBlockInteraction, ctx: IContext): IBlock | undefined {
-    if (interaction.details.selectedExitId == null) {
+    if (interaction.selectedExitId == null) {
       // todo: maybe tighter check on this, like: prompt.isFulfilled() === false || !called block.run()
       throw new ValidationException(
         'Unable to navigate past incomplete interaction; did you forget to call runner.run()?')
     }
 
     const block = findBlockOnActiveFlowWith(interaction.blockId, ctx)
-    const {destinationBlock} = findBlockExitWith(interaction.details.selectedExitId, block)
+    const {destinationBlock} = findBlockExitWith(interaction.selectedExitId, block)
     const {blocks} = getActiveFlowFrom(ctx)
 
     return find(blocks, {uuid: destinationBlock})
@@ -389,7 +389,8 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
       exitAt: undefined,
       hasResponse: false,
       value: undefined,
-      details: {selectedExitId: null},
+      selectedExitId: null,
+      details: {},
       type,
 
       // Nested flows:

@@ -51,9 +51,9 @@ describe('FlowRunner/stepOut', () => {
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
 
       expect(ctx.nestedFlowBlockInteractionIdStack.length).toBeGreaterThan(0)
-      activeIntx.details.selectedExitId = null // pre-condition for "not-yet-stepped-out" state
+      activeIntx.selectedExitId = null // pre-condition for "not-yet-stepped-out" state
       runner.stepOut(ctx)
-      expect(activeIntx.details.selectedExitId).toBe(null)
+      expect(activeIntx.selectedExitId).toBe(null)
     })
 
     describe('connecting block', () => {
