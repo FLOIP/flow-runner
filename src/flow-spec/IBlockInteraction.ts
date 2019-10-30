@@ -1,6 +1,3 @@
-// import UUID64 from "../model/UUID64";
-// import UUID32 from "../model/UUID32";
-
 export default interface IBlockInteraction {
   uuid: string // UUID64
   blockId: string // UUID32
@@ -9,6 +6,7 @@ export default interface IBlockInteraction {
   exitAt?: string
   hasResponse: boolean
   value?: string | number
+  selectedExitId: string | null
   details: IBlockInteractionDetails // json (?) can we type this at all?
   type: string
 
@@ -17,5 +15,4 @@ export default interface IBlockInteraction {
 }
 
 export interface IBlockInteractionDetails {
-  selectedExitId: string | null
 }

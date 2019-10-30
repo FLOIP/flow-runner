@@ -3,12 +3,13 @@ import IBlockExit from '../../flow-spec/IBlockExit'
 import {INumericPromptConfig, KnownPrompts} from '../..'
 import INumericResponseBlock from '../../model/block/INumericResponseBlock'
 import IContext from '../../flow-spec/IContext'
+import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 
 export default class NumericResponseBlockRunner implements IBlockRunner {
   constructor(public block: INumericResponseBlock,
               public context: IContext) {}
 
-  initialize(): INumericPromptConfig {
+  initialize({value}: IBlockInteraction): INumericPromptConfig {
     const {
       prompt,
       validationMinimum: min,
@@ -22,6 +23,8 @@ export default class NumericResponseBlockRunner implements IBlockRunner {
 
       min,
       max,
+
+      value: value as INumericPromptConfig['value'],
     }
   }
 

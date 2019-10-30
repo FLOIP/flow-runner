@@ -19,12 +19,8 @@ function findFirstTruthyEvaluatingBlockExitOn(block, context) {
     if (exits.length === 0) {
         throw new ValidationException_1.default(`Unable to find exits on block ${block.uuid}`);
     }
-    const { cursor } = context;
-    if (cursor == null || cursor[0] == null) {
-        throw new ValidationException_1.default(`Unable to find cursor on context ${context.id}`);
-    }
     const evalContext = createEvalContextFrom(context);
-    return lodash_1.find(exits, ({ test }) => evaluateToBool(String(test), evalContext));
+    return lodash_1.find(exits, ({ test, default: isDefault = false }) => !isDefault && evaluateToBool(String(test), evalContext));
 }
 exports.findFirstTruthyEvaluatingBlockExitOn = findFirstTruthyEvaluatingBlockExitOn;
 function findDefaultBlockExitOn(block) {
@@ -62,6 +58,17 @@ function generateCachedProxyForBlockName(target, ctx) {
             }
             return expressionBlocksByName[prop.toString()] =
                 findAndGenerateExpressionBlockFor(prop.toString(), ctx);
+        },
+        has(target, prop) {
+            if (prop in target) {
+                return true;
+            }
+            if (prop in expressionBlocksByName) {
+                return true;
+            }
+            expressionBlocksByName[prop.toString()] =
+                findAndGenerateExpressionBlockFor(prop.toString(), ctx);
+            return prop in expressionBlocksByName;
         }
     });
 }

@@ -148,7 +148,7 @@ describe('FlowRunner/navigateTo', () => {
       it('should be from nested flow when nested once', () => {
         const
             ctx = dataset.contexts[2], // RunFlow->(Message)->Message
-            block = ctx.flows[1].blocks[0], // todo: actually, ths needs to be the first block on the nested flow!
+            block = ctx.flows[1].blocks[0], // todo: actually, this needs to be the first block on the nested flow!
             runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
               ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
@@ -242,12 +242,13 @@ describe('FlowRunner/navigateTo', () => {
           block = ctx.flows[1].blocks[0],
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
             ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],])),
-          lastIntx = last(ctx.interactions) as IBlockInteraction
+          lastIntx = last(ctx.interactions) as IBlockInteraction,
+          navigatedAt = new Date
 
       expect(ctx.interactions.length).toBeGreaterThan(0)
       expect(lastIntx.exitAt).toBeNull()
-      runner.navigateTo(block, ctx)
-      expect(lastIntx.exitAt).toBe(new Date().toISOString()) // todo: this is a fragile time-sensitive test; make it not so
+      runner.navigateTo(block, ctx, navigatedAt)
+      expect(lastIntx.exitAt).toBe(navigatedAt.toISOString())
     })
   })
 })

@@ -17,9 +17,8 @@
       "entryAt": "2019-10-07T15:55:01.805Z",
       "hasResponse": true,
       "value": "true",
-      "details": {
-        "selectedExitId": "29841127-3247-4610-8037-c915c54a60ed"
-      },
+      "selectedExitId": "29841127-3247-4610-8037-c915c54a60ed",
+      "details": {},
       "type": "MobilePrimitives\\SelectOneResponse"
     }
   ],
@@ -1005,5 +1004,6 @@
       "value": "true",
       "isSubmitted": true
     }
-  ]
+  ],
+  "platformMetadata": {}
 }

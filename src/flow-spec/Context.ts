@@ -28,6 +28,7 @@ export default class Context implements IContext {
     public exitAt?: string,
     public userId?: string,
     public cursor?: CursorType,
+    public platformMetadata: object = {},
   ) {}
 
   getResource(resourceId: string): IResource {

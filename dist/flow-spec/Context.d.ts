@@ -21,7 +21,8 @@ export default class Context implements IContext {
     exitAt?: string | undefined;
     userId?: string | undefined;
     cursor?: [string, (import("..").IPromptConfig<any> & import("..").IBasePromptConfig) | undefined] | undefined;
-    constructor(id: string, createdAt: string, deliveryStatus: DeliveryStatus, mode: SupportedMode, languageId: string, contact: IContact, sessionVars: object, interactions: IBlockInteraction[], nestedFlowBlockInteractionIdStack: string[], flows: IFlow[], firstFlowId: string, resources: IResources, entryAt?: string | undefined, exitAt?: string | undefined, userId?: string | undefined, cursor?: [string, (import("..").IPromptConfig<any> & import("..").IBasePromptConfig) | undefined] | undefined);
+    platformMetadata: object;
+    constructor(id: string, createdAt: string, deliveryStatus: DeliveryStatus, mode: SupportedMode, languageId: string, contact: IContact, sessionVars: object, interactions: IBlockInteraction[], nestedFlowBlockInteractionIdStack: string[], flows: IFlow[], firstFlowId: string, resources: IResources, entryAt?: string | undefined, exitAt?: string | undefined, userId?: string | undefined, cursor?: [string, (import("..").IPromptConfig<any> & import("..").IBasePromptConfig) | undefined] | undefined, platformMetadata?: object);
     getResource(resourceId: string): IResource;
 }
 //# sourceMappingURL=Context.d.ts.map

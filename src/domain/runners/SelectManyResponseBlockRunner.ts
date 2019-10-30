@@ -8,13 +8,14 @@ import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock'
 import IContext from '../../flow-spec/IContext'
 import {last} from 'lodash'
 import {ISelectManyPromptConfig} from '../prompt/ISelectManyPromptConfig'
+import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 
 export default class SelectManyResponseBlockRunner implements IBlockRunner {
   constructor(public block: ISelectOneResponseBlock,
               public context: IContext) {
   }
 
-  initialize(): ISelectManyPromptConfig {
+  initialize({value}: IBlockInteraction): ISelectManyPromptConfig {
     const {prompt, choices} = this.block.config
 
     return {
@@ -26,6 +27,8 @@ export default class SelectManyResponseBlockRunner implements IBlockRunner {
           key,
           value: choices[key],
         })),
+
+      value: value as ISelectManyPromptConfig['value'],
     }
   }
 

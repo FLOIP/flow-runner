@@ -24,12 +24,10 @@ export default abstract class BasePrompt<PromptConfigType extends IPromptConfig<
 
   constructor(
     public config: PromptConfigType & IBasePromptConfig,
-    // todo: figure out a nice pattern for hydrating UUIDs
     public interactionId: string,
     public runner: IFlowRunner,) {
 
     // todo: add canPerformEarlyExit() behaviour
-    // todo: should perform initial validate() here?
   }
 
   get value(): PromptConfigType['value'] {

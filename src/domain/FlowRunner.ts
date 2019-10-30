@@ -1,3 +1,4 @@
+import {trimEnd, lowerFirst} from 'lodash'
 import IBlock, {findBlockExitWith} from '../flow-spec/IBlock'
 import IContext, {
   CursorType,
@@ -13,7 +14,6 @@ import IBlockRunner from './runners/IBlockRunner'
 import IBlockInteraction from '../flow-spec/IBlockInteraction'
 import IBlockExit from '../flow-spec/IBlockExit'
 import {find, first, last} from 'lodash'
-import uuid from 'uuid'
 import IFlowRunner, {IBlockRunnerFactoryStore} from './IFlowRunner'
 import IIdGenerator from './IIdGenerator'
 import IdGeneratorUuidV4 from './IdGeneratorUuidV4'
@@ -25,6 +25,20 @@ import NumericPrompt from './prompt/NumericPrompt'
 import OpenPrompt from './prompt/OpenPrompt'
 import SelectOnePrompt from './prompt/SelectOnePrompt'
 import SelectManyPrompt from './prompt/SelectManyPrompt'
+import IBehaviour, {IBehaviourConstructor} from './behaviours/IBehaviour'
+// import BacktrackingBehaviour from './behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
+import BasicBacktrackingBehaviour from './behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour'
+import MessageBlockRunner from './runners/MessageBlockRunner'
+import IMessageBlock from '../model/block/IMessageBlock'
+import OpenResponseBlockRunner from './runners/OpenResponseBlockRunner'
+import IOpenResponseBlock from '../model/block/IOpenResponseBlock'
+import NumericResponseBlockRunner from './runners/NumericResponseBlockRunner'
+import INumericResponseBlock from '../model/block/INumericResponseBlock'
+import SelectOneResponseBlockRunner from './runners/SelectOneResponseBlockRunner'
+import ISelectOneResponseBlock from '../model/block/ISelectOneResponseBlock'
+import SelectManyResponseBlockRunner from './runners/SelectManyResponseBlockRunner'
+import CaseBlockRunner from './runners/CaseBlockRunner'
+import ICaseBlock from '../model/block/ICaseBlock'
 
 
 export class BlockRunnerFactoryStore
@@ -32,11 +46,56 @@ export class BlockRunnerFactoryStore
   implements IBlockRunnerFactoryStore {
 }
 
-export default class FlowRunner implements IFlowRunner {
+export interface IFlowNavigator {
+  navigateTo(block: IBlock, ctx: IContext): RichCursorType
+}
+
+export interface IPromptBuilder {
+  buildPromptFor(block: IBlock, interaction: IBlockInteraction):
+    IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined
+}
+
+const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
+  BasicBacktrackingBehaviour,
+  // BacktrackingBehaviour,
+]
+
+export const NON_INTERACTIVE_BLOCK_TYPES = [
+  'Core\\Case',
+  'Core\\RunFlowBlock',
+]
+
+export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
+  return new BlockRunnerFactoryStore([
+    ['MobilePrimitives\\Message', (block, innerContext) => new MessageBlockRunner(block as IMessageBlock, innerContext)],
+    ['MobilePrimitives\\OpenResponse', (block, innerContext) => new OpenResponseBlockRunner(block as IOpenResponseBlock, innerContext)],
+    ['MobilePrimitives\\NumericResponse', (block, innerContext) => new NumericResponseBlockRunner(block as INumericResponseBlock, innerContext)],
+    ['MobilePrimitives\\SelectOneResponse', (block, innerContext) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, innerContext)],
+    ['MobilePrimitives\\SelectManyResponse', (block, innerContext) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, innerContext)],
+    ['Core\\Case', (block, innerContext) => new CaseBlockRunner(block as ICaseBlock, innerContext)]])
+}
+
+export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   constructor(
     public context: IContext,
-    public runnerFactoryStore: IBlockRunnerFactoryStore,
-    protected idGenerator: IIdGenerator = new IdGeneratorUuidV4() ) {}
+    public runnerFactoryStore: IBlockRunnerFactoryStore = createDefaultBlockRunnerStore(),
+    protected idGenerator: IIdGenerator = new IdGeneratorUuidV4(),
+    public behaviours: { [key: string]: IBehaviour } = {},
+  ) {
+    this.initializeBehaviours(DEFAULT_BEHAVIOUR_TYPES)
+  }
+
+  /**
+   * Take list of constructors and initialize them like: ```
+   * runner.initializeBehaviours([MyFirstBehaviour, MySecondBehaviour])
+   * runner.behaviours.myFirst instanceof MyFirstBehaviour
+   * runner.behaviours.mySecond instanceof MySecondBehaviour
+   * ``` */
+  initializeBehaviours(behaviourConstructors: IBehaviourConstructor[]) {
+    behaviourConstructors.forEach(b =>
+      this.behaviours[lowerFirst(trimEnd(b.name, 'Behaviour|Behavior'))]
+        = new b(this.context, this, this))
+  }
 
   /**
    * We want to call start when we don't have a prompt needing work to be done. */
@@ -148,19 +207,6 @@ export default class FlowRunner implements IFlowRunner {
   }
 
   hydrateRichCursorFrom(ctx: IContextWithCursor): RichCursorType {
-    /**
-     * todo: to properly facilitate json-ification of any given `ctx`, we'll want this to also hydrate
-     *       `cursor[1]<IPrompt>` from an underlying data structure here
-     * todo: to facilitate an alternate underlying data structure for Prompt, let's add
-     *       ```
-     *       runner.createPromptFromCursor(): IPrompt<IPromptExpectationTypes> | null
-     *       ```
-     *       - There is one additional complication with toggling between these two:
-     *         We now need to type our IPromptConfig?
-     *         As in, we'll likely want to return a config definition from our block runner, but have the instantiation
-     *         handled by the runner? Another site for type injection.
-     *       - Cursor would then hold a union type of the different config types we know of where config has a type
-     **/
     const {cursor} = ctx
     const interaction = findInteractionWith(cursor[0], ctx)
     return [interaction, this.createPromptFrom(cursor[1], interaction)]
@@ -172,12 +218,12 @@ export default class FlowRunner implements IFlowRunner {
     originFlowId?: string,
     originBlockInteractionId?: string,
   ): RichCursorType {
-    const runner = this.createBlockRunnerFor(block, this.context)
-    const interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
-    const promptConfig = runner.initialize(interaction)
-    const prompt = this.createPromptFrom(promptConfig, interaction)
+    let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
 
-    return [interaction, prompt]
+    Object.values(this.behaviours)
+      .forEach(b => interaction = b.postInteractionCreate(interaction, this.context))
+
+    return [interaction, this.buildPromptFor(block, interaction)]
   }
 
   runActiveBlockOn(richCursor: RichCursorType, block: IBlock): IBlockExit {
@@ -191,11 +237,14 @@ export default class FlowRunner implements IFlowRunner {
     const exit = this.createBlockRunnerFor(block, this.context)
       .run(richCursor)
 
-    richCursor[0].details.selectedExitId = exit.uuid
+    richCursor[0].selectedExitId = exit.uuid
 
     if (richCursor[1] != null) {
       richCursor[1].config.isSubmitted = true
     }
+
+    Object.values(this.behaviours)
+      .forEach(b => b.postInteractionComplete(richCursor[0], this.context))
 
     return exit
   }
@@ -209,7 +258,7 @@ export default class FlowRunner implements IFlowRunner {
     return factory(block, ctx)
   }
 
-  navigateTo(block: IBlock, ctx: IContext): RichCursorType {
+  navigateTo(block: IBlock, ctx: IContext, navigatedAt: Date = new Date): RichCursorType {
     const {interactions, nestedFlowBlockInteractionIdStack} = ctx
     const flowId = getActiveFlowIdFrom(ctx)
     const originInteractionId = last(nestedFlowBlockInteractionIdStack)
@@ -225,7 +274,7 @@ export default class FlowRunner implements IFlowRunner {
 
     const lastInteraction = last(interactions)
     if (lastInteraction != null) {
-      lastInteraction.exitAt = new Date().toISOString()
+      lastInteraction.exitAt = navigatedAt.toISOString()
     }
 
     interactions.push(richCursor[0])
@@ -264,12 +313,7 @@ export default class FlowRunner implements IFlowRunner {
       return undefined
     }
 
-    if (runFlowBlock.exits.length === 1) {
-      // todo: how does clipboard-web do this? Seems problematic if we were to ever refetch this flow
-      runFlowBlock.exits.push(this.createBlockExitFor(firstNestedBlock))
-    }
-
-    runFlowInteraction.details.selectedExitId = (last(runFlowBlock.exits) as IBlockExit).uuid
+    runFlowInteraction.selectedExitId = runFlowBlock.exits[0].uuid
 
     return firstNestedBlock
   }
@@ -286,7 +330,7 @@ export default class FlowRunner implements IFlowRunner {
    *       to next block; when stepping IN, we need an explicit navigation to inject RunFlow in between
    *       the two Flows. */
   stepOut(ctx: IContext): IBlock | undefined {
-    const {interactions, nestedFlowBlockInteractionIdStack} = ctx
+    const {nestedFlowBlockInteractionIdStack} = ctx
 
     if (nestedFlowBlockInteractionIdStack.length === 0) {
       return
@@ -295,9 +339,7 @@ export default class FlowRunner implements IFlowRunner {
     const lastParentInteractionId = nestedFlowBlockInteractionIdStack.pop() as string
     const {blockId: lastRunFlowBlockId} = findInteractionWith(lastParentInteractionId, ctx)
     const lastRunFlowBlock = findBlockOnActiveFlowWith(lastRunFlowBlockId, ctx)
-    const {uuid: runFlowBlockFirstExitId, destinationBlock} = first(lastRunFlowBlock.exits) as IBlockExit
-
-    (last(interactions) as IBlockInteraction).details.selectedExitId = runFlowBlockFirstExitId
+    const {destinationBlock} = first(lastRunFlowBlock.exits) as IBlockExit
 
     if (destinationBlock == null) {
       return
@@ -320,14 +362,14 @@ export default class FlowRunner implements IFlowRunner {
   }
 
   findNextBlockFrom(interaction: IBlockInteraction, ctx: IContext): IBlock | undefined {
-    if (interaction.details.selectedExitId == null) {
+    if (interaction.selectedExitId == null) {
       // todo: maybe tighter check on this, like: prompt.isFulfilled() === false || !called block.run()
       throw new ValidationException(
         'Unable to navigate past incomplete interaction; did you forget to call runner.run()?')
     }
 
     const block = findBlockOnActiveFlowWith(interaction.blockId, ctx)
-    const {destinationBlock} = findBlockExitWith(interaction.details.selectedExitId, block)
+    const {destinationBlock} = findBlockExitWith(interaction.selectedExitId, block)
     const {blocks} = getActiveFlowFrom(ctx)
 
     return find(blocks, {uuid: destinationBlock})
@@ -347,7 +389,8 @@ export default class FlowRunner implements IFlowRunner {
       exitAt: undefined,
       hasResponse: false,
       value: undefined,
-      details: {selectedExitId: null},
+      selectedExitId: null,
+      details: {},
       type,
 
       // Nested flows:
@@ -356,16 +399,12 @@ export default class FlowRunner implements IFlowRunner {
     }
   }
 
-  private createBlockExitFor({uuid: destinationBlock}: IBlock): IBlockExit {
-    return {
-      uuid: uuid.v4(),
-      destinationBlock: destinationBlock,
-      config: {},
-      label: '',
-      semanticLabel: '',
-      tag: '',
-      test: '',
-    }
+  buildPromptFor(block: IBlock, interaction: IBlockInteraction):
+    IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined {
+
+    const runner = this.createBlockRunnerFor(block, this.context)
+    const promptConfig = runner.initialize(interaction)
+    return this.createPromptFrom(promptConfig, interaction)
   }
 
   private createPromptFrom(config?: IPromptConfig<any>, interaction?: IBlockInteraction):

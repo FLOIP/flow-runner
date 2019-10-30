@@ -1,14 +1,15 @@
 {
   "name": "flowrunner-core-ts",
-  "version": "0.0.40",
+  "version": "0.0.48",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "repository": "git@bitbucket.org:voto/flowrunner-core-ts.git",
   "author": "bzabos <b.zabos@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc --declaration && yarn version --patch",
-    "deploy": "# increase version && commit && tag && push",
+    "build": "tsc --declaration",
+    "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist/",
+    "deploy": "yarn clean && yarn build && git add dist/ && git commit -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD",
     "test": "yarn tsc-test && yarn jest",
     "tsc-test": "tsc --project . --noEmit"
   },

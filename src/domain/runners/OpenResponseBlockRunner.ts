@@ -3,6 +3,7 @@ import IBlockExit from '../../flow-spec/IBlockExit'
 import {IOpenPromptConfig, KnownPrompts} from '../..'
 import IOpenResponseBlock from '../../model/block/IOpenResponseBlock'
 import IContext from '../../flow-spec/IContext'
+import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 
 export default class OpenResponseBlockRunner implements IBlockRunner {
   constructor(
@@ -11,7 +12,7 @@ export default class OpenResponseBlockRunner implements IBlockRunner {
   ) {
   }
 
-  initialize(): IOpenPromptConfig {
+  initialize({value}: IBlockInteraction): IOpenPromptConfig {
     const blockConfig = this.block.config
 
     let maxResponseCharacters
@@ -24,6 +25,8 @@ export default class OpenResponseBlockRunner implements IBlockRunner {
       prompt: blockConfig.prompt,
       isResponseRequired: true,
       maxResponseCharacters: maxResponseCharacters,
+
+      value: value as IOpenPromptConfig['value'],
     }
   }
 
