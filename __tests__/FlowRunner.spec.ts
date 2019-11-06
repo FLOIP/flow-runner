@@ -1,9 +1,10 @@
 import "reflect-metadata";
+import {flatMap} from 'lodash'
 import IDataset, {createDefaultDataset} from '../__test_fixtures__/fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from '../src/domain/FlowRunner'
 import MessageBlockRunner from '../src/domain/runners/MessageBlockRunner'
 import IMessageBlock from '../src/model/block/IMessageBlock'
-import {createContextDataObjectFor, RichCursorInputRequiredType, SupportedMode} from '../src'
+import {createContextDataObjectFor, IResources, RichCursorInputRequiredType, SupportedMode} from '../src'
 import IContext from '../src/flow-spec/IContext'
 import ValidationException from '../src/domain/exceptions/ValidationException'
 import {deserialize, plainToClass, serialize} from 'class-transformer'
@@ -102,11 +103,11 @@ describe('FlowRunner', () => {
     })
 
     describe('case block unable to find cursor', () => {
-      it('shouldnt raise an except requiring prompt', () => {
+      it('shouldnt raise an exception requiring prompt', () => {
         const context: IContext = require('../__test_fixtures__/fixtures/2019-10-08-case-block-eval-issue.json')
         const runner = new FlowRunner(context)
 
-        expect(FlowRunner.prototype.run.bind(runner)).toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')
+        expect(runner.run()![0].blockId).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
       })
     })
 
@@ -122,7 +123,8 @@ describe('FlowRunner', () => {
 
     describe('VMO-1484-case-branching-improperly', () => {
       it('should hit Cats branch', () => {
-        const {flows, resources}: IContext = require('../__test_fixtures__/fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
+        const {flows}: IContext = require('../__test_fixtures__/fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
+        const resources: IResources = flatMap(flows, 'resources') // our server-side implementation currently returns
 
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
@@ -141,7 +143,8 @@ describe('FlowRunner', () => {
       })
 
       it('should hit Dogs branch', () => {
-        const {flows, resources}: IContext = require('../__test_fixtures__/fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
+        const {flows}: IContext = require('../__test_fixtures__/fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
+        const resources: IResources = flatMap(flows, 'resources') // our server-side implementation currently returns
 
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
