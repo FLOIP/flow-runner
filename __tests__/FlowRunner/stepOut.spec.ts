@@ -44,21 +44,20 @@ describe('FlowRunner/stepOut', () => {
       expect(ctx.nestedFlowBlockInteractionIdStack).toEqual(snapshottedNFBIStack.slice(0, -1))
     })
 
-    it('should tie active interaction to last RunFlow block\'s destination block in original tree', () => {
+    it('should leave active interaction\'s selected exit as null to indicate we\'ve finished executing the flow', () => {
       const
           ctx = dataset.contexts[2],
           activeIntx = last(ctx.interactions) as IBlockInteraction,
-          lastRunFlowBlock = ctx.flows[0].blocks[0],
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
 
       expect(ctx.nestedFlowBlockInteractionIdStack.length).toBeGreaterThan(0)
-      activeIntx.details.selectedExitId = null // pre-condition for "not-yet-stepped-out" state
+      activeIntx.selectedExitId = null // pre-condition for "not-yet-stepped-out" state
       runner.stepOut(ctx)
-      expect(activeIntx.details.selectedExitId).toBe(lastRunFlowBlock.exits[0].uuid)
+      expect(activeIntx.selectedExitId).toBe(null)
     })
 
     describe('connecting block', () => {
-      it('should return block last RunFlow was connected to in original tree', () => {
+      it('should return block last RunFlow was connected to in original flow', () => {
         const
           ctx = dataset.contexts[2],
           lastRunFlowBlock = ctx.flows[0].blocks[0],
@@ -71,7 +70,7 @@ describe('FlowRunner/stepOut', () => {
         expect(nextBlock).toBe(runFlowDestinationBlock)
       })
 
-      it('should return null if last RunFlow was end of original tree', () => {
+      it('should return null if last RunFlow was end of original flow', () => {
         const
           ctx = dataset.contexts[2],
           lastRunFlowBlock = ctx.flows[0].blocks[0],

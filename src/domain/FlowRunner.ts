@@ -14,7 +14,6 @@ import IBlockRunner from './runners/IBlockRunner'
 import IBlockInteraction from '../flow-spec/IBlockInteraction'
 import IBlockExit from '../flow-spec/IBlockExit'
 import {find, first, last} from 'lodash'
-import uuid from 'uuid'
 import IFlowRunner, {IBlockRunnerFactoryStore} from './IFlowRunner'
 import IIdGenerator from './IIdGenerator'
 import IdGeneratorUuidV4 from './IdGeneratorUuidV4'
@@ -26,8 +25,9 @@ import NumericPrompt from './prompt/NumericPrompt'
 import OpenPrompt from './prompt/OpenPrompt'
 import SelectOnePrompt from './prompt/SelectOnePrompt'
 import SelectManyPrompt from './prompt/SelectManyPrompt'
-// import BacktrackingBehaviour from './behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
 import IBehaviour, {IBehaviourConstructor} from './behaviours/IBehaviour'
+// import BacktrackingBehaviour from './behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
+import BasicBacktrackingBehaviour from './behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour'
 import MessageBlockRunner from './runners/MessageBlockRunner'
 import IMessageBlock from '../model/block/IMessageBlock'
 import OpenResponseBlockRunner from './runners/OpenResponseBlockRunner'
@@ -56,6 +56,7 @@ export interface IPromptBuilder {
 }
 
 const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
+  BasicBacktrackingBehaviour,
   // BacktrackingBehaviour,
 ]
 
@@ -219,8 +220,8 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
   ): RichCursorType {
     let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
 
-    Object.values(this.behaviours).forEach(b =>
-      interaction = b.postInteractionCreate(interaction, this.context))
+    Object.values(this.behaviours)
+      .forEach(b => interaction = b.postInteractionCreate(interaction, this.context))
 
     return [interaction, this.buildPromptFor(block, interaction)]
   }
@@ -236,14 +237,14 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     const exit = this.createBlockRunnerFor(block, this.context)
       .run(richCursor)
 
-    richCursor[0].details.selectedExitId = exit.uuid
+    richCursor[0].selectedExitId = exit.uuid
 
     if (richCursor[1] != null) {
       richCursor[1].config.isSubmitted = true
     }
 
-    Object.values(this.behaviours).forEach(b =>
-      b.postInteractionComplete(richCursor[0], this.context))
+    Object.values(this.behaviours)
+      .forEach(b => b.postInteractionComplete(richCursor[0], this.context))
 
     return exit
   }
@@ -257,7 +258,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     return factory(block, ctx)
   }
 
-  navigateTo(block: IBlock, ctx: IContext): RichCursorType {
+  navigateTo(block: IBlock, ctx: IContext, navigatedAt: Date = new Date): RichCursorType {
     const {interactions, nestedFlowBlockInteractionIdStack} = ctx
     const flowId = getActiveFlowIdFrom(ctx)
     const originInteractionId = last(nestedFlowBlockInteractionIdStack)
@@ -273,7 +274,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
 
     const lastInteraction = last(interactions)
     if (lastInteraction != null) {
-      lastInteraction.exitAt = new Date().toISOString()
+      lastInteraction.exitAt = navigatedAt.toISOString()
     }
 
     interactions.push(richCursor[0])
@@ -312,12 +313,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
       return undefined
     }
 
-    if (runFlowBlock.exits.length === 1) {
-      // todo: how does clipboard-web do this? Seems problematic if we were to ever refetch this flow
-      runFlowBlock.exits.push(this.createBlockExitFor(firstNestedBlock))
-    }
-
-    runFlowInteraction.details.selectedExitId = (last(runFlowBlock.exits) as IBlockExit).uuid
+    runFlowInteraction.selectedExitId = runFlowBlock.exits[0].uuid
 
     return firstNestedBlock
   }
@@ -334,7 +330,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
    *       to next block; when stepping IN, we need an explicit navigation to inject RunFlow in between
    *       the two Flows. */
   stepOut(ctx: IContext): IBlock | undefined {
-    const {interactions, nestedFlowBlockInteractionIdStack} = ctx
+    const {nestedFlowBlockInteractionIdStack} = ctx
 
     if (nestedFlowBlockInteractionIdStack.length === 0) {
       return
@@ -343,9 +339,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     const lastParentInteractionId = nestedFlowBlockInteractionIdStack.pop() as string
     const {blockId: lastRunFlowBlockId} = findInteractionWith(lastParentInteractionId, ctx)
     const lastRunFlowBlock = findBlockOnActiveFlowWith(lastRunFlowBlockId, ctx)
-    const {uuid: runFlowBlockFirstExitId, destinationBlock} = first(lastRunFlowBlock.exits) as IBlockExit
-
-    (last(interactions) as IBlockInteraction).details.selectedExitId = runFlowBlockFirstExitId
+    const {destinationBlock} = first(lastRunFlowBlock.exits) as IBlockExit
 
     if (destinationBlock == null) {
       return
@@ -368,14 +362,14 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
   }
 
   findNextBlockFrom(interaction: IBlockInteraction, ctx: IContext): IBlock | undefined {
-    if (interaction.details.selectedExitId == null) {
+    if (interaction.selectedExitId == null) {
       // todo: maybe tighter check on this, like: prompt.isFulfilled() === false || !called block.run()
       throw new ValidationException(
         'Unable to navigate past incomplete interaction; did you forget to call runner.run()?')
     }
 
     const block = findBlockOnActiveFlowWith(interaction.blockId, ctx)
-    const {destinationBlock} = findBlockExitWith(interaction.details.selectedExitId, block)
+    const {destinationBlock} = findBlockExitWith(interaction.selectedExitId, block)
     const {blocks} = getActiveFlowFrom(ctx)
 
     return find(blocks, {uuid: destinationBlock})
@@ -395,27 +389,13 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
       exitAt: undefined,
       hasResponse: false,
       value: undefined,
-      details: {selectedExitId: null},
+      selectedExitId: null,
+      details: {},
       type,
 
       // Nested flows:
       originFlowId,
       originBlockInteractionId,
-    }
-  }
-
-  /**
-   * todo: deprecate block exit generation
-   * @deprecated */
-  private createBlockExitFor({uuid: destinationBlock}: IBlock): IBlockExit {
-    return {
-      uuid: uuid.v4(),
-      destinationBlock: destinationBlock,
-      config: {},
-      label: '',
-      semanticLabel: '',
-      tag: '',
-      test: '',
     }
   }
 

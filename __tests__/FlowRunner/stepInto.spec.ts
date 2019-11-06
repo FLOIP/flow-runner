@@ -65,6 +65,14 @@ describe('FlowRunner/stepInto', () => {
     it.todo('should return first block when first block present on freshly nested flow')
   })
 
-  it.todo('should generate an additional exit to tie run flow block definition to its nested flow')
-  it.todo('should tie intx associated with provided run flow block to newly generated exit')
+  it('should tie intx associated with provided run flow block to its first exit', () => {
+    const
+      ctx = dataset.contexts[2],
+      block = ctx.flows[0].blocks[0],
+      runFlowBlockIntx = ctx.interactions[0],
+      runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+
+    runner.stepInto(block, ctx)
+    expect(runFlowBlockIntx.selectedExitId).toBe(block.exits[0].uuid)
+  })
 })

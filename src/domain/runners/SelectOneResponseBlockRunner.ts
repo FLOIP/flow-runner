@@ -9,13 +9,14 @@ import IBlockExit from '../../flow-spec/IBlockExit'
 import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock'
 import IContext from '../../flow-spec/IContext'
 import {last} from 'lodash'
+import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 
 export default class SelectOneResponseBlockRunner implements IBlockRunner {
   constructor(public block: ISelectOneResponseBlock,
               public context: IContext) {
   }
 
-  initialize(): ISelectOnePromptConfig {
+  initialize({value}: IBlockInteraction): ISelectOnePromptConfig {
     const {prompt, choices} = this.block.config
 
     return {
@@ -27,6 +28,8 @@ export default class SelectOneResponseBlockRunner implements IBlockRunner {
           key,
           value: choices[key],
         })),
+
+      value: value as ISelectOnePromptConfig['value'],
     }
   }
 
