@@ -17,7 +17,7 @@ declare type BacktrackingIntxStack = IBacktrackingContext['interactionStack'];
 export interface IBackTrackingBehaviour extends IBehaviour {
     rebuildIndex(): void;
     jumpTo(interaction: IBlockInteraction, context: IContext): RichCursorType;
-    peek(steps?: number): IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined;
+    peek(steps?: number): IPrompt<IPromptConfig<any> & IBasePromptConfig>;
 }
 export default class BacktrackingBehaviour implements IBackTrackingBehaviour {
     context: IContext;
@@ -31,9 +31,7 @@ export default class BacktrackingBehaviour implements IBackTrackingBehaviour {
     _stepOut(keyToBeginningOfStackWithHeadMatchingBlock: Key, interactionStack: BacktrackingIntxStack, interaction: IBlockInteraction, key: BacktrackingCursor): void;
     _stepIn(key: BacktrackingCursor, interactionStack: BacktrackingIntxStack, keyForIntxOfRepeatedBlock: Key, interaction: IBlockInteraction): void;
     jumpTo(interaction: IBlockInteraction, context: IContext): RichCursorType;
-    peek(steps?: number): IPrompt<IPromptConfig<any> & IBasePromptConfig> & {
-        value: string | number | undefined;
-    };
+    peek(steps?: number): IPrompt<IPromptConfig<any> & IBasePromptConfig>;
     findIndexOfSuggestionFor({ blockId }: IBlockInteraction, key: Key, stack: IStack): Key | undefined;
     postInteractionCreate(interaction: IBlockInteraction, _context: IContext): IBlockInteraction;
     syncGhostTo(key: Key, keyForSuggestion: Key, ghost: IStack): void;

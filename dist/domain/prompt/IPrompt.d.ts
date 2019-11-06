@@ -1,11 +1,15 @@
 import PromptValidationException from '../exceptions/PromptValidationException';
+import IFlowRunner from '../IFlowRunner';
+import { RichCursorInputRequiredType } from '../..';
 export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
     interactionId: string;
     config: PromptConfigType;
+    runner: IFlowRunner;
     value: PromptConfigType['value'];
     error: PromptValidationException | null;
     isValid: boolean;
     validate(val: PromptConfigType['value']): boolean;
+    fulfill(val: PromptConfigType['value']): RichCursorInputRequiredType | undefined;
 }
 export declare enum KnownPrompts {
     Message = "Message",

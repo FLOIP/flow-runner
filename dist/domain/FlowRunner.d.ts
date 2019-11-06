@@ -41,13 +41,12 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     initializeOneBlock(block: IBlock, flowId: string, originFlowId?: string, originBlockInteractionId?: string): RichCursorType;
     runActiveBlockOn(richCursor: RichCursorType, block: IBlock): IBlockExit;
     createBlockRunnerFor(block: IBlock, ctx: IContext): IBlockRunner;
-    navigateTo(block: IBlock, ctx: IContext): RichCursorType;
+    navigateTo(block: IBlock, ctx: IContext, navigatedAt?: Date): RichCursorType;
     stepInto(runFlowBlock: IBlock, ctx: IContext): IBlock | undefined;
     stepOut(ctx: IContext): IBlock | undefined;
     findNextBlockOnActiveFlowFor(ctx: IContext): IBlock | undefined;
     findNextBlockFrom(interaction: IBlockInteraction, ctx: IContext): IBlock | undefined;
     private createBlockInteractionFor;
-    private createBlockExitFor;
     buildPromptFor(block: IBlock, interaction: IBlockInteraction): IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined;
     private createPromptFrom;
 }
