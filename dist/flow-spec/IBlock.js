@@ -6,7 +6,6 @@ const ValidationException_1 = tslib_1.__importDefault(require("../domain/excepti
 const IContext_1 = require("./IContext");
 const floip_expression_evaluator_ts_1 = require("floip-expression-evaluator-ts");
 const IFlow_1 = require("./IFlow");
-const ResourceResolver_1 = tslib_1.__importDefault(require("../domain/ResourceResolver"));
 function findBlockExitWith(uuid, block) {
     const exit = lodash_1.find(block.exits, { uuid });
     if (exit == null) {
@@ -40,13 +39,10 @@ function findAndGenerateExpressionBlockFor(blockName, ctx) {
     if (intx == null) {
         return;
     }
-    const resource = new ResourceResolver_1.default(ctx).resolve(intx.blockId);
     return {
         __interactionId: intx.uuid,
         __value__: intx.value,
-        value: intx.value,
         time: intx.entryAt,
-        text: resource.hasText() ? resource.getText() : ''
     };
 }
 exports.findAndGenerateExpressionBlockFor = findAndGenerateExpressionBlockFor;

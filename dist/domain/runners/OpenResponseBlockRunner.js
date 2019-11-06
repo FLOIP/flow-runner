@@ -6,7 +6,7 @@ class OpenResponseBlockRunner {
         this.block = block;
         this.context = context;
     }
-    initialize() {
+    initialize({ value }) {
         const blockConfig = this.block.config;
         let maxResponseCharacters;
         if (blockConfig.text != null) {
@@ -17,6 +17,7 @@ class OpenResponseBlockRunner {
             prompt: blockConfig.prompt,
             isResponseRequired: true,
             maxResponseCharacters: maxResponseCharacters,
+            value: value,
         };
     }
     run() {

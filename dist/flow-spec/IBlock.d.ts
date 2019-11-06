@@ -19,8 +19,6 @@ export interface IEvalContextBlock {
     __value__: any;
     time: string;
     __interactionId: string;
-    value: any;
-    text: string;
 }
 export declare function findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx: IContext): IEvalContextBlock | undefined;
 export declare function generateCachedProxyForBlockName(target: object, ctx: IContext): object;

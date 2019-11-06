@@ -7,7 +7,7 @@ class SelectManyResponseBlockRunner {
         this.block = block;
         this.context = context;
     }
-    initialize() {
+    initialize({ value }) {
         const { prompt, choices } = this.block.config;
         return {
             kind: __1.KnownPrompts.SelectMany,
@@ -18,6 +18,7 @@ class SelectManyResponseBlockRunner {
                 key,
                 value: choices[key],
             })),
+            value: value,
         };
     }
     run() {
