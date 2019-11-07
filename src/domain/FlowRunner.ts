@@ -79,7 +79,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
   constructor(
     public context: IContext,
     public runnerFactoryStore: IBlockRunnerFactoryStore = createDefaultBlockRunnerStore(),
-    protected idGenerator: IIdGenerator = new IdGeneratorUuidV4(),
+    protected idGenerator: IIdGenerator = new IdGeneratorUuidV4,
     public behaviours: { [key: string]: IBehaviour } = {},
   ) {
     this.initializeBehaviours(DEFAULT_BEHAVIOUR_TYPES)

@@ -1,9 +1,10 @@
 import IBlockRunner from './IBlockRunner'
 import {
-  findFirstTruthyEvaluatingBlockExitOn, IBlockExitTestRequired,
+  IBlockExitTestRequired,
   ISelectOnePromptConfig,
   KnownPrompts,
 } from '../..'
+import {findFirstTruthyEvaluatingBlockExitOn} from '../../flow-spec/IBlock'
 import IBlockExit from '../../flow-spec/IBlockExit'
 import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock'
 import IContext from '../../flow-spec/IContext'

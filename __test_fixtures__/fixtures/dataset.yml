@@ -59,6 +59,14 @@ _defaults:
     nestedFlowBlockInteractionIdStack: []
     platformMetadata: {}
 
+  - &defaults/res
+    values:
+    - languageId: '22'
+      contentType: 'text'
+      modes:
+        - offline
+      value: 'A text value'
+
 # @note Some Id references are hand-rolled identifiers.
 #       Pls ensure that refactoring has "search in comments" enabled.
 #       - `block_exit.destinationBlock`
@@ -176,6 +184,32 @@ _block_interactions:
     flowId: *flowId/(RunFlow|Message)/028a055c-e988-4050-81a2-e11934bdbcad
     selectedExitId: *exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
 
+_resources:
+  - &res/42e635ea-bc57-4c68-a8d6-20f648968bec
+    <<: *defaults/res
+    uuid: 42e635ea-bc57-4c68-a8d6-20f648968bec
+
+  - &res/cb1b04a3-6447-4e33-a449-a6e3107e7531
+    <<: *defaults/res
+    uuid: cb1b04a3-6447-4e33-a449-a6e3107e7531
+
+  - &res/5e5d397a-a606-49e0-9a4d-8553a1af52aa
+    <<: *defaults/res
+    uuid: 5e5d397a-a606-49e0-9a4d-8553a1af52aa
+
+  - &res/164f04f7-3daf-420b-9a5b-0d3b16144ec5
+    <<: *defaults/res
+    uuid: 164f04f7-3daf-420b-9a5b-0d3b16144ec5
+
+  - &res/efec92a9-a4b1-482c-b448-3901b84c0cd1
+    <<: *defaults/res
+    uuid: efec92a9-a4b1-482c-b448-3901b84c0cd1
+
+  - &res/fe809b0a-d4d5-45bd-941c-defb12237165
+    <<: *defaults/res
+    uuid: fe809b0a-d4d5-45bd-941c-defb12237165
+
+    
 _prompts:
   - kind: Message
     prompt: This is it!
@@ -204,6 +238,8 @@ contexts:
     firstFlowId: *flowId/(Message)/957a8923-428a-420f-8053-d23927e0eea0
     interactions: []
     cursor: null # [block-interaction, prompt]
+    resources:
+      - *res/42e635ea-bc57-4c68-a8d6-20f648968bec
 
   # multi-flow, single interaction, cursor on block with exit
   - <<: *defaults/context
@@ -224,6 +260,12 @@ contexts:
         maxLength: 999
         max: 999
         min: 999
+    resources:
+      - *res/42e635ea-bc57-4c68-a8d6-20f648968bec
+      - *res/cb1b04a3-6447-4e33-a449-a6e3107e7531
+      - *res/5e5d397a-a606-49e0-9a4d-8553a1af52aa
+      - *res/cb1b04a3-6447-4e33-a449-a6e3107e7531
+      - *res/164f04f7-3daf-420b-9a5b-0d3b16144ec5
 
   # multi-flow, single-interaction, cursor on Core\RunFlow block with no exit
   - <<: *defaults/context
@@ -236,3 +278,10 @@ contexts:
     cursor: [*intxId/RunFlow->Message/15c15d39-b5e2-4386-b9b6-838bb81e7107, null]
     nestedFlowBlockInteractionIdStack:
       - *intxId/RunFlow->Message/15c15d39-b5e2-4386-b9b6-838bb81e7107
+    resources:
+      - *res/42e635ea-bc57-4c68-a8d6-20f648968bec
+      - *res/cb1b04a3-6447-4e33-a449-a6e3107e7531
+      - *res/5e5d397a-a606-49e0-9a4d-8553a1af52aa
+      - *res/164f04f7-3daf-420b-9a5b-0d3b16144ec5
+      - *res/efec92a9-a4b1-482c-b448-3901b84c0cd1
+      - *res/fe809b0a-d4d5-45bd-941c-defb12237165
