@@ -8,8 +8,9 @@ import {find, last} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
 import DeliveryStatus from './DeliveryStatus'
 import SupportedMode from './SupportedMode'
-import uuid from 'uuid'
 import {IResourceDefinition, IResources} from '..'
+import IIdGenerator from '../domain/IIdGenerator'
+import IdGeneratorUuidV4 from '../domain/IdGeneratorUuidV4'
 
 
 export type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined]
@@ -59,10 +60,12 @@ export function createContextDataObjectFor(
   flows: IFlow[],
   languageId: string,
   mode: SupportedMode,
-  resources: IResourceDefinition[] = []): IContext {
+  resources: IResourceDefinition[] = [],
+  idGenerator: IIdGenerator = new IdGeneratorUuidV4(),
+): IContext {
 
   return {
-    id: uuid.v4(),
+    id: idGenerator.generate(),
     createdAt: new Date().toISOString(),
     deliveryStatus: DeliveryStatus.QUEUED,
 
@@ -80,7 +83,7 @@ export function createContextDataObjectFor(
     firstFlowId: flows[0].uuid,
 
     resources,
-    platformMetadata: {}
+    platformMetadata: {},
   }
 }
 
