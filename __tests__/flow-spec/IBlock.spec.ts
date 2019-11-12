@@ -21,7 +21,7 @@ describe('IBlock', () => {
       time: (new Date).toISOString(),
       value: 'my first value',
       text: 'my text'
-    } 
+    }
   })
 
   describe('findFirstTruthyEvaluatingBlockExitOn', () => {
@@ -90,6 +90,9 @@ describe('IBlock', () => {
 
       it('should perform search over interactions from right-to-left to provide most recent interaction value', () => {
         const ctx = dataset.contexts[1]
+        // move cursor to first interaction, since this is the one under test
+        ctx.cursor![0] = ctx.interactions[0].uuid
+        // duplicate interaction to verify ltr/rtl hunt.
         ctx.interactions = [
           Object.assign(cloneDeep(ctx.interactions[0]), {value: 'Incorrect value'}),
           ctx.interactions[0],

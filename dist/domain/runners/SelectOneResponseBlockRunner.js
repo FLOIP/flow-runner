@@ -1,14 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const __1 = require("../..");
-const IBlock_1 = require("../../flow-spec/IBlock");
 const lodash_1 = require("lodash");
 class SelectOneResponseBlockRunner {
     constructor(block, context) {
         this.block = block;
         this.context = context;
     }
-    initialize() {
+    initialize({ value }) {
         const { prompt, choices } = this.block.config;
         return {
             kind: __1.KnownPrompts.SelectOne,
@@ -19,10 +18,11 @@ class SelectOneResponseBlockRunner {
                 key,
                 value: choices[key],
             })),
+            value: value,
         };
     }
     run() {
-        const truthyExit = IBlock_1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context);
+        const truthyExit = __1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context);
         return (truthyExit != null
             ? truthyExit
             : lodash_1.last(this.block.exits));

@@ -1,10 +1,17 @@
 import IBlockExit, {IBlockExitTestRequired} from './IBlockExit'
 import {find, findLast} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
-import IContext, {CursorType, findFlowWith, findInteractionWith, getActiveFlowFrom} from './IContext'
+import IContext, {
+  CursorType,
+  findBlockOnActiveFlowWith,
+  findFlowWith,
+  findInteractionWith,
+  getActiveFlowFrom
+} from './IContext'
 import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
 import IFlow, {findBlockWith} from './IFlow'
 import ResourceResolver from '../domain/ResourceResolver'
+import IMessageBlockConfig from "../model/block/IMessageBlockConfig";
 
 export default interface IBlock {
   uuid: string
@@ -71,7 +78,8 @@ export function findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx
     return
   }
 
-  const resource = new ResourceResolver(ctx).resolve(intx.blockId)
+  const {prompt} = findBlockOnActiveFlowWith(intx.blockId, ctx).config as IMessageBlockConfig
+  const resource = new ResourceResolver(ctx).resolve(prompt)
 
   return {
     __interactionId: intx.uuid,
@@ -124,7 +132,9 @@ export function createEvalContextFrom(context: IContext) {
 
   if (cursor != null) {
     flow = getActiveFlowFrom(context)
-    block = findBlockWith(findInteractionWith(cursor[0], context).blockId, flow)
+    block = findBlockWith(
+      findInteractionWith(cursor[0], context).blockId,
+      flow)
     prompt = cursor[1]
   }
 

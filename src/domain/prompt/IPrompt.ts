@@ -1,11 +1,12 @@
-// import UUID32 from "../model/UUID32";
-// import UUID64 from "../model/UUID64";
 import PromptValidationException from '../exceptions/PromptValidationException'
+import IFlowRunner from '../IFlowRunner'
+import {RichCursorInputRequiredType} from '../..'
 
 
 export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
   interactionId: string
   config: PromptConfigType
+  runner: IFlowRunner
 
   // todo: need to validate on instantiation?
   value: PromptConfigType['value'] // when setting: (this.value = value) && this.validate() --- todo: should this property be reactive?
@@ -13,6 +14,7 @@ export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptCo
   isValid: boolean // !this.error
 
   validate(val: PromptConfigType['value']): boolean // it will raise an exception when it's invalid
+  fulfill(val: PromptConfigType['value']): RichCursorInputRequiredType | undefined
 }
 
 

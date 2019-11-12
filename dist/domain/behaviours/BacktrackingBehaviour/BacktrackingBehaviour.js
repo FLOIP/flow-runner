@@ -119,18 +119,22 @@ class BacktrackingBehaviour {
         return HierarchicalIterStack_1.deepIndexOfFrom(keyForNextIteration, stack, intx => intx.blockId === blockId);
     }
     postInteractionCreate(interaction, _context) {
-        const { backtracking: { cursor: key, interactionStack, ghostInteractionStacks } } = this.context.platformMetadata;
+        const { backtracking: { cursor: key, ghostInteractionStacks } } = this.context.platformMetadata;
         if (ghostInteractionStacks.length === 0) {
             return interaction;
         }
         if (!this.hasIndex()) {
             this.rebuildIndex();
         }
-        const keyForSuggestion = this.findIndexOfSuggestionFor(interaction, key, interactionStack);
+        const lastGhost = lodash_1.last(ghostInteractionStacks);
+        if (lastGhost == null) {
+            throw new Error('whups no ghost');
+        }
+        const keyForSuggestion = this.findIndexOfSuggestionFor(interaction, key, lastGhost);
         if (keyForSuggestion == null) {
             return interaction;
         }
-        interaction.value = HierarchicalIterStack_1.getEntityAt(keyForSuggestion, interactionStack).value;
+        interaction.value = HierarchicalIterStack_1.getEntityAt(keyForSuggestion, lastGhost).value;
         if (keyForSuggestion.join() !== key.join()) {
             ghostInteractionStacks.forEach(ghostInteractionStack => this.syncGhostTo(key, keyForSuggestion, ghostInteractionStack));
         }

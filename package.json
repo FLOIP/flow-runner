@@ -1,6 +1,6 @@
 {
   "name": "flowrunner-core-ts",
-  "version": "0.0.50",
+  "version": "0.0.51",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "repository": "git@bitbucket.org:voto/flowrunner-core-ts.git",
@@ -8,8 +8,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc --declaration",
-    "clean": "rm tsconfig.tsbuildinfo && rm -rf dist/",
-    "deploy": "yarn clean && yarn build && git commit dist/ -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD",
+    "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist/",
+    "deploy": "yarn clean && yarn build && git add dist/ && git commit -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD",
     "test": "yarn tsc-test && yarn jest",
     "tsc-test": "tsc --project . --noEmit"
   },

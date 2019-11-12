@@ -5,7 +5,6 @@ const lodash_1 = require("lodash");
 const IBlock_1 = require("../flow-spec/IBlock");
 const IContext_1 = require("../flow-spec/IContext");
 const lodash_2 = require("lodash");
-const uuid_1 = tslib_1.__importDefault(require("uuid"));
 const IdGeneratorUuidV4_1 = tslib_1.__importDefault(require("./IdGeneratorUuidV4"));
 const ValidationException_1 = tslib_1.__importDefault(require("./exceptions/ValidationException"));
 const IPrompt_1 = require("./prompt/IPrompt");
@@ -15,6 +14,7 @@ const NumericPrompt_1 = tslib_1.__importDefault(require("./prompt/NumericPrompt"
 const OpenPrompt_1 = tslib_1.__importDefault(require("./prompt/OpenPrompt"));
 const SelectOnePrompt_1 = tslib_1.__importDefault(require("./prompt/SelectOnePrompt"));
 const SelectManyPrompt_1 = tslib_1.__importDefault(require("./prompt/SelectManyPrompt"));
+const BasicBacktrackingBehaviour_1 = tslib_1.__importDefault(require("./behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour"));
 const MessageBlockRunner_1 = tslib_1.__importDefault(require("./runners/MessageBlockRunner"));
 const OpenResponseBlockRunner_1 = tslib_1.__importDefault(require("./runners/OpenResponseBlockRunner"));
 const NumericResponseBlockRunner_1 = tslib_1.__importDefault(require("./runners/NumericResponseBlockRunner"));
@@ -24,7 +24,9 @@ const CaseBlockRunner_1 = tslib_1.__importDefault(require("./runners/CaseBlockRu
 class BlockRunnerFactoryStore extends Map {
 }
 exports.BlockRunnerFactoryStore = BlockRunnerFactoryStore;
-const DEFAULT_BEHAVIOUR_TYPES = [];
+const DEFAULT_BEHAVIOUR_TYPES = [
+    BasicBacktrackingBehaviour_1.default,
+];
 exports.NON_INTERACTIVE_BLOCK_TYPES = [
     'Core\\Case',
     'Core\\RunFlowBlock',
@@ -121,7 +123,8 @@ class FlowRunner {
     }
     initializeOneBlock(block, flowId, originFlowId, originBlockInteractionId) {
         let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId);
-        Object.values(this.behaviours).forEach(b => interaction = b.postInteractionCreate(interaction, this.context));
+        Object.values(this.behaviours)
+            .forEach(b => interaction = b.postInteractionCreate(interaction, this.context));
         return [interaction, this.buildPromptFor(block, interaction)];
     }
     runActiveBlockOn(richCursor, block) {
@@ -135,7 +138,8 @@ class FlowRunner {
         if (richCursor[1] != null) {
             richCursor[1].config.isSubmitted = true;
         }
-        Object.values(this.behaviours).forEach(b => b.postInteractionComplete(richCursor[0], this.context));
+        Object.values(this.behaviours)
+            .forEach(b => b.postInteractionComplete(richCursor[0], this.context));
         return exit;
     }
     createBlockRunnerFor(block, ctx) {
@@ -145,7 +149,7 @@ class FlowRunner {
         }
         return factory(block, ctx);
     }
-    navigateTo(block, ctx) {
+    navigateTo(block, ctx, navigatedAt = new Date) {
         const { interactions, nestedFlowBlockInteractionIdStack } = ctx;
         const flowId = IContext_1.getActiveFlowIdFrom(ctx);
         const originInteractionId = lodash_2.last(nestedFlowBlockInteractionIdStack);
@@ -155,7 +159,7 @@ class FlowRunner {
         const richCursor = this.initializeOneBlock(block, flowId, originInteraction == null ? undefined : originInteraction.flowId, originInteractionId);
         const lastInteraction = lodash_2.last(interactions);
         if (lastInteraction != null) {
-            lastInteraction.exitAt = new Date().toISOString();
+            lastInteraction.exitAt = navigatedAt.toISOString();
         }
         interactions.push(richCursor[0]);
         ctx.cursor = this.dehydrateCursor(richCursor);
@@ -177,22 +181,18 @@ class FlowRunner {
         if (firstNestedBlock == null) {
             return undefined;
         }
-        if (runFlowBlock.exits.length === 1) {
-            runFlowBlock.exits.push(this.createBlockExitFor(firstNestedBlock));
-        }
-        runFlowInteraction.selectedExitId = lodash_2.last(runFlowBlock.exits).uuid;
+        runFlowInteraction.selectedExitId = runFlowBlock.exits[0].uuid;
         return firstNestedBlock;
     }
     stepOut(ctx) {
-        const { interactions, nestedFlowBlockInteractionIdStack } = ctx;
+        const { nestedFlowBlockInteractionIdStack } = ctx;
         if (nestedFlowBlockInteractionIdStack.length === 0) {
             return;
         }
         const lastParentInteractionId = nestedFlowBlockInteractionIdStack.pop();
         const { blockId: lastRunFlowBlockId } = IContext_1.findInteractionWith(lastParentInteractionId, ctx);
         const lastRunFlowBlock = IContext_1.findBlockOnActiveFlowWith(lastRunFlowBlockId, ctx);
-        const { uuid: runFlowBlockFirstExitId, destinationBlock } = lodash_2.first(lastRunFlowBlock.exits);
-        lodash_2.last(interactions).selectedExitId = runFlowBlockFirstExitId;
+        const { destinationBlock } = lodash_2.first(lastRunFlowBlock.exits);
         if (destinationBlock == null) {
             return;
         }
@@ -230,17 +230,6 @@ class FlowRunner {
             type,
             originFlowId,
             originBlockInteractionId,
-        };
-    }
-    createBlockExitFor({ uuid: destinationBlock }) {
-        return {
-            uuid: uuid_1.default.v4(),
-            destinationBlock: destinationBlock,
-            config: {},
-            label: '',
-            semanticLabel: '',
-            tag: '',
-            test: '',
         };
     }
     buildPromptFor(block, interaction) {

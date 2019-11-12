@@ -6,7 +6,7 @@ class NumericResponseBlockRunner {
         this.block = block;
         this.context = context;
     }
-    initialize() {
+    initialize({ value }) {
         const { prompt, validationMinimum: min, validationMaximum: max, } = this.block.config;
         return {
             kind: __1.KnownPrompts.Numeric,
@@ -14,6 +14,7 @@ class NumericResponseBlockRunner {
             isResponseRequired: false,
             min,
             max,
+            value: value,
         };
     }
     run() {

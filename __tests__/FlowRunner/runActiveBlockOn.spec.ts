@@ -35,10 +35,10 @@ describe('FlowRunner/runActiveBlockOn', () => {
         ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],])),
       richCursor = runner.hydrateRichCursorFrom(ctx)
 
-    richCursor[0].details.selectedExitId = null // set as incomplete interaction state
+    richCursor[0].selectedExitId = null // set as incomplete interaction state
 
     runner.runActiveBlockOn(richCursor, block)
-    expect(richCursor[0].details.selectedExitId).toBe(expectedExit.uuid)
+    expect(richCursor[0].selectedExitId).toBe(expectedExit.uuid)
   })
 
   describe('when prompt present', () => {

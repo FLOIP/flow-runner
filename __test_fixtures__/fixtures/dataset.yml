@@ -27,8 +27,7 @@ _defaults:
     exitAt:
     hasResponse: false
     value:
-    details:
-      selectedExitId:
+    selectedExitId:
     type:
     originBlockInteractionId:
     originFlowId:
@@ -160,8 +159,7 @@ _block_interactions:
     <<: *defaults/intx
     uuid: &intxId/Message->void/1c7317fc-b644-4da4-b1ff-1807ce55c17e 1c7317fc-b644-4da4-b1ff-1807ce55c17e
     blockId: *blockId/Message->(void)/164f04f7-3daf-420b-9a5b-0d3b16144ec5
-    details:
-      selectedExitId: *exitId/->void/b9485293-90a6-456e-9291-81de5e3a4a89
+    selectedExitId: *exitId/->void/b9485293-90a6-456e-9291-81de5e3a4a89
 
   - &intx/Message->Message/09894745-38ba-456f-aab4-720b7d09d5b3
     <<: *defaults/intx
@@ -170,24 +168,21 @@ _block_interactions:
     flowId: *flowId/(Message|Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
     value: Test value
     entryAt: "2023-10-10T23:23:23.023Z"
-    details:
-      selectedExitId: *exitId/->Message/5670b311-0895-43ba-acc4-07136cf64591
+    selectedExitId: *exitId/->Message/5670b311-0895-43ba-acc4-07136cf64591
 
   - &intx/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
     <<: *defaults/intx
     uuid: &intxId/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
     blockId: *blockId/Message->(Message)/cb1b04a3-6447-4e33-a449-a6e3107e7531
     flowId: *flowId/(Message|Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
-    details:
-      selectedExitId: *exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
+    selectedExitId: *exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
 
   - &intx/RunFlow->Message/15c15d39-b5e2-4386-b9b6-838bb81e7107
     <<: *defaults/intx
     uuid: &intxId/RunFlow->Message/15c15d39-b5e2-4386-b9b6-838bb81e7107 15c15d39-b5e2-4386-b9b6-838bb81e7107
     blockId: *blockId/RunFlow->()/efec92a9-a4b1-482c-b448-3901b84c0cd1
     flowId: *flowId/(RunFlow|Message)/028a055c-e988-4050-81a2-e11934bdbcad
-    details:
-      selectedExitId: *exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
+    selectedExitId: *exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
 
 _resources:
   - &res/42e635ea-bc57-4c68-a8d6-20f648968bec
