@@ -1,7 +1,7 @@
 {
   "id": "cedc429f-4b18-4a1f-9429-862b1c9cf53b",
   "createdAt": "2019-10-07T15:55:01.804Z",
-  "deliveryStatus": 3,
+  "deliveryStatus": "3",
   "userId": "15",
   "mode": "offline",
   "languageId": "22",

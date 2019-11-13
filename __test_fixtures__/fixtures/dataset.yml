@@ -54,7 +54,7 @@ _defaults:
       id: 1
     session:
       id: 1,
-      deliveryStatus: IN_PROGRESS
+      deliveryStatus: "3"
     sessionVars: {}
     nestedFlowBlockInteractionIdStack: []
     platformMetadata: {}
@@ -209,7 +209,7 @@ _resources:
     <<: *defaults/res
     uuid: fe809b0a-d4d5-45bd-941c-defb12237165
 
-    
+
 _prompts:
   - kind: Message
     prompt: This is it!
