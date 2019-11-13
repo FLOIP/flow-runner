@@ -13,7 +13,7 @@ import IContext, {
 import IBlockRunner from './runners/IBlockRunner'
 import IBlockInteraction from '../flow-spec/IBlockInteraction'
 import IBlockExit from '../flow-spec/IBlockExit'
-import {find, first, last} from 'lodash'
+import {find, first, includes, last} from 'lodash'
 import IFlowRunner, {IBlockRunnerFactoryStore} from './IFlowRunner'
 import IIdGenerator from './IIdGenerator'
 import IdGeneratorUuidV4 from './IdGeneratorUuidV4'
@@ -118,6 +118,33 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     // return cursor && entryAt && !exitAt
 
     return ctx.cursor != null
+  }
+
+  isFirst(): boolean {
+    const {cursor, interactions} = this.context
+
+    if (!this.isInitialized(this.context)) {
+      return true
+    }
+
+    const firstInteractiveIntx = find(interactions, ({type}) =>
+      !includes(NON_INTERACTIVE_BLOCK_TYPES, type))
+
+    if (firstInteractiveIntx == null) {
+      return true
+    }
+
+    return firstInteractiveIntx.uuid === cursor![0]
+  }
+
+  isLast(): boolean {
+    const {cursor, interactions} = this.context
+
+    if (!this.isInitialized(this.context)) {
+      return true
+    }
+
+    return last(interactions)!.uuid === cursor![0]
   }
 
   /**
