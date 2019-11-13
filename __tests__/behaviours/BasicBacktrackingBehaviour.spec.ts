@@ -26,7 +26,7 @@ describe('BasicBacktrackingBehaviour', () => {
 
     beforeEach(() => {
       backtracking.context = {
-        interactions: [
+        interactions: [ // assumption: all of these are interactive
           {uuid: 'intx-123'},
           {uuid: 'intx-234'},
           {uuid: 'intx-345', flowId: 'flow-123', blockId: 'block-123', value: 'value #345'},
@@ -60,7 +60,7 @@ describe('BasicBacktrackingBehaviour', () => {
       const block: IBlock = backtracking.context.flows[0].blocks[0]
       const interaction: IBlockInteraction = backtracking.context.interactions[2]
 
-      const cursor = backtracking.peek(4)
+      const cursor = backtracking.peek(3)
       expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
       expect(interaction.value).toBeTruthy()
       expect(cursor[1]).toBe(virtualPrompt)
@@ -74,7 +74,7 @@ describe('BasicBacktrackingBehaviour', () => {
       const block: IBlock = backtracking.context.flows[0].blocks[0]
       const interaction: IBlockInteraction = backtracking.context.interactions[2]
 
-      const cursor = backtracking.peek(2)
+      const cursor = backtracking.peek(1)
       expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
       expect(interaction.value).toBeTruthy()
       expect(cursor[1]).toBe(virtualPrompt)

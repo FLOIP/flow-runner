@@ -62,8 +62,8 @@ export default class  BasicBacktrackingBehaviour implements IBackTrackingBehavio
       context)
   }
 
-  peek(steps = 1, context: IContext = this.context): RichCursorInputRequiredType {
-    let _steps = steps
+  peek(steps = 0, context: IContext = this.context): RichCursorInputRequiredType {
+    let _steps = steps + 1 // setup for while-loop
     const intx = findLast(context.interactions, ({type}) =>
       !includes(NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0)
 
