@@ -41,7 +41,7 @@ export default class  BasicBacktrackingBehaviour implements IBackTrackingBehavio
     const cursor: RichCursorInputRequiredType = this.jumpTo(prevIntx, context) as RichCursorInputRequiredType
 
     // pre-populate previous value onto prompt for new interaction
-    cursor[1].value = virtualPrompt!.value
+    cursor[1].value = virtualPrompt.value
 
     return cursor
   }
