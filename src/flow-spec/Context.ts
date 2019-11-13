@@ -27,6 +27,7 @@ export default class Context implements IContext {
     public entryAt?: string,
     public exitAt?: string,
     public userId?: string,
+    public orgId?: string,
     public cursor?: CursorType,
     public platformMetadata: object = {},
   ) {}

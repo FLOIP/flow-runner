@@ -1,1 +1,1 @@
-{"version":3,"file":"IContact.d.ts","sourceRoot":"","sources":["../../src/flow-spec/IContact.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,WAAW,QAAQ;IAC/B,EAAE,EAAE,MAAM,CAAA;IACV,IAAI,EAAE,MAAM,CAAA;CACb"}
+{"version":3,"file":"IContact.d.ts","sourceRoot":"","sources":["../../src/flow-spec/IContact.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,WAAW,QAAQ;IAC/B,EAAE,EAAE,MAAM,CAAA;IACV,IAAI,EAAE,MAAM,CAAA;IACZ,SAAS,EAAE,MAAM,CAAA;CAClB"}

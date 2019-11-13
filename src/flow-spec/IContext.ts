@@ -8,8 +8,9 @@ import {find, last} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
 import DeliveryStatus from './DeliveryStatus'
 import SupportedMode from './SupportedMode'
-import uuid from 'uuid'
 import {IResourceDefinition, IResources} from '..'
+import IIdGenerator from '../domain/IIdGenerator'
+import IdGeneratorUuidV4 from '../domain/IdGeneratorUuidV4'
 
 
 export type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined]
@@ -28,6 +29,7 @@ export default interface IContext {
   deliveryStatus: DeliveryStatus
 
   userId?: string
+  orgId?: string
   mode: SupportedMode
   languageId: string
 
@@ -54,17 +56,21 @@ export interface IContextInputRequired extends IContext {
 export function createContextDataObjectFor(
   contact: IContact,
   userId: string,
+  orgId: string,
   flows: IFlow[],
   languageId: string,
   mode: SupportedMode,
-  resources: IResourceDefinition[] = []): IContext {
+  resources: IResourceDefinition[] = [],
+  idGenerator: IIdGenerator = new IdGeneratorUuidV4(),
+): IContext {
 
   return {
-    id: uuid.v4(),
-    createdAt: new Date().toISOString(),
+    id: idGenerator.generate(),
+    createdAt: (new Date).toISOString().replace('T', ' '),
     deliveryStatus: DeliveryStatus.QUEUED,
 
     userId,
+    orgId,
     mode,
     languageId,
 
@@ -77,7 +83,7 @@ export function createContextDataObjectFor(
     firstFlowId: flows[0].uuid,
 
     resources,
-    platformMetadata: {}
+    platformMetadata: {},
   }
 }
 

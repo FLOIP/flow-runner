@@ -3,6 +3,7 @@ import SupportedMode from './SupportedMode';
 import ILanguage from './ILanguage';
 export default interface IFlow {
     uuid: string;
+    orgId: string;
     name: string;
     label?: string;
     lastModified: string;

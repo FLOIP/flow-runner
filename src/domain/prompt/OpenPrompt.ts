@@ -4,7 +4,7 @@ import {IOpenPromptConfig} from './IOpenPromptConfig'
 import ValidationException from '../exceptions/ValidationException'
 
 export default class OpenPrompt extends BasePrompt<IOpenPromptConfig & IBasePromptConfig> {
-  validate(val: string) {
+  validate(val: string): boolean {
     const {maxResponseCharacters: maxLength} = this.config
 
     if (maxLength && val.length > maxLength) {

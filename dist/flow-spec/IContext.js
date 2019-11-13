@@ -5,13 +5,14 @@ const IFlow_1 = require("./IFlow");
 const lodash_1 = require("lodash");
 const ValidationException_1 = tslib_1.__importDefault(require("../domain/exceptions/ValidationException"));
 const DeliveryStatus_1 = tslib_1.__importDefault(require("./DeliveryStatus"));
-const uuid_1 = tslib_1.__importDefault(require("uuid"));
-function createContextDataObjectFor(contact, userId, flows, languageId, mode, resources = []) {
+const IdGeneratorUuidV4_1 = tslib_1.__importDefault(require("../domain/IdGeneratorUuidV4"));
+function createContextDataObjectFor(contact, userId, orgId, flows, languageId, mode, resources = [], idGenerator = new IdGeneratorUuidV4_1.default()) {
     return {
-        id: uuid_1.default.v4(),
+        id: idGenerator.generate(),
         createdAt: new Date().toISOString(),
         deliveryStatus: DeliveryStatus_1.default.QUEUED,
         userId,
+        orgId,
         mode,
         languageId,
         contact,
@@ -21,7 +22,7 @@ function createContextDataObjectFor(contact, userId, flows, languageId, mode, re
         flows,
         firstFlowId: flows[0].uuid,
         resources,
-        platformMetadata: {}
+        platformMetadata: {},
     };
 }
 exports.createContextDataObjectFor = createContextDataObjectFor;

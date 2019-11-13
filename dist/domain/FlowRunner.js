@@ -43,7 +43,7 @@ function createDefaultBlockRunnerStore() {
 }
 exports.createDefaultBlockRunnerStore = createDefaultBlockRunnerStore;
 class FlowRunner {
-    constructor(context, runnerFactoryStore = createDefaultBlockRunnerStore(), idGenerator = new IdGeneratorUuidV4_1.default(), behaviours = {}) {
+    constructor(context, runnerFactoryStore = createDefaultBlockRunnerStore(), idGenerator = new IdGeneratorUuidV4_1.default, behaviours = {}) {
         this.context = context;
         this.runnerFactoryStore = runnerFactoryStore;
         this.idGenerator = idGenerator;

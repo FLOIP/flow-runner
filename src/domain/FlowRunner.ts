@@ -108,7 +108,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     }
 
     ctx.deliveryStatus = DeliveryStatus.IN_PROGRESS
-    ctx.entryAt = new Date().toISOString()
+    ctx.entryAt = (new Date).toISOString().replace('T', ' ')
 
     return this.navigateTo(block, this.context) // kick-start by navigating to first block
   }
@@ -223,10 +223,10 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     // todo: set exitAt on context
     // todo: set delivery status on context as COMPLETE
 
-    (last(ctx.interactions) as IBlockInteraction).exitAt = new Date().toISOString()
+    (last(ctx.interactions) as IBlockInteraction).exitAt = (new Date).toISOString().replace('T', ' ')
     delete ctx.cursor
     ctx.deliveryStatus = DeliveryStatus.FINISHED_COMPLETE
-    ctx.exitAt = new Date().toISOString()
+    ctx.exitAt = (new Date).toISOString().replace('T', ' ')
   }
 
   dehydrateCursor(richCursor: RichCursorType): CursorType {
@@ -301,7 +301,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
 
     const lastInteraction = last(interactions)
     if (lastInteraction != null) {
-      lastInteraction.exitAt = navigatedAt.toISOString()
+      lastInteraction.exitAt = navigatedAt.toISOString().replace('T', ' ')
     }
 
     interactions.push(richCursor[0])
@@ -412,7 +412,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
       uuid: this.idGenerator.generate(),
       blockId,
       flowId,
-      entryAt: new Date().toISOString(),
+      entryAt: (new Date).toISOString().replace('T', ' '),
       exitAt: undefined,
       hasResponse: false,
       value: undefined,
