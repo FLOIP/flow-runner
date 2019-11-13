@@ -66,7 +66,7 @@ export function createContextDataObjectFor(
 
   return {
     id: idGenerator.generate(),
-    createdAt: new Date().toISOString(),
+    createdAt: (new Date).toISOString().replace('T', ' '),
     deliveryStatus: DeliveryStatus.QUEUED,
 
     userId,
