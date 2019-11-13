@@ -61,11 +61,29 @@ class FlowRunner {
             throw new ValidationException_1.default('Unable to initialize flow without blocks.');
         }
         ctx.deliveryStatus = DeliveryStatus_1.default.IN_PROGRESS;
-        ctx.entryAt = new Date().toISOString();
+        ctx.entryAt = (new Date).toISOString().replace('T', ' ');
         return this.navigateTo(block, this.context);
     }
     isInitialized(ctx) {
         return ctx.cursor != null;
+    }
+    isFirst() {
+        const { cursor, interactions } = this.context;
+        if (!this.isInitialized(this.context)) {
+            return true;
+        }
+        const firstInteractiveIntx = lodash_2.find(interactions, ({ type }) => !lodash_2.includes(exports.NON_INTERACTIVE_BLOCK_TYPES, type));
+        if (firstInteractiveIntx == null) {
+            return true;
+        }
+        return firstInteractiveIntx.uuid === cursor[0];
+    }
+    isLast() {
+        const { cursor, interactions } = this.context;
+        if (!this.isInitialized(this.context)) {
+            return true;
+        }
+        return lodash_2.last(interactions).uuid === cursor[0];
     }
     run() {
         const { context: ctx } = this;
@@ -108,10 +126,10 @@ class FlowRunner {
         return;
     }
     complete(ctx) {
-        lodash_2.last(ctx.interactions).exitAt = new Date().toISOString();
+        lodash_2.last(ctx.interactions).exitAt = (new Date).toISOString().replace('T', ' ');
         delete ctx.cursor;
         ctx.deliveryStatus = DeliveryStatus_1.default.FINISHED_COMPLETE;
-        ctx.exitAt = new Date().toISOString();
+        ctx.exitAt = (new Date).toISOString().replace('T', ' ');
     }
     dehydrateCursor(richCursor) {
         return [richCursor[0].uuid, richCursor[1] != null ? richCursor[1].config : undefined];
@@ -159,7 +177,7 @@ class FlowRunner {
         const richCursor = this.initializeOneBlock(block, flowId, originInteraction == null ? undefined : originInteraction.flowId, originInteractionId);
         const lastInteraction = lodash_2.last(interactions);
         if (lastInteraction != null) {
-            lastInteraction.exitAt = navigatedAt.toISOString();
+            lastInteraction.exitAt = navigatedAt.toISOString().replace('T', ' ');
         }
         interactions.push(richCursor[0]);
         ctx.cursor = this.dehydrateCursor(richCursor);
@@ -221,7 +239,7 @@ class FlowRunner {
             uuid: this.idGenerator.generate(),
             blockId,
             flowId,
-            entryAt: new Date().toISOString(),
+            entryAt: (new Date).toISOString().replace('T', ' '),
             exitAt: undefined,
             hasResponse: false,
             value: undefined,
