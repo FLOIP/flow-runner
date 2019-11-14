@@ -67,6 +67,24 @@ class FlowRunner {
     isInitialized(ctx) {
         return ctx.cursor != null;
     }
+    isFirst() {
+        const { cursor, interactions } = this.context;
+        if (!this.isInitialized(this.context)) {
+            return true;
+        }
+        const firstInteractiveIntx = lodash_2.find(interactions, ({ type }) => !lodash_2.includes(exports.NON_INTERACTIVE_BLOCK_TYPES, type));
+        if (firstInteractiveIntx == null) {
+            return true;
+        }
+        return firstInteractiveIntx.uuid === cursor[0];
+    }
+    isLast() {
+        const { cursor, interactions } = this.context;
+        if (!this.isInitialized(this.context)) {
+            return true;
+        }
+        return lodash_2.last(interactions).uuid === cursor[0];
+    }
     run() {
         const { context: ctx } = this;
         if (!this.isInitialized(ctx)) {
