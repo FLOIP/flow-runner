@@ -9,7 +9,7 @@ const IdGeneratorUuidV4_1 = tslib_1.__importDefault(require("../domain/IdGenerat
 function createContextDataObjectFor(contact, userId, orgId, flows, languageId, mode, resources = [], idGenerator = new IdGeneratorUuidV4_1.default()) {
     return {
         id: idGenerator.generate(),
-        createdAt: new Date().toISOString(),
+        createdAt: (new Date).toISOString().replace('T', ' '),
         deliveryStatus: DeliveryStatus_1.default.QUEUED,
         userId,
         orgId,
