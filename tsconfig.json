@@ -11,7 +11,7 @@
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "lib": [
-      "es2018"
+      "es6"
     ],
     "newLine": "LF",
     "module": "commonjs",
@@ -29,7 +29,7 @@
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
-    "target": "es2018",
+    "target": "es6",
     "types": [
       "jest",
       "node",
