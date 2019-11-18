@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const lodash_1 = require("lodash");
-const ValidationException_1 = tslib_1.__importDefault(require("../domain/exceptions/ValidationException"));
-const IContext_1 = require("./IContext");
-const floip_expression_evaluator_ts_1 = require("floip-expression-evaluator-ts");
-const IFlow_1 = require("./IFlow");
-const ResourceResolver_1 = tslib_1.__importDefault(require("../domain/ResourceResolver"));
+var tslib_1 = require("tslib");
+var lodash_1 = require("lodash");
+var ValidationException_1 = tslib_1.__importDefault(require("../domain/exceptions/ValidationException"));
+var IContext_1 = require("./IContext");
+var floip_expression_evaluator_ts_1 = require("floip-expression-evaluator-ts");
+var IFlow_1 = require("./IFlow");
+var ResourceResolver_1 = tslib_1.__importDefault(require("../domain/ResourceResolver"));
 function findBlockExitWith(uuid, block) {
-    const exit = lodash_1.find(block.exits, { uuid });
+    var exit = lodash_1.find(block.exits, { uuid: uuid });
     if (exit == null) {
         throw new ValidationException_1.default('Unable to find exit on block');
     }
@@ -16,32 +16,36 @@ function findBlockExitWith(uuid, block) {
 }
 exports.findBlockExitWith = findBlockExitWith;
 function findFirstTruthyEvaluatingBlockExitOn(block, context) {
-    const { exits } = block;
+    var exits = block.exits;
     if (exits.length === 0) {
-        throw new ValidationException_1.default(`Unable to find exits on block ${block.uuid}`);
+        throw new ValidationException_1.default("Unable to find exits on block " + block.uuid);
     }
-    const evalContext = createEvalContextFrom(context);
-    return lodash_1.find(exits, ({ test, default: isDefault = false }) => !isDefault && evaluateToBool(String(test), evalContext));
+    var evalContext = createEvalContextFrom(context);
+    return lodash_1.find(exits, function (_a) {
+        var test = _a.test, _b = _a.default, isDefault = _b === void 0 ? false : _b;
+        return !isDefault && evaluateToBool(String(test), evalContext);
+    });
 }
 exports.findFirstTruthyEvaluatingBlockExitOn = findFirstTruthyEvaluatingBlockExitOn;
 function findDefaultBlockExitOn(block) {
-    const exit = lodash_1.find(block.exits, { default: true });
+    var exit = lodash_1.find(block.exits, { default: true });
     if (exit == null) {
-        throw new ValidationException_1.default(`Unable to find default exit on block ${block.uuid}`);
+        throw new ValidationException_1.default("Unable to find default exit on block " + block.uuid);
     }
     return exit;
 }
 exports.findDefaultBlockExitOn = findDefaultBlockExitOn;
 function findAndGenerateExpressionBlockFor(blockName, ctx) {
-    const intx = lodash_1.findLast(ctx.interactions, ({ blockId, flowId }) => {
-        const { name } = IFlow_1.findBlockWith(blockId, IContext_1.findFlowWith(flowId, ctx));
+    var intx = lodash_1.findLast(ctx.interactions, function (_a) {
+        var blockId = _a.blockId, flowId = _a.flowId;
+        var name = IFlow_1.findBlockWith(blockId, IContext_1.findFlowWith(flowId, ctx)).name;
         return name === blockName;
     });
     if (intx == null) {
         return;
     }
-    const { prompt } = IContext_1.findBlockOnActiveFlowWith(intx.blockId, ctx).config;
-    const resource = new ResourceResolver_1.default(ctx).resolve(prompt);
+    var prompt = IContext_1.findBlockOnActiveFlowWith(intx.blockId, ctx).config.prompt;
+    var resource = new ResourceResolver_1.default(ctx).resolve(prompt);
     return {
         __interactionId: intx.uuid,
         __value__: intx.value,
@@ -52,11 +56,11 @@ function findAndGenerateExpressionBlockFor(blockName, ctx) {
 }
 exports.findAndGenerateExpressionBlockFor = findAndGenerateExpressionBlockFor;
 function generateCachedProxyForBlockName(target, ctx) {
-    const expressionBlocksByName = {};
+    var expressionBlocksByName = {};
     return new Proxy(target, {
-        get(target, prop, _receiver) {
+        get: function (target, prop, _receiver) {
             if (prop in target) {
-                return Reflect.get(...arguments);
+                return Reflect.get.apply(Reflect, arguments);
             }
             if (prop in expressionBlocksByName) {
                 return expressionBlocksByName[prop.toString()];
@@ -64,7 +68,7 @@ function generateCachedProxyForBlockName(target, ctx) {
             return expressionBlocksByName[prop.toString()] =
                 findAndGenerateExpressionBlockFor(prop.toString(), ctx);
         },
-        has(target, prop) {
+        has: function (target, prop) {
             if (prop in target) {
                 return true;
             }
@@ -79,27 +83,27 @@ function generateCachedProxyForBlockName(target, ctx) {
 }
 exports.generateCachedProxyForBlockName = generateCachedProxyForBlockName;
 function createEvalContextFrom(context) {
-    const { contact, cursor, mode, languageId: language } = context;
-    let flow;
-    let block;
-    let prompt;
+    var contact = context.contact, cursor = context.cursor, mode = context.mode, language = context.languageId;
+    var flow;
+    var block;
+    var prompt;
     if (cursor != null) {
         flow = IContext_1.getActiveFlowFrom(context);
         block = IFlow_1.findBlockWith(IContext_1.findInteractionWith(cursor[0], context).blockId, flow);
         prompt = cursor[1];
     }
     return {
-        contact,
-        channel: { mode },
-        flow: generateCachedProxyForBlockName(Object.assign(Object.assign({}, flow), { language }), context),
-        block: Object.assign(Object.assign({}, block), { value: prompt != null
+        contact: contact,
+        channel: { mode: mode },
+        flow: generateCachedProxyForBlockName(tslib_1.__assign(tslib_1.__assign({}, flow), { language: language }), context),
+        block: tslib_1.__assign(tslib_1.__assign({}, block), { value: prompt != null
                 ? prompt.value
                 : undefined }),
     };
 }
 exports.createEvalContextFrom = createEvalContextFrom;
 function evaluateToBool(expr, ctx) {
-    const result = floip_expression_evaluator_ts_1.EvaluatorFactory.create()
+    var result = floip_expression_evaluator_ts_1.EvaluatorFactory.create()
         .evaluate(expr, ctx);
     return JSON.parse(result.toLowerCase());
 }

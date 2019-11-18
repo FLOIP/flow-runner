@@ -1,32 +1,34 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const __1 = require("../..");
-const lodash_1 = require("lodash");
-class SelectManyResponseBlockRunner {
-    constructor(block, context) {
+var __1 = require("../..");
+var lodash_1 = require("lodash");
+var SelectManyResponseBlockRunner = (function () {
+    function SelectManyResponseBlockRunner(block, context) {
         this.block = block;
         this.context = context;
     }
-    initialize({ value }) {
-        const { prompt, choices } = this.block.config;
+    SelectManyResponseBlockRunner.prototype.initialize = function (_a) {
+        var value = _a.value;
+        var _b = this.block.config, prompt = _b.prompt, choices = _b.choices;
         return {
             kind: __1.KnownPrompts.SelectMany,
-            prompt,
+            prompt: prompt,
             isResponseRequired: true,
             choices: Object.keys(choices)
-                .map(key => ({
-                key,
+                .map(function (key) { return ({
+                key: key,
                 value: choices[key],
-            })),
+            }); }),
             value: value,
         };
-    }
-    run() {
-        const truthyExit = __1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context);
+    };
+    SelectManyResponseBlockRunner.prototype.run = function () {
+        var truthyExit = __1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context);
         return (truthyExit != null
             ? truthyExit
             : lodash_1.last(this.block.exits));
-    }
-}
+    };
+    return SelectManyResponseBlockRunner;
+}());
 exports.default = SelectManyResponseBlockRunner;
 //# sourceMappingURL=SelectManyResponseBlockRunner.js.map

@@ -1,16 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class RunFlowBlockRunner {
-    constructor(block, context) {
+var RunFlowBlockRunner = (function () {
+    function RunFlowBlockRunner(block, context) {
         this.block = block;
         this.context = context;
     }
-    initialize() {
+    RunFlowBlockRunner.prototype.initialize = function () {
         return undefined;
-    }
-    run() {
+    };
+    RunFlowBlockRunner.prototype.run = function () {
         return this.block.exits[0];
-    }
-}
+    };
+    return RunFlowBlockRunner;
+}());
 exports.default = RunFlowBlockRunner;
 //# sourceMappingURL=RunFlowBlockRunner.js.map

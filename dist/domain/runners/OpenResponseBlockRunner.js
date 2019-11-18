@@ -1,14 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const __1 = require("../..");
-class OpenResponseBlockRunner {
-    constructor(block, context) {
+var __1 = require("../..");
+var OpenResponseBlockRunner = (function () {
+    function OpenResponseBlockRunner(block, context) {
         this.block = block;
         this.context = context;
     }
-    initialize({ value }) {
-        const blockConfig = this.block.config;
-        let maxResponseCharacters;
+    OpenResponseBlockRunner.prototype.initialize = function (_a) {
+        var value = _a.value;
+        var blockConfig = this.block.config;
+        var maxResponseCharacters;
         if (blockConfig.text != null) {
             maxResponseCharacters = blockConfig.text.maxResponseCharacters;
         }
@@ -19,10 +20,11 @@ class OpenResponseBlockRunner {
             maxResponseCharacters: maxResponseCharacters,
             value: value,
         };
-    }
-    run() {
+    };
+    OpenResponseBlockRunner.prototype.run = function () {
         return this.block.exits[0];
-    }
-}
+    };
+    return OpenResponseBlockRunner;
+}());
 exports.default = OpenResponseBlockRunner;
 //# sourceMappingURL=OpenResponseBlockRunner.js.map
