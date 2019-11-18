@@ -91,16 +91,10 @@ function createEvalContextFrom(context) {
     return {
         contact,
         channel: { mode },
-        flow: generateCachedProxyForBlockName({
-            ...flow,
-            language,
-        }, context),
-        block: {
-            ...block,
-            value: prompt != null
+        flow: generateCachedProxyForBlockName(Object.assign(Object.assign({}, flow), { language }), context),
+        block: Object.assign(Object.assign({}, block), { value: prompt != null
                 ? prompt.value
-                : undefined,
-        },
+                : undefined }),
     };
 }
 exports.createEvalContextFrom = createEvalContextFrom;
