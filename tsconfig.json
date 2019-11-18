@@ -11,7 +11,7 @@
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "lib": [
-      "es6"
+      "es5"
     ],
     "newLine": "LF",
     "module": "commonjs",
@@ -29,7 +29,7 @@
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
-    "target": "es6",
+    "target": "es5",
     "types": [
       "jest",
       "node",
