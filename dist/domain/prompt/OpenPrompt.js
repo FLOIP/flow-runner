@@ -1,21 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var BasePrompt_1 = tslib_1.__importDefault(require("./BasePrompt"));
-var ValidationException_1 = tslib_1.__importDefault(require("../exceptions/ValidationException"));
-var OpenPrompt = (function (_super) {
-    tslib_1.__extends(OpenPrompt, _super);
-    function OpenPrompt() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    OpenPrompt.prototype.validate = function (val) {
-        var maxLength = this.config.maxResponseCharacters;
+const tslib_1 = require("tslib");
+const BasePrompt_1 = tslib_1.__importDefault(require("./BasePrompt"));
+const ValidationException_1 = tslib_1.__importDefault(require("../exceptions/ValidationException"));
+class OpenPrompt extends BasePrompt_1.default {
+    validate(val) {
+        const { maxResponseCharacters: maxLength } = this.config;
         if (maxLength && val.length > maxLength) {
             throw new ValidationException_1.default('Too many characters on value provided');
         }
         return true;
-    };
-    return OpenPrompt;
-}(BasePrompt_1.default));
+    }
+}
 exports.default = OpenPrompt;
 //# sourceMappingURL=OpenPrompt.js.map

@@ -1,22 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var __1 = require("../..");
-var IBlock_1 = require("../../flow-spec/IBlock");
-var CaseBlockRunner = (function () {
-    function CaseBlockRunner(block, context) {
+const __1 = require("../..");
+const IBlock_1 = require("../../flow-spec/IBlock");
+class CaseBlockRunner {
+    constructor(block, context) {
         this.block = block;
         this.context = context;
     }
-    CaseBlockRunner.prototype.initialize = function () {
+    initialize() {
         return undefined;
-    };
-    CaseBlockRunner.prototype.run = function () {
-        var truthyExit = IBlock_1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context);
+    }
+    run() {
+        const truthyExit = IBlock_1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context);
         return (truthyExit != null
             ? truthyExit
             : __1.findDefaultBlockExitOn(this.block));
-    };
-    return CaseBlockRunner;
-}());
+    }
+}
 exports.default = CaseBlockRunner;
 //# sourceMappingURL=CaseBlockRunner.js.map

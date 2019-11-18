@@ -1,10 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var ResourceResolver_1 = tslib_1.__importDefault(require("../domain/ResourceResolver"));
-var Context = (function () {
-    function Context(id, createdAt, deliveryStatus, mode, languageId, contact, sessionVars, interactions, nestedFlowBlockInteractionIdStack, flows, firstFlowId, resources, entryAt, exitAt, userId, orgId, cursor, platformMetadata) {
-        if (platformMetadata === void 0) { platformMetadata = {}; }
+const tslib_1 = require("tslib");
+const ResourceResolver_1 = tslib_1.__importDefault(require("../domain/ResourceResolver"));
+class Context {
+    constructor(id, createdAt, deliveryStatus, mode, languageId, contact, sessionVars, interactions, nestedFlowBlockInteractionIdStack, flows, firstFlowId, resources, entryAt, exitAt, userId, orgId, cursor, platformMetadata = {}) {
         this.id = id;
         this.createdAt = createdAt;
         this.deliveryStatus = deliveryStatus;
@@ -24,11 +23,10 @@ var Context = (function () {
         this.cursor = cursor;
         this.platformMetadata = platformMetadata;
     }
-    Context.prototype.getResource = function (resourceId) {
+    getResource(resourceId) {
         return new ResourceResolver_1.default(this)
             .resolve(resourceId);
-    };
-    return Context;
-}());
+    }
+}
 exports.default = Context;
 //# sourceMappingURL=Context.js.map

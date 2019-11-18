@@ -1,18 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var BasePrompt_1 = tslib_1.__importDefault(require("./BasePrompt"));
-var ValidationException_1 = tslib_1.__importDefault(require("../exceptions/ValidationException"));
-var NumericPrompt = (function (_super) {
-    tslib_1.__extends(NumericPrompt, _super);
-    function NumericPrompt() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    NumericPrompt.prototype.validate = function (val) {
+const tslib_1 = require("tslib");
+const BasePrompt_1 = tslib_1.__importDefault(require("./BasePrompt"));
+const ValidationException_1 = tslib_1.__importDefault(require("../exceptions/ValidationException"));
+class NumericPrompt extends BasePrompt_1.default {
+    validate(val) {
         if (Number.isNaN(val) || val === null) {
             return false;
         }
-        var _a = this.config, min = _a.min, max = _a.max;
+        const { min, max } = this.config;
         if (min != null && val < min) {
             throw new ValidationException_1.default('Value provided is less than allowed');
         }
@@ -20,8 +16,7 @@ var NumericPrompt = (function (_super) {
             throw new ValidationException_1.default('Value provided is greater than allowed');
         }
         return true;
-    };
-    return NumericPrompt;
-}(BasePrompt_1.default));
+    }
+}
 exports.default = NumericPrompt;
 //# sourceMappingURL=NumericPrompt.js.map

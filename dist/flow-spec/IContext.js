@@ -1,47 +1,43 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var IFlow_1 = require("./IFlow");
-var lodash_1 = require("lodash");
-var ValidationException_1 = tslib_1.__importDefault(require("../domain/exceptions/ValidationException"));
-var DeliveryStatus_1 = tslib_1.__importDefault(require("./DeliveryStatus"));
-var IdGeneratorUuidV4_1 = tslib_1.__importDefault(require("../domain/IdGeneratorUuidV4"));
-function createContextDataObjectFor(contact, userId, orgId, flows, languageId, mode, resources, idGenerator) {
-    if (resources === void 0) { resources = []; }
-    if (idGenerator === void 0) { idGenerator = new IdGeneratorUuidV4_1.default(); }
+const tslib_1 = require("tslib");
+const IFlow_1 = require("./IFlow");
+const lodash_1 = require("lodash");
+const ValidationException_1 = tslib_1.__importDefault(require("../domain/exceptions/ValidationException"));
+const DeliveryStatus_1 = tslib_1.__importDefault(require("./DeliveryStatus"));
+const IdGeneratorUuidV4_1 = tslib_1.__importDefault(require("../domain/IdGeneratorUuidV4"));
+function createContextDataObjectFor(contact, userId, orgId, flows, languageId, mode, resources = [], idGenerator = new IdGeneratorUuidV4_1.default()) {
     return {
         id: idGenerator.generate(),
         createdAt: (new Date).toISOString().replace('T', ' '),
         deliveryStatus: DeliveryStatus_1.default.QUEUED,
-        userId: userId,
-        orgId: orgId,
-        mode: mode,
-        languageId: languageId,
-        contact: contact,
+        userId,
+        orgId,
+        mode,
+        languageId,
+        contact,
         sessionVars: {},
         interactions: [],
         nestedFlowBlockInteractionIdStack: [],
-        flows: flows,
+        flows,
         firstFlowId: flows[0].uuid,
-        resources: resources,
+        resources,
         platformMetadata: {},
     };
 }
 exports.createContextDataObjectFor = createContextDataObjectFor;
-function findInteractionWith(uuid, _a) {
-    var interactions = _a.interactions;
-    var interaction = lodash_1.find(interactions, { uuid: uuid });
+function findInteractionWith(uuid, { interactions }) {
+    const interaction = lodash_1.find(interactions, { uuid });
     if (interaction == null) {
-        throw new ValidationException_1.default("Unable to find interaction on context: " + uuid + " in " + interactions.map(function (i) { return i.uuid; }));
+        throw new ValidationException_1.default(`Unable to find interaction on context: ${uuid} in ${interactions.map(i => i.uuid)}`);
     }
     return interaction;
 }
 exports.findInteractionWith = findInteractionWith;
-function findFlowWith(uuid, _a) {
-    var flows = _a.flows;
-    var flow = lodash_1.find(flows, { uuid: uuid });
+function findFlowWith(uuid, { flows }) {
+    const flow = lodash_1.find(flows, { uuid });
     if (flow == null) {
-        throw new ValidationException_1.default("Unable to find flow on context: " + uuid + " in " + flows.map(function (f) { return f.uuid; }));
+        throw new ValidationException_1.default(`Unable to find flow on context: ${uuid} in ${flows.map(f => f.uuid)}`);
     }
     return flow;
 }
@@ -51,9 +47,9 @@ function findBlockOnActiveFlowWith(uuid, ctx) {
 }
 exports.findBlockOnActiveFlowWith = findBlockOnActiveFlowWith;
 function findNestedFlowIdFor(interaction, ctx) {
-    var flow = findFlowWith(interaction.flowId, ctx);
-    var runFlowBlock = IFlow_1.findBlockWith(interaction.blockId, flow);
-    var flowId = runFlowBlock.config.flowId;
+    const flow = findFlowWith(interaction.flowId, ctx);
+    const runFlowBlock = IFlow_1.findBlockWith(interaction.blockId, flow);
+    const flowId = runFlowBlock.config.flowId;
     if (flowId == null) {
         throw new ValidationException_1.default('Unable to find nested flowId on Core\\RunFlowBlock');
     }
@@ -61,11 +57,11 @@ function findNestedFlowIdFor(interaction, ctx) {
 }
 exports.findNestedFlowIdFor = findNestedFlowIdFor;
 function getActiveFlowIdFrom(ctx) {
-    var firstFlowId = ctx.firstFlowId, nestedFlowBlockInteractionIdStack = ctx.nestedFlowBlockInteractionIdStack;
+    const { firstFlowId, nestedFlowBlockInteractionIdStack } = ctx;
     if (nestedFlowBlockInteractionIdStack.length === 0) {
         return firstFlowId;
     }
-    var interaction = findInteractionWith(lodash_1.last(nestedFlowBlockInteractionIdStack), ctx);
+    const interaction = findInteractionWith(lodash_1.last(nestedFlowBlockInteractionIdStack), ctx);
     return findNestedFlowIdFor(interaction, ctx);
 }
 exports.getActiveFlowIdFrom = getActiveFlowIdFrom;

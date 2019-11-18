@@ -10,7 +10,7 @@ var SupportedContentType;
 function createTextResourceVariantWith(value, ctx) {
     return {
         contentType: SupportedContentType.TEXT,
-        value: value,
+        value,
         languageId: ctx.languageId,
         modes: [ctx.mode],
     };
