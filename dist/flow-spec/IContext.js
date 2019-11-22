@@ -69,4 +69,9 @@ function getActiveFlowFrom(ctx) {
     return findFlowWith(getActiveFlowIdFrom(ctx), ctx);
 }
 exports.getActiveFlowFrom = getActiveFlowFrom;
+function isLastBlockOn({ nestedFlowBlockInteractionIdStack }, { exits }) {
+    return nestedFlowBlockInteractionIdStack.length === 0
+        && exits.every(e => e.destinationBlock == null);
+}
+exports.isLastBlockOn = isLastBlockOn;
 //# sourceMappingURL=IContext.js.map

@@ -46,4 +46,5 @@ export declare function findBlockOnActiveFlowWith(uuid: string, ctx: IContext): 
 export declare function findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext): string;
 export declare function getActiveFlowIdFrom(ctx: IContext): string;
 export declare function getActiveFlowFrom(ctx: IContext): IFlow;
+export declare function isLastBlockOn({ nestedFlowBlockInteractionIdStack }: IContext, { exits }: IBlock): boolean;
 //# sourceMappingURL=IContext.d.ts.map
