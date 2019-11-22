@@ -135,3 +135,8 @@ export function getActiveFlowIdFrom(ctx: IContext): string {
 export function getActiveFlowFrom(ctx: IContext): IFlow {
   return findFlowWith(getActiveFlowIdFrom(ctx), ctx)
 }
+
+export function isLastBlockOn({nestedFlowBlockInteractionIdStack}: IContext, {exits}: IBlock): boolean {
+  return nestedFlowBlockInteractionIdStack.length === 0
+    && exits.every(e => e.destinationBlock == null)
+}
