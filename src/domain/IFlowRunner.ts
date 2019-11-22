@@ -8,7 +8,7 @@ export default interface IFlowRunner {
   context: IContext
   runnerFactoryStore: IBlockRunnerFactoryStore
 
-  // new (context: IContext, runnerFactoryStore: IBlockRunnerFactoryStore): IFlowRunner
+  // new (context: IContext): IFlowRunner
 
   initialize(): RichCursorType | undefined
 

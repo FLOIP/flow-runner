@@ -248,7 +248,7 @@ describe('FlowRunner/navigateTo', () => {
       expect(ctx.interactions.length).toBeGreaterThan(0)
       expect(lastIntx.exitAt).toBeNull()
       runner.navigateTo(block, ctx, navigatedAt)
-      expect(lastIntx.exitAt).toBe(navigatedAt.toISOString())
+      expect(lastIntx.exitAt).toBe(navigatedAt.toISOString().replace('T', ' '))
     })
   })
 })

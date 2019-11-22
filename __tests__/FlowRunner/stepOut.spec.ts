@@ -1,5 +1,5 @@
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
-import FlowRunner, {BlockRunnerFactoryStore} from '../../src/domain/FlowRunner'
+import FlowRunner from '../../src/domain/FlowRunner'
 import {cloneDeep, last} from 'lodash'
 import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
 
@@ -14,7 +14,7 @@ describe('FlowRunner/stepOut', () => {
     it('should return null when not nested', () => {
       const
           ctx = dataset.contexts[0],
-          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+          runner = new FlowRunner(ctx)
 
       expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(0)
       expect(runner.stepOut(ctx)).toBeUndefined()
@@ -24,7 +24,7 @@ describe('FlowRunner/stepOut', () => {
       const
           ctx = dataset.contexts[1],
           lastIntx = cloneDeep(last(ctx.interactions)),
-          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+          runner = new FlowRunner(ctx)
 
       expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(0)
       runner.stepOut(ctx)
@@ -37,7 +37,7 @@ describe('FlowRunner/stepOut', () => {
       const
           ctx = dataset.contexts[2],
           snapshottedNFBIStack = cloneDeep(ctx.nestedFlowBlockInteractionIdStack),
-          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+          runner = new FlowRunner(ctx)
 
       expect(ctx.nestedFlowBlockInteractionIdStack.length).toBeGreaterThan(0)
       runner.stepOut(ctx)
@@ -48,7 +48,7 @@ describe('FlowRunner/stepOut', () => {
       const
           ctx = dataset.contexts[2],
           activeIntx = last(ctx.interactions) as IBlockInteraction,
-          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+          runner = new FlowRunner(ctx)
 
       expect(ctx.nestedFlowBlockInteractionIdStack.length).toBeGreaterThan(0)
       activeIntx.selectedExitId = null // pre-condition for "not-yet-stepped-out" state
@@ -62,7 +62,7 @@ describe('FlowRunner/stepOut', () => {
           ctx = dataset.contexts[2],
           lastRunFlowBlock = ctx.flows[0].blocks[0],
           runFlowDestinationBlock = ctx.flows[0].blocks[1],
-          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+          runner = new FlowRunner(ctx)
 
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBeGreaterThan(0)
         expect(lastRunFlowBlock.exits[0].destinationBlock).toBe(runFlowDestinationBlock.uuid)
@@ -74,7 +74,7 @@ describe('FlowRunner/stepOut', () => {
         const
           ctx = dataset.contexts[2],
           lastRunFlowBlock = ctx.flows[0].blocks[0],
-          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+          runner = new FlowRunner(ctx)
 
         delete lastRunFlowBlock.exits[0].destinationBlock
 

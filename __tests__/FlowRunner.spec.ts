@@ -1,9 +1,7 @@
 import "reflect-metadata";
 import {flatMap} from 'lodash'
 import IDataset, {createDefaultDataset} from '../__test_fixtures__/fixtures/IDataset'
-import FlowRunner, {BlockRunnerFactoryStore} from '../src/domain/FlowRunner'
-import MessageBlockRunner from '../src/domain/runners/MessageBlockRunner'
-import IMessageBlock from '../src/model/block/IMessageBlock'
+import FlowRunner from '../src/domain/FlowRunner'
 import {createContextDataObjectFor, IResources, RichCursorInputRequiredType, SupportedMode} from '../src'
 import IContext from '../src/flow-spec/IContext'
 import ValidationException from '../src/domain/exceptions/ValidationException'
@@ -34,13 +32,7 @@ describe('FlowRunner', () => {
 
   describe('sanity', () => {
     it('should be available', () => {
-      const runner = new FlowRunner(
-        dataset.contexts[0],
-        new BlockRunnerFactoryStore([
-          // todo: how do we get proper typing here without needing to cast?
-          ['MobilePrimitives\\Message', (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
-        ]))
-
+      const runner = new FlowRunner(dataset.contexts[0])
       expect(runner).toBeTruthy()
     })
 
@@ -52,11 +44,7 @@ describe('FlowRunner', () => {
         cursor: undefined,
       }
 
-      const runner = new FlowRunner(
-        ctx,
-        new BlockRunnerFactoryStore([
-          ['MobilePrimitives\\Message', (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
-        ]))
+      const runner = new FlowRunner(ctx)
 
       // block1
       let cursor: RichCursorInputRequiredType | void = runner.run()
@@ -129,6 +117,7 @@ describe('FlowRunner', () => {
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
           'user-1234',
+          'org-1234',
           flows,
           'en_US',
           SupportedMode.OFFLINE,
@@ -149,6 +138,7 @@ describe('FlowRunner', () => {
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
           'user-1234',
+          'org-1234',
           flows,
           'en_US',
           SupportedMode.OFFLINE,

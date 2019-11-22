@@ -1,6 +1,5 @@
 import MessagePrompt from '../../src/domain/prompt/MessagePrompt'
 import {
-  BlockRunnerFactoryStore,
   IBasePromptConfig,
   IContextInputRequired,
   IMessagePromptConfig,
@@ -22,7 +21,7 @@ describe('BasePrompt', () => {
         let config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[0]
         const
           ctx = dataset.contexts[1] as IContextInputRequired,
-          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore),
+          runner = new FlowRunner(ctx),
           prompt = new MessagePrompt(
             config as IMessagePromptConfig & IBasePromptConfig,
             'abc-123',
@@ -38,7 +37,7 @@ describe('BasePrompt', () => {
       let config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[0]
       const
         ctx = dataset.contexts[1] as IContextInputRequired,
-        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore),
+        runner = new FlowRunner(ctx),
         prompt = new MessagePrompt(
           config as IMessagePromptConfig & IBasePromptConfig,
           'abc-123',
@@ -56,7 +55,7 @@ describe('BasePrompt', () => {
       let config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[0]
       const
         ctx = dataset.contexts[1] as IContextInputRequired,
-        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore),
+        runner = new FlowRunner(ctx),
         prompt = new MessagePrompt(
           config as IMessagePromptConfig & IBasePromptConfig,
           'abc-123',

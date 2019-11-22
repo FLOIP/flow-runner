@@ -1,5 +1,5 @@
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
-import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
+import FlowRunner from "../../src/domain/FlowRunner";
 import ValidationException from "../../src/domain/exceptions/ValidationException";
 
 
@@ -14,7 +14,7 @@ describe('FlowRunner/stepInto', () => {
     const
         ctx = dataset.contexts[0],
         block = ctx.flows[0].blocks[0],
-        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+        runner = new FlowRunner(ctx)
 
     expect(FlowRunner.prototype.stepInto.bind(runner, block, ctx))
         .toThrow(ValidationException)
@@ -26,7 +26,7 @@ describe('FlowRunner/stepInto', () => {
     const
         ctx = dataset.contexts[2],
         block = dataset._blocks[5], // dummy+empty RunFlow
-        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+        runner = new FlowRunner(ctx)
 
     expect(FlowRunner.prototype.stepInto.bind(runner, block, ctx))
         .toThrow(ValidationException)
@@ -38,7 +38,7 @@ describe('FlowRunner/stepInto', () => {
     const
         ctx = dataset.contexts[2],
         block = ctx.flows[0].blocks[0],
-        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+        runner = new FlowRunner(ctx)
 
     ctx.interactions = [] // setup for empty interactions
     expect(FlowRunner.prototype.stepInto.bind(runner, block, ctx))
@@ -52,7 +52,7 @@ describe('FlowRunner/stepInto', () => {
         ctx = dataset.contexts[2],
         block = ctx.flows[0].blocks[0],
         runFlowBlockIntx = ctx.interactions[0],
-        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+        runner = new FlowRunner(ctx)
 
     ctx.nestedFlowBlockInteractionIdStack = [] // setup for known nested flow state
     runner.stepInto(block, ctx)
@@ -70,7 +70,7 @@ describe('FlowRunner/stepInto', () => {
       ctx = dataset.contexts[2],
       block = ctx.flows[0].blocks[0],
       runFlowBlockIntx = ctx.interactions[0],
-      runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+      runner = new FlowRunner(ctx)
 
     runner.stepInto(block, ctx)
     expect(runFlowBlockIntx.selectedExitId).toBe(block.exits[0].uuid)
