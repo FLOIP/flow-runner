@@ -7,5 +7,6 @@ var KnownPrompts;
     KnownPrompts["SelectOne"] = "SelectOne";
     KnownPrompts["SelectMany"] = "SelectMany";
     KnownPrompts["Open"] = "Open";
+    KnownPrompts["SetContact"] = "SetContact";
 })(KnownPrompts = exports.KnownPrompts || (exports.KnownPrompts = {}));
 //# sourceMappingURL=IPrompt.js.map

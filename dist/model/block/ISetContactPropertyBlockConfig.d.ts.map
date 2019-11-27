@@ -1,0 +1,1 @@
+{"version":3,"file":"ISetContactPropertyBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/ISetContactPropertyBlockConfig.ts"],"names":[],"mappings":"AAAA,oBAAY,OAAO;IACjB,YAAY,iBAAiB;IAC7B,QAAQ,aAAa;IACrB,WAAW,gBAAgB;IAC3B,UAAU,eAAe;CAC1B;AAED,MAAM,CAAC,OAAO,WAAW,8BAA8B;IACrD,YAAY,EAAE,MAAM,CAAC;IACrB,aAAa,EAAE,MAAM,CAAA;CACtB"}

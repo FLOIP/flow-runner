@@ -39,6 +39,8 @@ import ISelectOneResponseBlock from '../model/block/ISelectOneResponseBlock'
 import SelectManyResponseBlockRunner from './runners/SelectManyResponseBlockRunner'
 import CaseBlockRunner from './runners/CaseBlockRunner'
 import ICaseBlock from '../model/block/ICaseBlock'
+import SetContactPropertyBlockRunner from './runners/SetContactPropertyBlockRunner'
+import ISetContactPropertyBlock from '../model/block/ISetContactPropertyBlock'
 
 
 export class BlockRunnerFactoryStore
@@ -65,14 +67,26 @@ export const NON_INTERACTIVE_BLOCK_TYPES = [
   'Core\\RunFlowBlock',
 ]
 
+export enum BLOCK_TYPES {
+  Message = 'MobilePrimitives\\Message',
+  OpenResponse = 'MobilePrimitives\\OpenResponse',
+  NumericResponse = 'MobilePrimitives\\NumericResponse',
+  SelectOneResponse = 'MobilePrimitives\\SelectOneResponse',
+  SelectManyResponse = 'MobilePrimitives\\SelectManyResponse',
+  Case = 'Core\\Case',
+  SetContactProperty = 'Core\\SetContactProperty',
+}
+
 export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
   return new BlockRunnerFactoryStore([
-    ['MobilePrimitives\\Message', (block, innerContext) => new MessageBlockRunner(block as IMessageBlock, innerContext)],
-    ['MobilePrimitives\\OpenResponse', (block, innerContext) => new OpenResponseBlockRunner(block as IOpenResponseBlock, innerContext)],
-    ['MobilePrimitives\\NumericResponse', (block, innerContext) => new NumericResponseBlockRunner(block as INumericResponseBlock, innerContext)],
-    ['MobilePrimitives\\SelectOneResponse', (block, innerContext) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, innerContext)],
-    ['MobilePrimitives\\SelectManyResponse', (block, innerContext) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, innerContext)],
-    ['Core\\Case', (block, innerContext) => new CaseBlockRunner(block as ICaseBlock, innerContext)]])
+    [BLOCK_TYPES.Message, (block: IBlock, innerContext: IContext) => new MessageBlockRunner(block as IMessageBlock, innerContext)],
+    [BLOCK_TYPES.OpenResponse, (block: IBlock, innerContext: IContext) => new OpenResponseBlockRunner(block as IOpenResponseBlock, innerContext)],
+    [BLOCK_TYPES.NumericResponse, (block: IBlock, innerContext: IContext) => new NumericResponseBlockRunner(block as INumericResponseBlock, innerContext)],
+    [BLOCK_TYPES.SelectOneResponse, (block: IBlock, innerContext: IContext) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, innerContext)],
+    [BLOCK_TYPES.SelectManyResponse, (block: IBlock, innerContext: IContext) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, innerContext)],
+    [BLOCK_TYPES.Case, (block: IBlock, innerContext: IContext) => new CaseBlockRunner(block as ICaseBlock, innerContext)],
+    [BLOCK_TYPES.SetContactProperty, (block: IBlock, innerContext: IContext) => new SetContactPropertyBlockRunner(block as ISetContactPropertyBlock, innerContext)],
+  ])
 }
 
 export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
@@ -91,7 +105,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
    * runner.behaviours.myFirst instanceof MyFirstBehaviour
    * runner.behaviours.mySecond instanceof MySecondBehaviour
    * ``` */
-  initializeBehaviours(behaviourConstructors: IBehaviourConstructor[]) {
+  initializeBehaviours(behaviourConstructors: IBehaviourConstructor[]): void {
     behaviourConstructors.forEach(b =>
       this.behaviours[lowerFirst(trimEnd(b.name, 'Behaviour|Behavior'))]
         = new b(this.context, this, this))
@@ -442,6 +456,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     }
 
     // todo: flesh this out as an extensibile store that can be DI'd like runners
+    // @ts-ignore
     const kindConstructor = {
       [KnownPrompts.Message]: MessagePrompt,
       [KnownPrompts.Numeric]: NumericPrompt,

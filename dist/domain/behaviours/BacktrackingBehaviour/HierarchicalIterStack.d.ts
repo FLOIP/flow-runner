@@ -28,7 +28,7 @@ export declare function getEntityAt(key: Key, stack: IStack): IEntity;
 export declare function isStackEmpty({ stack }: IStack): boolean;
 export declare function getIterationFor(key: Key, stack: IStack): Iteration;
 export declare function getStackFor(key: Key, stack: IStack): IStack;
-export declare function _insertAt(i: number, entity: IEntity, iter: Iteration): (IEntity | IStack)[];
+export declare function _insertAt(i: number, entity: IEntity, iter: Iteration): (IStack | IEntity)[];
 export declare function _replaceAt(i: number, entity: IEntity, iter: Iteration): Item;
 export declare function _append(item: IEntity | IStack, stack: IStack): number;
 export declare function _stepIn(stack: IStack, firstIteration?: Iteration): number;

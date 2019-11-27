@@ -25,6 +25,7 @@ export enum KnownPrompts {
   SelectOne = 'SelectOne',
   SelectMany = 'SelectMany',
   Open = 'Open',
+  SetContact = 'SetContact'
 }
 
 

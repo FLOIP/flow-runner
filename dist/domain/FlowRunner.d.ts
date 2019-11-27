@@ -18,6 +18,15 @@ export interface IPromptBuilder {
     buildPromptFor(block: IBlock, interaction: IBlockInteraction): IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined;
 }
 export declare const NON_INTERACTIVE_BLOCK_TYPES: string[];
+export declare enum BLOCK_TYPES {
+    Message = "MobilePrimitives\\Message",
+    OpenResponse = "MobilePrimitives\\OpenResponse",
+    NumericResponse = "MobilePrimitives\\NumericResponse",
+    SelectOneResponse = "MobilePrimitives\\SelectOneResponse",
+    SelectManyResponse = "MobilePrimitives\\SelectManyResponse",
+    Case = "Core\\Case",
+    SetContactProperty = "Core\\SetContactProperty"
+}
 export declare function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore;
 export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     context: IContext;

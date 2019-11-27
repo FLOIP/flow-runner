@@ -1,6 +1,5 @@
 export default interface IContact {
     id: string;
-    name: string;
-    createdAt: string;
+    [key: string]: any;
 }
 //# sourceMappingURL=IContact.d.ts.map

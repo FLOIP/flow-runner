@@ -21,6 +21,7 @@ const NumericResponseBlockRunner_1 = tslib_1.__importDefault(require("./runners/
 const SelectOneResponseBlockRunner_1 = tslib_1.__importDefault(require("./runners/SelectOneResponseBlockRunner"));
 const SelectManyResponseBlockRunner_1 = tslib_1.__importDefault(require("./runners/SelectManyResponseBlockRunner"));
 const CaseBlockRunner_1 = tslib_1.__importDefault(require("./runners/CaseBlockRunner"));
+const SetContactPropertyBlockRunner_1 = tslib_1.__importDefault(require("./runners/SetContactPropertyBlockRunner"));
 class BlockRunnerFactoryStore extends Map {
 }
 exports.BlockRunnerFactoryStore = BlockRunnerFactoryStore;
@@ -31,14 +32,25 @@ exports.NON_INTERACTIVE_BLOCK_TYPES = [
     'Core\\Case',
     'Core\\RunFlowBlock',
 ];
+var BLOCK_TYPES;
+(function (BLOCK_TYPES) {
+    BLOCK_TYPES["Message"] = "MobilePrimitives\\Message";
+    BLOCK_TYPES["OpenResponse"] = "MobilePrimitives\\OpenResponse";
+    BLOCK_TYPES["NumericResponse"] = "MobilePrimitives\\NumericResponse";
+    BLOCK_TYPES["SelectOneResponse"] = "MobilePrimitives\\SelectOneResponse";
+    BLOCK_TYPES["SelectManyResponse"] = "MobilePrimitives\\SelectManyResponse";
+    BLOCK_TYPES["Case"] = "Core\\Case";
+    BLOCK_TYPES["SetContactProperty"] = "Core\\SetContactProperty";
+})(BLOCK_TYPES = exports.BLOCK_TYPES || (exports.BLOCK_TYPES = {}));
 function createDefaultBlockRunnerStore() {
     return new BlockRunnerFactoryStore([
-        ['MobilePrimitives\\Message', (block, innerContext) => new MessageBlockRunner_1.default(block, innerContext)],
-        ['MobilePrimitives\\OpenResponse', (block, innerContext) => new OpenResponseBlockRunner_1.default(block, innerContext)],
-        ['MobilePrimitives\\NumericResponse', (block, innerContext) => new NumericResponseBlockRunner_1.default(block, innerContext)],
-        ['MobilePrimitives\\SelectOneResponse', (block, innerContext) => new SelectOneResponseBlockRunner_1.default(block, innerContext)],
-        ['MobilePrimitives\\SelectManyResponse', (block, innerContext) => new SelectManyResponseBlockRunner_1.default(block, innerContext)],
-        ['Core\\Case', (block, innerContext) => new CaseBlockRunner_1.default(block, innerContext)]
+        [BLOCK_TYPES.Message, (block, innerContext) => new MessageBlockRunner_1.default(block, innerContext)],
+        [BLOCK_TYPES.OpenResponse, (block, innerContext) => new OpenResponseBlockRunner_1.default(block, innerContext)],
+        [BLOCK_TYPES.NumericResponse, (block, innerContext) => new NumericResponseBlockRunner_1.default(block, innerContext)],
+        [BLOCK_TYPES.SelectOneResponse, (block, innerContext) => new SelectOneResponseBlockRunner_1.default(block, innerContext)],
+        [BLOCK_TYPES.SelectManyResponse, (block, innerContext) => new SelectManyResponseBlockRunner_1.default(block, innerContext)],
+        [BLOCK_TYPES.Case, (block, innerContext) => new CaseBlockRunner_1.default(block, innerContext)],
+        [BLOCK_TYPES.SetContactProperty, (block, innerContext) => new SetContactPropertyBlockRunner_1.default(block, innerContext)],
     ]);
 }
 exports.createDefaultBlockRunnerStore = createDefaultBlockRunnerStore;
