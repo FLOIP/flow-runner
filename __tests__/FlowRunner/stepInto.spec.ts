@@ -65,14 +65,15 @@ describe('FlowRunner/stepInto', () => {
     it.todo('should return first block when first block present on freshly nested flow')
   })
 
-  it('should tie intx associated with provided run flow block to its first exit', () => {
+  it('should leave run flow interaction\'s selected exit and exitAt empty until we\'ve exited last block in the flow', () => {
     const
       ctx = dataset.contexts[2],
       block = ctx.flows[0].blocks[0],
       runFlowBlockIntx = ctx.interactions[0],
       runner = new FlowRunner(ctx)
 
+    runFlowBlockIntx.selectedExitId = null // setup for known un-exited interaction state
     runner.stepInto(block, ctx)
-    expect(runFlowBlockIntx.selectedExitId).toBe(block.exits[0].uuid)
+    expect(runFlowBlockIntx.selectedExitId).toBeNull()
   })
 })

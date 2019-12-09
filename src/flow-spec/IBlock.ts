@@ -57,6 +57,10 @@ export function findDefaultBlockExitOn(block: IBlock): IBlockExit {
   return exit
 }
 
+export function isLastBlock({exits}: IBlock): boolean {
+  return exits.every(e => e.destinationBlock == null)
+}
+
 export interface IEvalContextBlock {
   __value__: any
   time: string
@@ -90,7 +94,7 @@ export function findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx
   }
 }
 
-export function generateCachedProxyForBlockName(target: object, ctx: IContext) {
+export function generateCachedProxyForBlockName(target: object, ctx: IContext): object {
   // create a cache of `{[block.name]: {...}}` for subsequent lookups
   const expressionBlocksByName: {[k: string]: IEvalContextBlock | undefined} = {}
 
@@ -109,6 +113,7 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext) {
       return expressionBlocksByName[prop.toString()] =
         findAndGenerateExpressionBlockFor(prop.toString(), ctx)
     },
+
     has(target, prop) {
       if (prop in target) {
         return true;
@@ -124,7 +129,7 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext) {
 }
 
 // todo: push eval stuff into `Expression.evaluate()` abstraction for evalContext + result handling 👇
-export function createEvalContextFrom(context: IContext) {
+export function createEvalContextFrom(context: IContext): object {
   const {contact, cursor, mode, languageId: language} = context
   let flow: IFlow | undefined
   let block: IBlock | undefined
@@ -154,9 +159,20 @@ export function createEvalContextFrom(context: IContext) {
   }
 }
 
-function evaluateToBool(expr: string, ctx: object): boolean {
+export function evaluateToBool(expr: string, ctx: object): boolean {
   const result = EvaluatorFactory.create()
     .evaluate(expr, ctx)
 
   return JSON.parse(result.toLowerCase())
+}
+
+export interface IBlockService {
+  findBlockExitWith(uuid: string, block: IBlock): IBlockExit
+  findFirstTruthyEvaluatingBlockExitOn(block: IBlockWithTestExits, context: IContext): IBlockExitTestRequired | undefined
+  findDefaultBlockExitOn(block: IBlock): IBlockExit
+  isLastBlock(block: IBlock): boolean
+  findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx: IContext): IEvalContextBlock | undefined
+  generateCachedProxyForBlockName(target: object, ctx: IContext): object
+  createEvalContextFrom(context: IContext): object
+  evaluateToBool(expr: string, ctx: object): boolean
 }

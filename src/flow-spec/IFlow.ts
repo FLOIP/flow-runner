@@ -30,3 +30,7 @@ export function findBlockWith(uuid: string, {blocks}: IFlow): IBlock {
 
   return block
 }
+
+export interface IFlowService {
+  findBlockWith(uuid: string, flow: IFlow): IBlock
+}

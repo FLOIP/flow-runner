@@ -1,5 +1,6 @@
 import {cloneDeep} from 'lodash'
 import {
+  convertDateToString,
   findFirstTruthyEvaluatingBlockExitOn,
   generateCachedProxyForBlockName, IBlockExitTestRequired,
   IBlockWithTestExits,
@@ -18,7 +19,7 @@ describe('IBlock', () => {
     target = {
       __interactionId: 'abc-123',
       __value__: 'my first value',
-      time: (new Date).toISOString().replace('T', ' '),
+      time: convertDateToString(new Date),
       value: 'my first value',
       text: 'my text'
     }
