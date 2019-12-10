@@ -1,9 +1,11 @@
 import {cloneDeep} from 'lodash'
 import {
   findFirstTruthyEvaluatingBlockExitOn,
-  generateCachedProxyForBlockName, IBlockExitTestRequired,
+  generateCachedProxyForBlockName,
+  IBlockExitTestRequired,
   IBlockWithTestExits,
   IEvalContextBlock,
+  wrapInExprSyntaxWhenAbsent,
 } from '../../src'
 import IContext from '../../src/flow-spec/IContext'
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
@@ -119,6 +121,18 @@ describe('IBlock', () => {
         expect(blockForEvalContext.__interactionId).toEqual('09894745-38ba-456f-aab4-720b7d09d5b3')
         expect(blockForEvalContext.__value__).toEqual('Test value')
         expect(blockForEvalContext.time).toEqual("2023-10-10T23:23:23.023Z")
+      })
+    })
+  })
+
+  describe('evaluateToBool()', () => {
+    describe('wrapInExprSyntaxWhenAbsent', () => {
+      it('should add expression wrapper when @() absent', () => {
+        expect(wrapInExprSyntaxWhenAbsent('true = true')).toBe('@(true = true)')
+      })
+
+      it('should leave as is when @() present', () => {
+        expect(wrapInExprSyntaxWhenAbsent('@(true = true)')).toBe('@(true = true)')
       })
     })
   })

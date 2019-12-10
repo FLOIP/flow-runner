@@ -1,3 +1,4 @@
+import {startsWith} from 'lodash'
 import IBlockExit, {IBlockExitTestRequired} from './IBlockExit'
 import {find, findLast} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
@@ -156,7 +157,13 @@ export function createEvalContextFrom(context: IContext) {
 
 function evaluateToBool(expr: string, ctx: object): boolean {
   const result = EvaluatorFactory.create()
-    .evaluate(expr, ctx)
+    .evaluate(wrapInExprSyntaxWhenAbsent(expr), ctx)
 
   return JSON.parse(result.toLowerCase())
+}
+
+export function wrapInExprSyntaxWhenAbsent(expr: string): string {
+  return startsWith(expr, '@(')
+    ? expr
+    : `@(${expr})`
 }
