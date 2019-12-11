@@ -11,7 +11,8 @@
     "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist/",
     "deploy": "yarn clean && yarn build && git add dist/ && git commit -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD",
     "test": "yarn tsc-test && yarn jest",
-    "tsc-test": "tsc --project . --noEmit"
+    "tsc-test": "tsc --project . --noEmit",
+    "upgrade-ts": "yarn upgrade typescript eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser @typescript-eslint/typescript-estree"
   },
   "dependencies": {
     "class-transformer": "^0.2.3",
@@ -28,9 +29,9 @@
     "@types/lodash": "^4.14.136",
     "@types/node": "^12.6.8",
     "@types/uuid": "^3.4.5",
-    "@typescript-eslint/eslint-plugin": "2.0.0",
-    "@typescript-eslint/parser": "2.0.0",
-    "@typescript-eslint/typescript-estree": "2.0.0",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "@typescript-eslint/typescript-estree": "^2.0.0",
     "babel-eslint": "^10.0.2",
     "babel-jest": "^24.8.0",
     "eslint": "^6.1.0",
