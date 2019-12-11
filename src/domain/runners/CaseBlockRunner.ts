@@ -17,12 +17,7 @@ export default class CaseBlockRunner implements IBlockRunner {
   }
 
   run(): IBlockExitTestRequired {
-    // todo: tdd this :P
-    const truthyExit: IBlockExitTestRequired | undefined =
-      findFirstTruthyEvaluatingBlockExitOn(this.block, this.context)
-
-    return (truthyExit != null
-      ? truthyExit
-      : findDefaultBlockExitOn(this.block)) as IBlockExitTestRequired
+    return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context)
+      ?? findDefaultBlockExitOn(this.block) as IBlockExitTestRequired
   }
 }

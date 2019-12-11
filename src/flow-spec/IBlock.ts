@@ -110,16 +110,20 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext) {
       return expressionBlocksByName[prop.toString()] =
         findAndGenerateExpressionBlockFor(prop.toString(), ctx)
     },
+
     has(target, prop) {
       if (prop in target) {
-        return true;
+        return true
       }
+
       if (prop in expressionBlocksByName) {
-        return true;
+        return true
       }
+
       expressionBlocksByName[prop.toString()] =
-        findAndGenerateExpressionBlockFor(prop.toString(), ctx);
-      return prop in expressionBlocksByName;
+        findAndGenerateExpressionBlockFor(prop.toString(), ctx)
+
+      return prop in expressionBlocksByName
     }
   })
 }

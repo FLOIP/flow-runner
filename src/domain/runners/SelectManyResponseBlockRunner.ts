@@ -33,12 +33,7 @@ export default class SelectManyResponseBlockRunner implements IBlockRunner {
   }
 
   run(): IBlockExit {
-    // todo: tdd this :P
-    const truthyExit: IBlockExitTestRequired | undefined =
-      findFirstTruthyEvaluatingBlockExitOn(this.block, this.context)
-
-    return (truthyExit != null
-      ? truthyExit
-      : last(this.block.exits)) as IBlockExitTestRequired
+    return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context)
+      ?? last(this.block.exits) as IBlockExitTestRequired
   }
 }
