@@ -119,10 +119,12 @@ export function createEvalContextFrom(context: IContext) {
 }
 
 function evaluateToBool(expr: string, ctx: object): boolean {
-  const result = EvaluatorFactory.create()
-    .evaluate(wrapInExprSyntaxWhenAbsent(expr), ctx)
+  return JSON.parse(evaluateToString(expr, ctx).toLowerCase())
+}
 
-  return JSON.parse(result.toLowerCase())
+export function evaluateToString(expr: string, ctx: object): string {
+  return EvaluatorFactory.create()
+    .evaluate(wrapInExprSyntaxWhenAbsent(expr), ctx)
 }
 
 export function wrapInExprSyntaxWhenAbsent(expr: string): string {

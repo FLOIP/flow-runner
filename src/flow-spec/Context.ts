@@ -31,6 +31,8 @@ export default class Context implements IContext {
     public orgId?: string,
     public cursor?: CursorType,
     public platformMetadata: object = {},
+
+    public logs: any = {}
   ) {}
 
   getResource(resourceId: string): IResource {

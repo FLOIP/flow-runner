@@ -52,6 +52,8 @@ export default interface IContext {
   firstFlowId: string
   resources: IResources
   platformMetadata: object
+
+  logs: {[k: string]: string}
 }
 
 export interface IContextWithCursor extends IContext {
@@ -94,6 +96,8 @@ export function createContextDataObjectFor(
 
     resources,
     platformMetadata: {},
+
+    logs: {},
   }
 }
 
