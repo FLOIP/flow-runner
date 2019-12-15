@@ -19,6 +19,7 @@
     "floip-expression-evaluator-ts": "https://bitbucket.org/voto/floip-expression-evaluator-ts.git#semver:v1",
     "lodash": "^4.17.14",
     "reflect-metadata": "^0.1.13",
+    "scanf": "^1.0.2",
     "sp2": "^1.5.1",
     "tslib": "^1.10.0",
     "uuid": "^3.3.2"
