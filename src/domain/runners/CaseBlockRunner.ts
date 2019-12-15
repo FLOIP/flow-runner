@@ -8,9 +8,9 @@ import IContext from '../../flow-spec/IContext'
 import ICaseBlock from '../../model/block/ICaseBlock'
 
 export default class CaseBlockRunner implements IBlockRunner {
-  constructor(public block: ICaseBlock,
-              public context: IContext) {
-  }
+  constructor(
+    public block: ICaseBlock,
+    public context: IContext) {}
 
   initialize(): undefined {
     return undefined

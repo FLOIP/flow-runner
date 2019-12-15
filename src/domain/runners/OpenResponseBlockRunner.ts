@@ -8,9 +8,7 @@ import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 export default class OpenResponseBlockRunner implements IBlockRunner {
   constructor(
     public block: IOpenResponseBlock,
-    public context: IContext,
-  ) {
-  }
+    public context: IContext) {}
 
   initialize({value}: IBlockInteraction): IOpenPromptConfig {
     const blockConfig = this.block.config

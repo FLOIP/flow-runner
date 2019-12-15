@@ -12,9 +12,9 @@ import {last} from 'lodash'
 import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 
 export default class SelectOneResponseBlockRunner implements IBlockRunner {
-  constructor(public block: ISelectOneResponseBlock,
-              public context: IContext) {
-  }
+  constructor(
+    public block: ISelectOneResponseBlock,
+    public context: IContext) {}
 
   initialize({value}: IBlockInteraction): ISelectOnePromptConfig {
     const {prompt, choices} = this.block.config

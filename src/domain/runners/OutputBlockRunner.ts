@@ -6,7 +6,8 @@ import {evaluateToString} from '../..'
 
 
 export default class OutputBlockRunner implements IBlockRunner {
-  constructor(public block: IOutputBlock,
+  constructor(
+    public block: IOutputBlock,
     public context: IContext) {}
 
   initialize(): undefined {

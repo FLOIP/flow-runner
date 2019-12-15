@@ -5,8 +5,9 @@ import IRunFlowBlockConfig from '../../model/block/IRunFlowBlockConfig'
 import IContext from '../../flow-spec/IContext'
 
 export default class RunFlowBlockRunner implements IBlockRunner {
-  constructor(public block: IBlock & { config: IRunFlowBlockConfig },
-              public context: IContext) {}
+  constructor(
+    public block: IBlock & { config: IRunFlowBlockConfig },
+    public context: IContext) {}
 
   initialize(): undefined {
     return undefined

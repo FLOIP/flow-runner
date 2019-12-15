@@ -11,9 +11,9 @@ import {ISelectManyPromptConfig} from '../prompt/ISelectManyPromptConfig'
 import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 
 export default class SelectManyResponseBlockRunner implements IBlockRunner {
-  constructor(public block: ISelectOneResponseBlock,
-              public context: IContext) {
-  }
+  constructor(
+    public block: ISelectOneResponseBlock,
+    public context: IContext) {}
 
   initialize({value}: IBlockInteraction): ISelectManyPromptConfig {
     const {prompt, choices} = this.block.config

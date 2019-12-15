@@ -6,7 +6,8 @@ import {evaluateToString} from '../..'
 
 
 export default class LogBlockRunner implements IBlockRunner {
-  constructor(public block: ILogBlock,
+  constructor(
+    public block: ILogBlock,
     public context: IContext) {}
 
   initialize(): undefined {

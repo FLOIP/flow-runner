@@ -6,8 +6,9 @@ import IContext from '../../flow-spec/IContext'
 
 
 export default class MessageBlockRunner implements IBlockRunner {
-  constructor(public block: IMessageBlock,
-              public context: IContext) {}
+  constructor(
+    public block: IMessageBlock,
+    public context: IContext) {}
 
   initialize(): IMessagePromptConfig {
     const {prompt} = this.block.config

@@ -6,8 +6,9 @@ import IContext from '../../flow-spec/IContext'
 import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 
 export default class NumericResponseBlockRunner implements IBlockRunner {
-  constructor(public block: INumericResponseBlock,
-              public context: IContext) {}
+  constructor(
+    public block: INumericResponseBlock,
+    public context: IContext) {}
 
   initialize({value}: IBlockInteraction): INumericPromptConfig {
     const {
