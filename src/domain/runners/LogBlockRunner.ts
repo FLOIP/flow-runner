@@ -18,6 +18,8 @@ export default class LogBlockRunner implements IBlockRunner {
     this.context.logs[(new Date).toISOString()] =
       evaluateToString(this.block.config.message, this.context)
 
+    // todo: should we also write this as the value of the block interaction like the output block?
+
     return this.block.exits[0]
   }
 }
