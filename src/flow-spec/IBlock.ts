@@ -1,18 +1,13 @@
-import {startsWith} from 'lodash'
 import IBlockExit, {IBlockExitTestRequired} from './IBlockExit'
-import {find, findLast} from 'lodash'
+import {extend, get, has, find, startsWith} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
 import IContext, {
   CursorType,
-  findBlockOnActiveFlowWith,
-  findFlowWith,
   findInteractionWith,
   getActiveFlowFrom
 } from './IContext'
 import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
 import IFlow, {findBlockWith} from './IFlow'
-import ResourceResolver from '../domain/ResourceResolver'
-import IMessageBlockConfig from "../model/block/IMessageBlockConfig";
 
 export default interface IBlock {
   uuid: string
@@ -66,35 +61,8 @@ export interface IEvalContextBlock {
   text: string
 }
 
-export function findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx: IContext): IEvalContextBlock | undefined {
-  const intx = findLast(ctx.interactions, ({blockId, flowId}) => {
-    const {name} = findBlockWith(
-      blockId,
-      findFlowWith(flowId, ctx))
-
-    return name === blockName
-  })
-
-  if (intx == null) {
-    return
-  }
-
-  const {prompt} = findBlockOnActiveFlowWith(intx.blockId, ctx).config as IMessageBlockConfig
-  const resource = new ResourceResolver(ctx).resolve(prompt)
-
-  return {
-    __interactionId: intx.uuid,
-    __value__: intx.value,
-    value: intx.value,
-    time: intx.entryAt,
-    text: resource.hasText() ? resource.getText() : ''
-  }
-}
-
-export function generateCachedProxyForBlockName(target: object, ctx: IContext) {
-  // create a cache of `{[block.name]: {...}}` for subsequent lookups
-  const expressionBlocksByName: {[k: string]: IEvalContextBlock | undefined} = {}
-
+export type TEvalContextBlockMap = {[k: string]: IEvalContextBlock}
+export function generateCachedProxyForBlockName(target: object, ctx: IContext): TEvalContextBlockMap {
   // create a proxy that traps get() and attempts a lookup of blocks by name
   return new Proxy(target, {
     get(target, prop, _receiver) {
@@ -103,29 +71,20 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext) {
         return Reflect.get(...arguments)
       }
 
-      if (prop in expressionBlocksByName) {
-        return expressionBlocksByName[prop.toString()]
+      const evalBlock = get(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`)
+      if (evalBlock == null) {
+        return
       }
 
-      return expressionBlocksByName[prop.toString()] =
-        findAndGenerateExpressionBlockFor(prop.toString(), ctx)
+      const {value} = findInteractionWith(evalBlock.__interactionId, ctx)
+      return extend({value, __value__: value}, evalBlock)
     },
 
     has(target, prop) {
-      if (prop in target) {
-        return true
-      }
-
-      if (prop in expressionBlocksByName) {
-        return true
-      }
-
-      expressionBlocksByName[prop.toString()] =
-        findAndGenerateExpressionBlockFor(prop.toString(), ctx)
-
-      return prop in expressionBlocksByName
+      return prop in target
+        || has(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`)
     }
-  })
+  }) as TEvalContextBlockMap
 }
 
 // todo: push eval stuff into `Expression.evaluate()` abstraction for evalContext + result handling 👇
@@ -151,7 +110,7 @@ export function createEvalContextFrom(context: IContext) {
       language, // todo: why isn't this languageId?
     }, context),
     block: {
-      ...block,
+      ...block, // todo: should this differ from our IEvalContextBlock lookups on flow?
       value: prompt != null
         ? prompt.value
         : undefined,

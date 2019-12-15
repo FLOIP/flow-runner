@@ -1,3 +1,5 @@
+import {update, NonBreakingUpdateOperation} from 'sp2'
+
 import {trimEnd, lowerFirst} from 'lodash'
 import IBlock, {findBlockExitWith} from '../flow-spec/IBlock'
 import IContext, {
@@ -6,7 +8,7 @@ import IContext, {
   findInteractionWith,
   getActiveFlowFrom,
   getActiveFlowIdFrom,
-  IContextWithCursor,
+  IContextWithCursor, IReversibleUpdateOperation,
   RichCursorInputRequiredType,
   RichCursorType,
 } from '../flow-spec/IContext'
@@ -39,6 +41,8 @@ import ISelectOneResponseBlock from '../model/block/ISelectOneResponseBlock'
 import SelectManyResponseBlockRunner from './runners/SelectManyResponseBlockRunner'
 import CaseBlockRunner from './runners/CaseBlockRunner'
 import ICaseBlock from '../model/block/ICaseBlock'
+import ResourceResolver from './ResourceResolver'
+import {IResource} from './IResourceResolver'
 
 
 export class BlockRunnerFactoryStore
@@ -172,6 +176,60 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
       && ctx.cursor[1].value === undefined
   }
 
+  // todo: this could be extracted to an Expressions Behaviour
+  //       ie. cacheInteractionByBlockName, applyReversibleDataOperation and reverseLastDataOperation
+  cacheInteractionByBlockName(
+    {uuid, entryAt}: IBlockInteraction,
+    {name, config: {prompt}}: IMessageBlock,
+    context: IContext=this.context): void {
+
+    if (!('blockInteractionsByBlockName' in this.context.sessionVars)) {
+      context.sessionVars.blockInteractionsByBlockName = {}
+    }
+
+    if (context.reversibleOperations == null) {
+      context.reversibleOperations = []
+    }
+
+    // create a cache of `{[block.name]: {...}}` for subsequent lookups
+    const blockNameKey = `blockInteractionsByBlockName.${name}`
+    const previous = this.context.sessionVars[blockNameKey]
+    const resource: IResource | undefined = prompt == null
+      ? undefined
+      : new ResourceResolver(context).resolve(prompt)
+
+    const current = {
+      __interactionId: uuid,
+      time: entryAt,
+      text: resource != null && resource.hasText()
+        ? resource.getText()
+        : '',
+    }
+
+    this.applyReversibleDataOperation(
+      {$set: {[blockNameKey]: current}},
+      {$set: {[blockNameKey]: previous}})
+  }
+
+  applyReversibleDataOperation(forward: NonBreakingUpdateOperation, reverse: NonBreakingUpdateOperation, context: IContext=this.context): void {
+    context.sessionVars = update(context.sessionVars, forward)
+    context.reversibleOperations.push({
+      interactionId: last(context.interactions)?.uuid,
+      forward,
+      reverse,
+    })
+  }
+
+  reverseLastDataOperation(context: IContext=this.context): IReversibleUpdateOperation | undefined {
+    if (context.reversibleOperations.length === 0) {
+      return
+    }
+
+    const lastOperation = last(context.reversibleOperations) as IReversibleUpdateOperation
+    context.sessionVars = update(context.sessionVars, lastOperation.reverse)
+    return context.reversibleOperations.pop()
+  }
+
   runUntilInputRequiredFrom(ctx: IContextWithCursor): RichCursorInputRequiredType | undefined {
     /* todo: convert cursor to an object instead of tuple; since we don't have named tuples, a dictionary
         would be more intuitive */
@@ -298,6 +356,9 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
       flowId,
       originInteraction == null ? undefined : originInteraction.flowId,
       originInteractionId)
+
+    // todo: this could be extracted to an Expressions Behaviour
+    this.cacheInteractionByBlockName(richCursor[0], block as IMessageBlock, this.context)
 
     const lastInteraction = last(interactions)
     if (lastInteraction != null) {

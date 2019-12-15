@@ -1,4 +1,4 @@
-import {cloneDeep} from 'lodash'
+import {cloneDeep, set} from 'lodash'
 import {
   findFirstTruthyEvaluatingBlockExitOn,
   generateCachedProxyForBlockName,
@@ -63,15 +63,16 @@ describe('IBlock', () => {
 
     describe('proxy', () => {
       it('should pass through props that already existed on target', () => {
-        const proxy = generateCachedProxyForBlockName(target, {} as IContext) as IEvalContextBlock
+        const sampleTarget = {name: 'Bert', age: '40-something'}
+        const proxy = generateCachedProxyForBlockName(sampleTarget, {} as IContext)
 
-        expect(proxy.__interactionId).toEqual(target.__interactionId)
-        expect(proxy.__value__).toEqual(target.__value__)
-        expect(proxy.time).toEqual(target.time)
+        expect(proxy.name).toEqual(sampleTarget.name)
+        expect(proxy.age).toEqual(sampleTarget.age)
       })
 
       it('should return undefined when unable to find property on target', () => {
-        const proxy = generateCachedProxyForBlockName(target, {} as IContext) as IEvalContextBlock
+        const sampleTarget = {name: 'Bert', age: '40-something'}
+        const proxy = generateCachedProxyForBlockName(sampleTarget, {} as IContext)
         // @ts-ignore
         expect(proxy.unknown).toBeUndefined()
       })
@@ -82,6 +83,13 @@ describe('IBlock', () => {
         // *blockId/Message->(Message)/5e5d397a-a606-49e0-9a4d-8553a1af52aa
 
         const ctx = dataset.contexts[1]
+        const name = '1570221906056_83'
+        set(ctx.sessionVars, `blockInteractionsByBlockName.${name}`, {
+            __interactionId: '09894745-38ba-456f-aab4-720b7d09d5b3',
+            time: '2023-10-10T23:23:23.023Z',
+            text: 'some text',
+        })
+
         const proxy = generateCachedProxyForBlockName({}, ctx) as {'1570221906056_83': IEvalContextBlock}
         const blockForEvalContext = proxy['1570221906056_83']
 
@@ -90,37 +98,50 @@ describe('IBlock', () => {
         expect(blockForEvalContext.time).toEqual("2023-10-10T23:23:23.023Z")
       })
 
+      // this will do a lookup on context of `sessionVars.blockInteractionsByBlockName.${prop.toString()}`
+      // so, setup has a few steps:
+      // - we need our pseudo eval-context block to exist at `sessionVars.blockInteractionsByBlockName.1570221906056_83`
+      // - we need our block interactions to match up with the __interactionId on ^^^
+      // - we need two interactions with this same interaction id (this would never happen
+      //   but this is the simplest method of verifying search starting point
+
+      // todo: merge module declaration of `sessionVars` to have `blockInteractionsByBlockName: {[k: string]: IEvalContextBlock}`
       it('should perform search over interactions from right-to-left to provide most recent interaction value', () => {
         const ctx = dataset.contexts[1]
+        const expectedInteractionId = ctx.interactions[0].uuid
         // move cursor to first interaction, since this is the one under test
-        ctx.cursor![0] = ctx.interactions[0].uuid
+        // ctx.cursor![0] = expectedInteractionId
         // duplicate interaction to verify ltr/rtl hunt.
         ctx.interactions = [
           Object.assign(cloneDeep(ctx.interactions[0]), {value: 'Incorrect value'}),
           ctx.interactions[0],
         ]
 
+        set(ctx, 'sessionVars.blockInteractionsByBlockName.1570221906056_83', {__interactionId: expectedInteractionId})
+
         const proxy = generateCachedProxyForBlockName({}, ctx) as {'1570221906056_83': IEvalContextBlock}
         const blockForEvalContext = proxy['1570221906056_83']
 
+        expect(blockForEvalContext).toBeTruthy()
         expect(blockForEvalContext.__interactionId).toEqual('09894745-38ba-456f-aab4-720b7d09d5b3')
         expect(blockForEvalContext.__value__).toEqual('Test value')
-        expect(blockForEvalContext.time).toEqual("2023-10-10T23:23:23.023Z")
       })
 
-      it('should return value from cache when present', () => { // aka do this once, then modify context, and do it again
+      it('should return latest value from interactions upon each invocation', () => { // aka do this once, then modify context, and do it again
         const ctx = dataset.contexts[1]
+        const expectedInteractionId = ctx.interactions[0].uuid
+
+        set(ctx, 'sessionVars.blockInteractionsByBlockName.1570221906056_83', {__interactionId: expectedInteractionId})
+
         const proxy = generateCachedProxyForBlockName({}, ctx) as {'1570221906056_83': IEvalContextBlock}
 
         let blockForEvalContext = proxy['1570221906056_83']
         expect(blockForEvalContext).toBeTruthy()
 
-        ctx.interactions = []
+        ctx.interactions[0].value = 'Changed value'
 
         blockForEvalContext = proxy['1570221906056_83']
-        expect(blockForEvalContext.__interactionId).toEqual('09894745-38ba-456f-aab4-720b7d09d5b3')
-        expect(blockForEvalContext.__value__).toEqual('Test value')
-        expect(blockForEvalContext.time).toEqual("2023-10-10T23:23:23.023Z")
+        expect(blockForEvalContext.__value__).toEqual('Changed value')
       })
     })
   })

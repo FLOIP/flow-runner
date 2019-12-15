@@ -49,6 +49,9 @@ describe('FlowRunner/navigateTo', () => {
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
             ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
+      jest.spyOn(runner, 'cacheInteractionByBlockName') // todo: remove this once it's been pushed out to isolated behaviour
+        .mockImplementation(() => {})
+
       const
           previousIntxId = 'some-fake-block-interaction-uuid',
           promptConfig: INumericPromptConfig & IBasePromptConfig = {
@@ -152,6 +155,9 @@ describe('FlowRunner/navigateTo', () => {
             runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
               ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
+        jest.spyOn(runner, 'cacheInteractionByBlockName') // todo: remove this once it's been pushed out to isolated behaviour
+          .mockImplementation(() => {})
+
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
         expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) as string, ctx).flowId)
             .toBe(ctx.flows[0].uuid)
@@ -187,6 +193,9 @@ describe('FlowRunner/navigateTo', () => {
             runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
               ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
+        jest.spyOn(runner, 'cacheInteractionByBlockName') // todo: remove this once it's been pushed out to isolated behaviour
+          .mockImplementation(() => {})
+
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
         expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) as string, ctx).flowId)
             .toBe(ctx.flows[0].uuid)
@@ -221,6 +230,9 @@ describe('FlowRunner/navigateTo', () => {
             block = ctx.flows[1].blocks[0],
             runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
               ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
+
+        jest.spyOn(runner, 'cacheInteractionByBlockName') // todo: remove this once it's been pushed out to isolated behaviour
+          .mockImplementation(() => {})
 
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
         expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) as string, ctx).flowId)

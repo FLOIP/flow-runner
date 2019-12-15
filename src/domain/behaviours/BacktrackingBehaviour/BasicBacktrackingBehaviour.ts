@@ -13,7 +13,7 @@ import IContext, {
   RichCursorType,
 } from '../../../flow-spec/IContext'
 import ValidationException from '../../exceptions/ValidationException'
-import {IFlowNavigator, IPromptBuilder, NON_INTERACTIVE_BLOCK_TYPES} from '../../FlowRunner'
+import FlowRunner, {IFlowNavigator, IPromptBuilder, NON_INTERACTIVE_BLOCK_TYPES} from '../../FlowRunner'
 import {findBlockWith} from '../../..'
 
 
@@ -53,9 +53,17 @@ export default class  BasicBacktrackingBehaviour implements IBackTrackingBehavio
       context.interactions.length)
 
     // step out of nested flows that we've truncated
+    // todo: migrate to also use applyReversibleDataOperation()
     forEachRight(discarded, intx => intx.uuid === last(context.nestedFlowBlockInteractionIdStack)
         ? context.nestedFlowBlockInteractionIdStack.pop()
         : null)
+
+    // can only reverse from the end, so we only compare the last.
+    forEachRight(discarded, ({uuid}) => {
+      while (last(context.reversibleOperations)?.interactionId === uuid) {
+        FlowRunner.prototype.reverseLastDataOperation(context)
+      }
+    })
 
     return this.navigator.navigateTo(
       findBlockOnActiveFlowWith(intx.blockId, context),

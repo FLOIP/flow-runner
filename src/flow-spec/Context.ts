@@ -1,4 +1,4 @@
-import IContext, {CursorType} from './IContext'
+import IContext, {CursorType, IReversibleUpdateOperation} from './IContext'
 import IFlow from './IFlow'
 import IContact from './IContact'
 import DeliveryStatus from './DeliveryStatus'
@@ -16,9 +16,10 @@ export default class Context implements IContext {
     public languageId: string,
 
     public contact: IContact,
-    public sessionVars: object,
+    public sessionVars: any,
     public interactions: IBlockInteraction[],
     public nestedFlowBlockInteractionIdStack: string[],
+    public reversibleOperations: IReversibleUpdateOperation[],
 
     public flows: IFlow[],
     public firstFlowId: string,

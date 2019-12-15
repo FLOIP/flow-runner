@@ -1,3 +1,4 @@
+import {NonBreakingUpdateOperation} from 'sp2'
 import IContext, {RichCursorInputRequiredType, RichCursorType} from '../flow-spec/IContext'
 import IBlock from '../flow-spec/IBlock'
 import IBlockRunner from './runners/IBlockRunner'
@@ -13,4 +14,6 @@ export default interface IFlowRunner {
   initialize(): RichCursorType | undefined
 
   run(): RichCursorInputRequiredType | undefined
+
+  applyReversibleDataOperation(forward: NonBreakingUpdateOperation, reverse: NonBreakingUpdateOperation, context: IContext): void
 }

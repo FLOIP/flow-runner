@@ -1,10 +1,12 @@
+import {NonBreakingUpdateOperation} from 'sp2'
+
 import IContact from './IContact'
 import IFlow, {findBlockWith} from './IFlow'
 import IBlockInteraction from './IBlockInteraction'
 import IPrompt, {IBasePromptConfig, IPromptConfig} from '../domain/prompt/IPrompt'
 import IBlock from './IBlock'
 import IRunFlowBlockConfig from '../model/block/IRunFlowBlockConfig'
-import {find, last} from 'lodash'
+import {find, findLast, last} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
 import DeliveryStatus from './DeliveryStatus'
 import SupportedMode from './SupportedMode'
@@ -21,6 +23,12 @@ export type RichCursorType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IB
 export type RichCursorInputRequiredType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig>]
 export type RichCursorNoInputRequiredType = [IBlockInteraction, undefined]
 
+export interface IReversibleUpdateOperation {
+  interactionId?: string
+  forward: NonBreakingUpdateOperation
+  reverse: NonBreakingUpdateOperation
+}
+
 export default interface IContext {
   id: string
   createdAt: string
@@ -34,9 +42,10 @@ export default interface IContext {
   languageId: string
 
   contact: IContact
-  sessionVars: object
+  sessionVars: any // todo: what is an object type with any properties?
   interactions: IBlockInteraction[]
   nestedFlowBlockInteractionIdStack: string[]
+  reversibleOperations: IReversibleUpdateOperation[]
   cursor?: CursorType
 
   flows: IFlow[]
@@ -78,6 +87,7 @@ export function createContextDataObjectFor(
     sessionVars: {},
     interactions: [],
     nestedFlowBlockInteractionIdStack: [],
+    reversibleOperations: [],
 
     flows,
     firstFlowId: flows[0].uuid,
@@ -88,7 +98,7 @@ export function createContextDataObjectFor(
 }
 
 export function findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction {
-  const interaction = find(interactions, {uuid})
+  const interaction = findLast(interactions, {uuid})
   if (interaction == null) {
     throw new ValidationException(`Unable to find interaction on context: ${uuid} in ${interactions.map(i => i.uuid)}`)
   }

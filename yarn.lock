@@ -293,6 +293,28 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
+"@sp2/format@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@sp2/format/-/format-1.5.1.tgz#939784731f5463b4cdb7f09265472f033d3b0ef7"
+  integrity sha512-fNmTyx2o2TO24KKTWBDoHOlZeTvAkNopXiqqRJBbr6Bz47of80SLMjh+Yqd1xF8UppHhPKW1WgvnUdtW3fr4DQ==
+
+"@sp2/retriever@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@sp2/retriever/-/retriever-1.5.1.tgz#4f3619a3dca5ce23b193ebe55ec2fd012cc1cf6f"
+  integrity sha512-TDt3mDKYDbcIm8pug0MIacq+VywLsxGqVAEP5xKeB6BTnql4dcXkMMs1V9znzVEN0joXtM/7+7TLeWW2Yv+Qlg==
+  dependencies:
+    "@sp2/format" "^1.5.1"
+    fast-deep-equal "^2.0.1"
+
+"@sp2/updater@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@sp2/updater/-/updater-1.5.1.tgz#dfc99e01967806e43079bf823b9439638631b24b"
+  integrity sha512-7xDH55p0e9gX5YxKHjMchkKZFPbEyzbp1aRvhdPu/wcTIO6cH924FqcQ6h1ehHq4lnxrPti/HHxNvTvp5RTHTg==
+  dependencies:
+    "@sp2/format" "^1.5.1"
+    "@sp2/retriever" "^1.5.1"
+    fast-deep-equal "^2.0.1"
+
 "@types/babel__core@^7.1.0":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.3.tgz#e441ea7df63cd080dfcd02ab199e6d16a735fc30"
@@ -4074,6 +4096,15 @@ source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
+
+sp2@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/sp2/-/sp2-1.5.1.tgz#f0bb59fc7dbca10861bf106d3b4f546688cf833e"
+  integrity sha512-KPXssC2pdmRXOw89hfdlgVwcO3E8a9trCG5Z4JyEUitsqMYG+p49JRwIkajc+BuvN1faUaz8uGNcajjojn84FA==
+  dependencies:
+    "@sp2/format" "^1.5.1"
+    "@sp2/retriever" "^1.5.1"
+    "@sp2/updater" "^1.5.1"
 
 spdx-correct@^3.0.0:
   version "3.1.0"

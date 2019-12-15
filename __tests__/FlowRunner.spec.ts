@@ -95,7 +95,8 @@ describe('FlowRunner', () => {
         const context: IContext = require('../__test_fixtures__/fixtures/2019-10-08-case-block-eval-issue.json')
         const runner = new FlowRunner(context)
 
-        expect(runner.run()![0].blockId).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
+        expect(FlowRunner.prototype.run.bind(runner)).toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')
+        // expect(runner.run()![0].blockId).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
       })
     })
 
