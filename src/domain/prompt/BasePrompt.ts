@@ -16,6 +16,12 @@ import {RichCursorInputRequiredType} from '../..'
 // type Validator = <PromptType>(val: PromptType) => boolean
 // type x = {<PromptType>(arg: PromptType): PromptType}
 
+export type TGenericPrompt = IPrompt<IPromptConfig<any> & IBasePromptConfig>
+
+export interface IBasePromptConstructor {
+  new (): IPrompt<IPromptConfig<any> & IBasePromptConfig>
+}
+
 export default abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig>
   implements IPrompt<PromptConfigType> {
 

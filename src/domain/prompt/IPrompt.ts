@@ -18,18 +18,20 @@ export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptCo
 }
 
 
-// export enum KnownPrompts {}
+// todo: implement a pattern using Generics
+//       via https://stackoverflow.com/questions/46025487/create-extendable-enums-for-use-in-extendable-interfaces
 export enum KnownPrompts {
   Message = 'Message',
   Numeric = 'Numeric',
   SelectOne = 'SelectOne',
   SelectMany = 'SelectMany',
   Open = 'Open',
+  Read = 'Read',
 }
 
 
 export interface IPromptConfig<ExpectationType> {
-  kind: KnownPrompts
+  kind: keyof typeof KnownPrompts
   isResponseRequired: boolean
   prompt: string
   value?: ExpectationType

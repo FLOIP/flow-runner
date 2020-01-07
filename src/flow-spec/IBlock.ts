@@ -71,11 +71,19 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext): 
         return Reflect.get(...arguments)
       }
 
+      // fetch our basic representation of a block stored on the context
       const evalBlock = get(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`)
       if (evalBlock == null) {
         return
       }
 
+      // extend our basic block repr with the value from block interaction
+      // block interactions are logically immutable, but we yank this later to
+      //   (a) mitigate storing `.value`s redundantly
+      //   (b) allow post-processing using behaviours
+      // if we did want to cache the value as well, we'd need to
+      //   (a) implement the value portion in runOneBlock() rather than navigateTo() and
+      //   (b) remove the two lines below to simply return `evalBlock` ref
       const {value} = findInteractionWith(evalBlock.__interactionId, ctx)
       return extend({value, __value__: value}, evalBlock)
     },
@@ -94,7 +102,7 @@ export function createEvalContextFrom(context: IContext) {
   let block: IBlock | undefined
   let prompt: CursorType[1]
 
-  if (cursor != null) {
+  if (cursor != null) { // because evalContext.block references the current block we're working on
     flow = getActiveFlowFrom(context)
     block = findBlockWith(
       findInteractionWith(cursor[0], context).blockId,

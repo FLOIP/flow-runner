@@ -5,7 +5,7 @@ export default interface IBlockInteraction {
   entryAt: string
   exitAt?: string
   hasResponse: boolean
-  value?: string | number
+  value?: string | number | object
   details: IBlockInteractionDetails // json (?) can we type this at all?
   selectedExitId: string | null
   type: string

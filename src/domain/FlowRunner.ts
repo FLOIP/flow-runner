@@ -20,7 +20,7 @@ import IFlowRunner, {IBlockRunnerFactoryStore} from './IFlowRunner'
 import IIdGenerator from './IIdGenerator'
 import IdGeneratorUuidV4 from './IdGeneratorUuidV4'
 import ValidationException from './exceptions/ValidationException'
-import IPrompt, {IBasePromptConfig, IPromptConfig, KnownPrompts} from './prompt/IPrompt'
+import {IPromptConfig, KnownPrompts} from './prompt/IPrompt'
 import MessagePrompt from './prompt/MessagePrompt'
 import DeliveryStatus from '../flow-spec/DeliveryStatus'
 import NumericPrompt from './prompt/NumericPrompt'
@@ -43,6 +43,7 @@ import CaseBlockRunner from './runners/CaseBlockRunner'
 import ICaseBlock from '../model/block/ICaseBlock'
 import ResourceResolver from './ResourceResolver'
 import {IResource} from './IResourceResolver'
+import {TGenericPrompt} from './prompt/BasePrompt'
 
 
 export class BlockRunnerFactoryStore
@@ -56,7 +57,7 @@ export interface IFlowNavigator {
 
 export interface IPromptBuilder {
   buildPromptFor(block: IBlock, interaction: IBlockInteraction):
-    IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined
+    TGenericPrompt | undefined
 }
 
 const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
@@ -79,6 +80,17 @@ export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
     ['Core\\Case', (block, innerContext) => new CaseBlockRunner(block as ICaseBlock, innerContext)]])
 }
 
+// todo: flesh this out as an extensibile store that can be DI'd like runners
+export function createKindPromptMap() {
+  return {
+    [KnownPrompts.Message.toString()]: MessagePrompt,
+    [KnownPrompts.Numeric.toString()]: NumericPrompt,
+    [KnownPrompts.Open.toString()]: OpenPrompt,
+    [KnownPrompts.SelectOne.toString()]: SelectOnePrompt,
+    [KnownPrompts.SelectMany.toString()]: SelectManyPrompt,
+  }
+}
+
 export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   constructor(
     public context: IContext,
@@ -95,7 +107,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
    * runner.behaviours.myFirst instanceof MyFirstBehaviour
    * runner.behaviours.mySecond instanceof MySecondBehaviour
    * ``` */
-  initializeBehaviours(behaviourConstructors: IBehaviourConstructor[]) {
+  initializeBehaviours(behaviourConstructors: IBehaviourConstructor[]): void {
     behaviourConstructors.forEach(b =>
       this.behaviours[lowerFirst(trimEnd(b.name, 'Behaviour|Behavior'))]
         = new b(this.context, this, this))
@@ -211,7 +223,11 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
       {$set: {[blockNameKey]: previous}})
   }
 
-  applyReversibleDataOperation(forward: NonBreakingUpdateOperation, reverse: NonBreakingUpdateOperation, context: IContext=this.context): void {
+  applyReversibleDataOperation(
+    forward: NonBreakingUpdateOperation,
+    reverse: NonBreakingUpdateOperation,
+    context: IContext=this.context): void {
+
     context.sessionVars = update(context.sessionVars, forward)
     context.reversibleOperations.push({
       interactionId: last(context.interactions)?.uuid,
@@ -488,7 +504,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
   }
 
   buildPromptFor(block: IBlock, interaction: IBlockInteraction):
-    IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined {
+    TGenericPrompt | undefined {
 
     const runner = this.createBlockRunnerFor(block, this.context)
     const promptConfig = runner.initialize(interaction)
@@ -496,22 +512,14 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
   }
 
   private createPromptFrom(config?: IPromptConfig<any>, interaction?: IBlockInteraction):
-    IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined {
+    TGenericPrompt | undefined {
 
     if (config == null || interaction == null) {
       return
     }
 
-    // todo: flesh this out as an extensibile store that can be DI'd like runners
-    const kindConstructor = {
-      [KnownPrompts.Message]: MessagePrompt,
-      [KnownPrompts.Numeric]: NumericPrompt,
-      [KnownPrompts.Open]: OpenPrompt,
-      [KnownPrompts.SelectOne]: SelectOnePrompt,
-      [KnownPrompts.SelectMany]: SelectManyPrompt,
-    }[config.kind]
-
+    const promptConstructor = createKindPromptMap()[config.kind]
     // @ts-ignore
-    return new kindConstructor(config, interaction.uuid, this)
+    return new promptConstructor(config, interaction.uuid, this)
   }
 }

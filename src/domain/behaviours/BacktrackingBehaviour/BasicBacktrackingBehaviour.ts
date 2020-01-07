@@ -18,13 +18,14 @@ import {findBlockWith} from '../../..'
 
 
 export interface IBackTrackingBehaviour extends IBehaviour {
-  rebuildIndex(): void
+  rebuildIndex(): void,
   // generates new prompt from new interaction + resets state to what was `interaction`'s moment
-  jumpTo(interaction: IBlockInteraction): RichCursorType // todo: this should likely take in steps rather than interaction itself
+  // todo: this should likely take in steps rather than interaction itself
+  jumpTo(interaction: IBlockInteraction): RichCursorType,
   // regenerates prompt from previous interaction
-  peek(steps?: number): RichCursorType
+  peek(steps?: number): RichCursorType,
   // regenerates prompt + interaction in place of previous interaction; updates context.cursor
-  seek(steps?: number): RichCursorType
+  seek(steps?: number): RichCursorType,
 }
 
 export default class  BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
@@ -33,7 +34,9 @@ export default class  BasicBacktrackingBehaviour implements IBackTrackingBehavio
     public navigator: IFlowNavigator,
     public promptBuilder: IPromptBuilder) {}
 
-  rebuildIndex() {}
+  rebuildIndex(): void {
+    // do nothing for now
+  }
 
   seek(steps=0, context: IContext = this.context): RichCursorInputRequiredType {
     const [prevIntx, virtualPrompt]: RichCursorInputRequiredType = this.peek(steps, context)
@@ -48,7 +51,7 @@ export default class  BasicBacktrackingBehaviour implements IBackTrackingBehavio
 
   jumpTo(intx: IBlockInteraction, context: IContext = this.context): RichCursorType {
     // jump context.interactions back in time
-    const discarded = context.interactions.splice( // truncate interactions list to pull us back in time; including provided intx
+    const discarded = context.interactions.splice( // truncate intx list to pull us back in time; include provided intx
       findLastIndex(context.interactions, intx),
       context.interactions.length)
 
@@ -101,5 +104,7 @@ export default class  BasicBacktrackingBehaviour implements IBackTrackingBehavio
     return interaction
   }
 
-  postInteractionComplete(_interaction: IBlockInteraction, _context: IContext): void {}
+  postInteractionComplete(_interaction: IBlockInteraction, _context: IContext): void {
+    // do nothing
+  }
 }
