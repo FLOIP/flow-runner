@@ -44,6 +44,17 @@ import ICaseBlock from '../model/block/ICaseBlock'
 import ResourceResolver from './ResourceResolver'
 import {IResource} from './IResourceResolver'
 import {TGenericPrompt} from './prompt/BasePrompt'
+import RunFlowBlockRunner from './runners/RunFlowBlockRunner'
+import ReadBlockRunner from './runners/ReadBlockRunner'
+import PrintBlockRunner from './runners/PrintBlockRunner'
+import LogBlockRunner from './runners/LogBlockRunner'
+import OutputBlockRunner from './runners/OutputBlockRunner'
+import IOutputBlock from '../model/block/IOutputBlock'
+import ILogBlock from '../model/block/ILogBlock'
+import IPrintBlock from '../model/block/IPrintBlock'
+import IReadBlock from '../model/block/IReadBlock'
+import IRunFlowBlock from '../model/block/IRunFlowBlock'
+import ReadPrompt from './prompt/ReadPrompt'
 
 
 export class BlockRunnerFactoryStore
@@ -67,7 +78,7 @@ const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
 
 export const NON_INTERACTIVE_BLOCK_TYPES = [
   'Core\\Case',
-  'Core\\RunFlowBlock',
+  'Core\\RunFlow',
 ]
 
 export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
@@ -77,7 +88,12 @@ export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
     ['MobilePrimitives\\NumericResponse', (block, ctx) => new NumericResponseBlockRunner(block as INumericResponseBlock, ctx)],
     ['MobilePrimitives\\SelectOneResponse', (block, ctx) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
     ['MobilePrimitives\\SelectManyResponse', (block, ctx) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
-    ['Core\\Case', (block, ctx) => new CaseBlockRunner(block as ICaseBlock, ctx)]])
+    ['Core\\Case', (block, ctx) => new CaseBlockRunner(block as ICaseBlock, ctx)],
+    ['Core\\Output', (block, ctx) => new OutputBlockRunner(block as IOutputBlock, ctx)],
+    ['Core\\Log', (block, ctx) => new LogBlockRunner(block as ILogBlock, ctx)],
+    ['ConsoleIO\\Print', (block, ctx) => new PrintBlockRunner(block as IPrintBlock, ctx)],
+    ['ConsoleIO\\Read', (block, ctx) => new ReadBlockRunner(block as IReadBlock, ctx)],
+    ['Core\\RunFlow', (block, ctx) => new RunFlowBlockRunner(block as IRunFlowBlock, ctx)]])
 }
 
 // todo: flesh this out as an extensibile store that can be DI'd like runners
@@ -86,6 +102,7 @@ export function createKindPromptMap() {
     [KnownPrompts.Message.toString()]: MessagePrompt,
     [KnownPrompts.Numeric.toString()]: NumericPrompt,
     [KnownPrompts.Open.toString()]: OpenPrompt,
+    [KnownPrompts.Read.toString()]: ReadPrompt,
     [KnownPrompts.SelectOne.toString()]: SelectOnePrompt,
     [KnownPrompts.SelectMany.toString()]: SelectManyPrompt,
   }
@@ -270,7 +287,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
         continue // bail-- we're done.
       }
 
-      if (block.type === 'Core\\RunFlowBlock') {
+      if (block.type === 'Core\\RunFlow') {
         richCursor = this.navigateTo(block, ctx)
         block = this.stepInto(block, ctx)
       }
