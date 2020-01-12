@@ -59,8 +59,11 @@ export default abstract class BasePrompt<PromptConfigType extends IPromptConfig<
     return this.value === undefined
   }
 
-  fulfill(val: PromptConfigType['value']): TRichCursorInputRequired | undefined {
-    this.value = val
+  fulfill(val: PromptConfigType['value'] | undefined): TRichCursorInputRequired | undefined {
+    if (val !== undefined) { // allow prompt.fulfill() for continuation
+      this.value = val
+    }
+
     return this.runner.run()
   }
 
