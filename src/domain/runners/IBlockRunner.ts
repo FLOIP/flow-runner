@@ -1,7 +1,7 @@
 import IBlock from '../../flow-spec/IBlock'
 import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 import IBlockExit from '../../flow-spec/IBlockExit'
-import {RichCursorType} from '../..'
+import {TRichCursor} from '../..'
 import {IPromptConfig} from '../..'
 import IContext from '../../flow-spec/IContext'
 
@@ -11,5 +11,5 @@ export default interface IBlockRunner {
 
   initialize(interaction: IBlockInteraction): IPromptConfig<any> | undefined
 
-  run(cursor: RichCursorType): IBlockExit
+  run(cursor: TRichCursor): IBlockExit
 }

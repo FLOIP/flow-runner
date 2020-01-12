@@ -2,7 +2,7 @@ import {last} from 'lodash'
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
-import {findInteractionWith, RichCursorType} from '../../src'
+import {findInteractionWith, TRichCursor} from '../../src'
 import {IBasePromptConfig, KnownPrompts} from '../../src';
 import {createStaticFirstExitBlockRunnerFor} from "../../__test_fixtures__/fixtures/BlockRunner";
 import {INumericPromptConfig} from '../../src';
@@ -101,7 +101,7 @@ describe('FlowRunner/navigateTo', () => {
                 min: 999,}))
 
       const
-          richCursor: RichCursorType = runner.navigateTo(block, ctx),
+          richCursor: TRichCursor = runner.navigateTo(block, ctx),
           cursor = runner.dehydrateCursor(richCursor),
           expectedPrompt: INumericPromptConfig & IBasePromptConfig = startSpy.mock.results[0].value
 

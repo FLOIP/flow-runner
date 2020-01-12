@@ -2,7 +2,7 @@ import IBlockExit, {IBlockExitTestRequired} from './IBlockExit'
 import {extend, get, has, find, startsWith} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
 import IContext, {
-  CursorType,
+  TCursor,
   findInteractionWith,
   getActiveFlowFrom
 } from './IContext'
@@ -100,7 +100,7 @@ export function createEvalContextFrom(context: IContext) {
   const {contact, cursor, mode, languageId: language} = context
   let flow: IFlow | undefined
   let block: IBlock | undefined
-  let prompt: CursorType[1]
+  let prompt: TCursor[1]
 
   if (cursor != null) { // because evalContext.block references the current block we're working on
     flow = getActiveFlowFrom(context)

@@ -1,7 +1,7 @@
 import {zipObject} from 'lodash'
 import IBlockRunner from './IBlockRunner'
 import IBlockExit from '../../flow-spec/IBlockExit'
-import IContext, {RichCursorInputRequiredType} from '../../flow-spec/IContext'
+import IContext, {TRichCursorInputRequired} from '../../flow-spec/IContext'
 import IReadBlock from '../../model/block/IReadBlock'
 import ReadPrompt, {isReadError} from '../prompt/ReadPrompt'
 import {IReadError, TReadableType} from '../prompt/IReadPromptConfig'
@@ -17,7 +17,7 @@ export default class ReadBlockRunner implements IBlockRunner {
     return
   }
 
-  run([interaction, prompt]: RichCursorInputRequiredType): IBlockExit {
+  run([interaction, prompt]: TRichCursorInputRequired): IBlockExit {
     interaction.value = this._zipInput(
       (prompt as ReadPrompt).value,
       this.block.config.destinationVariables)

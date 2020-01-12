@@ -1,9 +1,11 @@
 import {NonBreakingUpdateOperation} from 'sp2'
-import IContext, {RichCursorInputRequiredType, RichCursorType} from '../flow-spec/IContext'
+import IContext, {TRichCursorInputRequired, TRichCursor} from '../flow-spec/IContext'
 import IBlock from '../flow-spec/IBlock'
 import IBlockRunner from './runners/IBlockRunner'
 
-export type IBlockRunnerFactoryStore = Map<string, { (block: IBlock, ctx: IContext): IBlockRunner }>
+export type TBlockRunnerFactory = { (block: IBlock, ctx: IContext): IBlockRunner }
+
+export type IBlockRunnerFactoryStore = Map<string, TBlockRunnerFactory>
 
 export default interface IFlowRunner {
   context: IContext
@@ -11,9 +13,9 @@ export default interface IFlowRunner {
 
   // new (context: IContext): IFlowRunner
 
-  initialize(): RichCursorType | undefined
+  initialize(): TRichCursor | undefined
 
-  run(): RichCursorInputRequiredType | undefined
+  run(): TRichCursorInputRequired | undefined
 
   applyReversibleDataOperation(forward: NonBreakingUpdateOperation, reverse: NonBreakingUpdateOperation, context: IContext): void
 }

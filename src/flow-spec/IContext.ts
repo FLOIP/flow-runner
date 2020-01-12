@@ -15,13 +15,13 @@ import IIdGenerator from '../domain/IIdGenerator'
 import IdGeneratorUuidV4 from '../domain/IdGeneratorUuidV4'
 
 
-export type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined]
-export type CursorInputRequiredType = [string /* UUID64*/, IPromptConfig<any> & IBasePromptConfig]
-export type CursorNoInputRequiredType = [string, undefined]
+export type TCursor = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined]
+export type TCursorInputRequired = [string /* UUID64*/, IPromptConfig<any> & IBasePromptConfig]
+export type TCursorNoInputRequired = [string, undefined]
 
-export type RichCursorType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined]
-export type RichCursorInputRequiredType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig>]
-export type RichCursorNoInputRequiredType = [IBlockInteraction, undefined]
+export type TRichCursor = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined]
+export type TRichCursorInputRequired = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig>]
+export type TRichCursorNoInputRequired = [IBlockInteraction, undefined]
 
 export interface IReversibleUpdateOperation {
   interactionId?: string
@@ -46,7 +46,7 @@ export default interface IContext {
   interactions: IBlockInteraction[]
   nestedFlowBlockInteractionIdStack: string[]
   reversibleOperations: IReversibleUpdateOperation[]
-  cursor?: CursorType
+  cursor?: TCursor
 
   flows: IFlow[]
   firstFlowId: string
@@ -57,11 +57,11 @@ export default interface IContext {
 }
 
 export interface IContextWithCursor extends IContext {
-  cursor: CursorType
+  cursor: TCursor
 }
 
 export interface IContextInputRequired extends IContext {
-  cursor: CursorInputRequiredType
+  cursor: TCursorInputRequired
 }
 
 export function createContextDataObjectFor(
@@ -70,7 +70,7 @@ export function createContextDataObjectFor(
   orgId: string,
   flows: IFlow[],
   languageId: string,
-  mode: SupportedMode,
+  mode: SupportedMode = SupportedMode.OFFLINE,
   resources: IResourceDefinition[] = [],
   idGenerator: IIdGenerator = new IdGeneratorUuidV4(),
 ): IContext {

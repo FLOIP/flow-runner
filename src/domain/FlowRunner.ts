@@ -3,20 +3,20 @@ import {update, NonBreakingUpdateOperation} from 'sp2'
 import {trimEnd, lowerFirst} from 'lodash'
 import IBlock, {findBlockExitWith} from '../flow-spec/IBlock'
 import IContext, {
-  CursorType,
+  TCursor,
   findBlockOnActiveFlowWith,
   findInteractionWith,
   getActiveFlowFrom,
   getActiveFlowIdFrom,
   IContextWithCursor, IReversibleUpdateOperation,
-  RichCursorInputRequiredType,
-  RichCursorType,
+  TRichCursorInputRequired,
+  TRichCursor,
 } from '../flow-spec/IContext'
 import IBlockRunner from './runners/IBlockRunner'
 import IBlockInteraction from '../flow-spec/IBlockInteraction'
 import IBlockExit from '../flow-spec/IBlockExit'
 import {find, first, includes, last} from 'lodash'
-import IFlowRunner, {IBlockRunnerFactoryStore} from './IFlowRunner'
+import IFlowRunner, {IBlockRunnerFactoryStore, TBlockRunnerFactory} from './IFlowRunner'
 import IIdGenerator from './IIdGenerator'
 import IdGeneratorUuidV4 from './IdGeneratorUuidV4'
 import ValidationException from './exceptions/ValidationException'
@@ -47,12 +47,12 @@ import {TGenericPrompt} from './prompt/BasePrompt'
 
 
 export class BlockRunnerFactoryStore
-  extends Map<string, { (block: IBlock, ctx: IContext): IBlockRunner }>
+  extends Map<string, TBlockRunnerFactory>
   implements IBlockRunnerFactoryStore {
 }
 
 export interface IFlowNavigator {
-  navigateTo(block: IBlock, ctx: IContext): RichCursorType
+  navigateTo(block: IBlock, ctx: IContext): TRichCursor
 }
 
 export interface IPromptBuilder {
@@ -72,12 +72,12 @@ export const NON_INTERACTIVE_BLOCK_TYPES = [
 
 export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
   return new BlockRunnerFactoryStore([
-    ['MobilePrimitives\\Message', (block, innerContext) => new MessageBlockRunner(block as IMessageBlock, innerContext)],
-    ['MobilePrimitives\\OpenResponse', (block, innerContext) => new OpenResponseBlockRunner(block as IOpenResponseBlock, innerContext)],
-    ['MobilePrimitives\\NumericResponse', (block, innerContext) => new NumericResponseBlockRunner(block as INumericResponseBlock, innerContext)],
-    ['MobilePrimitives\\SelectOneResponse', (block, innerContext) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, innerContext)],
-    ['MobilePrimitives\\SelectManyResponse', (block, innerContext) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, innerContext)],
-    ['Core\\Case', (block, innerContext) => new CaseBlockRunner(block as ICaseBlock, innerContext)]])
+    ['MobilePrimitives\\Message', (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
+    ['MobilePrimitives\\OpenResponse', (block, ctx) => new OpenResponseBlockRunner(block as IOpenResponseBlock, ctx)],
+    ['MobilePrimitives\\NumericResponse', (block, ctx) => new NumericResponseBlockRunner(block as INumericResponseBlock, ctx)],
+    ['MobilePrimitives\\SelectOneResponse', (block, ctx) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
+    ['MobilePrimitives\\SelectManyResponse', (block, ctx) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
+    ['Core\\Case', (block, ctx) => new CaseBlockRunner(block as ICaseBlock, ctx)]])
 }
 
 // todo: flesh this out as an extensibile store that can be DI'd like runners
@@ -91,7 +91,7 @@ export function createKindPromptMap() {
   }
 }
 
-export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
+export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   constructor(
     public context: IContext,
     public runnerFactoryStore: IBlockRunnerFactoryStore = createDefaultBlockRunnerStore(),
@@ -115,7 +115,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
 
   /**
    * We want to call start when we don't have a prompt needing work to be done. */
-  initialize(): RichCursorType | undefined {
+  initialize(): TRichCursor | undefined {
     const ctx = this.context
     const block = this.findNextBlockOnActiveFlowFor(ctx)
 
@@ -172,7 +172,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
    * The issue is that we may, in fact, end up needing to resume from a state where a particular block
    *    got itself into an invalid state and _crashed_, in which case, we'd still want the ability to pick up
    *    where we'd left off. */
-  run(): RichCursorInputRequiredType | undefined {
+  run(): TRichCursorInputRequired | undefined {
     const {context: ctx} = this
     if (!this.isInitialized(ctx)) {
       /* const richCursor = */
@@ -182,7 +182,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     return this.runUntilInputRequiredFrom(ctx as IContextWithCursor)
   }
 
-  isInputRequiredFor(ctx: IContext): boolean /* : ctx is RichCursorInputRequiredType*/ {
+  isInputRequiredFor(ctx: IContext): boolean /* : ctx is TRichCursorInputRequired*/ {
     return ctx.cursor != null
       && ctx.cursor[1] != null
       && ctx.cursor[1].value === undefined
@@ -246,16 +246,16 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     return context.reversibleOperations.pop()
   }
 
-  runUntilInputRequiredFrom(ctx: IContextWithCursor): RichCursorInputRequiredType | undefined {
+  runUntilInputRequiredFrom(ctx: IContextWithCursor): TRichCursorInputRequired | undefined {
     /* todo: convert cursor to an object instead of tuple; since we don't have named tuples, a dictionary
         would be more intuitive */
-    let richCursor: RichCursorType = this.hydrateRichCursorFrom(ctx)
+    let richCursor: TRichCursor = this.hydrateRichCursorFrom(ctx)
     let block: IBlock | undefined = findBlockOnActiveFlowWith(richCursor[0].blockId, ctx)
 
     do {
       if (this.isInputRequiredFor(ctx)) {
         console.info('Attempted to resume when prompt is not yet fulfilled; resurfacing same prompt instance.')
-        return richCursor as RichCursorInputRequiredType
+        return richCursor as TRichCursorInputRequired
       }
 
       this.runActiveBlockOn(richCursor, block)
@@ -303,11 +303,11 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     ctx.exitAt = (new Date).toISOString().replace('T', ' ')
   }
 
-  dehydrateCursor(richCursor: RichCursorType): CursorType {
+  dehydrateCursor(richCursor: TRichCursor): TCursor {
     return [richCursor[0].uuid, richCursor[1] != null ? richCursor[1].config : undefined]
   }
 
-  hydrateRichCursorFrom(ctx: IContextWithCursor): RichCursorType {
+  hydrateRichCursorFrom(ctx: IContextWithCursor): TRichCursor {
     const {cursor} = ctx
     const interaction = findInteractionWith(cursor[0], ctx)
     return [interaction, this.createPromptFrom(cursor[1], interaction)]
@@ -318,7 +318,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     flowId: string,
     originFlowId?: string,
     originBlockInteractionId?: string,
-  ): RichCursorType {
+  ): TRichCursor {
     let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
 
     Object.values(this.behaviours)
@@ -327,7 +327,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     return [interaction, this.buildPromptFor(block, interaction)]
   }
 
-  runActiveBlockOn(richCursor: RichCursorType, block: IBlock): IBlockExit {
+  runActiveBlockOn(richCursor: TRichCursor, block: IBlock): IBlockExit {
     // todo: write test to guard against already isSubmitted at this point
 
     if (richCursor[1] != null) {
@@ -359,7 +359,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     return factory(block, ctx)
   }
 
-  navigateTo(block: IBlock, ctx: IContext, navigatedAt: Date = new Date): RichCursorType {
+  navigateTo(block: IBlock, ctx: IContext, navigatedAt: Date = new Date): TRichCursor {
     const {interactions, nestedFlowBlockInteractionIdStack} = ctx
     const flowId = getActiveFlowIdFrom(ctx)
     const originInteractionId = last(nestedFlowBlockInteractionIdStack)
@@ -453,7 +453,7 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
   }
 
   findNextBlockOnActiveFlowFor(ctx: IContext): IBlock | undefined {
-    // cursor: RichCursorType | null, flow: IFlow): IBlock | null {
+    // cursor: TRichCursor | null, flow: IFlow): IBlock | null {
     const flow = getActiveFlowFrom(ctx)
     const {cursor} = ctx
 
@@ -523,3 +523,5 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     return new promptConstructor(config, interaction.uuid, this)
   }
 }
+
+export default FlowRunner

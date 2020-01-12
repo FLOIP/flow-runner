@@ -1,6 +1,6 @@
 import PromptValidationException from '../exceptions/PromptValidationException'
 import IFlowRunner from '../IFlowRunner'
-import {RichCursorInputRequiredType} from '../..'
+import {TRichCursorInputRequired} from '../..'
 
 
 export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
@@ -14,7 +14,7 @@ export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptCo
   isValid: boolean // !this.error
 
   validate(val: PromptConfigType['value']): boolean // it will raise an exception when it's invalid
-  fulfill(val: PromptConfigType['value']): RichCursorInputRequiredType | undefined
+  fulfill(val: PromptConfigType['value']): TRichCursorInputRequired | undefined
 }
 
 

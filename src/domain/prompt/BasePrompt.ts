@@ -3,7 +3,7 @@
 import IPrompt, {IBasePromptConfig, IPromptConfig} from './IPrompt'
 import PromptValidationException from '../exceptions/PromptValidationException'
 import IFlowRunner from '../IFlowRunner'
-import {RichCursorInputRequiredType} from '../..'
+import {TRichCursorInputRequired} from '../..'
 
 // export enum KnownPrompts {
 //   Message,
@@ -59,7 +59,7 @@ export default abstract class BasePrompt<PromptConfigType extends IPromptConfig<
     return this.value === undefined
   }
 
-  fulfill(val: PromptConfigType['value']): RichCursorInputRequiredType | undefined {
+  fulfill(val: PromptConfigType['value']): TRichCursorInputRequired | undefined {
     this.value = val
     return this.runner.run()
   }

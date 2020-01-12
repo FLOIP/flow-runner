@@ -12,7 +12,7 @@ import IBlockInteraction from '../../../flow-spec/IBlockInteraction'
 import IContext, {
   findBlockOnActiveFlowWith,
   findFlowWith,
-  RichCursorType,
+  TRichCursor,
 } from '../../../flow-spec/IContext'
 import {
   _append,
@@ -66,7 +66,7 @@ type BacktrackingIntxStack = IBacktrackingContext['interactionStack']
 export interface IBackTrackingBehaviour extends IBehaviour {
   rebuildIndex(): void
   // generates new prompt from new interaction + resets state to what was `interaction`'s moment
-  jumpTo(interaction: IBlockInteraction, context: IContext): RichCursorType // todo: this should likely take in steps rather than interaction itself
+  jumpTo(interaction: IBlockInteraction, context: IContext): TRichCursor // todo: this should likely take in steps rather than interaction itself
   // regenerates prompt from previous interaction
   peek(steps?: number): IPrompt<IPromptConfig<any> & IBasePromptConfig>
 }
@@ -172,7 +172,7 @@ export default class BacktrackingBehaviour implements IBackTrackingBehaviour {
     key.push(createStackKey(1, 0))
   }
 
-  jumpTo(interaction: IBlockInteraction, context: IContext): RichCursorType {
+  jumpTo(interaction: IBlockInteraction, context: IContext): TRichCursor {
     const {
       backtracking,
     } = this.context.platformMetadata as IContextBacktrackingPlatformMetadata

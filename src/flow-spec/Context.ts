@@ -1,4 +1,4 @@
-import IContext, {CursorType, IReversibleUpdateOperation} from './IContext'
+import IContext, {TCursor, IReversibleUpdateOperation} from './IContext'
 import IFlow from './IFlow'
 import IContact from './IContact'
 import DeliveryStatus from './DeliveryStatus'
@@ -29,7 +29,7 @@ export default class Context implements IContext {
     public exitAt?: string,
     public userId?: string,
     public orgId?: string,
-    public cursor?: CursorType,
+    public cursor?: TCursor,
     public platformMetadata: object = {},
 
     public logs: any = {}
