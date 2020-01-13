@@ -1,5 +1,4 @@
 import {update, NonBreakingUpdateOperation} from 'sp2'
-
 import {trimEnd, lowerFirst} from 'lodash'
 import IBlock, {findBlockExitWith} from '../flow-spec/IBlock'
 import IContext, {
@@ -28,7 +27,6 @@ import OpenPrompt from './prompt/OpenPrompt'
 import SelectOnePrompt from './prompt/SelectOnePrompt'
 import SelectManyPrompt from './prompt/SelectManyPrompt'
 import IBehaviour, {IBehaviourConstructor} from './behaviours/IBehaviour'
-// import BacktrackingBehaviour from './behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
 import BasicBacktrackingBehaviour from './behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour'
 import MessageBlockRunner from './runners/MessageBlockRunner'
 import IMessageBlock from '../model/block/IMessageBlock'
@@ -77,11 +75,17 @@ const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
   // BacktrackingBehaviour,
 ]
 
+/**
+ * Block types that do not request additional input from an `IContact`
+ */
 export const NON_INTERACTIVE_BLOCK_TYPES = [
   'Core\\Case',
   'Core\\RunFlow',
 ]
 
+/**
+ * A map of `IBlock.type` to an `TBlockRunnerFactory` function.
+ */
 export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
   return new BlockRunnerFactoryStore([
     ['MobilePrimitives\\Message', (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
@@ -97,7 +101,10 @@ export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
     ['Core\\RunFlow', (block, ctx) => new RunFlowBlockRunner(block as IRunFlowBlock, ctx)]])
 }
 
-// todo: flesh this out as an extensibile store that can be DI'd like runners
+/**
+ * A dictionary of `KnownPrompts.*` to *Prompt constructors.
+ * todo: flesh this out as an extensibile store that can be DI'd like runners
+ */
 export function createKindPromptMap() {
   return {
     [KnownPrompts.Message.toString()]: MessagePrompt,
@@ -109,11 +116,18 @@ export function createKindPromptMap() {
   }
 }
 
+/**
+ * Main interface into this library; see README for usage details.
+ */
 export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   constructor(
+    /** Running context, JSON-serializable entity with enough information to start or resume a Flow. */
     public context: IContext,
+    /** Map of block types to a factory producting an IBlockRunner instnace. */
     public runnerFactoryStore: IBlockRunnerFactoryStore = createDefaultBlockRunnerStore(),
+    /** Instance used to `generate()` unique IDs across interaction history. */
     protected idGenerator: IIdGenerator = new IdGeneratorUuidV4,
+    /** Instances providing isolated functionality beyond the default runner, leveraging built-in hooks. */
     public behaviours: { [key: string]: IBehaviour } = {},
   ) {
     this.initializeBehaviours(DEFAULT_BEHAVIOUR_TYPES)
@@ -132,7 +146,9 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   }
 
   /**
-   * We want to call start when we don't have a prompt needing work to be done. */
+   * Initialize entry point into this flow run; typically called internally.
+   * Sets up first block, engages run state and entry timestamp on context.
+   */
   initialize(): TRichCursor | undefined {
     const ctx = this.context
     const block = this.findNextBlockOnActiveFlowFor(ctx)
@@ -147,6 +163,11 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     return this.navigateTo(block, this.context) // kick-start by navigating to first block
   }
 
+  /**
+   * Verify whether or not we have a pointer in interaction history or not.
+   * This identifies whether or not a run is in progress.
+   * @param ctx
+   */
   isInitialized(ctx: IContext): boolean {
     // const {cursor, entryAt, exitAt} = ctx
     // return cursor && entryAt && !exitAt
@@ -154,6 +175,9 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     return ctx.cursor != null
   }
 
+  /**
+   * Decipher whether or not cursor points to the first interactive block or not.
+   */
   isFirst(): boolean {
     const {cursor, interactions} = this.context
 
@@ -171,6 +195,9 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     return firstInteractiveIntx.uuid === cursor![0]
   }
 
+  /**
+   * Decipher whether or not cursor points to the last block from interaction history.
+   */
   isLast(): boolean {
     const {cursor, interactions} = this.context
 
@@ -182,14 +209,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   }
 
   /**
-   * We want to call resume when we have a prompt needing work to be wrapped up on it.
-   *
-   * I'm wondering if these need to be treated differently. The concern is that resume _assumes_ a particular state;
-   * eg. cursor with a prompt requiring input
-   *
-   * The issue is that we may, in fact, end up needing to resume from a state where a particular block
-   *    got itself into an invalid state and _crashed_, in which case, we'd still want the ability to pick up
-   *    where we'd left off. */
+   * Either begin or a resume a flow run, leveraging context instance member.
+   */
   run(): TRichCursorInputRequired | undefined {
     const {context: ctx} = this
     if (!this.isInitialized(ctx)) {
@@ -200,6 +221,10 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     return this.runUntilInputRequiredFrom(ctx as IContextWithCursor)
   }
 
+  /**
+   * Decipher whether or not calling run() will be able to proceed or our cursor's prompt is in an invalid state.
+   * @param ctx
+   */
   isInputRequiredFor(ctx: IContext): boolean /* : ctx is TRichCursorInputRequired*/ {
     if (ctx.cursor == null || ctx.cursor[1] == null) {
       return false
@@ -255,6 +280,13 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       {$set: {[blockNameKey]: previous}})
   }
 
+  /**
+   * Apply a mutation to `sessionVars` and operations in both directions.
+   * These vars are made available in content Expressions.
+   * @param forward
+   * @param reverse
+   * @param context
+   */
   applyReversibleDataOperation(
     forward: NonBreakingUpdateOperation,
     reverse: NonBreakingUpdateOperation,
@@ -268,6 +300,10 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     })
   }
 
+  /**
+   * Pop last mutation to `sessionVars` and apply its reversal operation.
+   * @param context
+   */
   reverseLastDataOperation(context: IContext=this.context): IReversibleUpdateOperation | undefined {
     if (context.reversibleOperations.length === 0) {
       return
@@ -278,6 +314,13 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     return context.reversibleOperations.pop()
   }
 
+  /**
+   * Pushes onward through the flow when cursor's prompt has been fulfilled and there are blocks to draw from.
+   * This will continue running blocks until an interactive block is encountered and input is required from
+   * the IContact.
+   * Typically called internally.
+   * @param ctx
+   */
   runUntilInputRequiredFrom(ctx: IContextWithCursor): TRichCursorInputRequired | undefined {
     /* todo: convert cursor to an object instead of tuple; since we don't have named tuples, a dictionary
         would be more intuitive */
@@ -325,26 +368,50 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     // todo: set delivery status on context as INCOMPLETE
   // }
 
+  /**
+   * Close off last interaction, push context status to complete, and write out exit timestamp.
+   * Typically called internally.
+   * @param ctx
+   */
   complete(ctx: IContext): void {
-    // todo: set exitAt on context
-    // todo: set delivery status on context as COMPLETE
-
     (last(ctx.interactions) as IBlockInteraction).exitAt = createFormattedDate()
     delete ctx.cursor
     ctx.deliveryStatus = DeliveryStatus.FINISHED_COMPLETE
     ctx.exitAt = createFormattedDate()
   }
 
+  /**
+   * Take a richCursor down to the bare minumum for JSON-serializability.
+   * [0] IBlockInteraction reduced to its UUID
+   * [1] IPrompt reduced to its raw config object.
+   * Reverse of `hydrateRichCursorFrom()`.
+   * @param richCursor
+   */
   dehydrateCursor(richCursor: TRichCursor): TCursor {
     return [richCursor[0].uuid, richCursor[1] != null ? richCursor[1].config : undefined]
   }
 
+  /**
+   * Take raw cursor off an `IContext` and generate a richer, more detailed version; typically not JSON-serializable.
+   * [0] string UUID becomes full IBlockInteraction data object
+   * [1] IPromptConfig becomes full-fledged Prmopt instance corresponding to `kind`.
+   * Reverse of `dehydrateCursor()`.
+   * @param ctx
+   */
   hydrateRichCursorFrom(ctx: IContextWithCursor): TRichCursor {
     const {cursor} = ctx
     const interaction = findInteractionWith(cursor[0], ctx)
     return [interaction, this.createPromptFrom(cursor[1], interaction)]
   }
 
+  /**
+   * Generate an IBlockInteraction, apply `postInteractionCreate()` hooks over it,
+   * generate cursor with full-fledged prompt.
+   * @param block
+   * @param flowId
+   * @param originFlowId
+   * @param originBlockInteractionId
+   */
   initializeOneBlock(
     block: IBlock,
     flowId: string,
@@ -359,6 +426,12 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     return [interaction, this.buildPromptFor(block, interaction)]
   }
 
+  /**
+   * Apply prompt value onto IBlockInteraction, complete IBlockRunner execution, mark prompt as having been submitted,
+   * apply `postInteractionComplete()` hooks over it, and return IBlockRunner's selected exit.
+   * @param richCursor
+   * @param block
+   */
   runActiveBlockOn(richCursor: TRichCursor, block: IBlock): IBlockExit {
     // todo: write test to guard against already isSubmitted at this point
 
@@ -382,6 +455,12 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     return exit
   }
 
+  /**
+   * Produce an IBlockRunner instance leveraging `runnerFactoryStore` and `IBlock.type`.
+   * Raises when `ValidationException` when not found.
+   * @param block
+   * @param ctx
+   */
   createBlockRunnerFor(block: IBlock, ctx: IContext): IBlockRunner {
     const factory = this.runnerFactoryStore.get(block.type)
     if (factory == null) { // todo: need to pass as no-op for beta
@@ -391,6 +470,13 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     return factory(block, ctx)
   }
 
+  /**
+   * Initialize a block, close off any open past interaction, push newly initialized interaction onto history stack
+   * and apply new cursor onto context.
+   * @param block
+   * @param ctx
+   * @param navigatedAt
+   */
   navigateTo(block: IBlock, ctx: IContext, navigatedAt: Date = new Date): TRichCursor {
     const {interactions, nestedFlowBlockInteractionIdStack} = ctx
     const flowId = getActiveFlowIdFrom(ctx)
@@ -484,6 +570,11 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     return findBlockOnActiveFlowWith(destinationBlock, ctx)
   }
 
+  /**
+   * Find the active flow, then return first block on that flow if we've yet to initialize,
+   * otherwise leverage current interaction's selected exit pointer.
+   * @param ctx
+   */
   findNextBlockOnActiveFlowFor(ctx: IContext): IBlock | undefined {
     // cursor: TRichCursor | null, flow: IFlow): IBlock | null {
     const flow = getActiveFlowFrom(ctx)
@@ -497,20 +588,41 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     return this.findNextBlockFrom(interaction, ctx)
   }
 
-  findNextBlockFrom(interaction: IBlockInteraction, ctx: IContext): IBlock | undefined {
-    if (interaction.selectedExitId == null) {
+  /**
+   * Find next block leveraging destinationBlock on current interaction's `selectedExit`.
+   * Raises when `selectedExitId` absent.
+   * @param blockId
+   * @param selectedExitId
+   * @param ctx
+   */
+  findNextBlockFrom({blockId, selectedExitId}: IBlockInteraction, ctx: IContext): IBlock | undefined {
+    if (selectedExitId == null) {
       // todo: maybe tighter check on this, like: prompt.isFulfilled() === false || !called block.run()
       throw new ValidationException(
         'Unable to navigate past incomplete interaction; did you forget to call runner.run()?')
     }
 
-    const block = findBlockOnActiveFlowWith(interaction.blockId, ctx)
-    const {destinationBlock} = findBlockExitWith(interaction.selectedExitId, block)
+    const block = findBlockOnActiveFlowWith(blockId, ctx)
+    const {destinationBlock} = findBlockExitWith(selectedExitId, block)
     const {blocks} = getActiveFlowFrom(ctx)
 
     return find(blocks, {uuid: destinationBlock})
   }
 
+  /**
+   * Generate a concrete `IBlockInteraction` data object, pre-populated with:
+   * - UUID via `IIdGenerator.generate()`
+   * - entryAt via current timestamp
+   * - flowId (provisioned)
+   * - blockId via block.uuid
+   * - type via block.type provisioned
+   * - hasResponse as `false`
+   * @param blockId
+   * @param type
+   * @param flowId
+   * @param originFlowId
+   * @param originBlockInteractionId
+   */
   private createBlockInteractionFor(
     {uuid: blockId, type}: IBlock,
     flowId: string,
@@ -535,6 +647,12 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     }
   }
 
+  /**
+   * Build a prompt using block's corresponding `IBlockRunner.initialize()` configurator and createKindPromptMap() to
+   * discover prompt constructor.
+   * @param block
+   * @param interaction
+   */
   buildPromptFor(block: IBlock, interaction: IBlockInteraction):
     TGenericPrompt | undefined {
 
@@ -543,6 +661,12 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     return this.createPromptFrom(promptConfig, interaction)
   }
 
+  /**
+   * New up prompt instance from an IPromptConfig, assuming kind exists in `createKindPromptMap()`,
+   * resulting in null when either config or interaction are absent.
+   * @param config
+   * @param interaction
+   */
   createPromptFrom(config?: IPromptConfig<any>, interaction?: IBlockInteraction):
     TGenericPrompt | undefined {
 
