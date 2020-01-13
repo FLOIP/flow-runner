@@ -16,6 +16,10 @@ describe('FlowRunner/navigateTo', () => {
     dataset = createDefaultDataset()
   })
 
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   it('should push an additional interaction onto context\'s interaction stack', () => {
     const
         ctx = dataset.contexts[0],

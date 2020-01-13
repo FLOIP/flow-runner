@@ -15,6 +15,10 @@ describe('BasePrompt', () => {
     dataset = createDefaultDataset()
   })
 
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   describe('default state', () => {
     describe('error', () => {
       it('should default its error state to empty to simply UI rendering', () => {

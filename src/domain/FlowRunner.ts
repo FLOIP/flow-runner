@@ -10,7 +10,7 @@ import IContext, {
   getActiveFlowIdFrom,
   IContextWithCursor, IReversibleUpdateOperation,
   TRichCursorInputRequired,
-  TRichCursor,
+  TRichCursor, IContextInputRequired,
 } from '../flow-spec/IContext'
 import IBlockRunner from './runners/IBlockRunner'
 import IBlockInteraction from '../flow-spec/IBlockInteraction'
@@ -200,9 +200,23 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   }
 
   isInputRequiredFor(ctx: IContext): boolean /* : ctx is TRichCursorInputRequired*/ {
-    return ctx.cursor != null
-      && ctx.cursor[1] != null
-      && ctx.cursor[1].value === undefined
+    if (ctx.cursor == null || ctx.cursor[1] == null) {
+      return false
+    }
+
+    if (ctx.cursor[1].value === undefined) {
+      return true
+    }
+
+    const [, prompt]: TRichCursorInputRequired =
+      this.hydrateRichCursorFrom(ctx as IContextInputRequired) as TRichCursorInputRequired
+
+    try {
+      prompt.validate(prompt.value)
+      return false
+    } catch (e) {
+      return true
+    }
   }
 
   // todo: this could be extracted to an Expressions Behaviour
