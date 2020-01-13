@@ -5,7 +5,7 @@ import IMessageBlock from '../../model/block/IMessageBlock'
 import IContext from '../../flow-spec/IContext'
 
 
-export default class MessageBlockRunner implements IBlockRunner {
+export class MessageBlockRunner implements IBlockRunner {
   constructor(
     public block: IMessageBlock,
     public context: IContext) {}
@@ -23,3 +23,5 @@ export default class MessageBlockRunner implements IBlockRunner {
     return this.block.exits[0]
   }
 }
+
+export default MessageBlockRunner

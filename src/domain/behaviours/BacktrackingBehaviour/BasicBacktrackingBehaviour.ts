@@ -28,7 +28,7 @@ export interface IBackTrackingBehaviour extends IBehaviour {
   seek(steps?: number): TRichCursor,
 }
 
-export default class  BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
+export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
   constructor(
     public context: IContext,
     public navigator: IFlowNavigator,
@@ -108,3 +108,5 @@ export default class  BasicBacktrackingBehaviour implements IBackTrackingBehavio
     // do nothing
   }
 }
+
+export default BasicBacktrackingBehaviour

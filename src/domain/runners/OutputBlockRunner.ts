@@ -5,7 +5,7 @@ import IOutputBlock from '../../model/block/IOutputBlock'
 import {evaluateToString} from '../..'
 
 
-export default class OutputBlockRunner implements IBlockRunner {
+export class OutputBlockRunner implements IBlockRunner {
   constructor(
     public block: IOutputBlock,
     public context: IContext) {}
@@ -20,3 +20,5 @@ export default class OutputBlockRunner implements IBlockRunner {
     return this.block.exits[0]
   }
 }
+
+export default OutputBlockRunner

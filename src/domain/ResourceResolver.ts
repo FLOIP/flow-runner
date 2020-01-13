@@ -14,7 +14,7 @@ function isUUID(uuid: string): boolean {
     && UUID_MATCHER.test(uuid)
 }
 
-export default class ResourceResolver implements IResourceResolver {
+export class ResourceResolver implements IResourceResolver {
   constructor(public context: IContext) {}
 
   resolve(resourceId: string): IResource {
@@ -42,3 +42,5 @@ export default class ResourceResolver implements IResourceResolver {
     return new Resource(resourceId, values, this.context)
   }
 }
+
+export default ResourceResolver

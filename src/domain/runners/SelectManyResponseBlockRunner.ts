@@ -10,7 +10,7 @@ import {last} from 'lodash'
 import {ISelectManyPromptConfig} from '../prompt/ISelectManyPromptConfig'
 import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 
-export default class SelectManyResponseBlockRunner implements IBlockRunner {
+export class SelectManyResponseBlockRunner implements IBlockRunner {
   constructor(
     public block: ISelectOneResponseBlock,
     public context: IContext) {}
@@ -37,3 +37,5 @@ export default class SelectManyResponseBlockRunner implements IBlockRunner {
       ?? last(this.block.exits) as IBlockExitTestRequired
   }
 }
+
+export default SelectManyResponseBlockRunner

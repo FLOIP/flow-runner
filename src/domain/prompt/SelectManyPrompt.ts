@@ -9,7 +9,7 @@ import InvalidChoiceException from '../exceptions/InvalidChoiceException'
 export const INVALID_AT_LEAST_ONE_SELECTION_REQUIRED = 'At least one selection is required, but none provided'
 export const INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK = 'All selections must be valid choices on block'
 
-export default class SelectManyPrompt extends BasePrompt<ISelectManyPromptConfig & IBasePromptConfig> {
+export class SelectManyPrompt extends BasePrompt<ISelectManyPromptConfig & IBasePromptConfig> {
   validate(selections: IChoice['key'][]) {
     const {isResponseRequired, choices} = this.config
 
@@ -29,3 +29,5 @@ export default class SelectManyPrompt extends BasePrompt<ISelectManyPromptConfig
     return true
   }
 }
+
+export default SelectManyPrompt

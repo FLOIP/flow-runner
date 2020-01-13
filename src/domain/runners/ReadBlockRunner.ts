@@ -8,7 +8,7 @@ import {IReadError, TReadableType} from '../prompt/IReadPromptConfig'
 import IReadBlockConfig from '../../model/block/IReadBlockConfig'
 
 
-export default class ReadBlockRunner implements IBlockRunner {
+export class ReadBlockRunner implements IBlockRunner {
   constructor(
     public block: IReadBlock,
     public context: IContext) {}
@@ -35,3 +35,5 @@ export default class ReadBlockRunner implements IBlockRunner {
     return zipObject(propertyNames, input)
   }
 }
+
+export default ReadBlockRunner

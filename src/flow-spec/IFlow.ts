@@ -5,7 +5,7 @@ import ValidationException from '../domain/exceptions/ValidationException'
 import SupportedMode from './SupportedMode'
 import ILanguage from './ILanguage'
 
-export default interface IFlow {
+export interface IFlow {
   uuid: string // UUID32
   orgId: string
   name: string
@@ -21,6 +21,8 @@ export default interface IFlow {
   firstBlockId: string
   exitBlockId?: string
 }
+
+export default IFlow
 
 export function findBlockWith(uuid: string, {blocks}: IFlow): IBlock {
   const block = find(blocks, {uuid})

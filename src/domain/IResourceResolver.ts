@@ -47,11 +47,13 @@ export interface IResource {
   getVideo(): string
 }
 
-export default interface IResourceResolver {
+export interface IResourceResolver {
   context: IContext
 
   resolve(resourceId: string): IResource
 }
+
+export default IResourceResolver
 
 export function createTextResourceVariantWith(value: string, ctx: IContext): IResourceDefinitionContentTypeSpecific {
   return {

@@ -11,7 +11,7 @@ import IContext from '../../flow-spec/IContext'
 import {last} from 'lodash'
 import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 
-export default class SelectOneResponseBlockRunner implements IBlockRunner {
+export class SelectOneResponseBlockRunner implements IBlockRunner {
   constructor(
     public block: ISelectOneResponseBlock,
     public context: IContext) {}
@@ -38,3 +38,5 @@ export default class SelectOneResponseBlockRunner implements IBlockRunner {
       ?? last(this.block.exits) as IBlockExitTestRequired
   }
 }
+
+export default SelectOneResponseBlockRunner

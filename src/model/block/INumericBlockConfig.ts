@@ -1,4 +1,4 @@
-export default interface INumericBlockConfig {
+export interface INumericBlockConfig {
   prompt: string
   promptAudio: string
   validationMinimum: number
@@ -8,3 +8,5 @@ export default interface INumericBlockConfig {
     maxDigits: number
   }
 }
+
+export default INumericBlockConfig

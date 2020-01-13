@@ -3,7 +3,7 @@ import IFlowRunner from '../IFlowRunner'
 import {TRichCursorInputRequired} from '../..'
 
 
-export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
+export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
   interactionId: string
   config: PromptConfigType
   runner: IFlowRunner
@@ -17,6 +17,7 @@ export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptCo
   fulfill(val: PromptConfigType['value']): TRichCursorInputRequired | undefined
 }
 
+export default IPrompt
 
 // todo: implement a pattern using Generics
 //       via https://stackoverflow.com/questions/46025487/create-extendable-enums-for-use-in-extendable-interfaces

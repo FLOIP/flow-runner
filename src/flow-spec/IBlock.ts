@@ -9,7 +9,7 @@ import IContext, {
 import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
 import IFlow, {findBlockWith} from './IFlow'
 
-export default interface IBlock {
+export interface IBlock {
   uuid: string
   name: string
   label?: string
@@ -18,6 +18,8 @@ export default interface IBlock {
   config: object
   exits: IBlockExit[]
 }
+
+export default IBlock
 
 export interface IBlockWithTestExits extends IBlock {
   exits: IBlockExitTestRequired[]

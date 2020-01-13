@@ -3,7 +3,7 @@ import {INumericPromptConfig} from './INumericPromptConfig'
 import {IBasePromptConfig} from './IPrompt'
 import ValidationException from '../exceptions/ValidationException'
 
-export default class NumericPrompt extends BasePrompt<INumericPromptConfig & IBasePromptConfig> {
+export class NumericPrompt extends BasePrompt<INumericPromptConfig & IBasePromptConfig> {
 
   validate(val: number): boolean {
     if (Number.isNaN(val) || val === null) {
@@ -23,3 +23,5 @@ export default class NumericPrompt extends BasePrompt<INumericPromptConfig & IBa
     return true
   }
 }
+
+export default NumericPrompt

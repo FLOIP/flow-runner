@@ -6,7 +6,7 @@ import IBlockInteraction from './IBlockInteraction'
 import {IResource, IResources, SupportedMode} from '..'
 import ResourceResolver from '../domain/ResourceResolver'
 
-export default class Context implements IContext {
+export class Context implements IContext {
   constructor(
     public id: string,
     public createdAt: string,
@@ -40,3 +40,5 @@ export default class Context implements IContext {
       .resolve(resourceId)
   }
 }
+
+export default Context

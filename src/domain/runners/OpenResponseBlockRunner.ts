@@ -5,7 +5,7 @@ import IOpenResponseBlock from '../../model/block/IOpenResponseBlock'
 import IContext from '../../flow-spec/IContext'
 import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 
-export default class OpenResponseBlockRunner implements IBlockRunner {
+export class OpenResponseBlockRunner implements IBlockRunner {
   constructor(
     public block: IOpenResponseBlock,
     public context: IContext) {}
@@ -33,3 +33,5 @@ export default class OpenResponseBlockRunner implements IBlockRunner {
     return this.block.exits[0]
   }
 }
+
+export default OpenResponseBlockRunner

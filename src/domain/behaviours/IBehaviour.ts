@@ -9,7 +9,7 @@ export interface IBehaviourConstructor {
        promptBuilder: IPromptBuilder): IBehaviour
 }
 
-export default interface IBehaviour {
+export interface IBehaviour {
   context: IContext
   navigator: IFlowNavigator
   promptBuilder: IPromptBuilder
@@ -17,3 +17,5 @@ export default interface IBehaviour {
   postInteractionCreate(interaction: IBlockInteraction, context: IContext): IBlockInteraction
   postInteractionComplete(interaction: IBlockInteraction, context: IContext): void
 }
+
+export default IBehaviour

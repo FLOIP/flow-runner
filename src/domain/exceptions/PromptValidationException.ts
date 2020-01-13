@@ -1,1 +1,2 @@
-export default class PromptValidationException extends Error {}
+export class PromptValidationException extends Error {}
+export default PromptValidationException

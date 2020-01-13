@@ -5,7 +5,7 @@ import {evaluateToString} from '../..'
 import IPrintBlock from '../../model/block/IPrintBlock'
 
 
-export default class PrintBlockRunner implements IBlockRunner {
+export class PrintBlockRunner implements IBlockRunner {
   constructor(
     public block: IPrintBlock,
     public context: IContext,
@@ -24,3 +24,5 @@ export default class PrintBlockRunner implements IBlockRunner {
     return this.block.exits[0]
   }
 }
+
+export default PrintBlockRunner

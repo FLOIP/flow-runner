@@ -3,7 +3,7 @@ import {IBasePromptConfig} from './IPrompt'
 import ValidationException from '../exceptions/ValidationException'
 import {ISelectOnePromptConfig} from './ISelectOnePromptConfig'
 
-export default class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig & IBasePromptConfig> {
+export class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig & IBasePromptConfig> {
   validate(choiceKey: string) {
     const {isResponseRequired, choices} = this.config
 
@@ -15,3 +15,5 @@ export default class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig &
     return true
   }
 }
+
+export default SelectOnePrompt

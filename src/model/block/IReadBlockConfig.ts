@@ -1,4 +1,4 @@
-export default interface IReadBlockConfig {
+export interface IReadBlockConfig {
 
   /** This is a "scanf"-compatible format string, where any %-characters will be read into context variables. */
   formatString: string // todo: should this be message?
@@ -7,3 +7,5 @@ export default interface IReadBlockConfig {
    *  The number of variable names must match the number of %-characters in format_string. */
   destinationVariables: string[]
 }
+
+export default IReadBlockConfig

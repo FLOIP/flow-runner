@@ -1,5 +1,5 @@
 
-export default interface IBlockExit {
+export interface IBlockExit {
   uuid: string
   label: string // resource
   tag: string
@@ -11,6 +11,8 @@ export default interface IBlockExit {
   // todo: we need to update docs -- they specify "key presence", but I'd prefer us to be more explicit
   default?: boolean
 }
+
+export default IBlockExit
 
 export interface IBlockExitTestRequired extends IBlockExit {
   test: string

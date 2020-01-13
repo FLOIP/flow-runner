@@ -5,7 +5,7 @@ import ILogBlock from '../../model/block/ILogBlock'
 import {evaluateToString} from '../..'
 
 
-export default class LogBlockRunner implements IBlockRunner {
+export class LogBlockRunner implements IBlockRunner {
   constructor(
     public block: ILogBlock,
     public context: IContext) {}
@@ -24,3 +24,5 @@ export default class LogBlockRunner implements IBlockRunner {
     return this.block.exits[0]
   }
 }
+
+export default LogBlockRunner

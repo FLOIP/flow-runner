@@ -4,7 +4,7 @@ import IBlockExit from '../../flow-spec/IBlockExit'
 import IRunFlowBlockConfig from '../../model/block/IRunFlowBlockConfig'
 import IContext from '../../flow-spec/IContext'
 
-export default class RunFlowBlockRunner implements IBlockRunner {
+export class RunFlowBlockRunner implements IBlockRunner {
   constructor(
     public block: IBlock & { config: IRunFlowBlockConfig },
     public context: IContext) {}
@@ -17,3 +17,5 @@ export default class RunFlowBlockRunner implements IBlockRunner {
     return this.block.exits[0]
   }
 }
+
+export default RunFlowBlockRunner

@@ -71,7 +71,7 @@ export interface IBackTrackingBehaviour extends IBehaviour {
   peek(steps?: number): IPrompt<IPromptConfig<any> & IBasePromptConfig>
 }
 
-export default class BacktrackingBehaviour implements IBackTrackingBehaviour {
+export class BacktrackingBehaviour implements IBackTrackingBehaviour {
   constructor(
     public context: IContext,
     public navigator: IFlowNavigator,
@@ -395,3 +395,5 @@ export default class BacktrackingBehaviour implements IBackTrackingBehaviour {
     })
   }
 }
+
+export default BacktrackingBehaviour

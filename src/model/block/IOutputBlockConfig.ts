@@ -1,3 +1,5 @@
-export default interface IOutputBlockConfig {
+export interface IOutputBlockConfig {
   value: string
 }
+
+export default IOutputBlockConfig

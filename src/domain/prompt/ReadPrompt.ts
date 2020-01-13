@@ -15,7 +15,7 @@ export function isReadError(e: IReadPromptConfig['value']): e is IReadError {
     && (e as IReadError).message != null
 }
 
-export default class ReadPrompt
+export class ReadPrompt
   extends BasePrompt<IReadPromptConfig & IBasePromptConfig>
   implements IConsolePrompt {
 
@@ -56,3 +56,5 @@ export default class ReadPrompt
     return true
   }
 }
+
+export default ReadPrompt

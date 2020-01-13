@@ -1,4 +1,4 @@
-export default interface IOpenResponseBlockConfig {
+export interface IOpenResponseBlockConfig {
   prompt: string
   promptAudio: string
 
@@ -10,3 +10,5 @@ export default interface IOpenResponseBlockConfig {
     maxResponseCharacters?: number
   }
 }
+
+export default IOpenResponseBlockConfig

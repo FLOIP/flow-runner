@@ -29,7 +29,7 @@ export interface IReversibleUpdateOperation {
   reverse: NonBreakingUpdateOperation
 }
 
-export default interface IContext {
+export interface IContext {
   id: string
   createdAt: string
   entryAt?: string
@@ -55,6 +55,8 @@ export default interface IContext {
 
   logs: {[k: string]: string}
 }
+
+export default IContext
 
 export interface IContextWithCursor extends IContext {
   cursor: TCursor

@@ -7,7 +7,7 @@ import {findFirstTruthyEvaluatingBlockExitOn} from '../../flow-spec/IBlock'
 import IContext from '../../flow-spec/IContext'
 import ICaseBlock from '../../model/block/ICaseBlock'
 
-export default class CaseBlockRunner implements IBlockRunner {
+export class CaseBlockRunner implements IBlockRunner {
   constructor(
     public block: ICaseBlock,
     public context: IContext) {}
@@ -21,3 +21,5 @@ export default class CaseBlockRunner implements IBlockRunner {
       ?? findDefaultBlockExitOn(this.block) as IBlockExitTestRequired
   }
 }
+
+export default CaseBlockRunner

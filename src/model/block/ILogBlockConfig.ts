@@ -1,3 +1,5 @@
-export default interface ILogBlockConfig {
+export interface ILogBlockConfig {
   message: string
 }
+
+export default ILogBlockConfig

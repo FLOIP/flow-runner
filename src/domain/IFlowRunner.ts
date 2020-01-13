@@ -7,7 +7,7 @@ export type TBlockRunnerFactory = { (block: IBlock, ctx: IContext): IBlockRunner
 
 export type IBlockRunnerFactoryStore = Map<string, TBlockRunnerFactory>
 
-export default interface IFlowRunner {
+export interface IFlowRunner {
   context: IContext
   runnerFactoryStore: IBlockRunnerFactoryStore
 
@@ -19,3 +19,5 @@ export default interface IFlowRunner {
 
   applyReversibleDataOperation(forward: NonBreakingUpdateOperation, reverse: NonBreakingUpdateOperation, context: IContext): void
 }
+
+export default IFlowRunner

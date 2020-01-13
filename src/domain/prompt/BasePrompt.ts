@@ -22,7 +22,7 @@ export interface IBasePromptConstructor {
   new (): IPrompt<IPromptConfig<any> & IBasePromptConfig>
 }
 
-export default abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig>
+export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig>
   implements IPrompt<PromptConfigType> {
 
   error: PromptValidationException | null = null
@@ -69,3 +69,5 @@ export default abstract class BasePrompt<PromptConfigType extends IPromptConfig<
 
   abstract validate(val?: PromptConfigType['value']): boolean
 }
+
+export default BasePrompt

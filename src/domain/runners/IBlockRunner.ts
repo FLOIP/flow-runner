@@ -5,7 +5,7 @@ import {TRichCursor} from '../..'
 import {IPromptConfig} from '../..'
 import IContext from '../../flow-spec/IContext'
 
-export default interface IBlockRunner {
+export interface IBlockRunner {
   block: IBlock
   context: IContext
 
@@ -13,3 +13,5 @@ export default interface IBlockRunner {
 
   run(cursor: TRichCursor): IBlockExit
 }
+
+export default IBlockRunner

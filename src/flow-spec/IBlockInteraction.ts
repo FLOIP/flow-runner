@@ -1,4 +1,4 @@
-export default interface IBlockInteraction {
+export interface IBlockInteraction {
   uuid: string // UUID64
   blockId: string // UUID32
   flowId: string // UUID32
@@ -13,6 +13,8 @@ export default interface IBlockInteraction {
   originBlockInteractionId?: string // UUID64
   originFlowId?: string // UUID64
 }
+
+export default IBlockInteraction
 
 export interface IBlockInteractionDetails {
 }

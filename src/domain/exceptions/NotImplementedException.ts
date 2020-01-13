@@ -1,1 +1,2 @@
-export default class NotImplementedException extends Error {}
+export class NotImplementedException extends Error {}
+export default NotImplementedException
