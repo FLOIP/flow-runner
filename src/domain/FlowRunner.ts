@@ -55,6 +55,7 @@ import IPrintBlock from '../model/block/IPrintBlock'
 import IReadBlock from '../model/block/IReadBlock'
 import IRunFlowBlock from '../model/block/IRunFlowBlock'
 import ReadPrompt from './prompt/ReadPrompt'
+import createFormattedDate from './DateFormat'
 
 
 export class BlockRunnerFactoryStore
@@ -141,7 +142,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     }
 
     ctx.deliveryStatus = DeliveryStatus.IN_PROGRESS
-    ctx.entryAt = (new Date).toISOString().replace('T', ' ')
+    ctx.entryAt = createFormattedDate()
 
     return this.navigateTo(block, this.context) // kick-start by navigating to first block
   }
@@ -328,10 +329,10 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     // todo: set exitAt on context
     // todo: set delivery status on context as COMPLETE
 
-    (last(ctx.interactions) as IBlockInteraction).exitAt = (new Date).toISOString().replace('T', ' ')
+    (last(ctx.interactions) as IBlockInteraction).exitAt = createFormattedDate()
     delete ctx.cursor
     ctx.deliveryStatus = DeliveryStatus.FINISHED_COMPLETE
-    ctx.exitAt = (new Date).toISOString().replace('T', ' ')
+    ctx.exitAt = createFormattedDate()
   }
 
   dehydrateCursor(richCursor: TRichCursor): TCursor {
@@ -409,7 +410,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
 
     const lastInteraction = last(interactions)
     if (lastInteraction != null) {
-      lastInteraction.exitAt = navigatedAt.toISOString().replace('T', ' ')
+      lastInteraction.exitAt = createFormattedDate(navigatedAt)
     }
 
     interactions.push(richCursor[0])
@@ -520,7 +521,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       uuid: this.idGenerator.generate(),
       blockId,
       flowId,
-      entryAt: (new Date).toISOString().replace('T', ' '),
+      entryAt: createFormattedDate(),
       exitAt: undefined,
       hasResponse: false,
       value: undefined,
@@ -542,7 +543,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     return this.createPromptFrom(promptConfig, interaction)
   }
 
-  private createPromptFrom(config?: IPromptConfig<any>, interaction?: IBlockInteraction):
+  createPromptFrom(config?: IPromptConfig<any>, interaction?: IBlockInteraction):
     TGenericPrompt | undefined {
 
     if (config == null || interaction == null) {

@@ -13,6 +13,7 @@ import SupportedMode from './SupportedMode'
 import {IResourceDefinition, IResources} from '..'
 import IIdGenerator from '../domain/IIdGenerator'
 import IdGeneratorUuidV4 from '../domain/IdGeneratorUuidV4'
+import createFormattedDate from '../domain/DateFormat'
 
 
 export type TCursor = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined]
@@ -79,7 +80,7 @@ export function createContextDataObjectFor(
 
   return {
     id: idGenerator.generate(),
-    createdAt: (new Date).toISOString().replace('T', ' '),
+    createdAt: createFormattedDate(),
     deliveryStatus: DeliveryStatus.QUEUED,
 
     userId,

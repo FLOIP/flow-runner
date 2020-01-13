@@ -3,6 +3,7 @@ import IBlockExit from '../../flow-spec/IBlockExit'
 import IContext from '../../flow-spec/IContext'
 import ILogBlock from '../../model/block/ILogBlock'
 import {evaluateToString} from '../..'
+import createFormattedDate from '../DateFormat'
 
 
 export class LogBlockRunner implements IBlockRunner {
@@ -15,8 +16,7 @@ export class LogBlockRunner implements IBlockRunner {
   }
 
   run(): IBlockExit {
-    // todo: should this be w/ T or w/o T ? See: https://floip.gitbooks.io/flow-specification/content/layers/layer1/blocks.html
-    this.context.logs[(new Date).toISOString()] =
+    this.context.logs[createFormattedDate()] =
       evaluateToString(this.block.config.message, this.context)
 
     // todo: should we also write this as the value of the block interaction like the output block?
