@@ -3,9 +3,10 @@ import IBlockRunner from './IBlockRunner'
 import IBlockExit from '../../flow-spec/IBlockExit'
 import IContext, {TRichCursorInputRequired} from '../../flow-spec/IContext'
 import IReadBlock from '../../model/block/IReadBlock'
-import ReadPrompt, {isReadError} from '../prompt/ReadPrompt'
-import {IReadError, TReadableType} from '../prompt/IReadPromptConfig'
-import IReadBlockConfig from '../../model/block/IReadBlockConfig'
+import ReadPrompt from '../prompt/ReadPrompt'
+import {IReadPromptConfig, TReadableType} from '../prompt/IReadPromptConfig'
+import {KnownPrompts} from '../..'
+import IReadBlockInteractionDetails from '../../flow-spec/IReadBlockInteractionDetails'
 
 
 export class ReadBlockRunner implements IBlockRunner {
@@ -13,26 +14,30 @@ export class ReadBlockRunner implements IBlockRunner {
     public block: IReadBlock,
     public context: IContext) {}
 
-  initialize(): undefined {
-    return
+  initialize(): IReadPromptConfig {
+    const {destinationVariables, formatString} = this.block.config
+    return {
+      kind: KnownPrompts.Read,
+      prompt: `Requesting  ${JSON.stringify(destinationVariables)}`,
+      destinationVariables,
+      formatString,
+      isResponseRequired: false,
+    }
   }
 
   run([interaction, prompt]: TRichCursorInputRequired): IBlockExit {
-    interaction.value = this._zipInput(
-      (prompt as ReadPrompt).value,
-      this.block.config.destinationVariables)
+    interaction.value = zipObject(
+      this.block.config.destinationVariables,
+      (prompt as ReadPrompt).value as TReadableType[])
+
+    const {error} = prompt
+    if (error != null) {
+      (interaction.details as IReadBlockInteractionDetails).readError = {message: error.message}
+    }
 
     return prompt.isValid
       ? this.block.exits[0]
       : this.block.exits[1]
-  }
-
-  _zipInput(input: TReadableType[] | IReadError | undefined, propertyNames: IReadBlockConfig['destinationVariables']) {
-    if (input == null || isReadError(input)) {
-      return input
-    }
-
-    return zipObject(propertyNames, input)
   }
 }
 

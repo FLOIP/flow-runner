@@ -1,18 +1,14 @@
-import {isArray} from 'lodash'
+import {fill, isArray} from 'lodash'
 import scanf from "scanf"
 import BasePrompt from './BasePrompt'
 import {IBasePromptConfig} from './IPrompt'
 import ValidationException from '../exceptions/ValidationException'
-import {IReadError, IReadPromptConfig, TReadableType} from './IReadPromptConfig'
+import {IReadPromptConfig, TReadableType} from './IReadPromptConfig'
 import IFlowRunner from '../IFlowRunner'
+import {PromptValidationException} from '../..'
 
 export interface IConsolePrompt {
   read(): void
-}
-
-export function isReadError(e: IReadPromptConfig['value']): e is IReadError {
-  return e != null
-    && (e as IReadError).message != null
 }
 
 export class ReadPrompt
@@ -30,11 +26,12 @@ export class ReadPrompt
 
   read(): void {
     try {
-      this.console.log('Requesting ', JSON.stringify(this.config.destinationVariables))
+      this.console.log(this.config.prompt)
       const input: TReadableType | TReadableType[] = scanf(this.config.formatString)
       this.value = isArray(input) ? input : [input]
     } catch ({message}) {
-      this.value = {message} // so that we're json-serializable throughout the process
+      this.value = fill(new Array(this.config.destinationVariables.length), null) // default to null as empties
+      this.error = new PromptValidationException(message)
     }
   }
 
@@ -43,10 +40,6 @@ export class ReadPrompt
 
     if (readValues == null) {
       throw new ValidationException('Value provided must be a list of string|number')
-    }
-
-    if (isReadError(readValues)) {
-      return true
     }
 
     if (readValues.length !== destinationVariables.length) {
