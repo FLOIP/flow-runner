@@ -21,7 +21,7 @@ import IIdGenerator from './IIdGenerator'
 import uuid from 'uuid'
 
 /**
- * Implementation of [[IIdGenerator]] that generates UUIDv4-format IDs.
+ * Implementation of {@link IIdGenerator} that generates UUIDv4-format IDs.
  */
 export class IdGeneratorUuidV4 implements IIdGenerator {
   generate(): string {

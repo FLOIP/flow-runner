@@ -136,7 +136,8 @@ export function createKindPromptMap() {
 }
 
 /**
- * Main interface into this library; see README for usage details.
+ * Main interface into this library.
+ * @see README.md for usage details.
  */
 export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   constructor(

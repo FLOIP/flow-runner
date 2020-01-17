@@ -22,6 +22,10 @@ import {INumericPromptConfig} from './INumericPromptConfig'
 import {IBasePromptConfig} from './IPrompt'
 import ValidationException from '../exceptions/ValidationException'
 
+/**
+ * Concrete implementation of {@link BasePrompt} to request a number, optionally within particular bounds, from an
+ * {@link IContact}.
+ */
 export class NumericPrompt extends BasePrompt<INumericPromptConfig & IBasePromptConfig> {
 
   validate(val: number): boolean {

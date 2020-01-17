@@ -22,6 +22,10 @@ import {IBasePromptConfig} from './IPrompt'
 import {IOpenPromptConfig} from './IOpenPromptConfig'
 import ValidationException from '../exceptions/ValidationException'
 
+/**
+ * Concrete implementation of {@link BasePrompt} to request a string of text, optionally with a maximum length boundary,
+ * from an {@link IContact}.
+ */
 export class OpenPrompt extends BasePrompt<IOpenPromptConfig & IBasePromptConfig> {
   validate(val: string): boolean {
     const {maxResponseCharacters: maxLength} = this.config

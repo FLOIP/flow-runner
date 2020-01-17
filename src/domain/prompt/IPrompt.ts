@@ -21,18 +21,25 @@ import PromptValidationException from '../exceptions/PromptValidationException'
 import IFlowRunner from '../IFlowRunner'
 import {TRichCursorInputRequired} from '../..'
 
-
+/**
+ * Primary interface for interacting with an {@link IContact}; typically not immplemented fully, it is recommended that
+ * additional {@link IPrompt} implementations rather extend provided {@link BasePrompt}.
+ */
 export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
   interactionId: string
   config: PromptConfigType
   runner: IFlowRunner
 
-  // todo: need to validate on instantiation?
-  value: PromptConfigType['value'] // when setting: (this.value = value) && this.validate() --- todo: should this property be reactive?
+  value: PromptConfigType['value']
+  /** Eror populated when {@link IPrompt.value} assignment raises  */
   error: PromptValidationException | null
+  /** State populated when {@link IPrompt.value} is assigned */
   isValid: boolean // !this.error
 
-  validate(val: PromptConfigType['value']): boolean // it will raise an exception when it's invalid
+
+  /** @see {@link BasePrompt.validate} */
+  validate(val: PromptConfigType['value']): boolean
+  /** @see {@link BasePrompt.fulfill} */
   fulfill(val: PromptConfigType['value']): TRichCursorInputRequired | undefined
 }
 
@@ -40,6 +47,8 @@ export default IPrompt
 
 // todo: implement a pattern using Generics
 //       via https://stackoverflow.com/questions/46025487/create-extendable-enums-for-use-in-extendable-interfaces
+
+/** Enumeration of pre-packaged Prompt kinds; contains string values. */
 export enum KnownPrompts {
   Message = 'Message',
   Numeric = 'Numeric',
@@ -49,7 +58,7 @@ export enum KnownPrompts {
   Read = 'Read',
 }
 
-
+/** Interface for configuration to resolve and build a {@link BasePrompt} instance. */
 export interface IPromptConfig<ExpectationType> {
   kind: keyof typeof KnownPrompts
   isResponseRequired: boolean
@@ -57,7 +66,7 @@ export interface IPromptConfig<ExpectationType> {
   value?: ExpectationType
 }
 
-
+/** Interface for local {@link BasePrompt} properties not intersecting with {@link IPromptConfig} */
 export interface IBasePromptConfig {
   isSubmitted: boolean
 }

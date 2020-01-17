@@ -35,18 +35,37 @@ import ValidationException from '../../exceptions/ValidationException'
 import FlowRunner, {IFlowNavigator, IPromptBuilder, NON_INTERACTIVE_BLOCK_TYPES} from '../../FlowRunner'
 import {findBlockWith} from '../../..'
 
-
+/**
+ * Interface for time-travel within interaction history.
+ */
 export interface IBackTrackingBehaviour extends IBehaviour {
+  /**
+   * Rebuild index over interaction history from scratch.
+   */
   rebuildIndex(): void,
-  // generates new prompt from new interaction + resets state to what was `interaction`'s moment
-  // todo: this should likely take in steps rather than interaction itself
+  /**
+   * Generates new prompt from new interaction + resets state to what was {@link IContext.interactions}'s moment
+   * @param interaction
+   * todo: this should likely take in steps rather than interaction itself */
   jumpTo(interaction: IBlockInteraction): TRichCursor,
-  // regenerates prompt from previous interaction
+
+  /**
+   * Regenerates prompt from previous interaction
+   * @param steps
+   */
   peek(steps?: number): TRichCursor,
-  // regenerates prompt + interaction in place of previous interaction; updates context.cursor
+
+  /**
+   * Regenerates prompt + interaction in place of previous interaction; updates {@link IContext.cursor}
+   * @param steps
+   */
   seek(steps?: number): TRichCursor,
 }
 
+/**
+ * Basic implementation of time-travel. Solely provides ability to preview what's happened in the past, while any
+ * modifications will clear the past's future.
+ */
 export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
   constructor(
     public context: IContext,

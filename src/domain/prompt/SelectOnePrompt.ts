@@ -22,6 +22,10 @@ import {IBasePromptConfig} from './IPrompt'
 import ValidationException from '../exceptions/ValidationException'
 import {ISelectOnePromptConfig} from './ISelectOnePromptConfig'
 
+/**
+ * Concrete implementation of {@link BasePrompt} to request, at most, one selection from multiple choices, from an
+ * {@link IContact}.
+ */
 export class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig & IBasePromptConfig> {
   validate(choiceKey: string) {
     const {isResponseRequired, choices} = this.config

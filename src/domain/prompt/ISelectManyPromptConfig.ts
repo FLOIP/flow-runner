@@ -20,7 +20,9 @@
 import {IPromptConfig, KnownPrompts} from './IPrompt'
 import {IChoice} from './ISelectOnePromptConfig'
 
-
+/**
+ * Interface for defining an {@link IPromptConfig} resolving to a {@link SelectManyPrompt}.
+ */
 export interface ISelectManyPromptConfig extends IPromptConfig<IChoice['key'][] | null> {
   kind: KnownPrompts.SelectMany
   choices: IChoice[]

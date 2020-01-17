@@ -17,5 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
+/**
+ * Specialized exception for {@link IResource} lookups.
+ */
 export class ResourceNotFoundException extends Error {}
 export default ResourceNotFoundException

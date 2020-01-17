@@ -17,5 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
+/**
+ * Generic exception for stunted extension, or in-progress implementations.
+ */
 export class NotImplementedException extends Error {}
 export default NotImplementedException

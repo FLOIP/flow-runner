@@ -21,6 +21,9 @@ import {IPromptConfig, KnownPrompts} from './IPrompt'
 
 
 // todo: can our value type use some fancy keyof magic to say we need a value that's of the type of one of the {key} props in choices?
+/**
+ * Interface for defining an {@link IPromptConfig} resolving to a {@link SelectOnePrompt}.
+ */
 export interface ISelectOnePromptConfig extends IPromptConfig<IChoice['key'] | null> {
   kind: KnownPrompts.SelectOne
   choices: IChoice[]

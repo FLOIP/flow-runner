@@ -30,6 +30,10 @@ export interface IConsolePrompt {
   read(): void
 }
 
+/**
+ * Concrete implementation of {@link BasePrompt} to request input using platform dependent readline utility from an
+ * {@link IContact}.
+ */
 export class ReadPrompt
   extends BasePrompt<IReadPromptConfig & IBasePromptConfig>
   implements IConsolePrompt {

@@ -19,6 +19,9 @@
 
 import {IPromptConfig, KnownPrompts} from './IPrompt'
 
+/**
+ * Interface for defining an {@link IPromptConfig} resolving to a {@link OpenPrompt}.
+ */
 export interface IOpenPromptConfig extends IPromptConfig<string | null> {
   kind: KnownPrompts.Open
   maxResponseCharacters?: number

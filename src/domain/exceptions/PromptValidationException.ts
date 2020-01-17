@@ -17,5 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
+/**
+ * Specialized validation exception to be predictably raised by {@link IPrompt} implementations.
+ */
 export class PromptValidationException extends Error {}
 export default PromptValidationException

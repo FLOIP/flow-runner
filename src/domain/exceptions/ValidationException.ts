@@ -17,5 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
+/**
+ * Generic exception for performing domain logic validation.
+ */
 export class ValidationException extends Error {}
 export default ValidationException

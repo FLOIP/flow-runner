@@ -41,6 +41,10 @@ export interface IBasePromptConstructor {
   new (): IPrompt<IPromptConfig<any> & IBasePromptConfig>
 }
 
+/**
+ * Abstract implementation of {@link IPrompt}, intended to be consumed as a common parent for concrete {@link IPrompt}
+ * implementations.
+ */
 export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig>
   implements IPrompt<PromptConfigType> {
 
@@ -55,11 +59,19 @@ export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptCo
     // todo: add canPerformEarlyExit() behaviour
   }
 
+  /** Retrieve local {@link IPromptConfig.value} */
   get value(): PromptConfigType['value'] {
     // todo: need a simple way to specify type as typeof <IPrompt['value']> corresponding to generics injection for this instance
     return this.config.value
   }
 
+  /**
+   * Set local {@link IPromptConfig.value}. This action is guarded by {@link validate}, where the result of
+   * {@link validate} is applied to {@link isValid}. Any exceptions raised by {@link validate} are applied to
+   * {@link error} property.
+   *
+   * It's important to note that {@link value} property will be set (proxied onto local {@link IPromptConfig.value})
+   * regardless of any {@link PromptValidationException}s raised. */
   set value(val: PromptConfigType['value']) {
     try {
       this.isValid = this.validate(val)
@@ -74,6 +86,7 @@ export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptCo
     this.config.value = val
   }
 
+  /** Whether or not a value has been set on this instance. */
   get isEmpty() {
     return this.value === undefined
   }
@@ -86,6 +99,10 @@ export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptCo
     return this.runner.run()
   }
 
+  /**
+   * Template method to be implemented by concrete {@link IPrompt} implementations.
+   * @param val
+   */
   abstract validate(val?: PromptConfigType['value']): boolean
 }
 

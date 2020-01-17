@@ -22,6 +22,9 @@ import IReadBlockConfig from '../../model/block/IReadBlockConfig'
 
 export type TReadableType = string | number | null
 
+/**
+ * Interface for defining an {@link IPromptConfig} resolving to a {@link ReadPrompt}.
+ */
 export interface IReadPromptConfig extends IPromptConfig<TReadableType[]>, IReadBlockConfig {
   kind: KnownPrompts.Read
 }

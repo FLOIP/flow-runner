@@ -19,6 +19,9 @@
 
 import {IPromptConfig, KnownPrompts} from './IPrompt'
 
+/**
+ * Interface for defining an {@link IPromptConfig} resolving to a {@link NumericPrompt}.
+ */
 export interface INumericPromptConfig extends IPromptConfig<number | null> {
   kind: KnownPrompts.Numeric
   min: number

@@ -17,6 +17,10 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
+/**
+ * Extracted function encapsulating date string formatted like `2020-01-17 17:58:08.090Z`.
+ * @param d
+ */
 export function createFormattedDate(d: Date = new Date): string {
   return d.toISOString()
     .replace('T', ' ')

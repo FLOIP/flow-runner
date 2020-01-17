@@ -21,6 +21,9 @@ import BasePrompt from './BasePrompt'
 import {IBasePromptConfig} from './IPrompt'
 import {IMessagePromptConfig} from './IMessagePromptConfig'
 
+/**
+ * Concrete implementation of {@link BasePrompt} to present a message to an {@link IContact}.
+ */
 export class MessagePrompt extends BasePrompt<IMessagePromptConfig & IBasePromptConfig> {
   validate() {
     return true

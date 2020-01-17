@@ -17,6 +17,9 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
+/**
+ * Generic exception for selection validation; typically leveraged by {@link IPrompt} implementations.
+ */
 export class InvalidChoiceException<ChoiceType> extends Error {
   constructor(message?: string,
               public choices?: ChoiceType[]) {
