@@ -24,6 +24,23 @@ import INumericResponseBlock from '../../model/block/INumericResponseBlock'
 import IContext from '../../flow-spec/IContext'
 import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 
+/**
+ * Block runner for `MobilePrimitives\NumericResponse` - Obtains a numeric response from the contact.
+ *
+ * - text (SMS): Send an SMS with the prompt text, according to the prompt configuration in config above, and wait to
+ *   capture a response. (Lack a response after the flow's configured timeout, or an invalid response: proceed through
+ *   the error exit.)
+ * - text (USSD): Display a USSD menu prompt with the prompt text, according to the prompt configuration in config
+ *   above, then wait to capture the menu response. (Dismissal of the session, timeout, or invalid response: proceed
+ *   through the error exit.)
+ * - ivr: Play the audio prompt, acccording to the prompt configuration in config above, then wait to capture the DTMF
+ *   reponse. (Hangup, timeout, or invalid response: proceed through the error exit.)
+ * - rich_messaging: Display the prompt text according to the prompt configuration in config above. Platforms may wait
+ *   to capture a text response, or display a numeric entry widget and wait to capture a response. (Timeout or invalid
+ *   response: proceed through the error exit.)
+ * - offline: Display the prompt text according to the prompt configuration in config above, and display a numeric entry
+ *   widget. Wait to capture a response.
+ */
 export class NumericResponseBlockRunner implements IBlockRunner {
   constructor(
     public block: INumericResponseBlock,

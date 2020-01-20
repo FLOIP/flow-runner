@@ -23,6 +23,20 @@ import IBlockExit from '../../flow-spec/IBlockExit'
 import IRunFlowBlockConfig from '../../model/block/IRunFlowBlockConfig'
 import IContext from '../../flow-spec/IContext'
 
+/**
+ * Block runner for `Core\RunFlow` - This block starts and runs another {@link IFlow}, and returns execution to the
+ * current {@link IFlow} when finished.
+ *
+ * Entry:
+ * On entry to this block, control proceeds into the other Flow given by flow_id. The Context for the outer flow is
+ * saved and stored within the new inner Flow's Context under the parentFlowContext key.
+ *
+ * Exit:
+ * Multiple levels of nested Flows shall be supported. When an inner Flow terminates, this block resumes execution in
+ * the outer Flow. The Context for the inner flow is saved and stored under the childFlowContext key, and flow proceeds
+ * through the next block. If an exception exit is triggered within an inner flow causing the inner flow to terminate,
+ * flow proceeds through the error exit.
+ */
 export class RunFlowBlockRunner implements IBlockRunner {
   constructor(
     public block: IBlock & { config: IRunFlowBlockConfig },

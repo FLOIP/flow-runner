@@ -22,10 +22,19 @@ import {
   findDefaultBlockExitOn,
   IBlockExitTestRequired,
 } from '../..'
-import {findFirstTruthyEvaluatingBlockExitOn} from '../../flow-spec/IBlock'
+import {findFirstTruthyEvaluatingBlockExitOn} from '../..'
 import IContext from '../../flow-spec/IContext'
 import ICaseBlock from '../../model/block/ICaseBlock'
 
+/**
+ * Block runner for `Core\Case` - Evaluates a list of expressions, one for each exit, and terminates through the first
+ * exit where the corresponding expression evaluates to a "truthy" result.
+ *
+ * This block will sequentially evaluate the test expressions in each exit (passing over any default exit), in order.
+ * If the test expression evaluates to a truthy value using the Context and Expressions framework, flow proceeds through
+ * the corresponding exit (and no further exits are evaluated). If no test expressions are found truthy, the flow
+ * proceeds through the default exit.
+ */
 export class CaseBlockRunner implements IBlockRunner {
   constructor(
     public block: ICaseBlock,

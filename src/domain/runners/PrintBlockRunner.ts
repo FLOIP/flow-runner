@@ -23,7 +23,9 @@ import IContext from '../../flow-spec/IContext'
 import {evaluateToString} from '../..'
 import IPrintBlock from '../../model/block/IPrintBlock'
 
-
+/**
+ * Block runner for `ConsoleIO\Print` - Prints a message to standard output, by evaluating an expression.
+ */
 export class PrintBlockRunner implements IBlockRunner {
   constructor(
     public block: IPrintBlock,

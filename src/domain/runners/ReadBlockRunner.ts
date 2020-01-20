@@ -28,6 +28,9 @@ import {KnownPrompts} from '../..'
 import IReadBlockInteractionDetails from '../../flow-spec/IReadBlockInteractionDetails'
 
 
+/**
+ * Block runner for `ConsoleIO\Read` - Reads a line from standard input, and stores it in one or more context variables.
+ */
 export class ReadBlockRunner implements IBlockRunner {
   constructor(
     public block: IReadBlock,
