@@ -1,7 +1,7 @@
 import {last} from 'lodash'
 import IFlow from '../../../src/flow-spec/IFlow'
 import FlowRunner from '../../../src/domain/FlowRunner'
-import {SupportedMode, createContextDataObjectFor, RichCursorInputRequiredType, findInteractionWith} from '../../../src'
+import {SupportedMode, createContextDataObjectFor, TRichCursorInputRequired, findInteractionWith} from '../../../src'
 import IContact from '../../../src/flow-spec/IContact'
 import SelectOnePrompt from '../../../src/domain/prompt/SelectOnePrompt'
 import {IBackTrackingBehaviour} from '../../../src/domain/behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
@@ -16,10 +16,10 @@ describe.skip('FlowRunner integration', () => {
 
   it('should work when simple + single backtrack', () => {
     const context = createContextDataObjectFor(
-      {id: '1'} as IContact, 'user-1234', [flow], 'en_US', SupportedMode.OFFLINE)
+      {id: '1'} as IContact, 'user-1234', 'org-1234', [flow], 'en_US', SupportedMode.OFFLINE)
 
     const runner = new FlowRunner(context)
-    let [, prompt]: RichCursorInputRequiredType = runner.run()!
+    let [, prompt]: TRichCursorInputRequired = runner.run()!
     prompt.value = (prompt as SelectOnePrompt).config.choices[0].key // yes, more children
 
     prompt = runner.run()![1]

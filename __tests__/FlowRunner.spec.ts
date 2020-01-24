@@ -1,10 +1,8 @@
 import "reflect-metadata";
 import {flatMap} from 'lodash'
 import IDataset, {createDefaultDataset} from '../__test_fixtures__/fixtures/IDataset'
-import FlowRunner, {BlockRunnerFactoryStore} from '../src/domain/FlowRunner'
-import MessageBlockRunner from '../src/domain/runners/MessageBlockRunner'
-import IMessageBlock from '../src/model/block/IMessageBlock'
-import {createContextDataObjectFor, IResources, RichCursorInputRequiredType, SupportedMode} from '../src'
+import FlowRunner from '../src/domain/FlowRunner'
+import {createContextDataObjectFor, IResources, TRichCursorInputRequired, SupportedMode} from '../src'
 import IContext from '../src/flow-spec/IContext'
 import ValidationException from '../src/domain/exceptions/ValidationException'
 import {deserialize, plainToClass, serialize} from 'class-transformer'
@@ -34,13 +32,7 @@ describe('FlowRunner', () => {
 
   describe('sanity', () => {
     it('should be available', () => {
-      const runner = new FlowRunner(
-        dataset.contexts[0],
-        new BlockRunnerFactoryStore([
-          // todo: how do we get proper typing here without needing to cast?
-          ['MobilePrimitives\\Message', (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
-        ]))
-
+      const runner = new FlowRunner(dataset.contexts[0])
       expect(runner).toBeTruthy()
     })
 
@@ -52,14 +44,10 @@ describe('FlowRunner', () => {
         cursor: undefined,
       }
 
-      const runner = new FlowRunner(
-        ctx,
-        new BlockRunnerFactoryStore([
-          ['MobilePrimitives\\Message', (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
-        ]))
+      const runner = new FlowRunner(ctx)
 
       // block1
-      let cursor: RichCursorInputRequiredType | void = runner.run()
+      let cursor: TRichCursorInputRequired | void = runner.run()
 
       if (!cursor) {
         throw new ValidationException('Omg, no cursor?')
@@ -107,7 +95,8 @@ describe('FlowRunner', () => {
         const context: IContext = require('../__test_fixtures__/fixtures/2019-10-08-case-block-eval-issue.json')
         const runner = new FlowRunner(context)
 
-        expect(runner.run()![0].blockId).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
+        expect(FlowRunner.prototype.run.bind(runner)).toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')
+        // expect(runner.run()![0].blockId).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
       })
     })
 
@@ -129,13 +118,14 @@ describe('FlowRunner', () => {
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
           'user-1234',
+          'org-1234',
           flows,
           'en_US',
           SupportedMode.OFFLINE,
           resources)
 
         const runner = new FlowRunner(context)
-        let [, prompt]: RichCursorInputRequiredType = runner.run()!
+        let [, prompt]: TRichCursorInputRequired = runner.run()!
         prompt.value = (prompt as SelectOnePrompt).config.choices[1].key // cats
 
         prompt = runner.run()![1]
@@ -149,13 +139,14 @@ describe('FlowRunner', () => {
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
           'user-1234',
+          'org-1234',
           flows,
           'en_US',
           SupportedMode.OFFLINE,
           resources)
 
         const runner = new FlowRunner(context)
-        let [, prompt]: RichCursorInputRequiredType = runner.run()!
+        let [, prompt]: TRichCursorInputRequired = runner.run()!
         prompt.value = (prompt as SelectOnePrompt).config.choices[0].key // dogs
 
         prompt = runner.run()![1]

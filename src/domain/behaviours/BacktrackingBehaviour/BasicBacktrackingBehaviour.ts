@@ -1,3 +1,22 @@
+/**
+ * Flow Interoperability Project (flowinterop.org)
+ * Flow Runner
+ * Copyright (c) 2019, 2020 Viamo Inc.
+ * Authored by: Brett Zabos (brett.zabos@viamo.io)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ **/
+
 import {
   findLastIndex,
   findLast,
@@ -9,50 +28,92 @@ import IBehaviour from '../IBehaviour'
 import IBlockInteraction from '../../../flow-spec/IBlockInteraction'
 import IContext, {
   findBlockOnActiveFlowWith,
-  findFlowWith,
-  RichCursorType,
+  findFlowWith, TRichCursorInputRequired,
+  TRichCursor,
 } from '../../../flow-spec/IContext'
 import ValidationException from '../../exceptions/ValidationException'
-import {IFlowNavigator, IPromptBuilder, NON_INTERACTIVE_BLOCK_TYPES} from '../../FlowRunner'
-import IPrompt, {IBasePromptConfig, IPromptConfig} from '../../prompt/IPrompt'
+import FlowRunner, {IFlowNavigator, IPromptBuilder, NON_INTERACTIVE_BLOCK_TYPES} from '../../FlowRunner'
 import {findBlockWith} from '../../..'
 
-
+/**
+ * Interface for time-travel within interaction history.
+ */
 export interface IBackTrackingBehaviour extends IBehaviour {
-  rebuildIndex(): void
-  // generates new prompt from new interaction + resets state to what was `interaction`'s moment
-  jumpTo(interaction: IBlockInteraction, context: IContext): RichCursorType // todo: this should likely take in steps rather than interaction itself
-  // regenerates prompt from previous interaction
-  peek(steps?: number): IPrompt<IPromptConfig<any> & IBasePromptConfig>
+  /**
+   * Rebuild index over interaction history from scratch.
+   */
+  rebuildIndex(): void,
+  /**
+   * Generates new prompt from new interaction + resets state to what was {@link IContext.interactions}'s moment
+   * @param interaction
+   * todo: this should likely take in steps rather than interaction itself */
+  jumpTo(interaction: IBlockInteraction): TRichCursor,
+
+  /**
+   * Regenerates prompt from previous interaction
+   * @param steps
+   */
+  peek(steps?: number): TRichCursor,
+
+  /**
+   * Regenerates prompt + interaction in place of previous interaction; updates {@link IContext.cursor}
+   * @param steps
+   */
+  seek(steps?: number): TRichCursor,
 }
 
-export default class BacktrackingBehaviour implements IBackTrackingBehaviour {
+/**
+ * Basic implementation of time-travel. Solely provides ability to preview what's happened in the past, while any
+ * modifications will clear the past's future.
+ */
+export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
   constructor(
     public context: IContext,
     public navigator: IFlowNavigator,
     public promptBuilder: IPromptBuilder) {}
 
-  rebuildIndex() {}
+  rebuildIndex(): void {
+    // do nothing for now
+  }
 
-  jumpTo(interaction: IBlockInteraction, context: IContext): RichCursorType {
+  seek(steps=0, context: IContext = this.context): TRichCursorInputRequired {
+    const [prevIntx, virtualPrompt]: TRichCursorInputRequired = this.peek(steps, context)
+    // then generate a cursor from desired interaction && set cursor on context
+    const cursor: TRichCursorInputRequired = this.jumpTo(prevIntx, context) as TRichCursorInputRequired
+
+    // pre-populate previous value onto prompt for new interaction
+    cursor[1].value = virtualPrompt.value
+
+    return cursor
+  }
+
+  jumpTo(intx: IBlockInteraction, context: IContext = this.context): TRichCursor {
     // jump context.interactions back in time
-    const discarded = context.interactions.splice( // truncate interactions list to pull us back in time; including provided intx
-      findLastIndex(context.interactions, interaction),
+    const discarded = context.interactions.splice( // truncate intx list to pull us back in time; include provided intx
+      findLastIndex(context.interactions, intx),
       context.interactions.length)
 
     // step out of nested flows that we've truncated
+    // todo: migrate to also use applyReversibleDataOperation()
     forEachRight(discarded, intx => intx.uuid === last(context.nestedFlowBlockInteractionIdStack)
         ? context.nestedFlowBlockInteractionIdStack.pop()
         : null)
 
+    // can only reverse from the end, so we only compare the last.
+    forEachRight(discarded, ({uuid}) => {
+      while (last(context.reversibleOperations)?.interactionId === uuid) {
+        FlowRunner.prototype.reverseLastDataOperation(context)
+      }
+    })
+
     return this.navigator.navigateTo(
-      findBlockOnActiveFlowWith(interaction.blockId, this.context),
-      this.context)
+      findBlockOnActiveFlowWith(intx.blockId, context),
+      context)
   }
 
-  peek(steps = 1): IPrompt<IPromptConfig<any> & IBasePromptConfig> {
-    let _steps = steps
-    const intx = findLast(this.context.interactions, ({type}) =>
+  peek(steps = 0, context: IContext = this.context): TRichCursorInputRequired {
+    let _steps = steps + 1 // setup for while-loop
+    const intx = findLast(context.interactions, ({type}) =>
       !includes(NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0)
 
     if (intx == null || _steps > 0) {
@@ -61,23 +122,29 @@ export default class BacktrackingBehaviour implements IBackTrackingBehaviour {
 
     const block = findBlockWith(
       intx.blockId,
-      findFlowWith(intx.flowId, this.context))
+      findFlowWith(intx.flowId, context))
 
     const prompt = this.promptBuilder.buildPromptFor(block, intx)
     if (prompt == null) {
       throw new ValidationException(`Unable to build a prompt for ${JSON.stringify({
-        context: this.context.id,
+        context: context.id,
         intx,
         block
       })}`)
     }
 
-    return Object.assign(prompt, {value: intx.value})
+    return [intx, Object.assign(
+      prompt,
+      {value: intx.value})]
   }
 
   postInteractionCreate(interaction: IBlockInteraction, _context: IContext): IBlockInteraction {
     return interaction
   }
 
-  postInteractionComplete(_interaction: IBlockInteraction, _context: IContext): void {}
+  postInteractionComplete(_interaction: IBlockInteraction, _context: IContext): void {
+    // do nothing
+  }
 }
+
+export default BasicBacktrackingBehaviour

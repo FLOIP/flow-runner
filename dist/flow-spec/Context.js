@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const ResourceResolver_1 = tslib_1.__importDefault(require("../domain/ResourceResolver"));
 class Context {
-    constructor(id, createdAt, deliveryStatus, mode, languageId, contact, sessionVars, interactions, nestedFlowBlockInteractionIdStack, flows, firstFlowId, resources, entryAt, exitAt, userId, cursor, platformMetadata = {}) {
+    constructor(id, createdAt, deliveryStatus, mode, languageId, contact, sessionVars, interactions, nestedFlowBlockInteractionIdStack, flows, firstFlowId, resources, entryAt, exitAt, userId, orgId, cursor, platformMetadata = {}) {
         this.id = id;
         this.createdAt = createdAt;
         this.deliveryStatus = deliveryStatus;
@@ -19,6 +19,7 @@ class Context {
         this.entryAt = entryAt;
         this.exitAt = exitAt;
         this.userId = userId;
+        this.orgId = orgId;
         this.cursor = cursor;
         this.platformMetadata = platformMetadata;
     }

@@ -5,7 +5,7 @@ import {
   IBasePromptConfig,
   INumericPromptConfig,
   KnownPrompts,
-  RichCursorType,
+  TRichCursor,
 } from '../../src'
 
 
@@ -58,7 +58,7 @@ describe('FlowRunner/initializeOneBlock', () => {
         ]))
 
     const
-        richCursor: RichCursorType = runner.initializeOneBlock(block, flow.uuid, undefined, undefined),
+        richCursor: TRichCursor = runner.initializeOneBlock(block, flow.uuid, undefined, undefined),
         cursor = runner.dehydrateCursor(richCursor)
 
     expect(cursor[1]).toBe(expectedPrompt)

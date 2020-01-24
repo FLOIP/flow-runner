@@ -1,10 +1,9 @@
 import MessagePrompt from '../../src/domain/prompt/MessagePrompt'
 import {
-  BlockRunnerFactoryStore,
   IBasePromptConfig,
   IContextInputRequired,
   IMessagePromptConfig,
-  IPromptConfig, RichCursorInputRequiredType,
+  IPromptConfig, TRichCursorInputRequired,
 } from '../../src'
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner from '../../src/domain/FlowRunner'
@@ -16,13 +15,17 @@ describe('BasePrompt', () => {
     dataset = createDefaultDataset()
   })
 
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   describe('default state', () => {
     describe('error', () => {
       it('should default its error state to empty to simply UI rendering', () => {
         let config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[0]
         const
           ctx = dataset.contexts[1] as IContextInputRequired,
-          runner = new FlowRunner(ctx, new BlockRunnerFactoryStore),
+          runner = new FlowRunner(ctx),
           prompt = new MessagePrompt(
             config as IMessagePromptConfig & IBasePromptConfig,
             'abc-123',
@@ -38,7 +41,7 @@ describe('BasePrompt', () => {
       let config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[0]
       const
         ctx = dataset.contexts[1] as IContextInputRequired,
-        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore),
+        runner = new FlowRunner(ctx),
         prompt = new MessagePrompt(
           config as IMessagePromptConfig & IBasePromptConfig,
           'abc-123',
@@ -56,12 +59,12 @@ describe('BasePrompt', () => {
       let config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[0]
       const
         ctx = dataset.contexts[1] as IContextInputRequired,
-        runner = new FlowRunner(ctx, new BlockRunnerFactoryStore),
+        runner = new FlowRunner(ctx),
         prompt = new MessagePrompt(
           config as IMessagePromptConfig & IBasePromptConfig,
           'abc-123',
           runner),
-        richCursor = runner.hydrateRichCursorFrom(ctx) as RichCursorInputRequiredType
+        richCursor = runner.hydrateRichCursorFrom(ctx) as TRichCursorInputRequired
 
       jest.spyOn(runner, 'run')
         .mockImplementation(() => richCursor)

@@ -32,6 +32,8 @@ export default class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     initializeBehaviours(behaviourConstructors: IBehaviourConstructor[]): void;
     initialize(): RichCursorType | undefined;
     isInitialized(ctx: IContext): boolean;
+    isFirst(): boolean;
+    isLast(): boolean;
     run(): RichCursorInputRequiredType | undefined;
     isInputRequiredFor(ctx: IContext): boolean;
     runUntilInputRequiredFrom(ctx: IContextWithCursor): RichCursorInputRequiredType | undefined;

@@ -1,19 +1,34 @@
+/**
+ * Flow Interoperability Project (flowinterop.org)
+ * Flow Runner
+ * Copyright (c) 2019, 2020 Viamo Inc.
+ * Authored by: Brett Zabos (brett.zabos@viamo.io)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ **/
+
 import IBlockExit, {IBlockExitTestRequired} from './IBlockExit'
-import {find, findLast} from 'lodash'
+import {extend, get, has, find, startsWith} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
 import IContext, {
-  CursorType,
-  findBlockOnActiveFlowWith,
-  findFlowWith,
+  TCursor,
   findInteractionWith,
   getActiveFlowFrom
 } from './IContext'
 import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
 import IFlow, {findBlockWith} from './IFlow'
-import ResourceResolver from '../domain/ResourceResolver'
-import IMessageBlockConfig from "../model/block/IMessageBlockConfig";
 
-export default interface IBlock {
+export interface IBlock {
   uuid: string
   name: string
   label?: string
@@ -22,6 +37,8 @@ export default interface IBlock {
   config: object
   exits: IBlockExit[]
 }
+
+export default IBlock
 
 export interface IBlockWithTestExits extends IBlock {
   exits: IBlockExitTestRequired[]
@@ -65,35 +82,8 @@ export interface IEvalContextBlock {
   text: string
 }
 
-export function findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx: IContext): IEvalContextBlock | undefined {
-  const intx = findLast(ctx.interactions, ({blockId, flowId}) => {
-    const {name} = findBlockWith(
-      blockId,
-      findFlowWith(flowId, ctx))
-
-    return name === blockName
-  })
-
-  if (intx == null) {
-    return
-  }
-
-  const {prompt} = findBlockOnActiveFlowWith(intx.blockId, ctx).config as IMessageBlockConfig
-  const resource = new ResourceResolver(ctx).resolve(prompt)
-
-  return {
-    __interactionId: intx.uuid,
-    __value__: intx.value,
-    value: intx.value,
-    time: intx.entryAt,
-    text: resource.hasText() ? resource.getText() : ''
-  }
-}
-
-export function generateCachedProxyForBlockName(target: object, ctx: IContext) {
-  // create a cache of `{[block.name]: {...}}` for subsequent lookups
-  const expressionBlocksByName: {[k: string]: IEvalContextBlock | undefined} = {}
-
+export type TEvalContextBlockMap = {[k: string]: IEvalContextBlock}
+export function generateCachedProxyForBlockName(target: object, ctx: IContext): TEvalContextBlockMap {
   // create a proxy that traps get() and attempts a lookup of blocks by name
   return new Proxy(target, {
     get(target, prop, _receiver) {
@@ -102,25 +92,28 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext) {
         return Reflect.get(...arguments)
       }
 
-      if (prop in expressionBlocksByName) {
-        return expressionBlocksByName[prop.toString()]
+      // fetch our basic representation of a block stored on the context
+      const evalBlock = get(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`)
+      if (evalBlock == null) {
+        return
       }
 
-      return expressionBlocksByName[prop.toString()] =
-        findAndGenerateExpressionBlockFor(prop.toString(), ctx)
+      // extend our basic block repr with the value from block interaction
+      // block interactions are logically immutable, but we yank this later to
+      //   (a) mitigate storing `.value`s redundantly
+      //   (b) allow post-processing using behaviours
+      // if we did want to cache the value as well, we'd need to
+      //   (a) implement the value portion in runOneBlock() rather than navigateTo() and
+      //   (b) remove the two lines below to simply return `evalBlock` ref
+      const {value} = findInteractionWith(evalBlock.__interactionId, ctx)
+      return extend({value, __value__: value}, evalBlock)
     },
+
     has(target, prop) {
-      if (prop in target) {
-        return true;
-      }
-      if (prop in expressionBlocksByName) {
-        return true;
-      }
-      expressionBlocksByName[prop.toString()] =
-        findAndGenerateExpressionBlockFor(prop.toString(), ctx);
-      return prop in expressionBlocksByName;
+      return prop in target
+        || has(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`)
     }
-  })
+  }) as TEvalContextBlockMap
 }
 
 // todo: push eval stuff into `Expression.evaluate()` abstraction for evalContext + result handling 👇
@@ -128,9 +121,9 @@ export function createEvalContextFrom(context: IContext) {
   const {contact, cursor, mode, languageId: language} = context
   let flow: IFlow | undefined
   let block: IBlock | undefined
-  let prompt: CursorType[1]
+  let prompt: TCursor[1]
 
-  if (cursor != null) {
+  if (cursor != null) { // because evalContext.block references the current block we're working on
     flow = getActiveFlowFrom(context)
     block = findBlockWith(
       findInteractionWith(cursor[0], context).blockId,
@@ -146,7 +139,7 @@ export function createEvalContextFrom(context: IContext) {
       language, // todo: why isn't this languageId?
     }, context),
     block: {
-      ...block,
+      ...block, // todo: should this differ from our IEvalContextBlock lookups on flow?
       value: prompt != null
         ? prompt.value
         : undefined,
@@ -155,8 +148,16 @@ export function createEvalContextFrom(context: IContext) {
 }
 
 function evaluateToBool(expr: string, ctx: object): boolean {
-  const result = EvaluatorFactory.create()
-    .evaluate(expr, ctx)
+  return JSON.parse(evaluateToString(expr, ctx).toLowerCase())
+}
 
-  return JSON.parse(result.toLowerCase())
+export function evaluateToString(expr: string, ctx: object): string {
+  return EvaluatorFactory.create()
+    .evaluate(wrapInExprSyntaxWhenAbsent(expr), ctx)
+}
+
+export function wrapInExprSyntaxWhenAbsent(expr: string): string {
+  return startsWith(expr, '@(')
+    ? expr
+    : `@(${expr})`
 }

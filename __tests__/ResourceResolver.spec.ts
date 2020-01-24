@@ -11,6 +11,7 @@ import ResourceNotFoundException from '../src/domain/exceptions/ResourceNotFound
 import IResourceResolver from '../src/domain/IResourceResolver'
 import IContext from '../src/flow-spec/IContext'
 import IFlow from '../src/flow-spec/IFlow'
+import IContact from '../src/flow-spec/IContact'
 
 
 describe('ResourceResolver', () => {
@@ -19,8 +20,9 @@ describe('ResourceResolver', () => {
 
   beforeEach(() => {
     ctx = createContextDataObjectFor(
-      {id: 'contact-123', name: 'Bert'},
+      {id: 'contact-123', name: 'Bert'} as IContact,
       'user-123',
+      'org-123',
       [{uuid: 'flow-123'} as IFlow],
       'eng',
       SupportedMode.OFFLINE)

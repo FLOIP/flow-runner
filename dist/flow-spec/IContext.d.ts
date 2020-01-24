@@ -6,6 +6,7 @@ import IBlock from './IBlock';
 import DeliveryStatus from './DeliveryStatus';
 import SupportedMode from './SupportedMode';
 import { IResourceDefinition, IResources } from '..';
+import IIdGenerator from '../domain/IIdGenerator';
 export declare type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined];
 export declare type CursorInputRequiredType = [string, IPromptConfig<any> & IBasePromptConfig];
 export declare type CursorNoInputRequiredType = [string, undefined];
@@ -19,6 +20,7 @@ export default interface IContext {
     exitAt?: string;
     deliveryStatus: DeliveryStatus;
     userId?: string;
+    orgId?: string;
     mode: SupportedMode;
     languageId: string;
     contact: IContact;
@@ -37,11 +39,12 @@ export interface IContextWithCursor extends IContext {
 export interface IContextInputRequired extends IContext {
     cursor: CursorInputRequiredType;
 }
-export declare function createContextDataObjectFor(contact: IContact, userId: string, flows: IFlow[], languageId: string, mode: SupportedMode, resources?: IResourceDefinition[]): IContext;
+export declare function createContextDataObjectFor(contact: IContact, userId: string, orgId: string, flows: IFlow[], languageId: string, mode: SupportedMode, resources?: IResourceDefinition[], idGenerator?: IIdGenerator): IContext;
 export declare function findInteractionWith(uuid: string, { interactions }: IContext): IBlockInteraction;
 export declare function findFlowWith(uuid: string, { flows }: IContext): IFlow;
 export declare function findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock;
 export declare function findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext): string;
 export declare function getActiveFlowIdFrom(ctx: IContext): string;
 export declare function getActiveFlowFrom(ctx: IContext): IFlow;
+export declare function isLastBlockOn({ nestedFlowBlockInteractionIdStack }: IContext, { exits }: IBlock): boolean;
 //# sourceMappingURL=IContext.d.ts.map

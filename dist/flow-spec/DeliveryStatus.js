@@ -2,19 +2,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var DeliveryStatus;
 (function (DeliveryStatus) {
-    DeliveryStatus[DeliveryStatus["QUEUED"] = 1] = "QUEUED";
-    DeliveryStatus[DeliveryStatus["RINGING"] = 2] = "RINGING";
-    DeliveryStatus[DeliveryStatus["IN_PROGRESS"] = 3] = "IN_PROGRESS";
-    DeliveryStatus[DeliveryStatus["WAITING_TO_RETRY"] = 4] = "WAITING_TO_RETRY";
-    DeliveryStatus[DeliveryStatus["FAILED_NO_ANSWER"] = 5] = "FAILED_NO_ANSWER";
-    DeliveryStatus[DeliveryStatus["FINISHED_COMPLETE"] = 6] = "FINISHED_COMPLETE";
-    DeliveryStatus[DeliveryStatus["FINISHED_INCOMPLETE"] = 7] = "FINISHED_INCOMPLETE";
-    DeliveryStatus[DeliveryStatus["FAILED_NETWORK"] = 9] = "FAILED_NETWORK";
-    DeliveryStatus[DeliveryStatus["FAILED_CANCELLED"] = 10] = "FAILED_CANCELLED";
-    DeliveryStatus[DeliveryStatus["SENT"] = 11] = "SENT";
-    DeliveryStatus[DeliveryStatus["FINISHED_VOICEMAIL"] = 12] = "FINISHED_VOICEMAIL";
-    DeliveryStatus[DeliveryStatus["FAILED_VOICEMAIL"] = 13] = "FAILED_VOICEMAIL";
-    DeliveryStatus[DeliveryStatus["FAILED_ERROR"] = 14] = "FAILED_ERROR";
+    DeliveryStatus["QUEUED"] = "QUEUED";
+    DeliveryStatus["RINGING"] = "RINGING";
+    DeliveryStatus["IN_PROGRESS"] = "IN_PROGRESS";
+    DeliveryStatus["WAITING_TO_RETRY"] = "WAITING_TO_RETRY";
+    DeliveryStatus["FAILED_NO_ANSWER"] = "FAILED_NO_ANSWER";
+    DeliveryStatus["FINISHED_COMPLETE"] = "FINISHED_COMPLETE";
+    DeliveryStatus["FINISHED_INCOMPLETE"] = "FINISHED_INCOMPLETE";
+    DeliveryStatus["FAILED_NETWORK"] = "FAILED_NETWORK";
+    DeliveryStatus["FAILED_CANCELLED"] = "FAILED_CANCELLED";
+    DeliveryStatus["SENT"] = "SENT";
+    DeliveryStatus["FINISHED_VOICEMAIL"] = "FINISHED_VOICEMAIL";
+    DeliveryStatus["FAILED_VOICEMAIL"] = "FAILED_VOICEMAIL";
+    DeliveryStatus["FAILED_ERROR"] = "FAILED_ERROR";
 })(DeliveryStatus = exports.DeliveryStatus || (exports.DeliveryStatus = {}));
 exports.default = DeliveryStatus;
 //# sourceMappingURL=DeliveryStatus.js.map

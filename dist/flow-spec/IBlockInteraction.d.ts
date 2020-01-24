@@ -6,8 +6,8 @@ export default interface IBlockInteraction {
     exitAt?: string;
     hasResponse: boolean;
     value?: string | number;
-    selectedExitId: string | null;
     details: IBlockInteractionDetails;
+    selectedExitId: string | null;
     type: string;
     originBlockInteractionId?: string;
     originFlowId?: string;

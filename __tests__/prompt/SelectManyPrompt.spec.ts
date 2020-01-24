@@ -4,7 +4,7 @@ import SelectManyPrompt, {
 } from '../../src/domain/prompt/SelectManyPrompt'
 import {IContextInputRequired} from '../../src/flow-spec/IContext'
 import {IBasePromptConfig, IPromptConfig} from '../../src/domain/prompt/IPrompt'
-import {BlockRunnerFactoryStore, IChoice} from '../../src'
+import {IChoice} from '../../src'
 import {ISelectManyPromptConfig} from '../../src/domain/prompt/ISelectManyPromptConfig'
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner from '../../src/domain/FlowRunner'
@@ -25,7 +25,7 @@ describe('SelectManyPrompt', () => {
     beforeEach(() => {
       const config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[1]
       const ctx = dataset.contexts[1] as IContextInputRequired
-      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore)
+      const runner = new FlowRunner(ctx)
 
       prompt = new SelectManyPrompt(
         config as ISelectManyPromptConfig & IBasePromptConfig,

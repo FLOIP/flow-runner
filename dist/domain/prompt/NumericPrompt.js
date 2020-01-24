@@ -5,6 +5,9 @@ const BasePrompt_1 = tslib_1.__importDefault(require("./BasePrompt"));
 const ValidationException_1 = tslib_1.__importDefault(require("../exceptions/ValidationException"));
 class NumericPrompt extends BasePrompt_1.default {
     validate(val) {
+        if (Number.isNaN(val) || val === null) {
+            return false;
+        }
         const { min, max } = this.config;
         if (min != null && val < min) {
             throw new ValidationException_1.default('Value provided is less than allowed');
