@@ -1,5 +1,5 @@
 {
-  "name": "flowrunner-core-ts",
+  "name": "@floip/flow-runner",
   "version": "0.0.61",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
