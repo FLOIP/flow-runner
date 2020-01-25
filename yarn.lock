@@ -145,6 +145,13 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@floip/expression-evaluator@github://floip/expression-evaluator#semver:v1":
+  version "1.1.2"
+  resolved "https://codeload.github.com/floip/expression-evaluator/tar.gz/5e676ee1f86ffceb187967e3e7b91af35e151ecf"
+  dependencies:
+    floip-parser "https://bitbucket.org/voto/floip-expression-evaluator#semver:>=1.6"
+    moment "^2.24.0"
+
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-24.9.0.tgz#79b1bc06fb74a8cfb01cbdedf945584b1b9707f0"
@@ -1756,13 +1763,6 @@ flatted@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.1.tgz#69e57caa8f0eacbc281d2e2cb458d46fdb449e08"
   integrity sha512-a1hQMktqW9Nmqr5aktAux3JMNqaucxGcjtjWnZLHX7yyPCmlSV3M54nGYbqT8K+0GhF3NBgmJCc3ma+WOgX8Jg==
-
-"floip-expression-evaluator-ts@https://bitbucket.org/voto/floip-expression-evaluator-ts.git#semver:v1":
-  version "1.1.2"
-  resolved "https://bitbucket.org/voto/floip-expression-evaluator-ts.git#5e676ee1f86ffceb187967e3e7b91af35e151ecf"
-  dependencies:
-    floip-parser "https://bitbucket.org/voto/floip-expression-evaluator#semver:>=1.6"
-    moment "^2.24.0"
 
 "floip-parser@https://bitbucket.org/voto/floip-expression-evaluator#semver:>=1.6":
   version "1.6.1"

@@ -25,7 +25,7 @@ import IContext, {
   findInteractionWith,
   getActiveFlowFrom
 } from './IContext'
-import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
+import {EvaluatorFactory} from '@floip/expression-evaluator'
 import IFlow, {findBlockWith} from './IFlow'
 
 export interface IBlock {
