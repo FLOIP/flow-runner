@@ -20,7 +20,7 @@
 import {IResource, IResourceDefinitionContentTypeSpecific, SupportedContentType} from './IResourceResolver'
 import ResourceNotFoundException from './exceptions/ResourceNotFoundException'
 import IContext from '../flow-spec/IContext'
-import {EvaluatorFactory} from 'floip-expression-evaluator-ts'
+import {EvaluatorFactory} from '@floip/expression-evaluator'
 import {createEvalContextFrom} from '../flow-spec/IBlock'
 
 export class Resource implements IResource {
