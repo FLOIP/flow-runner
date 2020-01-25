@@ -14,6 +14,7 @@
     "tsc-test": "tsc --project . --noEmit",
     "upgrade-ts": "yarn upgrade typescript eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser @typescript-eslint/typescript-estree"
   },
+  "publishConfig": {"registry": "https://npm.pkg.github.com/"},
   "dependencies": {
     "class-transformer": "^0.2.3",
     "@floip/expression-evaluator": "github://floip/expression-evaluator#semver:v1",
