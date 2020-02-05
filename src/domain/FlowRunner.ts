@@ -22,16 +22,8 @@ import {find, first, findLast, includes, trimEnd, last, lowerFirst} from 'lodash
 import IBlock, {findBlockExitWith} from '../flow-spec/IBlock'
 import * as contextService from '../flow-spec/IContext'
 import IContext, {
-  convertDateToString,
-  CursorType, IContextService,
-  IContextWithCursor,
-  RichCursorInputRequiredType,
-  RichCursorType,
+  IContextService,
   TCursor,
-  findBlockOnActiveFlowWith,
-  findInteractionWith,
-  getActiveFlowFrom,
-  getActiveFlowIdFrom,
   IContextWithCursor, IReversibleUpdateOperation,
   TRichCursorInputRequired,
   TRichCursor, IContextInputRequired,
