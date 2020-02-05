@@ -2,10 +2,11 @@ import {last} from 'lodash'
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
-import {convertDateToString, findInteractionWith, TRichCursor} from '../../src'
+import {findInteractionWith, TRichCursor} from '../../src'
 import {IBasePromptConfig, KnownPrompts} from '../../src';
 import {createStaticFirstExitBlockRunnerFor} from "../../__test_fixtures__/fixtures/BlockRunner";
 import {INumericPromptConfig} from '../../src';
+import createFormattedDate from '../../src/domain/DateFormat'
 
 // todo: abstract some of the setup
 
@@ -264,7 +265,7 @@ describe('FlowRunner/navigateTo', () => {
       expect(ctx.interactions.length).toBeGreaterThan(0)
       expect(lastIntx.exitAt).toBeNull()
       runner.navigateTo(block, ctx, navigatedAt)
-      expect(lastIntx.exitAt).toBe(convertDateToString(navigatedAt))
+      expect(lastIntx.exitAt).toBe(createFormattedDate(navigatedAt))
     })
   })
 })

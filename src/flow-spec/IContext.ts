@@ -86,10 +86,6 @@ export interface IContextInputRequired extends IContext {
   cursor: TCursorInputRequired
 }
 
-export function convertDateToString(d: Date) {
-  return d.toISOString().replace('T', ' ')
-}
-
 export function createContextDataObjectFor(
   contact: IContact,
   userId: string,

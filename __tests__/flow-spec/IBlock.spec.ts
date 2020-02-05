@@ -1,6 +1,5 @@
 import {cloneDeep, set} from 'lodash'
 import {
-  convertDateToString,
   findFirstTruthyEvaluatingBlockExitOn,
   generateCachedProxyForBlockName,
   IBlockExitTestRequired,
@@ -10,6 +9,7 @@ import {
 } from '../../src'
 import IContext from '../../src/flow-spec/IContext'
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
+import createFormattedDate from '../../src/domain/DateFormat'
 
 
 describe('IBlock', () => {
@@ -21,7 +21,7 @@ describe('IBlock', () => {
     target = {
       __interactionId: 'abc-123',
       __value__: 'my first value',
-      time: convertDateToString(new Date),
+      time: createFormattedDate(),
       value: 'my first value',
       text: 'my text'
     }
