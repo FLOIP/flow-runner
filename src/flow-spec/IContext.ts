@@ -1,27 +1,55 @@
+/**
+ * Flow Interoperability Project (flowinterop.org)
+ * Flow Runner
+ * Copyright (c) 2019, 2020 Viamo Inc.
+ * Authored by: Brett Zabos (brett.zabos@viamo.io)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ **/
+
+import {NonBreakingUpdateOperation} from 'sp2'
+
 import IContact from './IContact'
 import IFlow, {findBlockWith} from './IFlow'
 import IBlockInteraction from './IBlockInteraction'
 import IPrompt, {IBasePromptConfig, IPromptConfig} from '../domain/prompt/IPrompt'
 import IBlock, {isLastBlock} from './IBlock'
 import IRunFlowBlockConfig from '../model/block/IRunFlowBlockConfig'
-import {find, last} from 'lodash'
+import {find, findLast, last} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
 import DeliveryStatus from './DeliveryStatus'
 import SupportedMode from './SupportedMode'
 import {IResourceDefinition, IResources} from '..'
 import IIdGenerator from '../domain/IIdGenerator'
 import IdGeneratorUuidV4 from '../domain/IdGeneratorUuidV4'
+import createFormattedDate from '../domain/DateFormat'
 
 
-export type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined]
-export type CursorInputRequiredType = [string /* UUID64*/, IPromptConfig<any> & IBasePromptConfig]
-export type CursorNoInputRequiredType = [string, undefined]
+export type TCursor = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined]
+export type TCursorInputRequired = [string /* UUID64*/, IPromptConfig<any> & IBasePromptConfig]
+export type TCursorNoInputRequired = [string, undefined]
 
-export type RichCursorType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined]
-export type RichCursorInputRequiredType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig>]
-export type RichCursorNoInputRequiredType = [IBlockInteraction, undefined]
+export type TRichCursor = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined]
+export type TRichCursorInputRequired = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig>]
+export type TRichCursorNoInputRequired = [IBlockInteraction, undefined]
 
-export default interface IContext {
+export interface IReversibleUpdateOperation {
+  interactionId?: string
+  forward: NonBreakingUpdateOperation
+  reverse: NonBreakingUpdateOperation
+}
+
+export interface IContext {
   id: string
   createdAt: string
   entryAt?: string
@@ -34,23 +62,28 @@ export default interface IContext {
   languageId: string
 
   contact: IContact
-  sessionVars: object
+  sessionVars: any // todo: what is an object type with any properties?
   interactions: IBlockInteraction[]
   nestedFlowBlockInteractionIdStack: string[]
-  cursor?: CursorType
+  reversibleOperations: IReversibleUpdateOperation[]
+  cursor?: TCursor
 
   flows: IFlow[]
   firstFlowId: string
   resources: IResources
   platformMetadata: object
+
+  logs: {[k: string]: string}
 }
 
+export default IContext
+
 export interface IContextWithCursor extends IContext {
-  cursor: CursorType
+  cursor: TCursor
 }
 
 export interface IContextInputRequired extends IContext {
-  cursor: CursorInputRequiredType
+  cursor: TCursorInputRequired
 }
 
 export function convertDateToString(d: Date) {
@@ -63,14 +96,14 @@ export function createContextDataObjectFor(
   orgId: string,
   flows: IFlow[],
   languageId: string,
-  mode: SupportedMode,
+  mode: SupportedMode = SupportedMode.OFFLINE,
   resources: IResourceDefinition[] = [],
   idGenerator: IIdGenerator = new IdGeneratorUuidV4(),
 ): IContext {
 
   return {
     id: idGenerator.generate(),
-    createdAt: convertDateToString(new Date),
+    createdAt: createFormattedDate(),
     deliveryStatus: DeliveryStatus.QUEUED,
 
     userId,
@@ -82,17 +115,20 @@ export function createContextDataObjectFor(
     sessionVars: {},
     interactions: [],
     nestedFlowBlockInteractionIdStack: [],
+    reversibleOperations: [],
 
     flows,
     firstFlowId: flows[0].uuid,
 
     resources,
     platformMetadata: {},
+
+    logs: {},
   }
 }
 
 export function findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction {
-  const interaction = find(interactions, {uuid})
+  const interaction = findLast(interactions, {uuid})
   if (interaction == null) {
     throw new ValidationException(`Unable to find interaction on context: ${uuid} in ${interactions.map(i => i.uuid)}`)
   }
@@ -119,7 +155,7 @@ export function findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContex
   const flowId = (runFlowBlock.config as IRunFlowBlockConfig).flowId
 
   if (flowId == null) {
-    throw new ValidationException('Unable to find nested flowId on Core\\RunFlowBlock')
+    throw new ValidationException('Unable to find nested flowId on Core\\RunFlow')
   }
 
   return flowId

@@ -36,10 +36,10 @@
       "lodash"
     ]
   },
-  "include": [
-    "src/**/*"
-  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "__test_fixtures__",
+    "__tests__",
+    "dist"
   ]
 }

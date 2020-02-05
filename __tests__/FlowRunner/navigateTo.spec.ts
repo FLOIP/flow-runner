@@ -2,7 +2,7 @@ import {last} from 'lodash'
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
-import {convertDateToString, findInteractionWith, RichCursorType} from '../../src'
+import {convertDateToString, findInteractionWith, TRichCursor} from '../../src'
 import {IBasePromptConfig, KnownPrompts} from '../../src';
 import {createStaticFirstExitBlockRunnerFor} from "../../__test_fixtures__/fixtures/BlockRunner";
 import {INumericPromptConfig} from '../../src';
@@ -14,6 +14,10 @@ describe('FlowRunner/navigateTo', () => {
 
   beforeEach(() => {
     dataset = createDefaultDataset()
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
   })
 
   it('should push an additional interaction onto context\'s interaction stack', () => {
@@ -48,6 +52,9 @@ describe('FlowRunner/navigateTo', () => {
           block = ctx.flows[0].blocks[0],
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
             ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
+
+      jest.spyOn(runner, 'cacheInteractionByBlockName') // todo: remove this once it's been pushed out to isolated behaviour
+        .mockImplementation(() => {})
 
       const
           previousIntxId = 'some-fake-block-interaction-uuid',
@@ -98,7 +105,7 @@ describe('FlowRunner/navigateTo', () => {
                 min: 999,}))
 
       const
-          richCursor: RichCursorType = runner.navigateTo(block, ctx),
+          richCursor: TRichCursor = runner.navigateTo(block, ctx),
           cursor = runner.dehydrateCursor(richCursor),
           expectedPrompt: INumericPromptConfig & IBasePromptConfig = startSpy.mock.results[0].value
 
@@ -152,6 +159,9 @@ describe('FlowRunner/navigateTo', () => {
             runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
               ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
+        jest.spyOn(runner, 'cacheInteractionByBlockName') // todo: remove this once it's been pushed out to isolated behaviour
+          .mockImplementation(() => {})
+
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
         expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) as string, ctx).flowId)
             .toBe(ctx.flows[0].uuid)
@@ -187,6 +197,9 @@ describe('FlowRunner/navigateTo', () => {
             runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
               ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
+        jest.spyOn(runner, 'cacheInteractionByBlockName') // todo: remove this once it's been pushed out to isolated behaviour
+          .mockImplementation(() => {})
+
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
         expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) as string, ctx).flowId)
             .toBe(ctx.flows[0].uuid)
@@ -221,6 +234,9 @@ describe('FlowRunner/navigateTo', () => {
             block = ctx.flows[1].blocks[0],
             runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
               ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
+
+        jest.spyOn(runner, 'cacheInteractionByBlockName') // todo: remove this once it's been pushed out to isolated behaviour
+          .mockImplementation(() => {})
 
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(1)
         expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) as string, ctx).flowId)

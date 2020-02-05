@@ -2,7 +2,7 @@ import "reflect-metadata";
 import {flatMap} from 'lodash'
 import IDataset, {createDefaultDataset} from '../__test_fixtures__/fixtures/IDataset'
 import FlowRunner from '../src/domain/FlowRunner'
-import {createContextDataObjectFor, IResources, RichCursorInputRequiredType, SupportedMode} from '../src'
+import {createContextDataObjectFor, IResources, TRichCursorInputRequired, SupportedMode} from '../src'
 import IContext from '../src/flow-spec/IContext'
 import ValidationException from '../src/domain/exceptions/ValidationException'
 import {deserialize, plainToClass, serialize} from 'class-transformer'
@@ -47,7 +47,7 @@ describe('FlowRunner', () => {
       const runner = new FlowRunner(ctx)
 
       // block1
-      let cursor: RichCursorInputRequiredType | void = runner.run()
+      let cursor: TRichCursorInputRequired | void = runner.run()
 
       if (!cursor) {
         throw new ValidationException('Omg, no cursor?')
@@ -95,7 +95,8 @@ describe('FlowRunner', () => {
         const context: IContext = require('../__test_fixtures__/fixtures/2019-10-08-case-block-eval-issue.json')
         const runner = new FlowRunner(context)
 
-        expect(runner.run()![0].blockId).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
+        expect(FlowRunner.prototype.run.bind(runner)).toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')
+        // expect(runner.run()![0].blockId).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
       })
     })
 
@@ -124,7 +125,7 @@ describe('FlowRunner', () => {
           resources)
 
         const runner = new FlowRunner(context)
-        let [, prompt]: RichCursorInputRequiredType = runner.run()!
+        let [, prompt]: TRichCursorInputRequired = runner.run()!
         prompt.value = (prompt as SelectOnePrompt).config.choices[1].key // cats
 
         prompt = runner.run()![1]
@@ -145,7 +146,7 @@ describe('FlowRunner', () => {
           resources)
 
         const runner = new FlowRunner(context)
-        let [, prompt]: RichCursorInputRequiredType = runner.run()!
+        let [, prompt]: TRichCursorInputRequired = runner.run()!
         prompt.value = (prompt as SelectOnePrompt).config.choices[0].key // dogs
 
         prompt = runner.run()![1]
