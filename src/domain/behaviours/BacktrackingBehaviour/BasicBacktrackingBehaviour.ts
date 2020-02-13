@@ -28,8 +28,8 @@ import IBehaviour from '../IBehaviour'
 import IBlockInteraction from '../../../flow-spec/IBlockInteraction'
 import IContext, {
   findBlockOnActiveFlowWith,
-  findFlowWith, TRichCursorInputRequired,
-  TRichCursor,
+  findFlowWith, IRichCursorInputRequired,
+  IRichCursor,
 } from '../../../flow-spec/IContext'
 import ValidationException from '../../exceptions/ValidationException'
 import FlowRunner, {IFlowNavigator, IPromptBuilder, NON_INTERACTIVE_BLOCK_TYPES} from '../../FlowRunner'
@@ -47,19 +47,19 @@ export interface IBackTrackingBehaviour extends IBehaviour {
    * Generates new prompt from new interaction + resets state to what was {@link IContext.interactions}'s moment
    * @param interaction
    * todo: this should likely take in steps rather than interaction itself */
-  jumpTo(interaction: IBlockInteraction): TRichCursor,
+  jumpTo(interaction: IBlockInteraction): IRichCursor,
 
   /**
    * Regenerates prompt from previous interaction
    * @param steps
    */
-  peek(steps?: number): TRichCursor,
+  peek(steps?: number): IRichCursor,
 
   /**
    * Regenerates prompt + interaction in place of previous interaction; updates {@link IContext.cursor}
    * @param steps
    */
-  seek(steps?: number): TRichCursor,
+  seek(steps?: number): IRichCursor,
 }
 
 /**
@@ -76,18 +76,18 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
     // do nothing for now
   }
 
-  seek(steps=0, context: IContext = this.context): TRichCursorInputRequired {
-    const [prevIntx, virtualPrompt]: TRichCursorInputRequired = this.peek(steps, context)
+  seek(steps=0, context: IContext = this.context): IRichCursorInputRequired {
+    const {interaction: prevIntx, prompt: virtualPrompt}: IRichCursorInputRequired = this.peek(steps, context)
     // then generate a cursor from desired interaction && set cursor on context
-    const cursor: TRichCursorInputRequired = this.jumpTo(prevIntx, context) as TRichCursorInputRequired
+    const cursor: IRichCursorInputRequired = this.jumpTo(prevIntx, context) as IRichCursorInputRequired
 
     // pre-populate previous value onto prompt for new interaction
-    cursor[1].value = virtualPrompt.value
+    cursor.prompt.value = virtualPrompt.value
 
     return cursor
   }
 
-  jumpTo(intx: IBlockInteraction, context: IContext = this.context): TRichCursor {
+  jumpTo(intx: IBlockInteraction, context: IContext = this.context): IRichCursor {
     // jump context.interactions back in time
     const discarded = context.interactions.splice( // truncate intx list to pull us back in time; include provided intx
       findLastIndex(context.interactions, intx),
@@ -111,7 +111,7 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
       context)
   }
 
-  peek(steps = 0, context: IContext = this.context): TRichCursorInputRequired {
+  peek(steps = 0, context: IContext = this.context): IRichCursorInputRequired {
     let _steps = steps + 1 // setup for while-loop
     const intx = findLast(context.interactions, ({type}) =>
       !includes(NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0)
@@ -133,9 +133,12 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
       })}`)
     }
 
-    return [intx, Object.assign(
-      prompt,
-      {value: intx.value})]
+    return {
+      interaction: intx,
+      prompt: Object.assign(
+        prompt,
+        {value: intx.value})
+    }
   }
 
   postInteractionCreate(interaction: IBlockInteraction, _context: IContext): IBlockInteraction {

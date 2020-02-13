@@ -35,10 +35,10 @@ describe('FlowRunner/runActiveBlockOn', () => {
         ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],])),
       richCursor = runner.hydrateRichCursorFrom(ctx)
 
-    richCursor[0].selectedExitId = null // set as incomplete interaction state
+    richCursor.interaction.selectedExitId = null // set as incomplete interaction state
 
     runner.runActiveBlockOn(richCursor, block)
-    expect(richCursor[0].selectedExitId).toBe(expectedExit.uuid)
+    expect(richCursor.interaction.selectedExitId).toBe(expectedExit.uuid)
   })
 
   describe('when prompt present', () => {
@@ -49,9 +49,9 @@ describe('FlowRunner/runActiveBlockOn', () => {
         runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
           ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
-      expect(ctx.cursor[1].isSubmitted).toBeFalsy()
+      expect(ctx.cursor.promptConfig.isSubmitted).toBeFalsy()
       runner.runActiveBlockOn(runner.hydrateRichCursorFrom(ctx), block)
-      expect(ctx.cursor[1].isSubmitted).toBeTruthy()
+      expect(ctx.cursor.promptConfig.isSubmitted).toBeTruthy()
     })
 
     it('should set interaction value from prompt', () => {
@@ -62,10 +62,10 @@ describe('FlowRunner/runActiveBlockOn', () => {
           ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],])),
         richCursor = runner.hydrateRichCursorFrom(ctx)
 
-      delete richCursor[0].value // setup to ensure we get a value during run
+      delete richCursor.interaction.value // setup to ensure we get a value during run
 
       runner.runActiveBlockOn(richCursor, block)
-      expect(richCursor[0].value).toBeNull() // `null` is the value from the prompt
+      expect(richCursor.interaction.value).toBeNull() // `null` is the value from the prompt
     })
 
     it('should set interaction hasResponse to true', () => {
@@ -76,9 +76,9 @@ describe('FlowRunner/runActiveBlockOn', () => {
           ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],])),
         richCursor = runner.hydrateRichCursorFrom(ctx)
 
-      expect(richCursor[0].hasResponse).toBeFalsy()
+      expect(richCursor.interaction.hasResponse).toBeFalsy()
       runner.runActiveBlockOn(richCursor, block)
-      expect(richCursor[0].hasResponse).toBeTruthy()
+      expect(richCursor.interaction.hasResponse).toBeTruthy()
     })
   })
 })

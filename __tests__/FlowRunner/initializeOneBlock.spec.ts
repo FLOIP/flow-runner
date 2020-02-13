@@ -5,7 +5,7 @@ import {
   IBasePromptConfig,
   INumericPromptConfig,
   KnownPrompts,
-  TRichCursor,
+  IRichCursor,
 } from '../../src'
 
 
@@ -30,7 +30,7 @@ describe('FlowRunner/initializeOneBlock', () => {
           })],
         ]))
 
-    const [, prompt] = runner.initializeOneBlock(block, flow.uuid, undefined, undefined)
+    const {prompt} = runner.initializeOneBlock(block, flow.uuid, undefined, undefined)
     expect(prompt).toBeUndefined()
   })
 
@@ -58,10 +58,10 @@ describe('FlowRunner/initializeOneBlock', () => {
         ]))
 
     const
-        richCursor: TRichCursor = runner.initializeOneBlock(block, flow.uuid, undefined, undefined),
+        richCursor: IRichCursor = runner.initializeOneBlock(block, flow.uuid, undefined, undefined),
         cursor = runner.dehydrateCursor(richCursor)
 
-    expect(cursor[1]).toBe(expectedPrompt)
+    expect(cursor.promptConfig).toBe(expectedPrompt)
   })
 
   it('should return cursor with interaction for block + flow', () => {
@@ -78,7 +78,7 @@ describe('FlowRunner/initializeOneBlock', () => {
           })],
         ]))
 
-    const [interaction] = runner.initializeOneBlock(block, flow.uuid, undefined, undefined)
+    const {interaction} = runner.initializeOneBlock(block, flow.uuid, undefined, undefined)
     expect(interaction).toEqual(expect.objectContaining({blockId: block.uuid} as Partial<IBlockInteraction>))
     expect(interaction).toEqual(expect.objectContaining({flowId: flow.uuid} as Partial<IBlockInteraction>))
   })

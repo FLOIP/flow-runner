@@ -251,8 +251,9 @@ contexts:
       - *intx/Message->Message/09894745-38ba-456f-aab4-720b7d09d5b3
       - *intx/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
     cursor:
-      - *intxId/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
-      - kind: Numeric # todo: let's change these (Message->Message)'s to Numeric, so this makes a bit more sense
+      interactionId: *intxId/Message->Message/a2f4c21e-bd03-4aa9-a4bd-2f2d4bb7874e
+      promptConfig:
+        kind: Numeric # todo: let's change these (Message->Message)'s to Numeric, so this makes a bit more sense
         prompt: What age are you at?
         isResponseRequired: true
         value: null
@@ -275,7 +276,9 @@ contexts:
     firstFlowId: *flowId/(RunFlow|Message)/028a055c-e988-4050-81a2-e11934bdbcad
     interactions:
       - *intx/RunFlow->Message/15c15d39-b5e2-4386-b9b6-838bb81e7107
-    cursor: [*intxId/RunFlow->Message/15c15d39-b5e2-4386-b9b6-838bb81e7107, null]
+    cursor:
+      interactionId: *intxId/RunFlow->Message/15c15d39-b5e2-4386-b9b6-838bb81e7107
+      promptConfig: null
     nestedFlowBlockInteractionIdStack:
       - *intxId/RunFlow->Message/15c15d39-b5e2-4386-b9b6-838bb81e7107
     resources:

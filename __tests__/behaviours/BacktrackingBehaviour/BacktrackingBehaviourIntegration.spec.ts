@@ -1,7 +1,7 @@
 import {last} from 'lodash'
 import IFlow from '../../../src/flow-spec/IFlow'
 import FlowRunner from '../../../src/domain/FlowRunner'
-import {SupportedMode, createContextDataObjectFor, TRichCursorInputRequired, findInteractionWith} from '../../../src'
+import {SupportedMode, createContextDataObjectFor, IRichCursorInputRequired, findInteractionWith} from '../../../src'
 import IContact from '../../../src/flow-spec/IContact'
 import SelectOnePrompt from '../../../src/domain/prompt/SelectOnePrompt'
 import {IBackTrackingBehaviour} from '../../../src/domain/behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
@@ -19,22 +19,22 @@ describe.skip('FlowRunner integration', () => {
       {id: '1'} as IContact, 'user-1234', 'org-1234', [flow], 'en_US', SupportedMode.OFFLINE)
 
     const runner = new FlowRunner(context)
-    let [, prompt]: TRichCursorInputRequired = runner.run()!
+    let {prompt}: IRichCursorInputRequired = runner.run()!
     prompt.value = (prompt as SelectOnePrompt).config.choices[0].key // yes, more children
 
-    prompt = runner.run()![1]
+    prompt = runner.run()!.prompt
     prompt.value = 17 // age
 
-    prompt = runner.run()![1]
+    prompt = runner.run()!.prompt
     prompt.value = (prompt as SelectOnePrompt).config.choices[0].key // yes, enjoy reading
 
-    prompt = runner.run()![1]
+    prompt = runner.run()!.prompt
     prompt.value = 12 // books per year
 
-    prompt = runner.run()![1]
+    prompt = runner.run()!.prompt
     prompt.value = 'Ella' // name
 
-    prompt = runner.run()![1]
+    prompt = runner.run()!.prompt
     prompt.value = (prompt as SelectOnePrompt).config.choices[1].key // no, end of children
 
     const backtracking: IBackTrackingBehaviour = runner.behaviours.backtracking as IBackTrackingBehaviour
@@ -47,7 +47,7 @@ describe.skip('FlowRunner integration', () => {
 
     prompt = backtracking.jumpTo( // commit to change
       findInteractionWith(prompt.interactionId, context),
-      context)![1]!
+      context)!.prompt!
 
 
     // todo: should peek1 really be peek0?
@@ -57,7 +57,7 @@ describe.skip('FlowRunner integration', () => {
     expect(interactionAtPeek1).not.toEqual(interactionPreviouslyAtPeek5) // assert difference
     expect(prompt.value).toEqual(interactionPreviouslyAtPeek5.value) // assert difference
 
-    prompt = prompt.fulfill(17)![1] // todo: I think we're wiping our ghost at this point; need to look into our sync() bhaviour at this point :)
+    prompt = prompt.fulfill(17)!.prompt // todo: I think we're wiping our ghost at this point; need to look into our sync() bhaviour at this point :)
     expect(prompt.value).toEqual(12)
 
 
