@@ -36,7 +36,15 @@ import createFormattedDate from '../domain/DateFormat'
 
 
 export interface ICursor {
+  /**
+   * UUID of the current interaction with a block.
+   */
   interactionId: string,
+  /**
+   * A prompt configuration data object; optional, because not every block requests input from the Contact.
+   * If it does, we call it an `ICursorInputRequired`.
+   * If not, `ICursorNoInputRequired` will have a `null-ish` `promptConfig`.
+   */
   promptConfig?: (IPromptConfig<any> & IBasePromptConfig),
 }
 
@@ -51,7 +59,15 @@ export interface ICursorNoInputRequired {
 }
 
 export interface IRichCursor {
+  /**
+   * An object representation of the current interaction with a block.
+   */
   interaction: IBlockInteraction,
+  /**
+   * In IPrompt instance.
+   * When present, we call it a TRichCursorInputRequired.
+   * In absence, the TRichCursorNoInputRequired will maintain `prompt` with a null-ish value.
+   */
   prompt?: IPrompt<IPromptConfig<any> & IBasePromptConfig>,
 }
 
