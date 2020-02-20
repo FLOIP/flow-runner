@@ -1,8 +1,8 @@
 import {camelCase, includes, isArray, isObject, reduce} from 'lodash'
 
-export const DEFAULT_EXCLUSIONS = ['choices', 'platformMetadata', 'platform_metadata']
+export const EXCLUDED_DATA_HIERARCHIES_BY_KEY = ['choices', 'platformMetadata', 'platform_metadata']
 
-export default function convertKeysToCamelCase(x: any, exclusions = DEFAULT_EXCLUSIONS): any {
+export default function convertKeysToCamelCase(x: any, exclusions = EXCLUDED_DATA_HIERARCHIES_BY_KEY): any {
   if (isArray(x)) {
     return x.map(_ => convertKeysToCamelCase(_, exclusions))
   }
