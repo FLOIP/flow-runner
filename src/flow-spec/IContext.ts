@@ -23,7 +23,7 @@ import IContact from './IContact'
 import IFlow, {findBlockWith} from './IFlow'
 import IBlockInteraction from './IBlockInteraction'
 import IPrompt, {IBasePromptConfig, IPromptConfig} from '../domain/prompt/IPrompt'
-import IBlock from './IBlock'
+import IBlock, {isLastBlock} from './IBlock'
 import IRunFlowBlockConfig from '../model/block/IRunFlowBlockConfig'
 import {find, findLast, last} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
@@ -172,7 +172,26 @@ export function getActiveFlowFrom(ctx: IContext): IFlow {
   return findFlowWith(getActiveFlowIdFrom(ctx), ctx)
 }
 
-export function isLastBlockOn({nestedFlowBlockInteractionIdStack}: IContext, {exits}: IBlock): boolean {
-  return nestedFlowBlockInteractionIdStack.length === 0
-    && exits.every(e => e.destinationBlock == null)
+export function isLastBlockOn({nestedFlowBlockInteractionIdStack}: IContext, block: IBlock): boolean {
+  return nestedFlowBlockInteractionIdStack.length === 0 && isLastBlock(block)
+}
+
+export const contextService: IContextService = {
+  findInteractionWith,
+  findFlowWith,
+  findBlockOnActiveFlowWith,
+  findNestedFlowIdFor,
+  getActiveFlowIdFrom,
+  getActiveFlowFrom,
+  isLastBlockOn,
+}
+
+export interface IContextService {
+  findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction
+  findFlowWith(uuid: string, ctx: IContext): IFlow
+  findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock
+  findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext): string
+  getActiveFlowIdFrom(ctx: IContext): string
+  getActiveFlowFrom(ctx: IContext): IFlow
+  isLastBlockOn(ctx: IContext, block: IBlock): boolean
 }

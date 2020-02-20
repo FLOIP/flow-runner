@@ -2,6 +2,10 @@ import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/I
 import FlowRunner from '../../src/domain/FlowRunner'
 import {cloneDeep, last} from 'lodash'
 import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
+import IContext, {IContextService} from '../../src/flow-spec/IContext'
+import IBlock from '../../src/flow-spec/IBlock'
+import IBlockExit from '../../src/flow-spec/IBlockExit'
+import * as contextService from '../../src/flow-spec/IContext'
 
 describe('FlowRunner/stepOut', () => {
   let dataset: IDataset
@@ -46,15 +50,59 @@ describe('FlowRunner/stepOut', () => {
 
     it('should leave active interaction\'s selected exit as null to indicate we\'ve finished executing the flow', () => {
       const
-          ctx = dataset.contexts[2],
-          activeIntx = last(ctx.interactions) as IBlockInteraction,
-          runner = new FlowRunner(ctx)
+          ctx = dataset.contexts[2]
+
+      ctx.interactions.push(
+        dataset._block_interactions.find(({uuid}) =>
+          uuid === '1c7317fc-b644-4da4-b1ff-1807ce55c17e') as IBlockInteraction)
+
+      const
+        activeIntx = last(ctx.interactions) as IBlockInteraction,
+        runner = new FlowRunner(ctx)
 
       expect(ctx.nestedFlowBlockInteractionIdStack.length).toBeGreaterThan(0)
       activeIntx.selectedExitId = null // pre-condition for "not-yet-stepped-out" state
       runner.stepOut(ctx)
+
+      // todo: incorrect; needs to be a concrete exit with a null destinationBlock
       expect(activeIntx.selectedExitId).toBe(null)
     })
+
+    it('should tie run flow block\'s intx associated with provided run flow block to its first exit', () => {
+      // needs: [a, b, run-flow-intx, nested-flow-intx-a, nested-flow-intx-b, <<step-out>>]
+      const originFlowId = 'flow-123'
+      const originBlockInteractionId = 'intx-345' // last( nestedFlowBlockInteractionStack )
+      const runFlowBlock = {uuid: 'block-123', exits: [{uuid: 'exit-123', destinationBlock: 'block-234'} as IBlockExit]} as IBlock
+      const runFlowBlockIntx: IBlockInteraction = {uuid: originBlockInteractionId, blockId: 'block-123'} as IBlockInteraction
+      const interactions: IBlockInteraction[] = [
+        {uuid: 'intx-123'}, // intx-a
+        {uuid: 'intx-234'}, // intx-b
+        runFlowBlockIntx, // run-flow-intx
+        {uuid: 'intx-456', originFlowId, originBlockInteractionId}, // nested-flow-intx-a
+        {uuid: 'intx-567', originFlowId, originBlockInteractionId}, // nested-flow-intx-b
+                                                                    // << (step out)
+      ] as IBlockInteraction[]
+
+      const runner = new FlowRunner({} as IContext)
+      runner._contextService = Object.assign({}, contextService, {
+        findBlockOnActiveFlowWith(_uuid: string, ctx: IContext): IBlock {
+          return ctx.flows[0].blocks.find(({uuid}) => _uuid === uuid) as IBlock
+        },
+      } as Partial<IContextService>)
+
+      runner.stepOut({
+        flows: [{
+          uuid: originFlowId,
+          blocks: [
+            runFlowBlock,
+            {uuid: 'block-234'} as IBlock]}],
+        interactions,
+        nestedFlowBlockInteractionIdStack: [originBlockInteractionId]} as IContext)
+
+      expect(runFlowBlockIntx.selectedExitId).toBe(runFlowBlock.exits[0].uuid)
+    })
+
+    it.todo('should reconcile exit at timestamps somehow') // todo: verify this
 
     describe('connecting block', () => {
       it('should return block last RunFlow was connected to in original flow', () => {

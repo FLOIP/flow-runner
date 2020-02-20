@@ -6,6 +6,7 @@ import {findInteractionWith, TRichCursor} from '../../src'
 import {IBasePromptConfig, KnownPrompts} from '../../src';
 import {createStaticFirstExitBlockRunnerFor} from "../../__test_fixtures__/fixtures/BlockRunner";
 import {INumericPromptConfig} from '../../src';
+import createFormattedDate from '../../src/domain/DateFormat'
 
 // todo: abstract some of the setup
 
@@ -264,7 +265,7 @@ describe('FlowRunner/navigateTo', () => {
       expect(ctx.interactions.length).toBeGreaterThan(0)
       expect(lastIntx.exitAt).toBeNull()
       runner.navigateTo(block, ctx, navigatedAt)
-      expect(lastIntx.exitAt).toBe(navigatedAt.toISOString().replace('T', ' '))
+      expect(lastIntx.exitAt).toBe(createFormattedDate(navigatedAt))
     })
   })
 })

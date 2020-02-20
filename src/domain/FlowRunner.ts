@@ -18,14 +18,12 @@
  **/
 
 import {update, NonBreakingUpdateOperation} from 'sp2'
-import {trimEnd, lowerFirst} from 'lodash'
+import {find, first, findLast, includes, trimEnd, last, lowerFirst} from 'lodash'
 import IBlock, {findBlockExitWith} from '../flow-spec/IBlock'
+import * as contextService from '../flow-spec/IContext'
 import IContext, {
+  IContextService,
   TCursor,
-  findBlockOnActiveFlowWith,
-  findInteractionWith,
-  getActiveFlowFrom,
-  getActiveFlowIdFrom,
   IContextWithCursor, IReversibleUpdateOperation,
   TRichCursorInputRequired,
   TRichCursor, IContextInputRequired,
@@ -33,7 +31,6 @@ import IContext, {
 import IBlockRunner from './runners/IBlockRunner'
 import IBlockInteraction from '../flow-spec/IBlockInteraction'
 import IBlockExit from '../flow-spec/IBlockExit'
-import {find, first, includes, last} from 'lodash'
 import IFlowRunner, {IBlockRunnerFactoryStore, TBlockRunnerFactory} from './IFlowRunner'
 import IIdGenerator from './IIdGenerator'
 import IdGeneratorUuidV4 from './IdGeneratorUuidV4'
@@ -73,6 +70,7 @@ import IReadBlock from '../model/block/IReadBlock'
 import IRunFlowBlock from '../model/block/IRunFlowBlock'
 import ReadPrompt from './prompt/ReadPrompt'
 import createFormattedDate from './DateFormat'
+
 
 
 export class BlockRunnerFactoryStore
@@ -149,6 +147,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     protected idGenerator: IIdGenerator = new IdGeneratorUuidV4,
     /** Instances providing isolated functionality beyond the default runner, leveraging built-in hooks. */
     public behaviours: { [key: string]: IBehaviour } = {},
+    public _contextService: IContextService = contextService
   ) {
     this.initializeBehaviours(DEFAULT_BEHAVIOUR_TYPES)
   }
@@ -345,7 +344,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     /* todo: convert cursor to an object instead of tuple; since we don't have named tuples, a dictionary
         would be more intuitive */
     let richCursor: TRichCursor = this.hydrateRichCursorFrom(ctx)
-    let block: IBlock | undefined = findBlockOnActiveFlowWith(richCursor[0].blockId, ctx)
+    let block: IBlock | undefined = this._contextService.findBlockOnActiveFlowWith(richCursor[0].blockId, ctx)
 
     do {
       if (this.isInputRequiredFor(ctx)) {
@@ -359,6 +358,10 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
 
       if (block == null) {
         block = this.stepOut(ctx)
+
+        // todo: ensure that exitat is set to _after_ our last nested flow interaction
+        //       what happens with nested flow ending in MCQ -- shouldn't selectedExitId be set ?
+        //       null selectedExitId should actually have a selectedExitId that points to an exit that has a null destination block
       }
 
       if (block == null) {
@@ -394,6 +397,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param ctx
    */
   complete(ctx: IContext): void {
+    // todo: should set selected exit ID on last interaction as well, with destination of null
+
     (last(ctx.interactions) as IBlockInteraction).exitAt = createFormattedDate()
     delete ctx.cursor
     ctx.deliveryStatus = DeliveryStatus.FINISHED_COMPLETE
@@ -420,7 +425,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    */
   hydrateRichCursorFrom(ctx: IContextWithCursor): TRichCursor {
     const {cursor} = ctx
-    const interaction = findInteractionWith(cursor[0], ctx)
+    const interaction = this._contextService.findInteractionWith(cursor[0], ctx)
     return [interaction, this.createPromptFrom(cursor[1], interaction)]
   }
 
@@ -499,10 +504,10 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    */
   navigateTo(block: IBlock, ctx: IContext, navigatedAt: Date = new Date): TRichCursor {
     const {interactions, nestedFlowBlockInteractionIdStack} = ctx
-    const flowId = getActiveFlowIdFrom(ctx)
+    const flowId = this._contextService.getActiveFlowIdFrom(ctx)
     const originInteractionId = last(nestedFlowBlockInteractionIdStack)
     const originInteraction = originInteractionId != null
-      ? findInteractionWith(originInteractionId, ctx)
+      ? this._contextService.findInteractionWith(originInteractionId, ctx)
       : null
 
     const richCursor = this.initializeOneBlock(
@@ -550,12 +555,10 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
 
     ctx.nestedFlowBlockInteractionIdStack.push(runFlowInteraction.uuid)
 
-    const firstNestedBlock = first(getActiveFlowFrom(ctx).blocks) // todo: use IFlow.firstBlockId
+    const firstNestedBlock = first(this._contextService.getActiveFlowFrom(ctx).blocks) // todo: use IFlow.firstBlockId
     if (firstNestedBlock == null) {
       return undefined
     }
-
-    runFlowInteraction.selectedExitId = runFlowBlock.exits[0].uuid
 
     return firstNestedBlock
   }
@@ -573,21 +576,40 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    *       the two Flows. */
   stepOut(ctx: IContext): IBlock | undefined {
     const {nestedFlowBlockInteractionIdStack} = ctx
+    const {_contextService: contextService} = this
 
     if (nestedFlowBlockInteractionIdStack.length === 0) {
       return
     }
 
-    const lastParentInteractionId = nestedFlowBlockInteractionIdStack.pop() as string
-    const {blockId: lastRunFlowBlockId} = findInteractionWith(lastParentInteractionId, ctx)
-    const lastRunFlowBlock = findBlockOnActiveFlowWith(lastRunFlowBlockId, ctx)
-    const {destinationBlock} = first(lastRunFlowBlock.exits) as IBlockExit
+    // pop last nested flow interaction id (aka unnest)
+    const lastRunFlowIntxId = nestedFlowBlockInteractionIdStack.pop() as string
+    // update last nested flow interaction
+    const lastRunFlowIntx = contextService.findInteractionWith(lastRunFlowIntxId, ctx)
+    // find- + return- destination block from first exit on runflowblock (on interaction 👆)
+    const lastRunFlowBlock = contextService.findBlockOnActiveFlowWith(lastRunFlowIntx.blockId, ctx)
+    const {uuid: lastRunFlowBlockFirstExitId, destinationBlock: destinationBlockId} = first(lastRunFlowBlock.exits) as IBlockExit
 
-    if (destinationBlock == null) {
+    lastRunFlowIntx.selectedExitId = lastRunFlowBlockFirstExitId
+
+    if (destinationBlockId == null) {
       return
     }
 
-    return findBlockOnActiveFlowWith(destinationBlock, ctx)
+    return contextService.findBlockOnActiveFlowWith(destinationBlockId, ctx)
+  }
+
+  findInteractionForActiveNestedFlow({nestedFlowBlockInteractionIdStack, interactions}: IContext): IBlockInteraction {
+    if (nestedFlowBlockInteractionIdStack.length === 0) {
+      throw new ValidationException('Unable to find interaction for nested flow when not nested')
+    }
+
+    const intx = findLast(interactions, {uuid: last(nestedFlowBlockInteractionIdStack)})
+    if (intx == null) {
+      throw new ValidationException('Unable to find interaction for deepest flow nesting')
+    }
+
+    return intx
   }
 
   /**
@@ -597,14 +619,14 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    */
   findNextBlockOnActiveFlowFor(ctx: IContext): IBlock | undefined {
     // cursor: TRichCursor | null, flow: IFlow): IBlock | null {
-    const flow = getActiveFlowFrom(ctx)
+    const flow = this._contextService.getActiveFlowFrom(ctx)
     const {cursor} = ctx
 
     if (cursor == null) {
       return first(flow.blocks) // todo: use IFlow.firstBlockId
     }
 
-    const interaction = findInteractionWith(cursor[0], ctx)
+    const interaction = this._contextService.findInteractionWith(cursor[0], ctx)
     return this.findNextBlockFrom(interaction, ctx)
   }
 
@@ -622,9 +644,9 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
         'Unable to navigate past incomplete interaction; did you forget to call runner.run()?')
     }
 
-    const block = findBlockOnActiveFlowWith(blockId, ctx)
+    const block = this._contextService.findBlockOnActiveFlowWith(blockId, ctx)
     const {destinationBlock} = findBlockExitWith(selectedExitId, block)
-    const {blocks} = getActiveFlowFrom(ctx)
+    const {blocks} = this._contextService.getActiveFlowFrom(ctx)
 
     return find(blocks, {uuid: destinationBlock})
   }
