@@ -23,5 +23,6 @@ class SelectManyPrompt extends BasePrompt_1.default {
         return true;
     }
 }
+exports.SelectManyPrompt = SelectManyPrompt;
 exports.default = SelectManyPrompt;
 //# sourceMappingURL=SelectManyPrompt.js.map

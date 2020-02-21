@@ -3,7 +3,7 @@ import IBlock from '../../flow-spec/IBlock';
 import IBlockExit from '../../flow-spec/IBlockExit';
 import IRunFlowBlockConfig from '../../model/block/IRunFlowBlockConfig';
 import IContext from '../../flow-spec/IContext';
-export default class RunFlowBlockRunner implements IBlockRunner {
+export declare class RunFlowBlockRunner implements IBlockRunner {
     block: IBlock & {
         config: IRunFlowBlockConfig;
     };
@@ -14,4 +14,5 @@ export default class RunFlowBlockRunner implements IBlockRunner {
     initialize(): undefined;
     run(): IBlockExit;
 }
+export default RunFlowBlockRunner;
 //# sourceMappingURL=RunFlowBlockRunner.d.ts.map

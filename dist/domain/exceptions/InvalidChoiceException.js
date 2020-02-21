@@ -6,5 +6,6 @@ class InvalidChoiceException extends Error {
         this.choices = choices;
     }
 }
+exports.InvalidChoiceException = InvalidChoiceException;
 exports.default = InvalidChoiceException;
 //# sourceMappingURL=InvalidChoiceException.js.map

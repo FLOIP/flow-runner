@@ -188,5 +188,6 @@ class BacktrackingBehaviour {
         });
     }
 }
+exports.BacktrackingBehaviour = BacktrackingBehaviour;
 exports.default = BacktrackingBehaviour;
 //# sourceMappingURL=BacktrackingBehaviour.js.map

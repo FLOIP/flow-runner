@@ -21,5 +21,6 @@ class NumericResponseBlockRunner {
         return this.block.exits[0];
     }
 }
+exports.NumericResponseBlockRunner = NumericResponseBlockRunner;
 exports.default = NumericResponseBlockRunner;
 //# sourceMappingURL=NumericResponseBlockRunner.js.map

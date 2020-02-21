@@ -12,5 +12,6 @@ class OpenPrompt extends BasePrompt_1.default {
         return true;
     }
 }
+exports.OpenPrompt = OpenPrompt;
 exports.default = OpenPrompt;
 //# sourceMappingURL=OpenPrompt.js.map

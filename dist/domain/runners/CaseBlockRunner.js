@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const __1 = require("../..");
-const IBlock_1 = require("../../flow-spec/IBlock");
+const __2 = require("../..");
 class CaseBlockRunner {
     constructor(block, context) {
         this.block = block;
@@ -11,11 +11,10 @@ class CaseBlockRunner {
         return undefined;
     }
     run() {
-        const truthyExit = IBlock_1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context);
-        return (truthyExit != null
-            ? truthyExit
-            : __1.findDefaultBlockExitOn(this.block));
+        var _a;
+        return _a = __2.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context), (_a !== null && _a !== void 0 ? _a : __1.findDefaultBlockExitOn(this.block));
     }
 }
+exports.CaseBlockRunner = CaseBlockRunner;
 exports.default = CaseBlockRunner;
 //# sourceMappingURL=CaseBlockRunner.js.map

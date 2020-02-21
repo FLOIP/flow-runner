@@ -1,3 +1,4 @@
-export default class ValidationException extends Error {
+export declare class ValidationException extends Error {
 }
+export default ValidationException;
 //# sourceMappingURL=ValidationException.d.ts.map

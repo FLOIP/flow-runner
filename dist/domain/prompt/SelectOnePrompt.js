@@ -13,5 +13,6 @@ class SelectOnePrompt extends BasePrompt_1.default {
         return true;
     }
 }
+exports.SelectOnePrompt = SelectOnePrompt;
 exports.default = SelectOnePrompt;
 //# sourceMappingURL=SelectOnePrompt.js.map

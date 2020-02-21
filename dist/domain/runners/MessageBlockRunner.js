@@ -18,5 +18,6 @@ class MessageBlockRunner {
         return this.block.exits[0];
     }
 }
+exports.MessageBlockRunner = MessageBlockRunner;
 exports.default = MessageBlockRunner;
 //# sourceMappingURL=MessageBlockRunner.js.map

@@ -22,11 +22,10 @@ class SelectManyResponseBlockRunner {
         };
     }
     run() {
-        const truthyExit = __1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context);
-        return (truthyExit != null
-            ? truthyExit
-            : lodash_1.last(this.block.exits));
+        var _a;
+        return _a = __1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context), (_a !== null && _a !== void 0 ? _a : lodash_1.last(this.block.exits));
     }
 }
+exports.SelectManyResponseBlockRunner = SelectManyResponseBlockRunner;
 exports.default = SelectManyResponseBlockRunner;
 //# sourceMappingURL=SelectManyResponseBlockRunner.js.map

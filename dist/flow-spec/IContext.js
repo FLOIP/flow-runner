@@ -2,14 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const IFlow_1 = require("./IFlow");
+const IBlock_1 = require("./IBlock");
 const lodash_1 = require("lodash");
 const ValidationException_1 = tslib_1.__importDefault(require("../domain/exceptions/ValidationException"));
 const DeliveryStatus_1 = tslib_1.__importDefault(require("./DeliveryStatus"));
+const SupportedMode_1 = tslib_1.__importDefault(require("./SupportedMode"));
 const IdGeneratorUuidV4_1 = tslib_1.__importDefault(require("../domain/IdGeneratorUuidV4"));
-function createContextDataObjectFor(contact, userId, orgId, flows, languageId, mode, resources = [], idGenerator = new IdGeneratorUuidV4_1.default()) {
+const DateFormat_1 = tslib_1.__importDefault(require("../domain/DateFormat"));
+function createContextDataObjectFor(contact, userId, orgId, flows, languageId, mode = SupportedMode_1.default.OFFLINE, resources = [], idGenerator = new IdGeneratorUuidV4_1.default()) {
     return {
         id: idGenerator.generate(),
-        createdAt: (new Date).toISOString().replace('T', ' '),
+        createdAt: DateFormat_1.default(),
         deliveryStatus: DeliveryStatus_1.default.QUEUED,
         userId,
         orgId,
@@ -19,15 +22,17 @@ function createContextDataObjectFor(contact, userId, orgId, flows, languageId, m
         sessionVars: {},
         interactions: [],
         nestedFlowBlockInteractionIdStack: [],
+        reversibleOperations: [],
         flows,
         firstFlowId: flows[0].uuid,
         resources,
         platformMetadata: {},
+        logs: {},
     };
 }
 exports.createContextDataObjectFor = createContextDataObjectFor;
 function findInteractionWith(uuid, { interactions }) {
-    const interaction = lodash_1.find(interactions, { uuid });
+    const interaction = lodash_1.findLast(interactions, { uuid });
     if (interaction == null) {
         throw new ValidationException_1.default(`Unable to find interaction on context: ${uuid} in ${interactions.map(i => i.uuid)}`);
     }
@@ -51,7 +56,7 @@ function findNestedFlowIdFor(interaction, ctx) {
     const runFlowBlock = IFlow_1.findBlockWith(interaction.blockId, flow);
     const flowId = runFlowBlock.config.flowId;
     if (flowId == null) {
-        throw new ValidationException_1.default('Unable to find nested flowId on Core\\RunFlowBlock');
+        throw new ValidationException_1.default('Unable to find nested flowId on Core\\RunFlow');
     }
     return flowId;
 }
@@ -69,9 +74,17 @@ function getActiveFlowFrom(ctx) {
     return findFlowWith(getActiveFlowIdFrom(ctx), ctx);
 }
 exports.getActiveFlowFrom = getActiveFlowFrom;
-function isLastBlockOn({ nestedFlowBlockInteractionIdStack }, { exits }) {
-    return nestedFlowBlockInteractionIdStack.length === 0
-        && exits.every(e => e.destinationBlock == null);
+function isLastBlockOn({ nestedFlowBlockInteractionIdStack }, block) {
+    return nestedFlowBlockInteractionIdStack.length === 0 && IBlock_1.isLastBlock(block);
 }
 exports.isLastBlockOn = isLastBlockOn;
+exports.contextService = {
+    findInteractionWith,
+    findFlowWith,
+    findBlockOnActiveFlowWith,
+    findNestedFlowIdFor,
+    getActiveFlowIdFrom,
+    getActiveFlowFrom,
+    isLastBlockOn,
+};
 //# sourceMappingURL=IContext.js.map

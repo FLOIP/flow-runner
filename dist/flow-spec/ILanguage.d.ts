@@ -1,4 +1,4 @@
-export default interface ILanguage {
+export interface ILanguage {
     id: string;
     name: string;
     abbreviation: string;
@@ -7,4 +7,5 @@ export default interface ILanguage {
     code?: string;
     deletedAt?: string;
 }
+export default ILanguage;
 //# sourceMappingURL=ILanguage.d.ts.map

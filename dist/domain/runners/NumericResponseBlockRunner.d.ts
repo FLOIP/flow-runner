@@ -4,11 +4,12 @@ import { INumericPromptConfig } from '../..';
 import INumericResponseBlock from '../../model/block/INumericResponseBlock';
 import IContext from '../../flow-spec/IContext';
 import IBlockInteraction from '../../flow-spec/IBlockInteraction';
-export default class NumericResponseBlockRunner implements IBlockRunner {
+export declare class NumericResponseBlockRunner implements IBlockRunner {
     block: INumericResponseBlock;
     context: IContext;
     constructor(block: INumericResponseBlock, context: IContext);
     initialize({ value }: IBlockInteraction): INumericPromptConfig;
     run(): IBlockExit;
 }
+export default NumericResponseBlockRunner;
 //# sourceMappingURL=NumericResponseBlockRunner.d.ts.map

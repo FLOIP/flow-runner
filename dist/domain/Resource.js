@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const IResourceResolver_1 = require("./IResourceResolver");
 const ResourceNotFoundException_1 = tslib_1.__importDefault(require("./exceptions/ResourceNotFoundException"));
-const floip_expression_evaluator_ts_1 = require("floip-expression-evaluator-ts");
+const expression_evaluator_1 = require("@floip/expression-evaluator");
 const IBlock_1 = require("../flow-spec/IBlock");
 class Resource {
     constructor(uuid, values, context) {
@@ -32,7 +32,7 @@ class Resource {
         return this._getValueByContentType(IResourceResolver_1.SupportedContentType.IMAGE);
     }
     getText() {
-        return floip_expression_evaluator_ts_1.EvaluatorFactory.create()
+        return expression_evaluator_1.EvaluatorFactory.create()
             .evaluate(this._getValueByContentType(IResourceResolver_1.SupportedContentType.TEXT), IBlock_1.createEvalContextFrom(this.context));
     }
     getVideo() {

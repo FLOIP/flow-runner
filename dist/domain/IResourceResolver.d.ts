@@ -30,9 +30,10 @@ export interface IResource {
     hasVideo(): boolean;
     getVideo(): string;
 }
-export default interface IResourceResolver {
+export interface IResourceResolver {
     context: IContext;
     resolve(resourceId: string): IResource;
 }
+export default IResourceResolver;
 export declare function createTextResourceVariantWith(value: string, ctx: IContext): IResourceDefinitionContentTypeSpecific;
 //# sourceMappingURL=IResourceResolver.d.ts.map

@@ -18,5 +18,6 @@ class NumericPrompt extends BasePrompt_1.default {
         return true;
     }
 }
+exports.NumericPrompt = NumericPrompt;
 exports.default = NumericPrompt;
 //# sourceMappingURL=NumericPrompt.js.map

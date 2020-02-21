@@ -1,7 +1,7 @@
 import PromptValidationException from '../exceptions/PromptValidationException';
 import IFlowRunner from '../IFlowRunner';
-import { RichCursorInputRequiredType } from '../..';
-export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
+import { IRichCursorInputRequired } from '../..';
+export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
     interactionId: string;
     config: PromptConfigType;
     runner: IFlowRunner;
@@ -9,17 +9,19 @@ export default interface IPrompt<PromptConfigType extends IPromptConfig<PromptCo
     error: PromptValidationException | null;
     isValid: boolean;
     validate(val: PromptConfigType['value']): boolean;
-    fulfill(val: PromptConfigType['value']): RichCursorInputRequiredType | undefined;
+    fulfill(val: PromptConfigType['value']): IRichCursorInputRequired | undefined;
 }
+export default IPrompt;
 export declare enum KnownPrompts {
     Message = "Message",
     Numeric = "Numeric",
     SelectOne = "SelectOne",
     SelectMany = "SelectMany",
-    Open = "Open"
+    Open = "Open",
+    Read = "Read"
 }
 export interface IPromptConfig<ExpectationType> {
-    kind: KnownPrompts;
+    kind: keyof typeof KnownPrompts;
     isResponseRequired: boolean;
     prompt: string;
     value?: ExpectationType;

@@ -1,4 +1,4 @@
-export default interface IBlockExit {
+export interface IBlockExit {
     uuid: string;
     label: string;
     tag: string;
@@ -8,6 +8,7 @@ export default interface IBlockExit {
     config: object;
     default?: boolean;
 }
+export default IBlockExit;
 export interface IBlockExitTestRequired extends IBlockExit {
     test: string;
 }

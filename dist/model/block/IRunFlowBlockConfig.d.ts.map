@@ -1,1 +1,1 @@
-{"version":3,"file":"IRunFlowBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/IRunFlowBlockConfig.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,WAAW,mBAAmB;IAC1C,MAAM,EAAE,MAAM,CAAA;CACf"}
+{"version":3,"file":"IRunFlowBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/IRunFlowBlockConfig.ts"],"names":[],"mappings":"AAmBA,MAAM,WAAW,mBAAmB;IAClC,MAAM,EAAE,MAAM,CAAA;CACf;AAED,eAAe,mBAAmB,CAAA"}

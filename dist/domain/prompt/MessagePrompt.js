@@ -7,5 +7,6 @@ class MessagePrompt extends BasePrompt_1.default {
         return true;
     }
 }
+exports.MessagePrompt = MessagePrompt;
 exports.default = MessagePrompt;
 //# sourceMappingURL=MessagePrompt.js.map

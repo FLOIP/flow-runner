@@ -4,9 +4,8 @@ const tslib_1 = require("tslib");
 const lodash_1 = require("lodash");
 const ValidationException_1 = tslib_1.__importDefault(require("../domain/exceptions/ValidationException"));
 const IContext_1 = require("./IContext");
-const floip_expression_evaluator_ts_1 = require("floip-expression-evaluator-ts");
+const expression_evaluator_1 = require("@floip/expression-evaluator");
 const IFlow_1 = require("./IFlow");
-const ResourceResolver_1 = tslib_1.__importDefault(require("../domain/ResourceResolver"));
 function findBlockExitWith(uuid, block) {
     const exit = lodash_1.find(block.exits, { uuid });
     if (exit == null) {
@@ -32,48 +31,26 @@ function findDefaultBlockExitOn(block) {
     return exit;
 }
 exports.findDefaultBlockExitOn = findDefaultBlockExitOn;
-function findAndGenerateExpressionBlockFor(blockName, ctx) {
-    const intx = lodash_1.findLast(ctx.interactions, ({ blockId, flowId }) => {
-        const { name } = IFlow_1.findBlockWith(blockId, IContext_1.findFlowWith(flowId, ctx));
-        return name === blockName;
-    });
-    if (intx == null) {
-        return;
-    }
-    const { prompt } = IContext_1.findBlockOnActiveFlowWith(intx.blockId, ctx).config;
-    const resource = new ResourceResolver_1.default(ctx).resolve(prompt);
-    return {
-        __interactionId: intx.uuid,
-        __value__: intx.value,
-        value: intx.value,
-        time: intx.entryAt,
-        text: resource.hasText() ? resource.getText() : ''
-    };
+function isLastBlock({ exits }) {
+    return exits.every(e => e.destinationBlock == null);
 }
-exports.findAndGenerateExpressionBlockFor = findAndGenerateExpressionBlockFor;
+exports.isLastBlock = isLastBlock;
 function generateCachedProxyForBlockName(target, ctx) {
-    const expressionBlocksByName = {};
     return new Proxy(target, {
         get(target, prop, _receiver) {
             if (prop in target) {
                 return Reflect.get(...arguments);
             }
-            if (prop in expressionBlocksByName) {
-                return expressionBlocksByName[prop.toString()];
+            const evalBlock = lodash_1.get(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`);
+            if (evalBlock == null) {
+                return;
             }
-            return expressionBlocksByName[prop.toString()] =
-                findAndGenerateExpressionBlockFor(prop.toString(), ctx);
+            const { value } = IContext_1.findInteractionWith(evalBlock.__interactionId, ctx);
+            return lodash_1.extend({ value, __value__: value }, evalBlock);
         },
         has(target, prop) {
-            if (prop in target) {
-                return true;
-            }
-            if (prop in expressionBlocksByName) {
-                return true;
-            }
-            expressionBlocksByName[prop.toString()] =
-                findAndGenerateExpressionBlockFor(prop.toString(), ctx);
-            return prop in expressionBlocksByName;
+            return prop in target
+                || lodash_1.has(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`);
         }
     });
 }
@@ -85,8 +62,8 @@ function createEvalContextFrom(context) {
     let prompt;
     if (cursor != null) {
         flow = IContext_1.getActiveFlowFrom(context);
-        block = IFlow_1.findBlockWith(IContext_1.findInteractionWith(cursor[0], context).blockId, flow);
-        prompt = cursor[1];
+        block = IFlow_1.findBlockWith(IContext_1.findInteractionWith(cursor.interactionId, context).blockId, flow);
+        prompt = cursor.promptConfig;
     }
     return {
         contact,
@@ -99,8 +76,18 @@ function createEvalContextFrom(context) {
 }
 exports.createEvalContextFrom = createEvalContextFrom;
 function evaluateToBool(expr, ctx) {
-    const result = floip_expression_evaluator_ts_1.EvaluatorFactory.create()
-        .evaluate(expr, ctx);
-    return JSON.parse(result.toLowerCase());
+    return JSON.parse(evaluateToString(expr, ctx).toLowerCase());
 }
+exports.evaluateToBool = evaluateToBool;
+function evaluateToString(expr, ctx) {
+    return expression_evaluator_1.EvaluatorFactory.create()
+        .evaluate(wrapInExprSyntaxWhenAbsent(expr), ctx);
+}
+exports.evaluateToString = evaluateToString;
+function wrapInExprSyntaxWhenAbsent(expr) {
+    return lodash_1.startsWith(expr, '@(')
+        ? expr
+        : `@(${expr})`;
+}
+exports.wrapInExprSyntaxWhenAbsent = wrapInExprSyntaxWhenAbsent;
 //# sourceMappingURL=IBlock.js.map

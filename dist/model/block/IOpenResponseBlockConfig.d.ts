@@ -1,4 +1,4 @@
-export default interface IOpenResponseBlockConfig {
+export interface IOpenResponseBlockConfig {
     prompt: string;
     promptAudio: string;
     ivr?: {
@@ -8,4 +8,5 @@ export default interface IOpenResponseBlockConfig {
         maxResponseCharacters?: number;
     };
 }
+export default IOpenResponseBlockConfig;
 //# sourceMappingURL=IOpenResponseBlockConfig.d.ts.map

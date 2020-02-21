@@ -24,5 +24,6 @@ class OpenResponseBlockRunner {
         return this.block.exits[0];
     }
 }
+exports.OpenResponseBlockRunner = OpenResponseBlockRunner;
 exports.default = OpenResponseBlockRunner;
 //# sourceMappingURL=OpenResponseBlockRunner.js.map

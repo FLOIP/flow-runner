@@ -31,5 +31,6 @@ class ResourceResolver {
         return new Resource_1.Resource(resourceId, values, this.context);
     }
 }
+exports.ResourceResolver = ResourceResolver;
 exports.default = ResourceResolver;
 //# sourceMappingURL=ResourceResolver.js.map

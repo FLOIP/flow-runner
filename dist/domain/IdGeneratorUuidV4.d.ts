@@ -1,6 +1,6 @@
 import IIdGenerator from './IIdGenerator';
-export default class IdGeneratorUuidV4 implements IIdGenerator {
+export declare class IdGeneratorUuidV4 implements IIdGenerator {
     generate(): string;
-    constructor();
 }
+export default IdGeneratorUuidV4;
 //# sourceMappingURL=IdGeneratorUuidV4.d.ts.map

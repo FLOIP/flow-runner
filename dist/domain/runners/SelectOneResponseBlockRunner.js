@@ -23,11 +23,10 @@ class SelectOneResponseBlockRunner {
         };
     }
     run() {
-        const truthyExit = IBlock_1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context);
-        return (truthyExit != null
-            ? truthyExit
-            : lodash_1.last(this.block.exits));
+        var _a;
+        return _a = IBlock_1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context), (_a !== null && _a !== void 0 ? _a : lodash_1.last(this.block.exits));
     }
 }
+exports.SelectOneResponseBlockRunner = SelectOneResponseBlockRunner;
 exports.default = SelectOneResponseBlockRunner;
 //# sourceMappingURL=SelectOneResponseBlockRunner.js.map

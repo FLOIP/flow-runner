@@ -4,7 +4,7 @@ const tslib_1 = require("tslib");
 const lodash_1 = require("lodash");
 const IContext_1 = require("../../../flow-spec/IContext");
 const ValidationException_1 = tslib_1.__importDefault(require("../../exceptions/ValidationException"));
-const FlowRunner_1 = require("../../FlowRunner");
+const FlowRunner_1 = tslib_1.__importStar(require("../../FlowRunner"));
 const __1 = require("../../..");
 class BasicBacktrackingBehaviour {
     constructor(context, navigator, promptBuilder) {
@@ -12,11 +12,12 @@ class BasicBacktrackingBehaviour {
         this.navigator = navigator;
         this.promptBuilder = promptBuilder;
     }
-    rebuildIndex() { }
+    rebuildIndex() {
+    }
     seek(steps = 0, context = this.context) {
-        const [prevIntx, virtualPrompt] = this.peek(steps, context);
+        const { interaction: prevIntx, prompt: virtualPrompt } = this.peek(steps, context);
         const cursor = this.jumpTo(prevIntx, context);
-        cursor[1].value = virtualPrompt.value;
+        cursor.prompt.value = virtualPrompt.value;
         return cursor;
     }
     jumpTo(intx, context = this.context) {
@@ -24,6 +25,12 @@ class BasicBacktrackingBehaviour {
         lodash_1.forEachRight(discarded, intx => intx.uuid === lodash_1.last(context.nestedFlowBlockInteractionIdStack)
             ? context.nestedFlowBlockInteractionIdStack.pop()
             : null);
+        lodash_1.forEachRight(discarded, ({ uuid }) => {
+            var _a;
+            while (((_a = lodash_1.last(context.reversibleOperations)) === null || _a === void 0 ? void 0 : _a.interactionId) === uuid) {
+                FlowRunner_1.default.prototype.reverseLastDataOperation(context);
+            }
+        });
         return this.navigator.navigateTo(IContext_1.findBlockOnActiveFlowWith(intx.blockId, context), context);
     }
     peek(steps = 0, context = this.context) {
@@ -41,12 +48,17 @@ class BasicBacktrackingBehaviour {
                 block
             })}`);
         }
-        return [intx, Object.assign(prompt, { value: intx.value })];
+        return {
+            interaction: intx,
+            prompt: Object.assign(prompt, { value: intx.value })
+        };
     }
     postInteractionCreate(interaction, _context) {
         return interaction;
     }
-    postInteractionComplete(_interaction, _context) { }
+    postInteractionComplete(_interaction, _context) {
+    }
 }
+exports.BasicBacktrackingBehaviour = BasicBacktrackingBehaviour;
 exports.default = BasicBacktrackingBehaviour;
 //# sourceMappingURL=BasicBacktrackingBehaviour.js.map

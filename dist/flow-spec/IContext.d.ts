@@ -1,3 +1,4 @@
+import { NonBreakingUpdateOperation } from 'sp2';
 import IContact from './IContact';
 import IFlow from './IFlow';
 import IBlockInteraction from './IBlockInteraction';
@@ -7,13 +8,36 @@ import DeliveryStatus from './DeliveryStatus';
 import SupportedMode from './SupportedMode';
 import { IResourceDefinition, IResources } from '..';
 import IIdGenerator from '../domain/IIdGenerator';
-export declare type CursorType = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined];
-export declare type CursorInputRequiredType = [string, IPromptConfig<any> & IBasePromptConfig];
-export declare type CursorNoInputRequiredType = [string, undefined];
-export declare type RichCursorType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined];
-export declare type RichCursorInputRequiredType = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig>];
-export declare type RichCursorNoInputRequiredType = [IBlockInteraction, undefined];
-export default interface IContext {
+export interface ICursor {
+    interactionId: string;
+    promptConfig?: (IPromptConfig<any> & IBasePromptConfig);
+}
+export interface ICursorInputRequired {
+    interactionId: string;
+    promptConfig: IPromptConfig<any> & IBasePromptConfig;
+}
+export interface ICursorNoInputRequired {
+    interactionId: string;
+    promptConfig: undefined;
+}
+export interface IRichCursor {
+    interaction: IBlockInteraction;
+    prompt?: IPrompt<IPromptConfig<any> & IBasePromptConfig>;
+}
+export interface IRichCursorInputRequired {
+    interaction: IBlockInteraction;
+    prompt: IPrompt<IPromptConfig<any> & IBasePromptConfig>;
+}
+export interface IRichCursorNoInputRequired {
+    interaction: IBlockInteraction;
+    prompt: undefined;
+}
+export interface IReversibleUpdateOperation {
+    interactionId?: string;
+    forward: NonBreakingUpdateOperation;
+    reverse: NonBreakingUpdateOperation;
+}
+export interface IContext {
     id: string;
     createdAt: string;
     entryAt?: string;
@@ -24,27 +48,42 @@ export default interface IContext {
     mode: SupportedMode;
     languageId: string;
     contact: IContact;
-    sessionVars: object;
+    sessionVars: any;
     interactions: IBlockInteraction[];
     nestedFlowBlockInteractionIdStack: string[];
-    cursor?: CursorType;
+    reversibleOperations: IReversibleUpdateOperation[];
+    cursor?: ICursor;
     flows: IFlow[];
     firstFlowId: string;
     resources: IResources;
     platformMetadata: object;
+    logs: {
+        [k: string]: string;
+    };
 }
+export default IContext;
 export interface IContextWithCursor extends IContext {
-    cursor: CursorType;
+    cursor: ICursor;
 }
 export interface IContextInputRequired extends IContext {
-    cursor: CursorInputRequiredType;
+    cursor: ICursorInputRequired;
 }
-export declare function createContextDataObjectFor(contact: IContact, userId: string, orgId: string, flows: IFlow[], languageId: string, mode: SupportedMode, resources?: IResourceDefinition[], idGenerator?: IIdGenerator): IContext;
+export declare function createContextDataObjectFor(contact: IContact, userId: string, orgId: string, flows: IFlow[], languageId: string, mode?: SupportedMode, resources?: IResourceDefinition[], idGenerator?: IIdGenerator): IContext;
 export declare function findInteractionWith(uuid: string, { interactions }: IContext): IBlockInteraction;
 export declare function findFlowWith(uuid: string, { flows }: IContext): IFlow;
 export declare function findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock;
 export declare function findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext): string;
 export declare function getActiveFlowIdFrom(ctx: IContext): string;
 export declare function getActiveFlowFrom(ctx: IContext): IFlow;
-export declare function isLastBlockOn({ nestedFlowBlockInteractionIdStack }: IContext, { exits }: IBlock): boolean;
+export declare function isLastBlockOn({ nestedFlowBlockInteractionIdStack }: IContext, block: IBlock): boolean;
+export declare const contextService: IContextService;
+export interface IContextService {
+    findInteractionWith(uuid: string, { interactions }: IContext): IBlockInteraction;
+    findFlowWith(uuid: string, ctx: IContext): IFlow;
+    findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock;
+    findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext): string;
+    getActiveFlowIdFrom(ctx: IContext): string;
+    getActiveFlowFrom(ctx: IContext): IFlow;
+    isLastBlockOn(ctx: IContext, block: IBlock): boolean;
+}
 //# sourceMappingURL=IContext.d.ts.map

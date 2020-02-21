@@ -1,17 +1,23 @@
 import IPrompt, { IBasePromptConfig, IPromptConfig } from './IPrompt';
 import PromptValidationException from '../exceptions/PromptValidationException';
 import IFlowRunner from '../IFlowRunner';
-import { RichCursorInputRequiredType } from '../..';
-export default abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> implements IPrompt<PromptConfigType> {
+import { IRichCursorInputRequired } from '../..';
+export declare type TGenericPrompt = IPrompt<IPromptConfig<any> & IBasePromptConfig>;
+export interface IBasePromptConstructor {
+    new (): IPrompt<IPromptConfig<any> & IBasePromptConfig>;
+}
+export declare abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> implements IPrompt<PromptConfigType> {
     config: PromptConfigType & IBasePromptConfig;
     interactionId: string;
     runner: IFlowRunner;
     error: PromptValidationException | null;
     isValid: boolean;
     constructor(config: PromptConfigType & IBasePromptConfig, interactionId: string, runner: IFlowRunner);
-    value: PromptConfigType['value'];
-    readonly isEmpty: boolean;
-    fulfill(val: PromptConfigType['value']): RichCursorInputRequiredType | undefined;
+    get value(): PromptConfigType['value'];
+    set value(val: PromptConfigType['value']);
+    get isEmpty(): boolean;
+    fulfill(val: PromptConfigType['value'] | undefined): IRichCursorInputRequired | undefined;
     abstract validate(val?: PromptConfigType['value']): boolean;
 }
+export default BasePrompt;
 //# sourceMappingURL=BasePrompt.d.ts.map

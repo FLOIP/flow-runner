@@ -12,5 +12,6 @@ class RunFlowBlockRunner {
         return this.block.exits[0];
     }
 }
+exports.RunFlowBlockRunner = RunFlowBlockRunner;
 exports.default = RunFlowBlockRunner;
 //# sourceMappingURL=RunFlowBlockRunner.js.map

@@ -29,9 +29,12 @@ class BasePrompt {
         return this.value === undefined;
     }
     fulfill(val) {
-        this.value = val;
+        if (val !== undefined) {
+            this.value = val;
+        }
         return this.runner.run();
     }
 }
+exports.BasePrompt = BasePrompt;
 exports.default = BasePrompt;
 //# sourceMappingURL=BasePrompt.js.map
