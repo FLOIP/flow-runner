@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../floip-expression-evaluator/.idea/floip-expression-evaluator.iml" filepath="$PROJECT_DIR$/../floip-expression-evaluator/.idea/floip-expression-evaluator.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../floip-expression-parser/.idea/floip-expression-parser.iml" filepath="$PROJECT_DIR$/../floip-expression-parser/.idea/floip-expression-parser.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/via-clipboard-core-ts.iml" filepath="$PROJECT_DIR$/.idea/via-clipboard-core-ts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/floip-flow-runner.iml" filepath="$PROJECT_DIR$/.idea/floip-flow-runner.iml" />
     </modules>
   </component>
 </project>

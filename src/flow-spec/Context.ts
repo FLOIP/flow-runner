@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IContext, {TCursor, IReversibleUpdateOperation} from './IContext'
+import IContext, {ICursor, IReversibleUpdateOperation} from './IContext'
 import IFlow from './IFlow'
 import IContact from './IContact'
 import DeliveryStatus from './DeliveryStatus'
@@ -48,7 +48,7 @@ export class Context implements IContext {
     public exitAt?: string,
     public userId?: string,
     public orgId?: string,
-    public cursor?: TCursor,
+    public cursor?: ICursor,
     public platformMetadata: object = {},
 
     public logs: any = {}

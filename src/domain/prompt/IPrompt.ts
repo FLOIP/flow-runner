@@ -19,7 +19,7 @@
 
 import PromptValidationException from '../exceptions/PromptValidationException'
 import IFlowRunner from '../IFlowRunner'
-import {TRichCursorInputRequired} from '../..'
+import {IRichCursorInputRequired} from '../..'
 
 /**
  * Primary interface for interacting with an {@link IContact}; typically not immplemented fully, it is recommended that
@@ -40,7 +40,7 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
   /** @see {@link BasePrompt.validate} */
   validate(val: PromptConfigType['value']): boolean
   /** @see {@link BasePrompt.fulfill} */
-  fulfill(val: PromptConfigType['value']): TRichCursorInputRequired | undefined
+  fulfill(val: PromptConfigType['value']): IRichCursorInputRequired | undefined
 }
 
 export default IPrompt

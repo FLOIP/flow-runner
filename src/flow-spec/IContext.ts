@@ -23,7 +23,7 @@ import IContact from './IContact'
 import IFlow, {findBlockWith} from './IFlow'
 import IBlockInteraction from './IBlockInteraction'
 import IPrompt, {IBasePromptConfig, IPromptConfig} from '../domain/prompt/IPrompt'
-import IBlock from './IBlock'
+import IBlock, {isLastBlock} from './IBlock'
 import IRunFlowBlockConfig from '../model/block/IRunFlowBlockConfig'
 import {find, findLast, last} from 'lodash'
 import ValidationException from '../domain/exceptions/ValidationException'
@@ -35,13 +35,51 @@ import IdGeneratorUuidV4 from '../domain/IdGeneratorUuidV4'
 import createFormattedDate from '../domain/DateFormat'
 
 
-export type TCursor = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined]
-export type TCursorInputRequired = [string /* UUID64*/, IPromptConfig<any> & IBasePromptConfig]
-export type TCursorNoInputRequired = [string, undefined]
+export interface ICursor {
+  /**
+   * UUID of the current interaction with a block.
+   */
+  interactionId: string,
+  /**
+   * A prompt configuration data object; optional, because not every block requests input from the Contact.
+   * If it does, we call it an `ICursorInputRequired`.
+   * If not, `ICursorNoInputRequired` will have a `null-ish` `promptConfig`.
+   */
+  promptConfig?: (IPromptConfig<any> & IBasePromptConfig),
+}
 
-export type TRichCursor = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined]
-export type TRichCursorInputRequired = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig>]
-export type TRichCursorNoInputRequired = [IBlockInteraction, undefined]
+export interface ICursorInputRequired {
+  interactionId: string,
+  promptConfig: IPromptConfig<any> & IBasePromptConfig,
+}
+
+export interface ICursorNoInputRequired {
+  interactionId: string,
+  promptConfig: undefined,
+}
+
+export interface IRichCursor {
+  /**
+   * An object representation of the current interaction with a block.
+   */
+  interaction: IBlockInteraction,
+  /**
+   * In IPrompt instance.
+   * When present, we call it a TRichCursorInputRequired.
+   * In absence, the TRichCursorNoInputRequired will maintain `prompt` with a null-ish value.
+   */
+  prompt?: IPrompt<IPromptConfig<any> & IBasePromptConfig>,
+}
+
+export interface IRichCursorInputRequired {
+  interaction: IBlockInteraction,
+  prompt: IPrompt<IPromptConfig<any> & IBasePromptConfig>,
+}
+
+export interface IRichCursorNoInputRequired {
+  interaction: IBlockInteraction,
+  prompt: undefined,
+}
 
 export interface IReversibleUpdateOperation {
   interactionId?: string
@@ -66,7 +104,7 @@ export interface IContext {
   interactions: IBlockInteraction[]
   nestedFlowBlockInteractionIdStack: string[]
   reversibleOperations: IReversibleUpdateOperation[]
-  cursor?: TCursor
+  cursor?: ICursor
 
   flows: IFlow[]
   firstFlowId: string
@@ -79,11 +117,11 @@ export interface IContext {
 export default IContext
 
 export interface IContextWithCursor extends IContext {
-  cursor: TCursor
+  cursor: ICursor
 }
 
 export interface IContextInputRequired extends IContext {
-  cursor: TCursorInputRequired
+  cursor: ICursorInputRequired
 }
 
 export function createContextDataObjectFor(
@@ -172,7 +210,26 @@ export function getActiveFlowFrom(ctx: IContext): IFlow {
   return findFlowWith(getActiveFlowIdFrom(ctx), ctx)
 }
 
-export function isLastBlockOn({nestedFlowBlockInteractionIdStack}: IContext, {exits}: IBlock): boolean {
-  return nestedFlowBlockInteractionIdStack.length === 0
-    && exits.every(e => e.destinationBlock == null)
+export function isLastBlockOn({nestedFlowBlockInteractionIdStack}: IContext, block: IBlock): boolean {
+  return nestedFlowBlockInteractionIdStack.length === 0 && isLastBlock(block)
+}
+
+export const contextService: IContextService = {
+  findInteractionWith,
+  findFlowWith,
+  findBlockOnActiveFlowWith,
+  findNestedFlowIdFor,
+  getActiveFlowIdFrom,
+  getActiveFlowFrom,
+  isLastBlockOn,
+}
+
+export interface IContextService {
+  findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction
+  findFlowWith(uuid: string, ctx: IContext): IFlow
+  findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock
+  findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext): string
+  getActiveFlowIdFrom(ctx: IContext): string
+  getActiveFlowFrom(ctx: IContext): IFlow
+  isLastBlockOn(ctx: IContext, block: IBlock): boolean
 }

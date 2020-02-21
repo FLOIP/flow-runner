@@ -3,7 +3,7 @@ import {
   IBasePromptConfig,
   IContextInputRequired,
   IMessagePromptConfig,
-  IPromptConfig, TRichCursorInputRequired,
+  IPromptConfig, IRichCursorInputRequired,
 } from '../../src'
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner from '../../src/domain/FlowRunner'
@@ -64,7 +64,7 @@ describe('BasePrompt', () => {
           config as IMessagePromptConfig & IBasePromptConfig,
           'abc-123',
           runner),
-        richCursor = runner.hydrateRichCursorFrom(ctx) as TRichCursorInputRequired
+        richCursor = runner.hydrateRichCursorFrom(ctx) as IRichCursorInputRequired
 
       jest.spyOn(runner, 'run')
         .mockImplementation(() => richCursor)

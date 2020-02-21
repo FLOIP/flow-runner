@@ -977,9 +977,9 @@
     }
   ],
   "entryAt": "2019-10-07T15:55:01.805Z",
-  "cursor": [
-    "ed14426a-9542-4af6-b575-dfc347aab923",
-    {
+  "cursor": {
+    "interactionId": "ed14426a-9542-4af6-b575-dfc347aab923",
+    "promptConfig": {
       "kind": "SelectOne",
       "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
       "isResponseRequired": true,
@@ -1004,6 +1004,6 @@
       "value": "true",
       "isSubmitted": true
     }
-  ],
+  },
   "platformMetadata": {}
 }

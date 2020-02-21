@@ -28,7 +28,7 @@ describe('BacktrackingBehaviour', () => {
   beforeEach(() => {
     backtracking = new BacktrackingBehaviour(
       {platformMetadata: {}} as IContext,
-      {navigateTo: (_b, _c) => [{} as IBlockInteraction, undefined]},
+      {navigateTo: (_b, _c) => ({interaction: {} as IBlockInteraction, prompt: undefined})},
       {buildPromptFor: (_b: IBlock, _i: IBlockInteraction):
           IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined => undefined})
   })
