@@ -145,12 +145,17 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@floip/expression-evaluator@github://floip/expression-evaluator#semver:v1":
+"@floip/expression-evaluator@^1.1.2":
   version "1.1.2"
-  resolved "https://codeload.github.com/floip/expression-evaluator/tar.gz/5e676ee1f86ffceb187967e3e7b91af35e151ecf"
+  resolved "https://npm.pkg.github.com/download/@floip/expression-evaluator/1.1.2/e8dde53a7b3a93b36e6229cb21879c68eea242cdd9c66c2bd57954ee76a16564#71c60340a9d61e63f2054bb66569e89c553b04ef"
+  integrity sha512-RsXPbse60A+RYOHIsyJThor4eJME3/Xv92vukdi/5OS2vqH8EV62+/Fv/1aPeqv8KKyPJt/llSh0e8sByWYQGQ==
   dependencies:
-    floip-parser "https://bitbucket.org/voto/floip-expression-evaluator#semver:>=1.6"
+    "@floip/expression-parser" "github:FLOIP/expression-parser#semver:>=1.6"
     moment "^2.24.0"
+
+"@floip/expression-parser@github:FLOIP/expression-parser#semver:>=1.6":
+  version "1.6.1"
+  resolved "https://codeload.github.com/FLOIP/expression-parser/tar.gz/8dc12e32db2f440d9f4b3a1afc8f19ef41d4c90d"
 
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
@@ -1763,10 +1768,6 @@ flatted@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.1.tgz#69e57caa8f0eacbc281d2e2cb458d46fdb449e08"
   integrity sha512-a1hQMktqW9Nmqr5aktAux3JMNqaucxGcjtjWnZLHX7yyPCmlSV3M54nGYbqT8K+0GhF3NBgmJCc3ma+WOgX8Jg==
-
-"floip-parser@https://bitbucket.org/voto/floip-expression-evaluator#semver:>=1.6":
-  version "1.6.1"
-  resolved "https://bitbucket.org/voto/floip-expression-evaluator#8dc12e32db2f440d9f4b3a1afc8f19ef41d4c90d"
 
 for-in@^1.0.2:
   version "1.0.2"
