@@ -145,17 +145,18 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@floip/expression-evaluator@^1.1.2":
-  version "1.1.2"
-  resolved "https://npm.pkg.github.com/download/@floip/expression-evaluator/1.1.2/e8dde53a7b3a93b36e6229cb21879c68eea242cdd9c66c2bd57954ee76a16564#71c60340a9d61e63f2054bb66569e89c553b04ef"
-  integrity sha512-RsXPbse60A+RYOHIsyJThor4eJME3/Xv92vukdi/5OS2vqH8EV62+/Fv/1aPeqv8KKyPJt/llSh0e8sByWYQGQ==
+"@floip/expression-evaluator@^1.1.3":
+  version "1.1.3"
+  resolved "https://npm.pkg.github.com/download/@floip/expression-evaluator/1.1.3/8884d675177454d9b126c58582027fc0293409be971db82ef5f27f923a450c2d#8a1f7e199045862fd8a24b2cf16c76d68daede38"
+  integrity sha512-73Xwtr1ntexdcP1pA8yVsYCjxV4WebmWC5ILLC+vhfcFTD+mv27gqsIgR5tkQGfHwEXERwpytyO2v/rgD1Pi5A==
   dependencies:
-    "@floip/expression-parser" "github:FLOIP/expression-parser#semver:>=1.6"
+    "@floip/expression-parser" "^1.6.1"
     moment "^2.24.0"
 
-"@floip/expression-parser@github:FLOIP/expression-parser#semver:>=1.6":
+"@floip/expression-parser@^1.6.1":
   version "1.6.1"
-  resolved "https://codeload.github.com/FLOIP/expression-parser/tar.gz/8dc12e32db2f440d9f4b3a1afc8f19ef41d4c90d"
+  resolved "https://npm.pkg.github.com/download/@floip/expression-parser/1.6.1/cff204e03d6b89f5ec1420fea2d9ccec994ab244375f302c4b3c6dee2e5c7a12#534030a657e66282ee2a015a41bc01757d9a863c"
+  integrity sha512-DfYemmXIgkFa7Sqb4v0IoRzlJUQq/luYoiMNgZ9FYoVTLlWeuZoMYgbgpX4WbHfZoo7tEGvvBKd/fgCCu3dFaQ==
 
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
