@@ -35,13 +35,51 @@ import IdGeneratorUuidV4 from '../domain/IdGeneratorUuidV4'
 import createFormattedDate from '../domain/DateFormat'
 
 
-export type TCursor = [string, (IPromptConfig<any> & IBasePromptConfig) | undefined]
-export type TCursorInputRequired = [string /* UUID64*/, IPromptConfig<any> & IBasePromptConfig]
-export type TCursorNoInputRequired = [string, undefined]
+export interface ICursor {
+  /**
+   * UUID of the current interaction with a block.
+   */
+  interactionId: string,
+  /**
+   * A prompt configuration data object; optional, because not every block requests input from the Contact.
+   * If it does, we call it an `ICursorInputRequired`.
+   * If not, `ICursorNoInputRequired` will have a `null-ish` `promptConfig`.
+   */
+  promptConfig?: (IPromptConfig<any> & IBasePromptConfig),
+}
 
-export type TRichCursor = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined]
-export type TRichCursorInputRequired = [IBlockInteraction, IPrompt<IPromptConfig<any> & IBasePromptConfig>]
-export type TRichCursorNoInputRequired = [IBlockInteraction, undefined]
+export interface ICursorInputRequired {
+  interactionId: string,
+  promptConfig: IPromptConfig<any> & IBasePromptConfig,
+}
+
+export interface ICursorNoInputRequired {
+  interactionId: string,
+  promptConfig: undefined,
+}
+
+export interface IRichCursor {
+  /**
+   * An object representation of the current interaction with a block.
+   */
+  interaction: IBlockInteraction,
+  /**
+   * In IPrompt instance.
+   * When present, we call it a TRichCursorInputRequired.
+   * In absence, the TRichCursorNoInputRequired will maintain `prompt` with a null-ish value.
+   */
+  prompt?: IPrompt<IPromptConfig<any> & IBasePromptConfig>,
+}
+
+export interface IRichCursorInputRequired {
+  interaction: IBlockInteraction,
+  prompt: IPrompt<IPromptConfig<any> & IBasePromptConfig>,
+}
+
+export interface IRichCursorNoInputRequired {
+  interaction: IBlockInteraction,
+  prompt: undefined,
+}
 
 export interface IReversibleUpdateOperation {
   interactionId?: string
@@ -66,7 +104,7 @@ export interface IContext {
   interactions: IBlockInteraction[]
   nestedFlowBlockInteractionIdStack: string[]
   reversibleOperations: IReversibleUpdateOperation[]
-  cursor?: TCursor
+  cursor?: ICursor
 
   flows: IFlow[]
   firstFlowId: string
@@ -79,11 +117,11 @@ export interface IContext {
 export default IContext
 
 export interface IContextWithCursor extends IContext {
-  cursor: TCursor
+  cursor: ICursor
 }
 
 export interface IContextInputRequired extends IContext {
-  cursor: TCursorInputRequired
+  cursor: ICursorInputRequired
 }
 
 export function createContextDataObjectFor(

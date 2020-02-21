@@ -16,7 +16,7 @@ describe('BasicBacktrackingBehaviour', () => {
   beforeEach(() => {
     backtracking = new BasicBacktrackingBehaviour(
       {platformMetadata: {}} as IContext,
-      {navigateTo: (_b, _c) => [{} as IBlockInteraction, undefined]},
+      {navigateTo: (_b, _c) => ({interaction: {} as IBlockInteraction, prompt: undefined})},
       {buildPromptFor: (_b: IBlock, _i: IBlockInteraction):
           IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined => undefined})
   })
@@ -52,8 +52,8 @@ describe('BasicBacktrackingBehaviour', () => {
       const cursor = backtracking.peek()
       expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
       expect(interaction.value).toBeTruthy()
-      expect(cursor[1]).toBe(virtualPrompt)
-      expect(cursor[1].value).toEqual(interaction.value)
+      expect(cursor.prompt).toBe(virtualPrompt)
+      expect(cursor.prompt.value).toEqual(interaction.value)
     })
 
     it('should use interaction `steps` places from the end of interactions list', () => {
@@ -63,8 +63,8 @@ describe('BasicBacktrackingBehaviour', () => {
       const cursor = backtracking.peek(3)
       expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
       expect(interaction.value).toBeTruthy()
-      expect(cursor[1]).toBe(virtualPrompt)
-      expect(cursor[1].value).toEqual(interaction.value)
+      expect(cursor.prompt).toBe(virtualPrompt)
+      expect(cursor.prompt.value).toEqual(interaction.value)
     })
 
     it('should skip over non-interactive blocks', () => {
@@ -77,8 +77,8 @@ describe('BasicBacktrackingBehaviour', () => {
       const cursor = backtracking.peek(1)
       expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
       expect(interaction.value).toBeTruthy()
-      expect(cursor[1]).toBe(virtualPrompt)
-      expect(cursor[1].value).toEqual(interaction.value)
+      expect(cursor.prompt).toBe(virtualPrompt)
+      expect(cursor.prompt.value).toEqual(interaction.value)
     })
 
     it('should raise when trying to step back further than can be stepped', () => {

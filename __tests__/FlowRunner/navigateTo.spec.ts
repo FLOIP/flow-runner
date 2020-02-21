@@ -2,7 +2,7 @@ import {last} from 'lodash'
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
-import {findInteractionWith, TRichCursor} from '../../src'
+import {findInteractionWith, IRichCursor} from '../../src'
 import {IBasePromptConfig, KnownPrompts} from '../../src';
 import {createStaticFirstExitBlockRunnerFor} from "../../__test_fixtures__/fixtures/BlockRunner";
 import {INumericPromptConfig} from '../../src';
@@ -67,7 +67,7 @@ describe('FlowRunner/navigateTo', () => {
             isSubmitted: false,
             max: 999,
             min: 999,},
-          prevCursor = ctx.cursor = [previousIntxId, promptConfig],
+          prevCursor = ctx.cursor = {interactionId: previousIntxId, promptConfig},
           richCursor = runner.navigateTo(block, ctx),
           cursor = runner.dehydrateCursor(richCursor)
 
@@ -82,8 +82,8 @@ describe('FlowRunner/navigateTo', () => {
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
             ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
-      const [interactionId,] = runner.navigateTo(block, ctx)
-      expect(interactionId).toBe((last(ctx.interactions) as IBlockInteraction))
+      const {interaction} = runner.navigateTo(block, ctx)
+      expect(interaction).toBe((last(ctx.interactions) as IBlockInteraction))
     })
 
     it('should have prompt from runner when provided', () => {
@@ -106,11 +106,11 @@ describe('FlowRunner/navigateTo', () => {
                 min: 999,}))
 
       const
-          richCursor: TRichCursor = runner.navigateTo(block, ctx),
+          richCursor: IRichCursor = runner.navigateTo(block, ctx),
           cursor = runner.dehydrateCursor(richCursor),
           expectedPrompt: INumericPromptConfig & IBasePromptConfig = startSpy.mock.results[0].value
 
-      expect(cursor[1]).toBe(expectedPrompt)
+      expect(cursor.promptConfig).toBe(expectedPrompt)
     })
 
     it('should have null prompt from runner when null provided', () => {
@@ -120,7 +120,7 @@ describe('FlowRunner/navigateTo', () => {
           runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
             ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
-      const [, prompt] = runner.navigateTo(block, ctx)
+      const {prompt} = runner.navigateTo(block, ctx)
       expect(prompt).toBeUndefined()
     })
   })

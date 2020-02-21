@@ -23,10 +23,10 @@ import IBlock, {findBlockExitWith} from '../flow-spec/IBlock'
 import * as contextService from '../flow-spec/IContext'
 import IContext, {
   IContextService,
-  TCursor,
+  ICursor,
   IContextWithCursor, IReversibleUpdateOperation,
-  TRichCursorInputRequired,
-  TRichCursor, IContextInputRequired,
+  IRichCursorInputRequired,
+  IRichCursor, IContextInputRequired,
 } from '../flow-spec/IContext'
 import IBlockRunner from './runners/IBlockRunner'
 import IBlockInteraction from '../flow-spec/IBlockInteraction'
@@ -79,7 +79,7 @@ export class BlockRunnerFactoryStore
 }
 
 export interface IFlowNavigator {
-  navigateTo(block: IBlock, ctx: IContext): TRichCursor
+  navigateTo(block: IBlock, ctx: IContext): IRichCursor
 }
 
 export interface IPromptBuilder {
@@ -168,7 +168,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * Initialize entry point into this flow run; typically called internally.
    * Sets up first block, engages run state and entry timestamp on context.
    */
-  initialize(): TRichCursor | undefined {
+  initialize(): IRichCursor | undefined {
     const ctx = this.context
     const block = this.findNextBlockOnActiveFlowFor(ctx)
 
@@ -211,7 +211,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       return true
     }
 
-    return firstInteractiveIntx.uuid === cursor![0]
+    return firstInteractiveIntx.uuid === cursor!.interactionId
   }
 
   /**
@@ -224,13 +224,13 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       return true
     }
 
-    return last(interactions)!.uuid === cursor![0]
+    return last(interactions)!.uuid === cursor!.interactionId
   }
 
   /**
    * Either begin or a resume a flow run, leveraging context instance member.
    */
-  run(): TRichCursorInputRequired | undefined {
+  run(): IRichCursorInputRequired | undefined {
     const {context: ctx} = this
     if (!this.isInitialized(ctx)) {
       /* const richCursor = */
@@ -244,17 +244,17 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * Decipher whether or not calling run() will be able to proceed or our cursor's prompt is in an invalid state.
    * @param ctx
    */
-  isInputRequiredFor(ctx: IContext): boolean /* : ctx is TRichCursorInputRequired*/ {
-    if (ctx.cursor == null || ctx.cursor[1] == null) {
+  isInputRequiredFor(ctx: IContext): boolean /* : ctx is IRichCursorInputRequired*/ {
+    if (ctx.cursor == null || ctx.cursor.promptConfig == null) {
       return false
     }
 
-    if (ctx.cursor[1].value === undefined) {
+    if (ctx.cursor.promptConfig.value === undefined) {
       return true
     }
 
-    const [, prompt]: TRichCursorInputRequired =
-      this.hydrateRichCursorFrom(ctx as IContextInputRequired) as TRichCursorInputRequired
+    const {prompt}: IRichCursorInputRequired =
+      this.hydrateRichCursorFrom(ctx as IContextInputRequired) as IRichCursorInputRequired
 
     try {
       prompt.validate(prompt.value)
@@ -340,16 +340,16 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * Typically called internally.
    * @param ctx
    */
-  runUntilInputRequiredFrom(ctx: IContextWithCursor): TRichCursorInputRequired | undefined {
+  runUntilInputRequiredFrom(ctx: IContextWithCursor): IRichCursorInputRequired | undefined {
     /* todo: convert cursor to an object instead of tuple; since we don't have named tuples, a dictionary
         would be more intuitive */
-    let richCursor: TRichCursor = this.hydrateRichCursorFrom(ctx)
-    let block: IBlock | undefined = this._contextService.findBlockOnActiveFlowWith(richCursor[0].blockId, ctx)
+    let richCursor: IRichCursor = this.hydrateRichCursorFrom(ctx)
+    let block: IBlock | undefined = this._contextService.findBlockOnActiveFlowWith(richCursor.interaction.blockId, ctx)
 
     do {
       if (this.isInputRequiredFor(ctx)) {
         console.info('Attempted to resume when prompt is not yet fulfilled; resurfacing same prompt instance.')
-        return richCursor as TRichCursorInputRequired
+        return richCursor as IRichCursorInputRequired
       }
 
       this.runActiveBlockOn(richCursor, block)
@@ -407,26 +407,29 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
 
   /**
    * Take a richCursor down to the bare minumum for JSON-serializability.
-   * [0] IBlockInteraction reduced to its UUID
-   * [1] IPrompt reduced to its raw config object.
+   * interaction IBlockInteraction reduced to its UUID
+   * prompt IPrompt reduced to its raw config object.
    * Reverse of `hydrateRichCursorFrom()`.
    * @param richCursor
    */
-  dehydrateCursor(richCursor: TRichCursor): TCursor {
-    return [richCursor[0].uuid, richCursor[1] != null ? richCursor[1].config : undefined]
+  dehydrateCursor(richCursor: IRichCursor): ICursor {
+    return {
+      interactionId: richCursor.interaction.uuid,
+      promptConfig: richCursor.prompt != null ? richCursor.prompt.config : undefined}
   }
 
   /**
    * Take raw cursor off an `IContext` and generate a richer, more detailed version; typically not JSON-serializable.
-   * [0] string UUID becomes full IBlockInteraction data object
-   * [1] IPromptConfig becomes full-fledged Prmopt instance corresponding to `kind`.
+   * interactionId string UUID becomes full IBlockInteraction data object
+   * promptConfig IPromptConfig becomes full-fledged Prompt instance corresponding to `kind`.
    * Reverse of `dehydrateCursor()`.
    * @param ctx
    */
-  hydrateRichCursorFrom(ctx: IContextWithCursor): TRichCursor {
+  hydrateRichCursorFrom(ctx: IContextWithCursor): IRichCursor {
     const {cursor} = ctx
-    const interaction = this._contextService.findInteractionWith(cursor[0], ctx)
-    return [interaction, this.createPromptFrom(cursor[1], interaction)]
+    const interaction = this._contextService.findInteractionWith(cursor.interactionId, ctx)
+    const prompt = this.createPromptFrom(cursor.promptConfig, interaction)
+    return {interaction, prompt}
   }
 
   /**
@@ -442,13 +445,13 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     flowId: string,
     originFlowId?: string,
     originBlockInteractionId?: string,
-  ): TRichCursor {
+  ): IRichCursor {
     let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
 
     Object.values(this.behaviours)
       .forEach(b => interaction = b.postInteractionCreate(interaction, this.context))
 
-    return [interaction, this.buildPromptFor(block, interaction)]
+    return {interaction, prompt: this.buildPromptFor(block, interaction)}
   }
 
   /**
@@ -457,25 +460,25 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param richCursor
    * @param block
    */
-  runActiveBlockOn(richCursor: TRichCursor, block: IBlock): IBlockExit {
+  runActiveBlockOn(richCursor: IRichCursor, block: IBlock): IBlockExit {
     // todo: write test to guard against already isSubmitted at this point
 
-    if (richCursor[1] != null) {
-      richCursor[0].value = richCursor[1].value
-      richCursor[0].hasResponse = true
+    if (richCursor.prompt != null) {
+      richCursor.interaction.value = richCursor.prompt.value
+      richCursor.interaction.hasResponse = true
     }
 
     const exit = this.createBlockRunnerFor(block, this.context)
       .run(richCursor)
 
-    richCursor[0].selectedExitId = exit.uuid
+    richCursor.interaction.selectedExitId = exit.uuid
 
-    if (richCursor[1] != null) {
-      richCursor[1].config.isSubmitted = true
+    if (richCursor.prompt != null) {
+      richCursor.prompt.config.isSubmitted = true
     }
 
     Object.values(this.behaviours)
-      .forEach(b => b.postInteractionComplete(richCursor[0], this.context))
+      .forEach(b => b.postInteractionComplete(richCursor.interaction, this.context))
 
     return exit
   }
@@ -502,7 +505,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param ctx
    * @param navigatedAt
    */
-  navigateTo(block: IBlock, ctx: IContext, navigatedAt: Date = new Date): TRichCursor {
+  navigateTo(block: IBlock, ctx: IContext, navigatedAt: Date = new Date): IRichCursor {
     const {interactions, nestedFlowBlockInteractionIdStack} = ctx
     const flowId = this._contextService.getActiveFlowIdFrom(ctx)
     const originInteractionId = last(nestedFlowBlockInteractionIdStack)
@@ -517,14 +520,14 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       originInteractionId)
 
     // todo: this could be extracted to an Expressions Behaviour
-    this.cacheInteractionByBlockName(richCursor[0], block as IMessageBlock, this.context)
+    this.cacheInteractionByBlockName(richCursor.interaction, block as IMessageBlock, this.context)
 
     const lastInteraction = last(interactions)
     if (lastInteraction != null) {
       lastInteraction.exitAt = createFormattedDate(navigatedAt)
     }
 
-    interactions.push(richCursor[0])
+    interactions.push(richCursor.interaction)
     ctx.cursor = this.dehydrateCursor(richCursor)
 
     return richCursor
@@ -618,7 +621,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param ctx
    */
   findNextBlockOnActiveFlowFor(ctx: IContext): IBlock | undefined {
-    // cursor: TRichCursor | null, flow: IFlow): IBlock | null {
+    // cursor: IRichCursor | null, flow: IFlow): IBlock | null {
     const flow = this._contextService.getActiveFlowFrom(ctx)
     const {cursor} = ctx
 
@@ -626,7 +629,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       return first(flow.blocks) // todo: use IFlow.firstBlockId
     }
 
-    const interaction = this._contextService.findInteractionWith(cursor[0], ctx)
+    const interaction = this._contextService.findInteractionWith(cursor.interactionId, ctx)
     return this.findNextBlockFrom(interaction, ctx)
   }
 

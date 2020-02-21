@@ -18,7 +18,7 @@
  **/
 
 import {NonBreakingUpdateOperation} from 'sp2'
-import IContext, {TRichCursorInputRequired, TRichCursor} from '../flow-spec/IContext'
+import IContext, {IRichCursorInputRequired, IRichCursor} from '../flow-spec/IContext'
 import IBlock from '../flow-spec/IBlock'
 import IBlockRunner from './runners/IBlockRunner'
 
@@ -32,9 +32,9 @@ export interface IFlowRunner {
 
   // new (context: IContext): IFlowRunner
 
-  initialize(): TRichCursor | undefined
+  initialize(): IRichCursor | undefined
 
-  run(): TRichCursorInputRequired | undefined
+  run(): IRichCursorInputRequired | undefined
 
   applyReversibleDataOperation(forward: NonBreakingUpdateOperation, reverse: NonBreakingUpdateOperation, context: IContext): void
 }

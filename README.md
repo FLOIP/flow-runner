@@ -63,7 +63,7 @@ Some Flows contain Blocks that require interaction with the Contact (via the hos
 
 When running a flow, the runner will sprint full speed ahead until reaching a block requiring interaction, at which point the runner will pause, return a cursor (containing an IPrompt), and wait until further action is taken.
 
-Cursor comes in a few varieties, but for now we'll only concern ourselves with `RichCursorInputRequiredType`. This variant indicates a point in our run history that contains an IPrompt associated with it— hence, `InputRequired`.
+Cursor comes in a few varieties, but for now we'll only concern ourselves with `IRichCursorInputRequired`. This variant indicates a point in our run history that contains an IPrompt associated with it— hence, `InputRequired`.
 
 ---
 
@@ -71,14 +71,14 @@ Let's take a simple example of a flow containing a block requiring string input 
 
 ```typescript
 const runner: IFlowRunner = new FlowRunner(context)
-const [, prompt]: RichCursorInputRequiredType = runner.run()!
+const {prompt}: IRichCursorInputRequired = runner.run()!
 
 // continuation via runner
 prompt.value = 'Jenso Ubla'
-const [, prompt]: RichCursorInputRequiredType = runner.run()!
+const {prompt}: IRichCursorInputRequired = runner.run()!
 
 // continuation via prompt
-const [, prompt]: RichCursorInputRequiredType = prompt.fulfill('Jenso Ubla')!
+const {prompt}: IRichCursorInputRequired = prompt.fulfill('Jenso Ubla')!
 ```
 
 ---
@@ -123,7 +123,7 @@ We are free to do what we need to with the prompt instance in order to fetch val
 
 ```typescript
 prompt.value = 'Jenso Ubla'
-const [, prompt]: RichCursorInputRequiredType = prompt.fulfill()!
+const {prompt}: IRichCursorInputRequired = prompt.fulfill()!
 ```
 
 ### Prompt types
@@ -140,25 +140,52 @@ Currently, we have exposed 6 prompt types for interacting with a Contact (https:
 
 ## Usage example 3: Cursors explained
 
-`TCursor` is a tuple of two elements, enough information to know where we're at in the Flow's run and retrieve input from an `IContact` if we've yet to. While maintaining JSON-serializability.
+`ICursor` is an interface of two properties, enough information to know where we're at in the Flow's run and retrieve input from an `IContact` if we've yet to. While maintaining JSON-serializability.
 
-The first of the two elements is the UUID of the current interaction with a block.
+```typescript
+interface ICursor {
+  /**
+   * UUID of the current interaction with a block.
+   */
+  interactionId: string
+  /**
+   * A prompt configuration data object; optional, because not every block requests input from the Contact.
+   * If it does, we call it an `ICursorInputRequired`.
+   * If not, `ICursorNoInputRequired` will have a `null-ish` `promptConfig`.
+   */
+  promptConfig?: IPromptConfig
+}
+```
 
-The second is optionally a prompt configuration data object; optional, because not every block requests input from the Contact. If it does, we call it a `TCursorInputRequired`; if not, the `TCursorNoInputRequired` will maintain a length of two, but the second will be a `null-ish` value.
-
-Sometimes we need a bit more data to pass around and some functional behaviour to work with. This is where  the concept of hydration/dehydration comes in. With a `TCursor`'s corresponding `IContext`, we can swap between our primitive and rich cursor formats. 
+Sometimes we need a bit more data to pass around and some functional behaviour to work with. This is where  the concept of hydration/dehydration comes in. With an `ICursor`'s corresponding `IContext`, we can swap between our primitive and rich cursor formats. 
 
 ```
-const richCursor: TRichCursor = runner.hydrateRichCursorFrom(context)
+const richCursor: IRichCursor = runner.hydrateRichCursorFrom(context)
 ```
 
 ```
-const cursor: TCursor = runner.dehydrateCursor(richCursor)
+const cursor: ICursor = runner.dehydrateCursor(richCursor)
 ```
 
-`TRichCursor` is also a tuple of two elements, but this time they're objects.
+`IRichCursor` is also an interface of two properties, but this time they're objects.
 
-The first of the two elements is an object representation of the current interaction with a block:
+```typescript
+interface IRichCursor {
+  /**
+   * An object representation of the current interaction with a block.
+   */
+  interaction: IBlockInteraction
+  /**
+   * In IPrompt instance.
+   * When present, we call it a TRichCursorInputRequired.
+   * In absence, the TRichCursorNoInputRequired will maintain `prompt` with a null-ish value.
+   */
+  prompt?: IPrompt
+}
+
+```
+
+The first of the two properties is an object representation of the current interaction with a block:
 
 ```
 interface IBlockInteraction {
@@ -178,8 +205,6 @@ interface IBlockInteraction {
 }
 ```
 
-The second is, again optionally, an `IPrompt` instance. When present, we call it a `TRichCursorInputRequired`; in absence, the `TRichCursorNoInputRequired` will maintain a length of two, but the second will be a `null-ish` value.
-
 The current cursor lives on our `IContext` on a property named `cursor`, and is always in dehydrated format.
 
 ### Managing cursors
@@ -187,7 +212,7 @@ The current cursor lives on our `IContext` on a property named `cursor`, and is 
 We can use our cursor to identify some details about the current run. Some examples:
 
 ```
-const cursor: RichCursorInputRequiredType | undefined = runner.run()
+const cursor: IRichCursorInputRequired | undefined = runner.run()
 
 if (cursor == null) {
   // run completed
@@ -207,15 +232,15 @@ if (context.cursor == null) {
 ```
 
 ```
-if (context.cursor[1] == null) {
+if (context.cursor.promptConfig == null) {
   // can resume execution, input not required
 }
 ```
 
 ```
-if (context.cursor[1] != null && runner.isInputRequiredFor(ctx)) {
+if (context.cursor.promptConfig != null && runner.isInputRequiredFor(ctx)) {
   // prompt present, we should hydrate it
-  const [, prompt]: TRichCursor = runner.hydrateRichCursorFrom(ctx)
+  const {prompt}: IRichCursor = runner.hydrateRichCursorFrom(ctx)
   // ... render UI to satisfy prompt
 }
 ```
@@ -286,7 +311,7 @@ interface IBlockRunner {
 
   initialize(interaction: IBlockInteraction): IPromptConfig<any> | undefined
 
-  run(cursor: RichCursorType): IBlockExit
+  run(cursor: IRichCursor): IBlockExit
 }
 ```
 

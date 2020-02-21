@@ -2,7 +2,7 @@ import "reflect-metadata";
 import {flatMap} from 'lodash'
 import IDataset, {createDefaultDataset} from '../__test_fixtures__/fixtures/IDataset'
 import FlowRunner from '../src/domain/FlowRunner'
-import {createContextDataObjectFor, IResources, TRichCursorInputRequired, SupportedMode} from '../src'
+import {createContextDataObjectFor, IResources, IRichCursorInputRequired, SupportedMode} from '../src'
 import IContext from '../src/flow-spec/IContext'
 import ValidationException from '../src/domain/exceptions/ValidationException'
 import {deserialize, plainToClass, serialize} from 'class-transformer'
@@ -47,17 +47,17 @@ describe('FlowRunner', () => {
       const runner = new FlowRunner(ctx)
 
       // block1
-      let cursor: TRichCursorInputRequired | void = runner.run()
+      let cursor: IRichCursorInputRequired | void = runner.run()
 
       if (!cursor) {
         throw new ValidationException('Omg, no cursor?')
       }
 
       expect(cursor).toBeTruthy()
-      expect(cursor[0]).toBeTruthy()
-      expect(cursor[1]).toBeTruthy()
+      expect(cursor.interaction).toBeTruthy()
+      expect(cursor.prompt).toBeTruthy()
 
-      cursor[1].value = null
+      cursor.prompt.value = null
 
       // block2
       cursor = runner.run()
@@ -67,10 +67,10 @@ describe('FlowRunner', () => {
       }
 
       expect(cursor).toBeTruthy()
-      expect(cursor[0]).toBeTruthy()
-      expect(cursor[1]).toBeTruthy()
+      expect(cursor.interaction).toBeTruthy()
+      expect(cursor.prompt).toBeTruthy()
 
-      cursor[1].value = null
+      cursor.prompt.value = null
 
       // block3
       cursor = runner.run()
@@ -80,10 +80,10 @@ describe('FlowRunner', () => {
       }
 
       expect(cursor).toBeTruthy()
-      expect(cursor[0]).toBeTruthy()
-      expect(cursor[1]).toBeTruthy()
+      expect(cursor.interaction).toBeTruthy()
+      expect(cursor.prompt).toBeTruthy()
 
-      cursor[1].value = null
+      cursor.prompt.value = null
 
       // done?
       cursor = runner.run()
@@ -125,10 +125,10 @@ describe('FlowRunner', () => {
           resources)
 
         const runner = new FlowRunner(context)
-        let [, prompt]: TRichCursorInputRequired = runner.run()!
+        let {prompt}: IRichCursorInputRequired = runner.run()!
         prompt.value = (prompt as SelectOnePrompt).config.choices[1].key // cats
 
-        prompt = runner.run()![1]
+        prompt = runner.run()!.prompt
         expect(prompt.config.prompt).toEqual("95bd9e4a-9300-400a-9f61-8ede034f93d8"); // the next prompt is the cats message
       })
 
@@ -146,10 +146,10 @@ describe('FlowRunner', () => {
           resources)
 
         const runner = new FlowRunner(context)
-        let [, prompt]: TRichCursorInputRequired = runner.run()!
+        let {prompt}: IRichCursorInputRequired = runner.run()!
         prompt.value = (prompt as SelectOnePrompt).config.choices[0].key // dogs
 
-        prompt = runner.run()![1]
+        prompt = runner.run()!.prompt
         expect(prompt.config.prompt).toEqual("95bd9e4a-9300-400a-9f61-8ede0325225f"); // the next prompt is the dogs message
       })
     })
