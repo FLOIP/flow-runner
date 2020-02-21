@@ -3,7 +3,7 @@
   "version": "0.0.62",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "repository": "git@bitbucket.org:voto/flowrunner-core-ts.git",
+  "repository": "git@github.com:FLOIP/flow-runner.git",
   "author": "bzabos <b.zabos@gmail.com>",
   "license": "MIT",
   "scripts": {
