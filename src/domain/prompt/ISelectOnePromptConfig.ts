@@ -25,11 +25,11 @@ import {IPromptConfig, KnownPrompts} from './IPrompt'
  * Interface for defining an {@link IPromptConfig} resolving to a {@link SelectOnePrompt}.
  */
 export interface ISelectOnePromptConfig extends IPromptConfig<IChoice['key'] | null> {
-  kind: KnownPrompts.SelectOne
-  choices: IChoice[]
+  kind: KnownPrompts.SelectOne,
+  choices: IChoice[],
 }
 
 export interface IChoice {
-  key: string
-  value: string
+  key: string,
+  value: string,
 }

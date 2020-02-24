@@ -17,16 +17,18 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {update, NonBreakingUpdateOperation} from 'sp2'
-import {find, first, findLast, includes, trimEnd, last, lowerFirst} from 'lodash'
+import {NonBreakingUpdateOperation, update} from 'sp2'
+import {find, findLast, first, includes, last, lowerFirst, trimEnd} from 'lodash'
 import IBlock, {findBlockExitWith} from '../flow-spec/IBlock'
 import * as contextService from '../flow-spec/IContext'
 import IContext, {
+  IContextInputRequired,
   IContextService,
+  IContextWithCursor,
   ICursor,
-  IContextWithCursor, IReversibleUpdateOperation,
+  IReversibleUpdateOperation,
+  IRichCursor,
   IRichCursorInputRequired,
-  IRichCursor, IContextInputRequired,
 } from '../flow-spec/IContext'
 import IBlockRunner from './runners/IBlockRunner'
 import IBlockInteraction from '../flow-spec/IBlockInteraction'
@@ -72,19 +74,18 @@ import ReadPrompt from './prompt/ReadPrompt'
 import createFormattedDate from './DateFormat'
 
 
-
 export class BlockRunnerFactoryStore
   extends Map<string, TBlockRunnerFactory>
   implements IBlockRunnerFactoryStore {
 }
 
 export interface IFlowNavigator {
-  navigateTo(block: IBlock, ctx: IContext): IRichCursor
+  navigateTo(block: IBlock, ctx: IContext): IRichCursor,
 }
 
 export interface IPromptBuilder {
   buildPromptFor(block: IBlock, interaction: IBlockInteraction):
-    TGenericPrompt | undefined
+    TGenericPrompt | undefined,
 }
 
 const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
@@ -415,7 +416,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   dehydrateCursor(richCursor: IRichCursor): ICursor {
     return {
       interactionId: richCursor.interaction.uuid,
-      promptConfig: richCursor.prompt != null ? richCursor.prompt.config : undefined}
+      promptConfig: richCursor.prompt != null ? richCursor.prompt.config : undefined
+}
   }
 
   /**

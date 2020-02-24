@@ -20,8 +20,7 @@
 import IBlock from '../../flow-spec/IBlock'
 import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 import IBlockExit from '../../flow-spec/IBlockExit'
-import {IRichCursor} from '../..'
-import {IPromptConfig} from '../..'
+import {IPromptConfig, IRichCursor} from '../..'
 import IContext from '../../flow-spec/IContext'
 
 /**
@@ -42,14 +41,14 @@ import IContext from '../../flow-spec/IContext'
  *   single exit, but many cases have more complexity around this part of the puzzle.
  */
 export interface IBlockRunner {
-  block: IBlock
-  context: IContext
+  block: IBlock,
+  context: IContext,
 
   /**
    * Converts an interaction and its block property into either a prompt configuration or `undefined`.
    * @param interaction
    */
-  initialize(interaction: IBlockInteraction): IPromptConfig<any> | undefined
+  initialize(interaction: IBlockInteraction): IPromptConfig<any> | undefined,
 
   /**
    * Takes the current point in our interaction history and performs some local logic to decide how the Flow should
@@ -57,7 +56,7 @@ export interface IBlockRunner {
    * but many cases have more complexity around this part of the puzzle.
    * @param cursor
    */
-  run(cursor: IRichCursor): IBlockExit
+  run(cursor: IRichCursor): IBlockExit,
 }
 
 export default IBlockRunner

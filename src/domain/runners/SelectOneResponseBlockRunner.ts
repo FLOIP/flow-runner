@@ -18,11 +18,7 @@
  **/
 
 import IBlockRunner from './IBlockRunner'
-import {
-  IBlockExitTestRequired,
-  ISelectOnePromptConfig,
-  KnownPrompts,
-} from '../..'
+import {IBlockExitTestRequired, ISelectOnePromptConfig, KnownPrompts} from '../..'
 import {findFirstTruthyEvaluatingBlockExitOn} from '../../flow-spec/IBlock'
 import IBlockExit from '../../flow-spec/IBlockExit'
 import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock'

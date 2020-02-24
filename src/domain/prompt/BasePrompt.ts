@@ -38,7 +38,7 @@ import {IRichCursorInputRequired} from '../..'
 export type TGenericPrompt = IPrompt<IPromptConfig<any> & IBasePromptConfig>
 
 export interface IBasePromptConstructor {
-  new (): IPrompt<IPromptConfig<any> & IBasePromptConfig>
+  new (): IPrompt<IPromptConfig<any> & IBasePromptConfig>,
 }
 
 /**

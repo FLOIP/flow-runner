@@ -29,15 +29,15 @@ export enum SupportedContentType {
 }
 
 export interface IResourceDefinitionContentTypeSpecific { // todo: rename to IResourceDefinitionVariant
-  languageId: string
-  contentType: SupportedContentType
-  modes: SupportedMode[]
-  value: string
+  languageId: string,
+  contentType: SupportedContentType,
+  modes: SupportedMode[],
+  value: string,
 }
 
 export interface IResourceDefinition {
-  uuid: string
-  values: IResourceDefinitionContentTypeSpecific[] // each to be tailored to a particular content type
+  uuid: string,
+  values: IResourceDefinitionContentTypeSpecific[], // each to be tailored to a particular content type
 }
 
 export type IResources = IResourceDefinition[]
@@ -45,31 +45,31 @@ export type IResources = IResourceDefinition[]
 /** Basically, a smarter version of an IResourceDefinition with
  * her values having been filtered by (languageId, modes). */
 export interface IResource {
-  uuid: string
-  values: IResourceDefinitionContentTypeSpecific[]
-  context: IContext
+  uuid: string,
+  values: IResourceDefinitionContentTypeSpecific[],
+  context: IContext,
 
-  hasText(): boolean
+  hasText(): boolean,
   /** @throws ResourceNotFoundException */
-  getText(): string
+  getText(): string,
 
-  hasAudio(): boolean
+  hasAudio(): boolean,
   /** @throws ResourceNotFoundException */
-  getAudio(): string
+  getAudio(): string,
 
-  hasImage(): boolean
+  hasImage(): boolean,
   /** @throws ResourceNotFoundException */
-  getImage(): string
+  getImage(): string,
 
-  hasVideo(): boolean
+  hasVideo(): boolean,
   /** @throws ResourceNotFoundException */
-  getVideo(): string
+  getVideo(): string,
 }
 
 export interface IResourceResolver {
-  context: IContext
+  context: IContext,
 
-  resolve(resourceId: string): IResource
+  resolve(resourceId: string): IResource,
 }
 
 export default IResourceResolver

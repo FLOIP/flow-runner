@@ -18,11 +18,7 @@
  **/
 
 import IBlockRunner from './IBlockRunner'
-import {
-  findDefaultBlockExitOn,
-  IBlockExitTestRequired,
-} from '../..'
-import {findFirstTruthyEvaluatingBlockExitOn} from '../..'
+import {findDefaultBlockExitOn, findFirstTruthyEvaluatingBlockExitOn, IBlockExitTestRequired} from '../..'
 import IContext from '../../flow-spec/IContext'
 import ICaseBlock from '../../model/block/ICaseBlock'
 

@@ -21,4 +21,5 @@
  * Specialized validation exception to be predictably raised by {@link IPrompt} implementations.
  */
 export class PromptValidationException extends Error {}
+
 export default PromptValidationException

@@ -82,46 +82,46 @@ export interface IRichCursorNoInputRequired {
 }
 
 export interface IReversibleUpdateOperation {
-  interactionId?: string
-  forward: NonBreakingUpdateOperation
-  reverse: NonBreakingUpdateOperation
+  interactionId?: string,
+  forward: NonBreakingUpdateOperation,
+  reverse: NonBreakingUpdateOperation,
 }
 
 export interface IContext {
-  id: string
-  createdAt: string
-  entryAt?: string
-  exitAt?: string
-  deliveryStatus: DeliveryStatus
+  id: string,
+  createdAt: string,
+  entryAt?: string,
+  exitAt?: string,
+  deliveryStatus: DeliveryStatus,
 
-  userId?: string
-  orgId?: string
-  mode: SupportedMode
-  languageId: string
+  userId?: string,
+  orgId?: string,
+  mode: SupportedMode,
+  languageId: string,
 
-  contact: IContact
-  sessionVars: any // todo: what is an object type with any properties?
-  interactions: IBlockInteraction[]
-  nestedFlowBlockInteractionIdStack: string[]
-  reversibleOperations: IReversibleUpdateOperation[]
-  cursor?: ICursor
+  contact: IContact,
+  sessionVars: any, // todo: what is an object type with any properties?
+  interactions: IBlockInteraction[],
+  nestedFlowBlockInteractionIdStack: string[],
+  reversibleOperations: IReversibleUpdateOperation[],
+  cursor?: ICursor,
 
-  flows: IFlow[]
-  firstFlowId: string
-  resources: IResources
-  platformMetadata: object
+  flows: IFlow[],
+  firstFlowId: string,
+  resources: IResources,
+  platformMetadata: object,
 
-  logs: {[k: string]: string}
+  logs: {[k: string]: string},
 }
 
 export default IContext
 
 export interface IContextWithCursor extends IContext {
-  cursor: ICursor
+  cursor: ICursor,
 }
 
 export interface IContextInputRequired extends IContext {
-  cursor: ICursorInputRequired
+  cursor: ICursorInputRequired,
 }
 
 export function createContextDataObjectFor(
@@ -225,11 +225,11 @@ export const contextService: IContextService = {
 }
 
 export interface IContextService {
-  findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction
-  findFlowWith(uuid: string, ctx: IContext): IFlow
-  findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock
-  findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext): string
-  getActiveFlowIdFrom(ctx: IContext): string
-  getActiveFlowFrom(ctx: IContext): IFlow
-  isLastBlockOn(ctx: IContext, block: IBlock): boolean
+  findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction,
+  findFlowWith(uuid: string, ctx: IContext): IFlow,
+  findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock,
+  findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext): string,
+  getActiveFlowIdFrom(ctx: IContext): string,
+  getActiveFlowFrom(ctx: IContext): IFlow,
+  isLastBlockOn(ctx: IContext, block: IBlock): boolean,
 }

@@ -26,21 +26,21 @@ import {IRichCursorInputRequired} from '../..'
  * additional {@link IPrompt} implementations rather extend provided {@link BasePrompt}.
  */
 export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
-  interactionId: string
-  config: PromptConfigType
-  runner: IFlowRunner
+  interactionId: string,
+  config: PromptConfigType,
+  runner: IFlowRunner,
 
-  value: PromptConfigType['value']
+  value: PromptConfigType['value'],
   /** Eror populated when {@link IPrompt.value} assignment raises  */
-  error: PromptValidationException | null
+  error: PromptValidationException | null,
   /** State populated when {@link IPrompt.value} is assigned */
-  isValid: boolean // !this.error
+  isValid: boolean, // !this.error
 
 
   /** @see {@link BasePrompt.validate} */
-  validate(val: PromptConfigType['value']): boolean
+  validate(val: PromptConfigType['value']): boolean,
   /** @see {@link BasePrompt.fulfill} */
-  fulfill(val: PromptConfigType['value']): IRichCursorInputRequired | undefined
+  fulfill(val: PromptConfigType['value']): IRichCursorInputRequired | undefined,
 }
 
 export default IPrompt
@@ -60,13 +60,13 @@ export enum KnownPrompts {
 
 /** Interface for configuration to resolve and build a {@link BasePrompt} instance. */
 export interface IPromptConfig<ExpectationType> {
-  kind: keyof typeof KnownPrompts
-  isResponseRequired: boolean
-  prompt: string
-  value?: ExpectationType
+  kind: keyof typeof KnownPrompts,
+  isResponseRequired: boolean,
+  prompt: string,
+  value?: ExpectationType,
 }
 
 /** Interface for local {@link BasePrompt} properties not intersecting with {@link IPromptConfig} */
 export interface IBasePromptConfig {
-  isSubmitted: boolean
+  isSubmitted: boolean,
 }

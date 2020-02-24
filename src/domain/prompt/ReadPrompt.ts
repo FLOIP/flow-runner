@@ -18,7 +18,7 @@
  **/
 
 import {fill, isArray} from 'lodash'
-import scanf from "scanf"
+import scanf from 'scanf'
 import BasePrompt from './BasePrompt'
 import {IBasePromptConfig} from './IPrompt'
 import ValidationException from '../exceptions/ValidationException'
@@ -27,7 +27,7 @@ import IFlowRunner from '../IFlowRunner'
 import {PromptValidationException} from '../..'
 
 export interface IConsolePrompt {
-  read(): void
+  read(): void,
 }
 
 /**

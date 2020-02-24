@@ -17,19 +17,14 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {
-  findLastIndex,
-  findLast,
-  forEachRight,
-  includes,
-  last,
-} from 'lodash'
+import {findLast, findLastIndex, forEachRight, includes, last} from 'lodash'
 import IBehaviour from '../IBehaviour'
 import IBlockInteraction from '../../../flow-spec/IBlockInteraction'
 import IContext, {
   findBlockOnActiveFlowWith,
-  findFlowWith, IRichCursorInputRequired,
+  findFlowWith,
   IRichCursor,
+  IRichCursorInputRequired,
 } from '../../../flow-spec/IContext'
 import ValidationException from '../../exceptions/ValidationException'
 import FlowRunner, {IFlowNavigator, IPromptBuilder, NON_INTERACTIVE_BLOCK_TYPES} from '../../FlowRunner'
@@ -43,6 +38,7 @@ export interface IBackTrackingBehaviour extends IBehaviour {
    * Rebuild index over interaction history from scratch.
    */
   rebuildIndex(): void,
+
   /**
    * Generates new prompt from new interaction + resets state to what was {@link IContext.interactions}'s moment
    * @param interaction
@@ -70,13 +66,15 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
   constructor(
     public context: IContext,
     public navigator: IFlowNavigator,
-    public promptBuilder: IPromptBuilder) {}
+    public promptBuilder: IPromptBuilder,
+  ) {
+  }
 
   rebuildIndex(): void {
     // do nothing for now
   }
 
-  seek(steps=0, context: IContext = this.context): IRichCursorInputRequired {
+  seek(steps = 0, context: IContext = this.context): IRichCursorInputRequired {
     const {interaction: prevIntx, prompt: virtualPrompt}: IRichCursorInputRequired = this.peek(steps, context)
     // then generate a cursor from desired interaction && set cursor on context
     const cursor: IRichCursorInputRequired = this.jumpTo(prevIntx, context) as IRichCursorInputRequired
@@ -96,8 +94,8 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
     // step out of nested flows that we've truncated
     // todo: migrate to also use applyReversibleDataOperation()
     forEachRight(discarded, intx => intx.uuid === last(context.nestedFlowBlockInteractionIdStack)
-        ? context.nestedFlowBlockInteractionIdStack.pop()
-        : null)
+      ? context.nestedFlowBlockInteractionIdStack.pop()
+      : null)
 
     // can only reverse from the end, so we only compare the last.
     forEachRight(discarded, ({uuid}) => {
@@ -129,7 +127,7 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
       throw new ValidationException(`Unable to build a prompt for ${JSON.stringify({
         context: context.id,
         intx,
-        block
+        block,
       })}`)
     }
 
@@ -137,7 +135,7 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
       interaction: intx,
       prompt: Object.assign(
         prompt,
-        {value: intx.value})
+        {value: intx.value}),
     }
   }
 
