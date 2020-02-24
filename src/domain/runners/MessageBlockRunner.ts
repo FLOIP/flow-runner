@@ -51,7 +51,7 @@ export class MessageBlockRunner implements IBlockRunner {
     }
   }
 
-  run(): IBlockExit {
+  async run(): Promise<IBlockExit> {
     return this.block.exits[0]
   }
 }

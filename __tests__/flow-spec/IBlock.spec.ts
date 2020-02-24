@@ -12,7 +12,7 @@ import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/I
 import createFormattedDate from '../../src/domain/DateFormat'
 
 
-describe('IBlock', () => {
+describe('IBlock', async () => {
   let dataset: IDataset
   let target: IEvalContextBlock
 
@@ -27,8 +27,8 @@ describe('IBlock', () => {
     }
   })
 
-  describe('findFirstTruthyEvaluatingBlockExitOn', () => {
-    it('should return first truthy exit', () => {
+  describe('findFirstTruthyEvaluatingBlockExitOn', async () => {
+    it('should return first truthy exit', async () => {
       const exit = findFirstTruthyEvaluatingBlockExitOn({exits: [
           {test: '@(true = false)'},
           {test: '@(true = false)'},
@@ -41,7 +41,7 @@ describe('IBlock', () => {
       expect(exit).toEqual({test: '@(true = true)'})
     })
 
-    it('should not return first _non-default_ truthy exit', () => {
+    it('should not return first _non-default_ truthy exit', async () => {
       const exit = findFirstTruthyEvaluatingBlockExitOn({exits: [
           {test: '@(true = false)'},
           {test: '@(true = false)'},
@@ -56,14 +56,14 @@ describe('IBlock', () => {
     })
   })
 
-  describe('generateCachedProxyForBlockName', () => {
-    it('should return an object resembling the one provided', () => {
+  describe('generateCachedProxyForBlockName', async () => {
+    it('should return an object resembling the one provided', async () => {
       const proxy = generateCachedProxyForBlockName(target, {} as IContext)
       expect(proxy).toEqual(target)
     })
 
-    describe('proxy', () => {
-      it('should pass through props that already existed on target', () => {
+    describe('proxy', async () => {
+      it('should pass through props that already existed on target', async () => {
         const sampleTarget = {name: 'Bert', age: '40-something'}
         const proxy = generateCachedProxyForBlockName(sampleTarget, {} as IContext)
 
@@ -71,14 +71,14 @@ describe('IBlock', () => {
         expect(proxy.age).toEqual(sampleTarget.age)
       })
 
-      it('should return undefined when unable to find property on target', () => {
+      it('should return undefined when unable to find property on target', async () => {
         const sampleTarget = {name: 'Bert', age: '40-something'}
         const proxy = generateCachedProxyForBlockName(sampleTarget, {} as IContext)
         // @ts-ignore
         expect(proxy.unknown).toBeUndefined()
       })
 
-      it('should perform search over interactions for block whose name matches prop name when prop absent from target', () => {
+      it('should perform search over interactions for block whose name matches prop name when prop absent from target', async () => {
         // *intx/Message->Message/09894745-38ba-456f-aab4-720b7d09d5b3
         // &flowId/(Message|Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
         // *blockId/Message->(Message)/5e5d397a-a606-49e0-9a4d-8553a1af52aa
@@ -107,7 +107,7 @@ describe('IBlock', () => {
       //   but this is the simplest method of verifying search starting point
 
       // todo: merge module declaration of `sessionVars` to have `blockInteractionsByBlockName: {[k: string]: IEvalContextBlock}`
-      it('should perform search over interactions from right-to-left to provide most recent interaction value', () => {
+      it('should perform search over interactions from right-to-left to provide most recent interaction value', async () => {
         const ctx = dataset.contexts[1]
         const expectedInteractionId = ctx.interactions[0].uuid
         // move cursor to first interaction, since this is the one under test
@@ -128,7 +128,7 @@ describe('IBlock', () => {
         expect(blockForEvalContext.__value__).toEqual('Test value')
       })
 
-      it('should return latest value from interactions upon each invocation', () => { // aka do this once, then modify context, and do it again
+      it('should return latest value from interactions upon each invocation', async () => { // aka do this once, then modify context, and do it again
         const ctx = dataset.contexts[1]
         const expectedInteractionId = ctx.interactions[0].uuid
 
@@ -147,13 +147,13 @@ describe('IBlock', () => {
     })
   })
 
-  describe('evaluateToBool()', () => {
-    describe('wrapInExprSyntaxWhenAbsent', () => {
-      it('should add expression wrapper when @() absent', () => {
+  describe('evaluateToBool()', async () => {
+    describe('wrapInExprSyntaxWhenAbsent', async () => {
+      it('should add expression wrapper when @() absent', async () => {
         expect(wrapInExprSyntaxWhenAbsent('true = true')).toBe('@(true = true)')
       })
 
-      it('should leave as is when @() present', () => {
+      it('should leave as is when @() present', async () => {
         expect(wrapInExprSyntaxWhenAbsent('@(true = true)')).toBe('@(true = true)')
       })
     })

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 class RunFlowBlockRunner {
     constructor(block, context) {
         this.block = block;
@@ -9,7 +10,9 @@ class RunFlowBlockRunner {
         return undefined;
     }
     run() {
-        return this.block.exits[0];
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return this.block.exits[0];
+        });
     }
 }
 exports.RunFlowBlockRunner = RunFlowBlockRunner;

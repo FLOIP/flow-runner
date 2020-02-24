@@ -100,7 +100,7 @@ class BacktrackingBehaviour {
             throw new ValidationException_1.default(`Unable to build a prompt for ${JSON.stringify({
                 context: this.context.id,
                 intx,
-                block
+                block,
             })}`);
         }
         return Object.assign(prompt, { value: intx.value });
@@ -119,7 +119,7 @@ class BacktrackingBehaviour {
         return HierarchicalIterStack_1.deepIndexOfFrom(keyForNextIteration, stack, intx => intx.blockId === blockId);
     }
     postInteractionCreate(interaction, _context) {
-        const { backtracking: { cursor: key, ghostInteractionStacks } } = this.context.platformMetadata;
+        const { backtracking: { cursor: key, ghostInteractionStacks, }, } = this.context.platformMetadata;
         if (ghostInteractionStacks.length === 0) {
             return interaction;
         }
@@ -173,7 +173,7 @@ class BacktrackingBehaviour {
         }
     }
     postInteractionComplete(interaction, _context) {
-        const { backtracking: { cursor: key, interactionStack, ghostInteractionStacks } } = this.context.platformMetadata;
+        const { backtracking: { cursor: key, interactionStack, ghostInteractionStacks, }, } = this.context.platformMetadata;
         this.insertInteractionUsing(key, interaction, interactionStack);
         if (ghostInteractionStacks.length === 0) {
             return;

@@ -14,7 +14,7 @@ import IFlow from '../src/flow-spec/IFlow'
 import IContact from '../src/flow-spec/IContact'
 
 
-describe('ResourceResolver', () => {
+describe('ResourceResolver', async () => {
   let resolver: IResourceResolver
   let ctx: IContext
 
@@ -30,14 +30,14 @@ describe('ResourceResolver', () => {
     resolver = new ResourceResolver(ctx)
   })
 
-  describe('resolve', () => {
-    it('should raise when resource absent', () => {
+  describe('resolve', async () => {
+    it('should raise when resource absent', async () => {
       expect(() => resolver.resolve("notknown-0000-0000-0000-resource0123"))
         .toThrow(ResourceNotFoundException)
     })
 
-    describe('when uuid provided is a string resource', () => {
-      it('should return a wrapper resource', () => {
+    describe('when uuid provided is a string resource', async () => {
+      it('should return a wrapper resource', async () => {
         const value = 'hello world!'
         const expectedResourceContentTypeSpecific: IResourceDefinitionContentTypeSpecific = {
           modes: [ctx.mode],
@@ -54,8 +54,8 @@ describe('ResourceResolver', () => {
       })
     })
 
-    describe('when resource with uuid present', () => {
-      it('should return resource with UUID provided', () => {
+    describe('when resource with uuid present', async () => {
+      it('should return resource with UUID provided', async () => {
         const expected: IResourceDefinition = {uuid: 'known000-0000-0000-0000-resource0123', values: []}
 
         ctx.resources = [
@@ -70,7 +70,7 @@ describe('ResourceResolver', () => {
         expect(actual.context).toBe(ctx)
       })
 
-      describe('filtered resource definitions', () => {
+      describe('filtered resource definitions', async () => {
         let variants: IResourceDefinitionContentTypeSpecific[]
 
         beforeEach(() => variants = [

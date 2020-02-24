@@ -32,9 +32,9 @@ export interface IFlowRunner {
 
   // new (context: IContext): IFlowRunner
 
-  initialize(): IRichCursor | undefined,
+  initialize(): Promise<IRichCursor | undefined>,
 
-  run(): IRichCursorInputRequired | undefined,
+  run(): Promise<IRichCursorInputRequired | undefined>,
 
   applyReversibleDataOperation(forward: NonBreakingUpdateOperation, reverse: NonBreakingUpdateOperation, context: IContext): void,
 }

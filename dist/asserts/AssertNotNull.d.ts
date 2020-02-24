@@ -1,0 +1,2 @@
+export declare function assertNotNull<T>(val: T, message?: () => string, errorInstanceGenerator?: (errorMessage: string) => Error): asserts val is NonNullable<T>;
+//# sourceMappingURL=AssertNotNull.d.ts.map

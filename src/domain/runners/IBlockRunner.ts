@@ -56,7 +56,7 @@ export interface IBlockRunner {
    * but many cases have more complexity around this part of the puzzle.
    * @param cursor
    */
-  run(cursor: IRichCursor): IBlockExit,
+  run(cursor: IRichCursor): Promise<IBlockExit>,
 }
 
 export default IBlockRunner

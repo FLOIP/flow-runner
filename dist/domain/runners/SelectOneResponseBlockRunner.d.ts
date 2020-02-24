@@ -9,7 +9,7 @@ export declare class SelectOneResponseBlockRunner implements IBlockRunner {
     context: IContext;
     constructor(block: ISelectOneResponseBlock, context: IContext);
     initialize({ value }: IBlockInteraction): ISelectOnePromptConfig;
-    run(): IBlockExit;
+    run(): Promise<IBlockExit>;
 }
 export default SelectOneResponseBlockRunner;
 //# sourceMappingURL=SelectOneResponseBlockRunner.d.ts.map

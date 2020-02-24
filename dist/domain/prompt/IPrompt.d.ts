@@ -9,7 +9,7 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
     error: PromptValidationException | null;
     isValid: boolean;
     validate(val: PromptConfigType['value']): boolean;
-    fulfill(val: PromptConfigType['value']): IRichCursorInputRequired | undefined;
+    fulfill(val: PromptConfigType['value']): Promise<IRichCursorInputRequired | undefined>;
 }
 export default IPrompt;
 export declare enum KnownPrompts {

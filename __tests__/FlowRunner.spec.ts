@@ -11,14 +11,14 @@ import IContact from '../src/flow-spec/IContact'
 import SelectOnePrompt from '../src/domain/prompt/SelectOnePrompt'
 
 
-describe('FlowRunner', () => {
+describe('FlowRunner', async () => {
   let dataset: IDataset
 
   beforeEach(() => {
     dataset = createDefaultDataset()
   })
 
-  describe('serialization', () => {
+  describe('serialization', async () => {
     it ('should be stringifiable', () => {
       const context = dataset.contexts[2]
       const contextObj = plainToClass(Context, context)
@@ -30,13 +30,13 @@ describe('FlowRunner', () => {
     })
   })
 
-  describe('sanity', () => {
-    it('should be available', () => {
+  describe('sanity', async () => {
+    it('should be available', async () => {
       const runner = new FlowRunner(dataset.contexts[0])
       expect(runner).toBeTruthy()
     })
 
-    it('should run!', () => {
+    it('should run!', async () => {
       const ctx: IContext = {
         ...dataset.contexts[1],
         // gut running history
@@ -47,7 +47,7 @@ describe('FlowRunner', () => {
       const runner = new FlowRunner(ctx)
 
       // block1
-      let cursor: IRichCursorInputRequired | void = runner.run()
+      let cursor: IRichCursorInputRequired | void = await runner.run()
 
       if (!cursor) {
         throw new ValidationException('Omg, no cursor?')
@@ -60,7 +60,7 @@ describe('FlowRunner', () => {
       cursor.prompt.value = null
 
       // block2
-      cursor = runner.run()
+      cursor = await runner.run()
 
       if (!cursor) {
         throw new ValidationException('Omg, no cursor?')
@@ -73,7 +73,7 @@ describe('FlowRunner', () => {
       cursor.prompt.value = null
 
       // block3
-      cursor = runner.run()
+      cursor = await runner.run()
 
       if (!cursor) {
         throw new ValidationException('Omg, no cursor?')
@@ -86,22 +86,21 @@ describe('FlowRunner', () => {
       cursor.prompt.value = null
 
       // done?
-      cursor = runner.run()
-      expect(cursor).toBeFalsy()
+      expect(await runner.run()).toBeFalsy()
     })
 
-    describe('case block unable to find cursor', () => {
-      it('shouldnt raise an exception requiring prompt', () => {
+    describe('case block unable to find cursor', async () => {
+      it('shouldnt raise an exception requiring prompt', async () => {
         const context: IContext = require('../__test_fixtures__/fixtures/2019-10-08-case-block-eval-issue.json')
         const runner = new FlowRunner(context)
 
-        expect(FlowRunner.prototype.run.bind(runner)).toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')
-        // expect(runner.run()![0].blockId).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
+        await expect(runner.run()).rejects.toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')
+        // expect((await runner.run())![0].blockId).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
       })
     })
 
-    xdescribe('case block always evaluates to false', () => {
-      it('shouldnt raise an except requiring prompt', () => {
+    xdescribe('case block always evaluates to false', async () => {
+      it('shouldnt raise an except requiring prompt', async () => {
         const context: IContext = require('../__test_fixtures__/fixtures/2019-10-09-case-block-always-false.json')
         const runner = new FlowRunner(context)
 
@@ -110,8 +109,8 @@ describe('FlowRunner', () => {
       })
     })
 
-    describe('VMO-1484-case-branching-improperly', () => {
-      it('should hit Cats branch', () => {
+    describe('VMO-1484-case-branching-improperly', async () => {
+      it('should hit Cats branch', async() => {
         const {flows}: IContext = require('../__test_fixtures__/fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
         const resources: IResources = flatMap(flows, 'resources') // our server-side implementation currently returns
 
@@ -125,14 +124,14 @@ describe('FlowRunner', () => {
           resources)
 
         const runner = new FlowRunner(context)
-        let {prompt}: IRichCursorInputRequired = runner.run()!
+        let {prompt}: IRichCursorInputRequired = (await runner.run())!
         prompt.value = (prompt as SelectOnePrompt).config.choices[1].key // cats
 
-        prompt = runner.run()!.prompt
+        prompt = (await runner.run())!.prompt
         expect(prompt.config.prompt).toEqual("95bd9e4a-9300-400a-9f61-8ede034f93d8"); // the next prompt is the cats message
       })
 
-      it('should hit Dogs branch', () => {
+      it('should hit Dogs branch', async () => {
         const {flows}: IContext = require('../__test_fixtures__/fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
         const resources: IResources = flatMap(flows, 'resources') // our server-side implementation currently returns
 
@@ -146,10 +145,10 @@ describe('FlowRunner', () => {
           resources)
 
         const runner = new FlowRunner(context)
-        let {prompt}: IRichCursorInputRequired = runner.run()!
+        let {prompt}: IRichCursorInputRequired = (await runner.run())!
         prompt.value = (prompt as SelectOnePrompt).config.choices[0].key // dogs
 
-        prompt = runner.run()!.prompt
+        prompt = (await runner.run())!.prompt
         expect(prompt.config.prompt).toEqual("95bd9e4a-9300-400a-9f61-8ede0325225f"); // the next prompt is the dogs message
       })
     })

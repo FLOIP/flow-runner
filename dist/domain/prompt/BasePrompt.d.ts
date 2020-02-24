@@ -16,7 +16,7 @@ export declare abstract class BasePrompt<PromptConfigType extends IPromptConfig<
     get value(): PromptConfigType['value'];
     set value(val: PromptConfigType['value']);
     get isEmpty(): boolean;
-    fulfill(val: PromptConfigType['value'] | undefined): IRichCursorInputRequired | undefined;
+    fulfill(val: PromptConfigType['value'] | undefined): Promise<IRichCursorInputRequired | undefined>;
     abstract validate(val?: PromptConfigType['value']): boolean;
 }
 export default BasePrompt;

@@ -42,7 +42,7 @@ export class LogBlockRunner implements IBlockRunner {
     return
   }
 
-  run(): IBlockExit {
+  async run(): Promise<IBlockExit> {
     this.context.logs[createFormattedDate()] =
       evaluateToString(this.block.config.message, this.context)
 

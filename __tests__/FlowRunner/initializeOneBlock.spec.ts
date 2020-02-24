@@ -9,14 +9,14 @@ import {
 } from '../../src'
 
 
-describe('FlowRunner/initializeOneBlock', () => {
+describe('FlowRunner/initializeOneBlock', async () => {
   let dataset: IDataset
 
   beforeEach(() => {
     dataset = createDefaultDataset()
   })
 
-  it('should return cursor with empty prompt when prompt not provided', () => {
+  it('should return cursor with empty prompt when prompt not provided', async () => {
     const
         ctx = dataset.contexts[0],
         flow = ctx.flows[0],
@@ -26,7 +26,7 @@ describe('FlowRunner/initializeOneBlock', () => {
             block,
             context,
             initialize: () => undefined,
-            run: () => block.exits[0]
+            run: async () => block.exits[0]
           })],
         ]))
 
@@ -34,7 +34,7 @@ describe('FlowRunner/initializeOneBlock', () => {
     expect(prompt).toBeUndefined()
   })
 
-  it('should return cursor with prompt from runner when prompt provided', () => {
+  it('should return cursor with prompt from runner when prompt provided', async () => {
     let expectedPrompt: (INumericPromptConfig & IBasePromptConfig) | null = null // todo: this should use a jest.SpyInstance
 
     const
@@ -53,7 +53,7 @@ describe('FlowRunner/initializeOneBlock', () => {
               isSubmitted: false,
               max: 999,
               min: 999,},
-            run: () => block.exits[0]
+            run: async () => block.exits[0]
           })],
         ]))
 
@@ -64,7 +64,7 @@ describe('FlowRunner/initializeOneBlock', () => {
     expect(cursor.promptConfig).toBe(expectedPrompt)
   })
 
-  it('should return cursor with interaction for block + flow', () => {
+  it('should return cursor with interaction for block + flow', async () => {
     const
         ctx = dataset.contexts[0],
         flow = ctx.flows[0],
@@ -74,7 +74,7 @@ describe('FlowRunner/initializeOneBlock', () => {
             block,
             context,
             initialize: () => undefined,
-            run: () => block.exits[0]
+            run: async () => block.exits[0]
           })],
         ]))
 

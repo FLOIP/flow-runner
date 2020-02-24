@@ -3,7 +3,7 @@ import {IResource, IResourceDefinitionContentTypeSpecific, Resource, SupportedCo
 import ResourceNotFoundException from '../src/domain/exceptions/ResourceNotFoundException'
 import IContext from '../src/flow-spec/IContext'
 
-describe('Resource', () => {
+describe('Resource', async () => {
   let baseResource: IResourceDefinitionContentTypeSpecific
   let values: IResourceDefinitionContentTypeSpecific[]
   let resource: IResource
@@ -34,51 +34,51 @@ describe('Resource', () => {
     } as IContext)
   })
 
-  describe('getAudio', () => {
-    it('should return value from first audio resource', () => {
+  describe('getAudio', async () => {
+    it('should return value from first audio resource', async () => {
       expect(resource.getAudio()).toBe('viamo://your-audio-file.wav')
     })
 
-    it('should raise ResourceNotFoundException when audio resource absent', () => {
+    it('should raise ResourceNotFoundException when audio resource absent', async () => {
       resource.values = []
 
       expect(resource.getAudio.bind(resource)).toThrow(ResourceNotFoundException)
     })
   })
 
-  describe('getText', () => {
-    it('should return value from first text resource', () => {
+  describe('getText', async () => {
+    it('should return value from first text resource', async () => {
       expect(resource.getText()).toBe('My first text!')
     })
 
-    it('should raise ResourceNotFoundException when text resource absent', () => {
+    it('should raise ResourceNotFoundException when text resource absent', async () => {
       resource.values = []
       expect(resource.getText.bind(resource)).toThrow(ResourceNotFoundException)
     })
 
-    it('should return text interpolated with values from context when an expression is provided', () => {
+    it('should return text interpolated with values from context when an expression is provided', async () => {
       resource.values = [{...baseResource, contentType: SupportedContentType.TEXT, value: 'Hello @contact.name!'}]
       expect(resource.getText()).toBe('Hello Expressions!')
     })
   })
 
-  describe('getImage', () => {
-    it('should return value from first image resource', () => {
+  describe('getImage', async () => {
+    it('should return value from first image resource', async () => {
       expect(resource.getImage()).toBe('viamo://your-image-file.jpg')
     })
 
-    it('should raise ResourceNotFoundException when image resource absent', () => {
+    it('should raise ResourceNotFoundException when image resource absent', async () => {
       resource.values = []
       expect(resource.getImage.bind(resource)).toThrow(ResourceNotFoundException)
     })
   })
 
-  describe('getVideo', () => {
-    it('should return value from first video resource', () => {
+  describe('getVideo', async () => {
+    it('should return value from first video resource', async () => {
       expect(resource.getVideo()).toBe('viamo://your-video-file.mp4')
     })
 
-    it('should raise ResourceNotFoundException when video resource absent', () => {
+    it('should raise ResourceNotFoundException when video resource absent', async () => {
       resource.values = []
       expect(resource.getVideo.bind(resource)).toThrow(ResourceNotFoundException)
     })

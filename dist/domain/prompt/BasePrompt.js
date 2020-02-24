@@ -29,10 +29,12 @@ class BasePrompt {
         return this.value === undefined;
     }
     fulfill(val) {
-        if (val !== undefined) {
-            this.value = val;
-        }
-        return this.runner.run();
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (val !== undefined) {
+                this.value = val;
+            }
+            return this.runner.run();
+        });
     }
 }
 exports.BasePrompt = BasePrompt;

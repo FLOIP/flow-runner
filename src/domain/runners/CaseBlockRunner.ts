@@ -40,7 +40,7 @@ export class CaseBlockRunner implements IBlockRunner {
     return undefined
   }
 
-  run(): IBlockExitTestRequired {
+  async run(): Promise<IBlockExitTestRequired> {
     return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context)
       ?? findDefaultBlockExitOn(this.block) as IBlockExitTestRequired
   }

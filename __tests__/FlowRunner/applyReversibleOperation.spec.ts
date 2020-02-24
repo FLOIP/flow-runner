@@ -3,7 +3,7 @@ import IContext, {IReversibleUpdateOperation} from '../../src/flow-spec/IContext
 import IFlowRunner from '../../src/domain/IFlowRunner'
 import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
 
-describe('applyReversibleDataOperation', () => {
+describe('applyReversibleDataOperation', async () => {
   let runner: IFlowRunner
   let context: IContext
   let operation: IReversibleUpdateOperation
@@ -20,14 +20,14 @@ describe('applyReversibleDataOperation', () => {
     }
   })
 
-  it('should store the transaction on context', () => {
+  it('should store the transaction on context', async () => {
     expect(context.reversibleOperations).toHaveLength(0)
     runner.applyReversibleDataOperation(operation.forward, operation.reverse, context)
     expect(context).toHaveProperty('reversibleOperations.0.forward', operation.forward)
     expect(context).toHaveProperty('reversibleOperations.0.reverse', operation.reverse)
   })
 
-  it('should populate a interactionId that this operation was executed as a part of', () => {
+  it('should populate a interactionId that this operation was executed as a part of', async () => {
     context.interactions.push({uuid: 'intx-123'} as IBlockInteraction)
 
     expect(context.reversibleOperations).toHaveLength(0)
@@ -35,13 +35,13 @@ describe('applyReversibleDataOperation', () => {
     expect(context).toHaveProperty('reversibleOperations.0.interactionId', 'intx-123')
   })
 
-  it('should apply the forward operation', () => {
+  it('should apply the forward operation', async () => {
     expect(context.sessionVars).not.toHaveProperty('sampleKey.sampleNestedKey')
     runner.applyReversibleDataOperation(operation.forward, operation.reverse, context)
     expect(context.sessionVars).toHaveProperty('sampleKey.sampleNestedKey', 'sample forward val')
   })
 
-  it('should not apply the reversal operation', () => {
+  it('should not apply the reversal operation', async () => {
     expect(context.sessionVars).not.toHaveProperty('sampleKey.sampleNestedKey')
     runner.applyReversibleDataOperation(operation.forward, operation.reverse, context)
     expect(context.sessionVars).not.toHaveProperty('sampleKey.sampleNestedKey', 'sample reverse val')

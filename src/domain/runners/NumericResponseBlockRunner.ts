@@ -65,7 +65,7 @@ export class NumericResponseBlockRunner implements IBlockRunner {
     }
   }
 
-  run(): IBlockExit { // todo: what constitutes an error exit on web/android chanels?
+  async run(): Promise<IBlockExit> { // todo: what constitutes an error exit on web/android chanels?
     return this.block.exits[0]
   }
 }

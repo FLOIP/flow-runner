@@ -4,7 +4,7 @@
 // import IBlock from "../../src/flow-spec/IBlock";
 
 
-describe('FlowRunner/createBlockRunnerFor', () => {
+describe('FlowRunner/createBlockRunnerFor', async () => {
   // let dataset: IDataset
   //
   // beforeEach(() => {

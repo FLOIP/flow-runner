@@ -45,12 +45,12 @@ class BasicBacktrackingBehaviour {
             throw new ValidationException_1.default(`Unable to build a prompt for ${JSON.stringify({
                 context: context.id,
                 intx,
-                block
+                block,
             })}`);
         }
         return {
             interaction: intx,
-            prompt: Object.assign(prompt, { value: intx.value })
+            prompt: Object.assign(prompt, { value: intx.value }),
         };
     }
     postInteractionCreate(interaction, _context) {

@@ -54,7 +54,8 @@ export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptCo
   constructor(
     public config: PromptConfigType & IBasePromptConfig,
     public interactionId: string,
-    public runner: IFlowRunner,) {
+    public runner: IFlowRunner
+  ) {
 
     // todo: add canPerformEarlyExit() behaviour
   }
@@ -91,7 +92,7 @@ export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptCo
     return this.value === undefined
   }
 
-  fulfill(val: PromptConfigType['value'] | undefined): IRichCursorInputRequired | undefined {
+  async fulfill(val: PromptConfigType['value'] | undefined): Promise<IRichCursorInputRequired | undefined> {
     if (val !== undefined) { // allow prompt.fulfill() for continuation
       this.value = val
     }

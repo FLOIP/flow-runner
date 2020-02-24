@@ -12,7 +12,7 @@ import InvalidChoiceException from '../../src/domain/exceptions/InvalidChoiceExc
 import ValidationException from '../../src/domain/exceptions/ValidationException'
 
 
-describe('SelectManyPrompt', () => {
+describe('SelectManyPrompt', async () => {
 
   let dataset: IDataset
 
@@ -20,7 +20,7 @@ describe('SelectManyPrompt', () => {
     dataset = createDefaultDataset()
   })
 
-  describe('validate', () => {
+  describe('validate', async () => {
     let prompt: SelectManyPrompt
     beforeEach(() => {
       const config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[1]
@@ -33,8 +33,8 @@ describe('SelectManyPrompt', () => {
         runner)
     })
 
-    describe('when a response isRequired', () => {
-      it('should raise when some selections are invalid', () => {
+    describe('when a response isRequired', async () => {
+      it('should raise when some selections are invalid', async () => {
         const selections = ['choice-A', 'choice-B', 'key-not-in-prompt-config', 'choice-C']
 
         verifyValidationThrows(prompt.validate.bind(prompt, selections),
@@ -43,7 +43,7 @@ describe('SelectManyPrompt', () => {
           ['key-not-in-prompt-config'])
       })
 
-      it('should raise when all selections are invalid', () => {
+      it('should raise when all selections are invalid', async () => {
         const selections = ['key-not-in-prompt-config-A', 'key-not-in-prompt-config-B', 'key-not-in-prompt-config-C', 'key-not-in-prompt-config-D']
 
         verifyValidationThrows(prompt.validate.bind(prompt, selections),
@@ -52,7 +52,7 @@ describe('SelectManyPrompt', () => {
           selections)
       })
 
-      it('should raise when no selections are provided', () => {
+      it('should raise when no selections are provided', async () => {
         const selections: IChoice['key'][] = []
         verifyValidationThrows(prompt.validate.bind(prompt, selections),
           ValidationException,
@@ -60,12 +60,12 @@ describe('SelectManyPrompt', () => {
       })
     })
 
-    it('should return true when all selections are valid', () => {
+    it('should return true when all selections are valid', async () => {
       const selections = ['choice-A', 'choice-D']
       expect(prompt.validate(selections)).toBe(true)
     })
 
-    it('should raise when some selections are invalid when isRequired is false', () => {
+    it('should raise when some selections are invalid when isRequired is false', async () => {
       prompt.config.isResponseRequired = false
 
       const selections = ['choice-A', 'choice-B', 'key-not-in-prompt-config', 'choice-C']

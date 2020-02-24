@@ -80,14 +80,16 @@ class FlowRunner {
             = new b(this.context, this, this));
     }
     initialize() {
-        const ctx = this.context;
-        const block = this.findNextBlockOnActiveFlowFor(ctx);
-        if (block == null) {
-            throw new ValidationException_1.default('Unable to initialize flow without blocks.');
-        }
-        ctx.deliveryStatus = DeliveryStatus_1.default.IN_PROGRESS;
-        ctx.entryAt = DateFormat_1.default();
-        return this.navigateTo(block, this.context);
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const ctx = this.context;
+            const block = this.findNextBlockOnActiveFlowFor(ctx);
+            if (block == null) {
+                throw new ValidationException_1.default('Unable to initialize flow without blocks.');
+            }
+            ctx.deliveryStatus = DeliveryStatus_1.default.IN_PROGRESS;
+            ctx.entryAt = DateFormat_1.default();
+            return this.navigateTo(block, this.context);
+        });
     }
     isInitialized(ctx) {
         return ctx.cursor != null;
@@ -111,11 +113,13 @@ class FlowRunner {
         return lodash_1.last(interactions).uuid === cursor.interactionId;
     }
     run() {
-        const { context: ctx } = this;
-        if (!this.isInitialized(ctx)) {
-            this.initialize();
-        }
-        return this.runUntilInputRequiredFrom(ctx);
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const { context: ctx } = this;
+            if (!this.isInitialized(ctx)) {
+                this.initialize();
+            }
+            return this.runUntilInputRequiredFrom(ctx);
+        });
     }
     isInputRequiredFor(ctx) {
         if (ctx.cursor == null || ctx.cursor.promptConfig == null) {
@@ -172,32 +176,34 @@ class FlowRunner {
         return context.reversibleOperations.pop();
     }
     runUntilInputRequiredFrom(ctx) {
-        let richCursor = this.hydrateRichCursorFrom(ctx);
-        let block = this._contextService.findBlockOnActiveFlowWith(richCursor.interaction.blockId, ctx);
-        do {
-            if (this.isInputRequiredFor(ctx)) {
-                console.info('Attempted to resume when prompt is not yet fulfilled; resurfacing same prompt instance.');
-                return richCursor;
-            }
-            this.runActiveBlockOn(richCursor, block);
-            block = this.findNextBlockOnActiveFlowFor(ctx);
-            if (block == null) {
-                block = this.stepOut(ctx);
-            }
-            if (block == null) {
-                continue;
-            }
-            if (block.type === 'Core\\RunFlow') {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            let richCursor = this.hydrateRichCursorFrom(ctx);
+            let block = this._contextService.findBlockOnActiveFlowWith(richCursor.interaction.blockId, ctx);
+            do {
+                if (this.isInputRequiredFor(ctx)) {
+                    console.info('Attempted to resume when prompt is not yet fulfilled; resurfacing same prompt instance.');
+                    return Promise.resolve(richCursor);
+                }
+                yield this.runActiveBlockOn(richCursor, block);
+                block = this.findNextBlockOnActiveFlowFor(ctx);
+                if (block == null) {
+                    block = this.stepOut(ctx);
+                }
+                if (block == null) {
+                    continue;
+                }
+                if (block.type === 'Core\\RunFlow') {
+                    richCursor = this.navigateTo(block, ctx);
+                    block = this.stepInto(block, ctx);
+                }
+                if (block == null) {
+                    continue;
+                }
                 richCursor = this.navigateTo(block, ctx);
-                block = this.stepInto(block, ctx);
-            }
-            if (block == null) {
-                continue;
-            }
-            richCursor = this.navigateTo(block, ctx);
-        } while (block != null);
-        this.complete(ctx);
-        return;
+            } while (block != null);
+            this.complete(ctx);
+            return Promise.resolve(undefined);
+        });
     }
     complete(ctx) {
         lodash_1.last(ctx.interactions).exitAt = DateFormat_1.default();
@@ -224,19 +230,21 @@ class FlowRunner {
         return { interaction, prompt: this.buildPromptFor(block, interaction) };
     }
     runActiveBlockOn(richCursor, block) {
-        if (richCursor.prompt != null) {
-            richCursor.interaction.value = richCursor.prompt.value;
-            richCursor.interaction.hasResponse = true;
-        }
-        const exit = this.createBlockRunnerFor(block, this.context)
-            .run(richCursor);
-        richCursor.interaction.selectedExitId = exit.uuid;
-        if (richCursor.prompt != null) {
-            richCursor.prompt.config.isSubmitted = true;
-        }
-        Object.values(this.behaviours)
-            .forEach(b => b.postInteractionComplete(richCursor.interaction, this.context));
-        return exit;
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (richCursor.prompt != null) {
+                richCursor.interaction.value = richCursor.prompt.value;
+                richCursor.interaction.hasResponse = true;
+            }
+            const exit = yield this.createBlockRunnerFor(block, this.context)
+                .run(richCursor);
+            richCursor.interaction.selectedExitId = exit.uuid;
+            if (richCursor.prompt != null) {
+                richCursor.prompt.config.isSubmitted = true;
+            }
+            Object.values(this.behaviours)
+                .forEach(b => b.postInteractionComplete(richCursor.interaction, this.context));
+            return exit;
+        });
     }
     createBlockRunnerFor(block, ctx) {
         const factory = this.runnerFactoryStore.get(block.type);

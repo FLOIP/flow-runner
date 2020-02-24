@@ -24,7 +24,6 @@ module.exports = {
   plugins: [
     'jest',
     'lodash',
-    'lodash-fp',
     '@typescript-eslint',
   ],
 
@@ -64,6 +63,7 @@ module.exports = {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-member-accessibility': 'off',
     '@typescript-eslint/no-object-literal-type-assertion': 'off',
+    '@typescript-eslint/require-await': 'off',
     '@typescript-eslint/explicit-function-return-type': [
       'warn',
       {
@@ -227,45 +227,6 @@ module.exports = {
     'lodash/prefer-startswith': 'off',
     'lodash/prefer-times': 'off',
     'lodash/prop-shorthand': ['warn', 'never'],
-
-
-    /*************
-     * Lodash FP *
-     *************/
-    'lodash-fp/consistent-compose': 'off',
-    'lodash-fp/consistent-name': [
-      'error',
-      '_',
-    ],
-    'lodash-fp/no-argumentless-calls': 'error',
-    'lodash-fp/no-chain': 'error',
-    'lodash-fp/no-extraneous-args': 'error',
-    'lodash-fp/no-extraneous-function-wrapping': 'off',
-    'lodash-fp/no-extraneous-iteratee-args': 'error',
-    'lodash-fp/no-extraneous-partials': 'error',
-    'lodash-fp/no-for-each': 'off',
-    'lodash-fp/no-partial-of-curried': 'error',
-    'lodash-fp/no-single-composition': 'off',
-    'lodash-fp/no-submodule-destructuring': 'error',
-    'lodash-fp/no-unused-result': 'error',
-    'lodash-fp/prefer-compact': 'error',
-    'lodash-fp/prefer-composition-grouping': 'error',
-    'lodash-fp/prefer-constant': [
-      'off',
-      {
-        arrowFunctions: false,
-      },
-    ],
-    'lodash-fp/prefer-flat-map': 'error',
-    'lodash-fp/prefer-get': 'error',
-    'lodash-fp/prefer-identity': [
-      'error',
-      {
-        arrowFunctions: false,
-      },
-    ],
-    'lodash-fp/preferred-alias': 'off',
-    'lodash-fp/use-fp': 'off',
 
     /**************
      * Jest Rules *

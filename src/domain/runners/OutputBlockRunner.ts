@@ -43,7 +43,7 @@ export class OutputBlockRunner implements IBlockRunner {
     return
   }
 
-  run(cursor: IRichCursor): IBlockExit {
+  async run(cursor: IRichCursor): Promise<IBlockExit> {
     // todo: should we be setting hasRepsonse to `true` here?
     cursor.interaction.value = evaluateToString(this.block.config.value, this.context)
     return this.block.exits[0]

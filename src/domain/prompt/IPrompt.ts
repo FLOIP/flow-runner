@@ -40,7 +40,7 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
   /** @see {@link BasePrompt.validate} */
   validate(val: PromptConfigType['value']): boolean,
   /** @see {@link BasePrompt.fulfill} */
-  fulfill(val: PromptConfigType['value']): IRichCursorInputRequired | undefined,
+  fulfill(val: PromptConfigType['value']): Promise<IRichCursorInputRequired | undefined>,
 }
 
 export default IPrompt

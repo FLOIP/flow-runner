@@ -6,5 +6,5 @@ export const createStaticFirstExitBlockRunnerFor = (block: IBlock, context: ICon
   block,
   context,
   initialize: () => undefined,
-  run: () => block.exits[0],
+  run: async () => block.exits[0],
 } as IBlockRunner)

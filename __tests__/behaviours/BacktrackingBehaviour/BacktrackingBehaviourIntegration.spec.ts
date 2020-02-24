@@ -14,27 +14,27 @@ describe.skip('FlowRunner integration', () => {
     flow = require('../../../__test_fixtures__/fixtures/2019-10-10-shortcut-flow.json')
   })
 
-  it('should work when simple + single backtrack', () => {
+  it('should work when simple + single backtrack', async () => {
     const context = createContextDataObjectFor(
       {id: '1'} as IContact, 'user-1234', 'org-1234', [flow], 'en_US', SupportedMode.OFFLINE)
 
     const runner = new FlowRunner(context)
-    let {prompt}: IRichCursorInputRequired = runner.run()!
+    let {prompt}: IRichCursorInputRequired = (await runner.run())!
     prompt.value = (prompt as SelectOnePrompt).config.choices[0].key // yes, more children
 
-    prompt = runner.run()!.prompt
+    prompt = (await runner.run())!.prompt
     prompt.value = 17 // age
 
-    prompt = runner.run()!.prompt
+    prompt = (await runner.run())!.prompt
     prompt.value = (prompt as SelectOnePrompt).config.choices[0].key // yes, enjoy reading
 
-    prompt = runner.run()!.prompt
+    prompt = (await runner.run())!.prompt
     prompt.value = 12 // books per year
 
-    prompt = runner.run()!.prompt
+    prompt = (await runner.run())!.prompt
     prompt.value = 'Ella' // name
 
-    prompt = runner.run()!.prompt
+    prompt = (await runner.run())!.prompt
     prompt.value = (prompt as SelectOnePrompt).config.choices[1].key // no, end of children
 
     const backtracking: IBackTrackingBehaviour = runner.behaviours.backtracking as IBackTrackingBehaviour
@@ -57,7 +57,7 @@ describe.skip('FlowRunner integration', () => {
     expect(interactionAtPeek1).not.toEqual(interactionPreviouslyAtPeek5) // assert difference
     expect(prompt.value).toEqual(interactionPreviouslyAtPeek5.value) // assert difference
 
-    prompt = prompt.fulfill(17)!.prompt // todo: I think we're wiping our ghost at this point; need to look into our sync() bhaviour at this point :)
+    prompt = (await prompt.fulfill(17))!.prompt // todo: I think we're wiping our ghost at this point; need to look into our sync() bhaviour at this point :)
     expect(prompt.value).toEqual(12)
 
 

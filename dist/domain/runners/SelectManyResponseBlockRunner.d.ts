@@ -9,7 +9,7 @@ export declare class SelectManyResponseBlockRunner implements IBlockRunner {
     context: IContext;
     constructor(block: ISelectOneResponseBlock, context: IContext);
     initialize({ value }: IBlockInteraction): ISelectManyPromptConfig;
-    run(): IBlockExit;
+    run(): Promise<IBlockExit>;
 }
 export default SelectManyResponseBlockRunner;
 //# sourceMappingURL=SelectManyResponseBlockRunner.d.ts.map

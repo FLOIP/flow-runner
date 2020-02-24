@@ -8,7 +8,7 @@ import {
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner from '../../src/domain/FlowRunner'
 
-describe('BasePrompt', () => {
+describe('BasePrompt', async () => {
   let dataset: IDataset
 
   beforeEach(() => {
@@ -19,9 +19,9 @@ describe('BasePrompt', () => {
     jest.restoreAllMocks()
   })
 
-  describe('default state', () => {
-    describe('error', () => {
-      it('should default its error state to empty to simply UI rendering', () => {
+  describe('default state', async () => {
+    describe('error', async () => {
+      it('should default its error state to empty to simply UI rendering', async () => {
         let config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[0]
         const
           ctx = dataset.contexts[1] as IContextInputRequired,
@@ -36,8 +36,8 @@ describe('BasePrompt', () => {
     })
   })
 
-  describe('fulfill', () => {
-    it('should set provided value onto itself', () => {
+  describe('fulfill', async () => {
+    it('should set provided value onto itself', async () => {
       let config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[0]
       const
         ctx = dataset.contexts[1] as IContextInputRequired,
@@ -48,14 +48,14 @@ describe('BasePrompt', () => {
           runner)
 
       jest.spyOn(runner, 'run')
-        .mockImplementation(() => undefined)
+        .mockImplementation(async () => undefined)
 
       delete config.value
-      prompt.fulfill(null)
+      await prompt.fulfill(null)
       expect(config.value).toBeNull()
     })
 
-    it('should return result of calling run on its runner', () => {
+    it('should return result of calling run on its runner', async () => {
       let config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[0]
       const
         ctx = dataset.contexts[1] as IContextInputRequired,
@@ -67,9 +67,9 @@ describe('BasePrompt', () => {
         richCursor = runner.hydrateRichCursorFrom(ctx) as IRichCursorInputRequired
 
       jest.spyOn(runner, 'run')
-        .mockImplementation(() => richCursor)
+        .mockImplementation(async () => richCursor)
 
-      const cursor = prompt.fulfill(null)
+      const cursor = await prompt.fulfill(null)
       expect(cursor).toBe(richCursor)
     })
   })

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 const __1 = require("../..");
 const lodash_1 = require("lodash");
 class SelectManyResponseBlockRunner {
@@ -23,7 +24,9 @@ class SelectManyResponseBlockRunner {
     }
     run() {
         var _a;
-        return _a = __1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context), (_a !== null && _a !== void 0 ? _a : lodash_1.last(this.block.exits));
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return _a = __1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context), (_a !== null && _a !== void 0 ? _a : lodash_1.last(this.block.exits));
+        });
     }
 }
 exports.SelectManyResponseBlockRunner = SelectManyResponseBlockRunner;

@@ -8,7 +8,7 @@ export declare class MessageBlockRunner implements IBlockRunner {
     context: IContext;
     constructor(block: IMessageBlock, context: IContext);
     initialize(): IMessagePromptConfig;
-    run(): IBlockExit;
+    run(): Promise<IBlockExit>;
 }
 export default MessageBlockRunner;
 //# sourceMappingURL=MessageBlockRunner.d.ts.map

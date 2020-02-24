@@ -67,7 +67,7 @@ export class SelectManyResponseBlockRunner implements IBlockRunner {
     }
   }
 
-  run(): IBlockExit {
+  async run(): Promise<IBlockExit> {
     return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context)
       ?? last(this.block.exits) as IBlockExitTestRequired
   }

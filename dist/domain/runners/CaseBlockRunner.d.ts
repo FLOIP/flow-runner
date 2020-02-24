@@ -7,7 +7,7 @@ export declare class CaseBlockRunner implements IBlockRunner {
     context: IContext;
     constructor(block: ICaseBlock, context: IContext);
     initialize(): undefined;
-    run(): IBlockExitTestRequired;
+    run(): Promise<IBlockExitTestRequired>;
 }
 export default CaseBlockRunner;
 //# sourceMappingURL=CaseBlockRunner.d.ts.map

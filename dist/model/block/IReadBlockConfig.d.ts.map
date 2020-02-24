@@ -1,1 +1,1 @@
-{"version":3,"file":"IReadBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/IReadBlockConfig.ts"],"names":[],"mappings":"AAmBA,MAAM,WAAW,gBAAgB;IAG/B,YAAY,EAAE,MAAM,CAAA;IAIpB,oBAAoB,EAAE,MAAM,EAAE,CAAA;CAC/B;AAED,eAAe,gBAAgB,CAAA"}
+{"version":3,"file":"IReadBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/IReadBlockConfig.ts"],"names":[],"mappings":"AAmBA,MAAM,WAAW,gBAAgB;IAG/B,YAAY,EAAE,MAAM,CAAC;IAIrB,oBAAoB,EAAE,MAAM,EAAE,CAAC;CAChC;AAED,eAAe,gBAAgB,CAAA"}

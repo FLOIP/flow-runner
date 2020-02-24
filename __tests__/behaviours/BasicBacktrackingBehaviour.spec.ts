@@ -10,7 +10,7 @@ import IBlock from '../../src/flow-spec/IBlock'
 import BasicBacktrackingBehaviour from '../../src/domain/behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour'
 
 
-describe('BasicBacktrackingBehaviour', () => {
+describe('BasicBacktrackingBehaviour', async () => {
   let backtracking: BasicBacktrackingBehaviour
 
   beforeEach(() => {
@@ -21,7 +21,7 @@ describe('BasicBacktrackingBehaviour', () => {
           IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined => undefined})
   })
 
-  describe('peek', () => {
+  describe('peek', async () => {
     let virtualPrompt: IPrompt<any>
 
     beforeEach(() => {
@@ -45,7 +45,7 @@ describe('BasicBacktrackingBehaviour', () => {
         .mockReturnValue(virtualPrompt)
     })
 
-    it('should return prompt for last interaction when no args provided', () => {
+    it('should return prompt for last interaction when no args provided', async () => {
       const block: IBlock = backtracking.context.flows[0].blocks[0]
       const interaction: IBlockInteraction = last(backtracking.context.interactions)!
 
@@ -56,7 +56,7 @@ describe('BasicBacktrackingBehaviour', () => {
       expect(cursor.prompt.value).toEqual(interaction.value)
     })
 
-    it('should use interaction `steps` places from the end of interactions list', () => {
+    it('should use interaction `steps` places from the end of interactions list', async () => {
       const block: IBlock = backtracking.context.flows[0].blocks[0]
       const interaction: IBlockInteraction = backtracking.context.interactions[2]
 
@@ -67,7 +67,7 @@ describe('BasicBacktrackingBehaviour', () => {
       expect(cursor.prompt.value).toEqual(interaction.value)
     })
 
-    it('should skip over non-interactive blocks', () => {
+    it('should skip over non-interactive blocks', async () => {
       backtracking.context.interactions[3].type = first(NON_INTERACTIVE_BLOCK_TYPES)!
       backtracking.context.interactions[4].type = first(NON_INTERACTIVE_BLOCK_TYPES)!
 
@@ -81,7 +81,7 @@ describe('BasicBacktrackingBehaviour', () => {
       expect(cursor.prompt.value).toEqual(interaction.value)
     })
 
-    it('should raise when trying to step back further than can be stepped', () => {
+    it('should raise when trying to step back further than can be stepped', async () => {
       expect(BacktrackingBehaviour.prototype.peek.bind(backtracking, 7))
         .toThrow('Unable to backtrack to an interaction that far back {"steps":7}')
     })

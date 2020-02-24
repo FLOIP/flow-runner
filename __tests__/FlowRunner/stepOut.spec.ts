@@ -7,15 +7,15 @@ import IBlock from '../../src/flow-spec/IBlock'
 import IBlockExit from '../../src/flow-spec/IBlockExit'
 import * as contextService from '../../src/flow-spec/IContext'
 
-describe('FlowRunner/stepOut', () => {
+describe('FlowRunner/stepOut', async () => {
   let dataset: IDataset
 
   beforeEach(() => {
     dataset = createDefaultDataset()
   })
 
-  describe('when not nested', () => {
-    it('should return null when not nested', () => {
+  describe('when not nested', async () => {
+    it('should return null when not nested', async () => {
       const
           ctx = dataset.contexts[0],
           runner = new FlowRunner(ctx)
@@ -24,7 +24,7 @@ describe('FlowRunner/stepOut', () => {
       expect(runner.stepOut(ctx)).toBeUndefined()
     })
 
-    it('should leave last interaction as it is', () => {
+    it('should leave last interaction as it is', async () => {
       const
           ctx = dataset.contexts[1],
           lastIntx = cloneDeep(last(ctx.interactions)),
@@ -36,8 +36,8 @@ describe('FlowRunner/stepOut', () => {
     })
   })
 
-  describe('when nested', () => {
-    it('should pop last interaction off nested flow interaction stack', () => {
+  describe('when nested', async () => {
+    it('should pop last interaction off nested flow interaction stack', async () => {
       const
           ctx = dataset.contexts[2],
           snapshottedNFBIStack = cloneDeep(ctx.nestedFlowBlockInteractionIdStack),
@@ -48,7 +48,7 @@ describe('FlowRunner/stepOut', () => {
       expect(ctx.nestedFlowBlockInteractionIdStack).toEqual(snapshottedNFBIStack.slice(0, -1))
     })
 
-    it('should leave active interaction\'s selected exit as null to indicate we\'ve finished executing the flow', () => {
+    it('should leave active interaction\'s selected exit as null to indicate we\'ve finished executing the flow', async () => {
       const
           ctx = dataset.contexts[2]
 
@@ -68,7 +68,7 @@ describe('FlowRunner/stepOut', () => {
       expect(activeIntx.selectedExitId).toBe(null)
     })
 
-    it('should tie run flow block\'s intx associated with provided run flow block to its first exit', () => {
+    it('should tie run flow block\'s intx associated with provided run flow block to its first exit', async () => {
       // needs: [a, b, run-flow-intx, nested-flow-intx-a, nested-flow-intx-b, <<step-out>>]
       const originFlowId = 'flow-123'
       const originBlockInteractionId = 'intx-345' // last( nestedFlowBlockInteractionStack )
@@ -104,8 +104,8 @@ describe('FlowRunner/stepOut', () => {
 
     it.todo('should reconcile exit at timestamps somehow') // todo: verify this
 
-    describe('connecting block', () => {
-      it('should return block last RunFlow was connected to in original flow', () => {
+    describe('connecting block', async () => {
+      it('should return block last RunFlow was connected to in original flow', async () => {
         const
           ctx = dataset.contexts[2],
           lastRunFlowBlock = ctx.flows[0].blocks[0],
@@ -118,7 +118,7 @@ describe('FlowRunner/stepOut', () => {
         expect(nextBlock).toBe(runFlowDestinationBlock)
       })
 
-      it('should return null if last RunFlow was end of original flow', () => {
+      it('should return null if last RunFlow was end of original flow', async () => {
         const
           ctx = dataset.contexts[2],
           lastRunFlowBlock = ctx.flows[0].blocks[0],

@@ -4,14 +4,14 @@ import {IContextInputRequired} from '../../src';
 import {createStaticFirstExitBlockRunnerFor} from "../../__test_fixtures__/fixtures/BlockRunner";
 
 
-describe('FlowRunner/runActiveBlockOn', () => {
+describe('FlowRunner/runActiveBlockOn', async () => {
   let dataset: IDataset
 
   beforeEach(() => {
     dataset = createDefaultDataset()
   })
 
-  it('should return exit provided by block runner\'s resume()', () => {
+  it('should return exit provided by block runner\'s resume()', async () => {
     const
         ctx = dataset.contexts[1] as IContextInputRequired,
         block = ctx.flows[1].blocks[0],
@@ -21,12 +21,12 @@ describe('FlowRunner/runActiveBlockOn', () => {
 
     const
         richCursor = runner.hydrateRichCursorFrom(ctx),
-        exit = runner.runActiveBlockOn(richCursor, block)
+        exit = await runner.runActiveBlockOn(richCursor, block)
 
     expect(exit).toBe(expectedExit)
   })
 
-  it('should set interaction selected exit id', () => {
+  it('should set interaction selected exit id', async () => {
     const
       ctx = dataset.contexts[1] as IContextInputRequired,
       block = ctx.flows[1].blocks[0],
@@ -37,12 +37,12 @@ describe('FlowRunner/runActiveBlockOn', () => {
 
     richCursor.interaction.selectedExitId = null // set as incomplete interaction state
 
-    runner.runActiveBlockOn(richCursor, block)
+    await runner.runActiveBlockOn(richCursor, block)
     expect(richCursor.interaction.selectedExitId).toBe(expectedExit.uuid)
   })
 
-  describe('when prompt present', () => {
-    it('should flag on prompt as having been submitted + accepted by the flow runner', () => {
+  describe('when prompt present', async () => {
+    it('should flag on prompt as having been submitted + accepted by the flow runner', async () => {
       const
         ctx = dataset.contexts[1] as IContextInputRequired,
         block = ctx.flows[1].blocks[0],
@@ -50,11 +50,11 @@ describe('FlowRunner/runActiveBlockOn', () => {
           ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
 
       expect(ctx.cursor.promptConfig.isSubmitted).toBeFalsy()
-      runner.runActiveBlockOn(runner.hydrateRichCursorFrom(ctx), block)
+      await runner.runActiveBlockOn(runner.hydrateRichCursorFrom(ctx), block)
       expect(ctx.cursor.promptConfig.isSubmitted).toBeTruthy()
     })
 
-    it('should set interaction value from prompt', () => {
+    it('should set interaction value from prompt', async () => {
       const
         ctx = dataset.contexts[1] as IContextInputRequired,
         block = ctx.flows[1].blocks[0],
@@ -64,11 +64,11 @@ describe('FlowRunner/runActiveBlockOn', () => {
 
       delete richCursor.interaction.value // setup to ensure we get a value during run
 
-      runner.runActiveBlockOn(richCursor, block)
+      await runner.runActiveBlockOn(richCursor, block)
       expect(richCursor.interaction.value).toBeNull() // `null` is the value from the prompt
     })
 
-    it('should set interaction hasResponse to true', () => {
+    it('should set interaction hasResponse to true', async() => {
       const
         ctx = dataset.contexts[1] as IContextInputRequired,
         block = ctx.flows[1].blocks[0],
@@ -77,7 +77,7 @@ describe('FlowRunner/runActiveBlockOn', () => {
         richCursor = runner.hydrateRichCursorFrom(ctx)
 
       expect(richCursor.interaction.hasResponse).toBeFalsy()
-      runner.runActiveBlockOn(richCursor, block)
+      await runner.runActiveBlockOn(richCursor, block)
       expect(richCursor.interaction.hasResponse).toBeTruthy()
     })
   })

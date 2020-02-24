@@ -12,7 +12,7 @@ export declare class RunFlowBlockRunner implements IBlockRunner {
         config: IRunFlowBlockConfig;
     }, context: IContext);
     initialize(): undefined;
-    run(): IBlockExit;
+    run(): Promise<IBlockExit>;
 }
 export default RunFlowBlockRunner;
 //# sourceMappingURL=RunFlowBlockRunner.d.ts.map
