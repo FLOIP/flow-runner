@@ -11,6 +11,11 @@ module.exports = {
     'plugin:jest/recommended',
     'plugin:lodash/recommended',
     'eslint:recommended',
+
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
+
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
@@ -35,9 +40,6 @@ module.exports = {
         '*.ts',
         '*.tsx',
       ],
-      'rules': {
-        'indent': 'off',
-      },
     },
   ],
 
@@ -45,8 +47,17 @@ module.exports = {
     /********************
      * Typescript rules *
      ********************/
+    /********************
+     * Typescript rules *
+     ********************/
+    '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
-    '@typescript-eslint/strict-boolean-expressions': 'error',
+    '@typescript-eslint/strict-boolean-expressions': [
+      'error',
+      {
+        allowNullable: true,
+      },
+    ],
     '@typescript-eslint/semi': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
@@ -57,62 +68,66 @@ module.exports = {
       'warn',
       {
         allowExpressions: true,
-        allowTypedFunctionExpressions: false,
-        allowHigherOrderFunctions: false,
+        allowTypedFunctionExpressions: true,
+        allowHigherOrderFunctions: true,
       },
     ],
     '@typescript-eslint/member-delimiter-style': [
       'warn',
       {
-        'multiline': {
-          'delimiter': 'comma',
-          'requireLast': true,
+        multiline: {
+          delimiter: 'comma',
+          requireLast: true,
         },
-        'singleline': {
-          'delimiter': 'comma',
-          'requireLast': false,
+        singleline: {
+          delimiter: 'comma',
+          requireLast: false,
         },
       },
     ],
 
-    /***************
-     * React rules *
-     ***************/
-    'react/sort-comp': 'off',
-    'react/jsx-tag-spacing': 'off',
-    'react/jsx-closing-bracket-location': 'off',
-    'react/destructuring-assignment': 'off',
+
 
     /*************************
      * Modified ESLint rules *
      *************************/
     'one-var': ['error', 'never'],
+
+    // These are off due to https://github.com/typescript-eslint/typescript-eslint/blob/f335c504bcf75623d2d671e2e784b047e5e186b9/docs/getting-started/linting/FAQ.md#eslint-plugin-import
     'import/named': 'off',
+    'import/namespace': 'off',
+    'import/default': 'off',
+    'import/no-named-as-default-member': 'off',
+    'import/no-named-as-default': 'off',
+    'import/no-cycle': 'off',
+    'import/no-unused-modules': 'off',
+    'import/no-deprecated': 'off',
+
     'import/no-absolute-path': 'off',
     'no-useless-constructor': 'off',
     'class-methods-use-this': 'off',
-    'no-empty-function': [
-      'error',
-      {'allow': ['constructors']},
-    ],
-    'import/no-cycle': ['off'],
+    'no-empty-function': ['error', {allow: ['constructors']}],
+    'no-tabs': 'error',
+
     'no-use-before-define': [
       'off',
       {
-        'functions': true,
-        'classes': true,
-        'variables': false,
+        functions: true,
+        classes: true,
+        variables: false,
       },
     ],
     'lines-between-class-members': ['off'],
     'prefer-destructuring': [
       'error',
-      {'object': false, 'array': false},
+      {object: false, array: false},
     ],
     'space-before-function-paren': [
-      'error',
-      'never',
-    ],
+      'error', {
+        anonymous: 'always',
+        named: 'never',
+        asyncArrow: 'always',
+      }],
     'no-console': [
       'error',
       {
@@ -131,21 +146,21 @@ module.exports = {
     'object-curly-newline': [
       'error',
       {
-        'ObjectExpression': {
-          'multiline': true,
-          'consistent': true,
+        ObjectExpression: {
+          multiline: true,
+          consistent: true,
         },
-        'ObjectPattern': {
-          'multiline': true,
-          'consistent': true,
+        ObjectPattern: {
+          multiline: true,
+          consistent: true,
         },
-        'ImportDeclaration': {
-          'multiline': true,
-          'consistent': true,
+        ImportDeclaration: {
+          multiline: true,
+          consistent: true,
         },
-        'ExportDeclaration': {
-          'multiline': true,
-          'minProperties': 3,
+        ExportDeclaration: {
+          multiline: true,
+          minProperties: 3,
         },
       },
     ],
@@ -154,28 +169,28 @@ module.exports = {
       'off',
       2,
       {
-        'VariableDeclarator': 'off',
-        'MemberExpression': 1,
-        'ArrayExpression': 2,
-        'ObjectExpression': 'off',
-        'CallExpression': {'arguments': 2},
-        'FunctionDeclaration': {'parameters': 2},
-        'FunctionExpression': {'parameters': 2},
+        VariableDeclarator: 'off',
+        MemberExpression: 1,
+        ArrayExpression: 2,
+        ObjectExpression: 'off',
+        CallExpression: {'arguments': 2},
+        FunctionDeclaration: {'parameters': 2},
+        FunctionExpression: {'parameters': 2},
       },
     ],
     'no-trailing-spaces': [
       'error',
-      {'skipBlankLines': true},
+      {skipBlankLines: true},
     ],
     'max-len': [
       'warn',
-      {'code': 120},
+      {code: 140},
     ],
     'eol-last': [
       'warn',
-      'never',
+      'always',
     ],
-    'semi': [
+    semi: [
       'warn',
       'never',
     ],
@@ -185,10 +200,7 @@ module.exports = {
 
     // Argument for this best presented here: https://youtu.be/eEBOvqMfPoI?t=1665
     'no-else-return': ['off'],
-    'spaced-comment': [
-      'error',
-      'always',
-    ],
+    'spaced-comment': 'off',
 
     /**********
      * Lodash *
@@ -198,23 +210,24 @@ module.exports = {
       'member',
     ],
     'lodash/matches-prop-shorthand': 'off',
-    'lodash/prefer-lodash-method': [
-      'off',
-      {
-        'ignoreMethods': [
-          'keys',
-          'find',
-          'map',
-        ],
-      },
-    ],
-    'lodash/prefer-noop': [
-      'off',
-    ],
-    'lodash/prefer-constant': [
-      'off',
-    ],
+
+    // Disable all lodash prefer checks for things that already exist natively
+    'lodash/prefer-lodash-method': ['off'],
+    'lodash/prefer-lodash-typecheck': 'off',
+    'lodash/prefer-noop': 'off',
+    'lodash/prefer-constant': 'off',
     'lodash/preferred-alias': 'off',
+    'lodash/prefer-includes': 'off',
+    'lodash/prefer-get': 'off',
+    'lodash/prefer-is-nil': 'off',
+    'lodash/prefer-lodash-chain': 'off',
+    'lodash/prefer-matches': 'off',
+    'lodash/prefer-over-quantifier': 'off',
+    'lodash/prefer-some': 'off',
+    'lodash/prefer-startswith': 'off',
+    'lodash/prefer-times': 'off',
+    'lodash/prop-shorthand': ['warn', 'never'],
+
 
     /*************
      * Lodash FP *
@@ -240,7 +253,7 @@ module.exports = {
     'lodash-fp/prefer-constant': [
       'off',
       {
-        'arrowFunctions': false,
+        arrowFunctions: false,
       },
     ],
     'lodash-fp/prefer-flat-map': 'error',
@@ -248,7 +261,7 @@ module.exports = {
     'lodash-fp/prefer-identity': [
       'error',
       {
-        'arrowFunctions': false,
+        arrowFunctions: false,
       },
     ],
     'lodash-fp/preferred-alias': 'off',
