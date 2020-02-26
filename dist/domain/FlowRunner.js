@@ -182,7 +182,7 @@ class FlowRunner {
             do {
                 if (this.isInputRequiredFor(ctx)) {
                     console.info('Attempted to resume when prompt is not yet fulfilled; resurfacing same prompt instance.');
-                    return Promise.resolve(richCursor);
+                    return richCursor;
                 }
                 yield this.runActiveBlockOn(richCursor, block);
                 block = this.findNextBlockOnActiveFlowFor(ctx);
@@ -202,7 +202,7 @@ class FlowRunner {
                 richCursor = this.navigateTo(block, ctx);
             } while (block != null);
             this.complete(ctx);
-            return Promise.resolve(undefined);
+            return undefined;
         });
     }
     complete(ctx) {
