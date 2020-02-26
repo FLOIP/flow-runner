@@ -3,7 +3,7 @@ import {IResource, IResourceDefinitionContentTypeSpecific, Resource, SupportedCo
 import ResourceNotFoundException from '../src/domain/exceptions/ResourceNotFoundException'
 import IContext from '../src/flow-spec/IContext'
 
-describe('Resource', async () => {
+describe('Resource', () => {
   let baseResource: IResourceDefinitionContentTypeSpecific
   let values: IResourceDefinitionContentTypeSpecific[]
   let resource: IResource
@@ -34,7 +34,7 @@ describe('Resource', async () => {
     } as IContext)
   })
 
-  describe('getAudio', async () => {
+  describe('getAudio', () => {
     it('should return value from first audio resource', async () => {
       expect(resource.getAudio()).toBe('viamo://your-audio-file.wav')
     })
@@ -46,7 +46,7 @@ describe('Resource', async () => {
     })
   })
 
-  describe('getText', async () => {
+  describe('getText', () => {
     it('should return value from first text resource', async () => {
       expect(resource.getText()).toBe('My first text!')
     })
@@ -62,7 +62,7 @@ describe('Resource', async () => {
     })
   })
 
-  describe('getImage', async () => {
+  describe('getImage', () => {
     it('should return value from first image resource', async () => {
       expect(resource.getImage()).toBe('viamo://your-image-file.jpg')
     })
@@ -73,7 +73,7 @@ describe('Resource', async () => {
     })
   })
 
-  describe('getVideo', async () => {
+  describe('getVideo', () => {
     it('should return value from first video resource', async () => {
       expect(resource.getVideo()).toBe('viamo://your-video-file.mp4')
     })

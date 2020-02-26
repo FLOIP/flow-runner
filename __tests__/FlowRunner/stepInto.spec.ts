@@ -3,7 +3,7 @@ import FlowRunner from "../../src/domain/FlowRunner";
 import ValidationException from "../../src/domain/exceptions/ValidationException";
 
 
-describe('FlowRunner/stepInto', async () => {
+describe('FlowRunner/stepInto', () => {
   let dataset: IDataset
 
   beforeEach(() => {
@@ -60,7 +60,7 @@ describe('FlowRunner/stepInto', async () => {
     expect(ctx.nestedFlowBlockInteractionIdStack[0]).toBe(runFlowBlockIntx.uuid)
   })
 
-  describe('returned block', async () => {
+  describe('returned block', () => {
     it.todo('should return null when first block absent on freshly nested flow')
     it.todo('should return first block when first block present on freshly nested flow')
   })

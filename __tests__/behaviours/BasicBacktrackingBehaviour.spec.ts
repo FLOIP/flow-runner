@@ -10,7 +10,7 @@ import IBlock from '../../src/flow-spec/IBlock'
 import BasicBacktrackingBehaviour from '../../src/domain/behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour'
 
 
-describe('BasicBacktrackingBehaviour', async () => {
+describe('BasicBacktrackingBehaviour', () => {
   let backtracking: BasicBacktrackingBehaviour
 
   beforeEach(() => {
@@ -21,7 +21,7 @@ describe('BasicBacktrackingBehaviour', async () => {
           IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined => undefined})
   })
 
-  describe('peek', async () => {
+  describe('peek', () => {
     let virtualPrompt: IPrompt<any>
 
     beforeEach(() => {

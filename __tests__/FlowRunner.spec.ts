@@ -11,14 +11,14 @@ import IContact from '../src/flow-spec/IContact'
 import SelectOnePrompt from '../src/domain/prompt/SelectOnePrompt'
 
 
-describe('FlowRunner', async () => {
+describe('FlowRunner', () => {
   let dataset: IDataset
 
   beforeEach(() => {
     dataset = createDefaultDataset()
   })
 
-  describe('serialization', async () => {
+  describe('serialization', () => {
     it ('should be stringifiable', () => {
       const context = dataset.contexts[2]
       const contextObj = plainToClass(Context, context)
@@ -30,7 +30,7 @@ describe('FlowRunner', async () => {
     })
   })
 
-  describe('sanity', async () => {
+  describe('sanity', () => {
     it('should be available', async () => {
       const runner = new FlowRunner(dataset.contexts[0])
       expect(runner).toBeTruthy()
@@ -89,7 +89,7 @@ describe('FlowRunner', async () => {
       expect(await runner.run()).toBeFalsy()
     })
 
-    describe('case block unable to find cursor', async () => {
+    describe('case block unable to find cursor', () => {
       it('shouldnt raise an exception requiring prompt', async () => {
         const context: IContext = require('../__test_fixtures__/fixtures/2019-10-08-case-block-eval-issue.json')
         const runner = new FlowRunner(context)
@@ -99,7 +99,7 @@ describe('FlowRunner', async () => {
       })
     })
 
-    xdescribe('case block always evaluates to false', async () => {
+    xdescribe('case block always evaluates to false', () => {
       it('shouldnt raise an except requiring prompt', async () => {
         const context: IContext = require('../__test_fixtures__/fixtures/2019-10-09-case-block-always-false.json')
         const runner = new FlowRunner(context)
@@ -109,7 +109,7 @@ describe('FlowRunner', async () => {
       })
     })
 
-    describe('VMO-1484-case-branching-improperly', async () => {
+    describe('VMO-1484-case-branching-improperly', () => {
       it('should hit Cats branch', async() => {
         const {flows}: IContext = require('../__test_fixtures__/fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
         const resources: IResources = flatMap(flows, 'resources') // our server-side implementation currently returns

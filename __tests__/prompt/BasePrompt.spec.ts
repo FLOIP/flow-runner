@@ -8,7 +8,7 @@ import {
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import FlowRunner from '../../src/domain/FlowRunner'
 
-describe('BasePrompt', async () => {
+describe('BasePrompt', () => {
   let dataset: IDataset
 
   beforeEach(() => {
@@ -19,8 +19,8 @@ describe('BasePrompt', async () => {
     jest.restoreAllMocks()
   })
 
-  describe('default state', async () => {
-    describe('error', async () => {
+  describe('default state', () => {
+    describe('error', () => {
       it('should default its error state to empty to simply UI rendering', async () => {
         let config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[0]
         const
@@ -36,7 +36,7 @@ describe('BasePrompt', async () => {
     })
   })
 
-  describe('fulfill', async () => {
+  describe('fulfill', () => {
     it('should set provided value onto itself', async () => {
       let config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[0]
       const

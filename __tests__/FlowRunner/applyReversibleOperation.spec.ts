@@ -3,7 +3,7 @@ import IContext, {IReversibleUpdateOperation} from '../../src/flow-spec/IContext
 import IFlowRunner from '../../src/domain/IFlowRunner'
 import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
 
-describe('applyReversibleDataOperation', async () => {
+describe('applyReversibleDataOperation', () => {
   let runner: IFlowRunner
   let context: IContext
   let operation: IReversibleUpdateOperation

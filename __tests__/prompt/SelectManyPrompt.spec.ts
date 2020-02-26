@@ -12,7 +12,7 @@ import InvalidChoiceException from '../../src/domain/exceptions/InvalidChoiceExc
 import ValidationException from '../../src/domain/exceptions/ValidationException'
 
 
-describe('SelectManyPrompt', async () => {
+describe('SelectManyPrompt', () => {
 
   let dataset: IDataset
 
@@ -20,7 +20,7 @@ describe('SelectManyPrompt', async () => {
     dataset = createDefaultDataset()
   })
 
-  describe('validate', async () => {
+  describe('validate', () => {
     let prompt: SelectManyPrompt
     beforeEach(() => {
       const config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[1]
@@ -33,7 +33,7 @@ describe('SelectManyPrompt', async () => {
         runner)
     })
 
-    describe('when a response isRequired', async () => {
+    describe('when a response isRequired', () => {
       it('should raise when some selections are invalid', async () => {
         const selections = ['choice-A', 'choice-B', 'key-not-in-prompt-config', 'choice-C']
 

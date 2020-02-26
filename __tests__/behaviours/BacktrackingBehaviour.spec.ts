@@ -22,7 +22,7 @@ import IPrompt from '../../src/domain/prompt/IPrompt'
 import IBlock from '../../src/flow-spec/IBlock'
 
 
-describe('BacktrackingBehaviour', async () => {
+describe('BacktrackingBehaviour', () => {
   let backtracking: BacktrackingBehaviour
 
   beforeEach(() => {
@@ -33,13 +33,13 @@ describe('BacktrackingBehaviour', async () => {
           IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined => undefined})
   })
 
-  describe('constructor', async () => {
+  describe('constructor', () => {
     it.todo('should initialize backtracking on context\'s platform metadata')
   })
 
-  describe('insertInteractionUsing', async () => {
-    describe('sealing this iteration', async () => {
-      describe('when block has been repeated since start of an iteration', async () => {
+  describe('insertInteractionUsing', () => {
+    describe('sealing this iteration', () => {
+      describe('when block has been repeated since start of an iteration', () => {
         it('should step in (aka perform an iteration rollup)', async () => {
           const interactions = [
             {blockId: '0', uuid: 'abc-0'},
@@ -68,7 +68,7 @@ describe('BacktrackingBehaviour', async () => {
         // it.todo('should carry tail with us') // ??? Nah, leave as is until we step out, then erase
       })
 
-      describe('when block is at start of iteration', async () => {
+      describe('when block is at start of iteration', () => {
         it('should roll up entire iteration into a stack', async () => { // todo: should this nest a stack, or simply append another iteration???
           const interactions = [
             {blockId: '0', uuid: 'abc-0'},
@@ -94,8 +94,8 @@ describe('BacktrackingBehaviour', async () => {
         })
       })
 
-      describe('when block has not been repeated since start of iteration', async () => {
-        describe('when using fresh key', async () => {
+      describe('when block has not been repeated since start of iteration', () => {
+        describe('when using fresh key', () => {
           it('should insert at first position', async () => {
             const interactionStack: IContextBacktrackingPlatformMetadata['backtracking']['interactionStack'] = createStack()
             const cursor: IContextBacktrackingPlatformMetadata['backtracking']['cursor'] = createKey()
@@ -108,7 +108,7 @@ describe('BacktrackingBehaviour', async () => {
           })
         })
 
-        describe('when on root stack', async () => {
+        describe('when on root stack', () => {
           it('should insert at current position', async () => {
             const interactions = [
               {blockId: '0', uuid: 'abc-0'},
@@ -128,7 +128,7 @@ describe('BacktrackingBehaviour', async () => {
           })
         })
 
-        describe('when on nested stack', async () => {
+        describe('when on nested stack', () => {
           it('should insert at current position', async () => {
             const sourceInteractions = createStackFrom([
               [{blockId: '1', uuid: 'abc-1'} as IEntity, createStackFrom([
@@ -154,7 +154,7 @@ describe('BacktrackingBehaviour', async () => {
         })
       })
 
-      describe('when block matches any stack\'s first block', async () => {
+      describe('when block matches any stack\'s first block', () => {
         it('should step out when head found one level up', async () => {
           const sourceInteractions = createStackFrom([
             [{blockId: '1', uuid: 'abc-1'} as IEntity, createStackFrom([
@@ -208,7 +208,7 @@ describe('BacktrackingBehaviour', async () => {
         it.todo('should wipe interactions after current key')
       })
 
-      describe('when stacked, but block doesn\'t match any heads', async () => {
+      describe('when stacked, but block doesn\'t match any heads', () => {
         it.todo('should insert where we\'re at') // see:
       })
     })
@@ -223,11 +223,11 @@ describe('BacktrackingBehaviour', async () => {
     // todo: more thorough testing of multi-back-tracking
   })
 
-  describe('findIndexOfSuggestionFor', async () => {
+  describe('findIndexOfSuggestionFor', () => {
     it.todo('...')
   })
 
-  describe('jumpTo', async () => {
+  describe('jumpTo', () => {
     let interactions: IBlockInteraction[]
     let meta: IContextBacktrackingPlatformMetadata['backtracking']
 
@@ -269,7 +269,7 @@ describe('BacktrackingBehaviour', async () => {
       expect(meta.interactionStack).toEqual(createStack(interactions.slice(0, 1)))
     })
 
-    describe('nested flow reconciliation', async () => {
+    describe('nested flow reconciliation', () => {
       beforeEach(() => {
         interactions = [
           {uuid: 'intx-123-1'},
@@ -331,7 +331,7 @@ describe('BacktrackingBehaviour', async () => {
     })
   })
 
-  describe('syncGhost', async () => {
+  describe('syncGhost', () => {
     // key:   [1, 2, 3, 4, 5]
     //                  ^
     //
@@ -353,7 +353,7 @@ describe('BacktrackingBehaviour', async () => {
       backtracking.syncGhostTo(createKey(), createKey(), createStack())
     })
 
-    describe('when key for suggestion is ahead by a couple indices', async () => {
+    describe('when key for suggestion is ahead by a couple indices', () => {
       it('should yank the items in between', async () => {
         const keyForSuggestion = createKey(5)
         const key = createKey(3)
@@ -364,7 +364,7 @@ describe('BacktrackingBehaviour', async () => {
       })
     })
 
-    describe('when keys match', async () => {
+    describe('when keys match', () => {
       it('should leave keys alone', async () => {
         const keyForSuggestion = createKey(3)
         const key = createKey(3)
@@ -385,7 +385,7 @@ describe('BacktrackingBehaviour', async () => {
       })
     })
 
-    describe('when key for suggestion is nested once + on first iteration', async () => {
+    describe('when key for suggestion is nested once + on first iteration', () => {
       // [1, 2, 3, [[7, 4, 5]]]
       it('should hoist nested iteration into containing iteration, and remove items in between key + key for suggestion', () => {
         const keyForSuggestion = [createStackKey(0, 3), createStackKey(0, 1)]
@@ -398,7 +398,7 @@ describe('BacktrackingBehaviour', async () => {
     })
 
     // todo: fix this test, it's breaking
-    xdescribe('when key for suggestion is nested multiple times deeper + on non-first iteration + iterations exist afterwards', async () => {
+    xdescribe('when key for suggestion is nested multiple times deeper + on non-first iteration + iterations exist afterwards', () => {
       // [1, 2, 3, [[7, 8],
       //            [7, 8],
       //            [7, [[8, 4],
@@ -446,7 +446,7 @@ describe('BacktrackingBehaviour', async () => {
     it.todo('should behave predictably when key to match point to start of everything')
   })
 
-  describe('peek', async () => {
+  describe('peek', () => {
     let pseudoPrompt: IPrompt<any>
 
     beforeEach(() => {

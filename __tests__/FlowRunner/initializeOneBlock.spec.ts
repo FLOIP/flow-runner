@@ -9,7 +9,7 @@ import {
 } from '../../src'
 
 
-describe('FlowRunner/initializeOneBlock', async () => {
+describe('FlowRunner/initializeOneBlock', () => {
   let dataset: IDataset
 
   beforeEach(() => {

@@ -4,7 +4,7 @@ import ValidationException from '../../src/domain/exceptions/ValidationException
 import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
 
 
-describe('FlowRunner/findInteractionForActiveNestedFlow', async () => {
+describe('FlowRunner/findInteractionForActiveNestedFlow', () => {
   let runner: FlowRunner
 
   beforeEach(() => {

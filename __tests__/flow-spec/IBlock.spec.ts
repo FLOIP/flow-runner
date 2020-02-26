@@ -12,7 +12,7 @@ import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/I
 import createFormattedDate from '../../src/domain/DateFormat'
 
 
-describe('IBlock', async () => {
+describe('IBlock', () => {
   let dataset: IDataset
   let target: IEvalContextBlock
 
@@ -27,7 +27,7 @@ describe('IBlock', async () => {
     }
   })
 
-  describe('findFirstTruthyEvaluatingBlockExitOn', async () => {
+  describe('findFirstTruthyEvaluatingBlockExitOn', () => {
     it('should return first truthy exit', async () => {
       const exit = findFirstTruthyEvaluatingBlockExitOn({exits: [
           {test: '@(true = false)'},
@@ -56,13 +56,13 @@ describe('IBlock', async () => {
     })
   })
 
-  describe('generateCachedProxyForBlockName', async () => {
+  describe('generateCachedProxyForBlockName', () => {
     it('should return an object resembling the one provided', async () => {
       const proxy = generateCachedProxyForBlockName(target, {} as IContext)
       expect(proxy).toEqual(target)
     })
 
-    describe('proxy', async () => {
+    describe('proxy', () => {
       it('should pass through props that already existed on target', async () => {
         const sampleTarget = {name: 'Bert', age: '40-something'}
         const proxy = generateCachedProxyForBlockName(sampleTarget, {} as IContext)
@@ -147,8 +147,8 @@ describe('IBlock', async () => {
     })
   })
 
-  describe('evaluateToBool()', async () => {
-    describe('wrapInExprSyntaxWhenAbsent', async () => {
+  describe('evaluateToBool()', () => {
+    describe('wrapInExprSyntaxWhenAbsent', () => {
       it('should add expression wrapper when @() absent', async () => {
         expect(wrapInExprSyntaxWhenAbsent('true = true')).toBe('@(true = true)')
       })

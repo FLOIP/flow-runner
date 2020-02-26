@@ -7,14 +7,14 @@ import IBlock from '../../src/flow-spec/IBlock'
 import IBlockExit from '../../src/flow-spec/IBlockExit'
 import * as contextService from '../../src/flow-spec/IContext'
 
-describe('FlowRunner/stepOut', async () => {
+describe('FlowRunner/stepOut', () => {
   let dataset: IDataset
 
   beforeEach(() => {
     dataset = createDefaultDataset()
   })
 
-  describe('when not nested', async () => {
+  describe('when not nested', () => {
     it('should return null when not nested', async () => {
       const
           ctx = dataset.contexts[0],
@@ -36,7 +36,7 @@ describe('FlowRunner/stepOut', async () => {
     })
   })
 
-  describe('when nested', async () => {
+  describe('when nested', () => {
     it('should pop last interaction off nested flow interaction stack', async () => {
       const
           ctx = dataset.contexts[2],
@@ -104,7 +104,7 @@ describe('FlowRunner/stepOut', async () => {
 
     it.todo('should reconcile exit at timestamps somehow') // todo: verify this
 
-    describe('connecting block', async () => {
+    describe('connecting block', () => {
       it('should return block last RunFlow was connected to in original flow', async () => {
         const
           ctx = dataset.contexts[2],

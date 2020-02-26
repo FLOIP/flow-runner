@@ -1,6 +1,6 @@
 import convertKeysToCamelCase from '../../src/flow-spec/DataObjectPopertyNameCamelCaseConverter'
 
-describe('convertKeysToCamelCase', async () => {
+describe('convertKeysToCamelCase', () => {
   it.each([
     [{'helloWorld': 1}, {'hello_world': 1}],
     [{'oneTwo': 1, 'threeFour': 2}, {'one_two': 1, 'three_four': 2}],

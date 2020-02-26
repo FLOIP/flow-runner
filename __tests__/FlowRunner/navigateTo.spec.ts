@@ -8,7 +8,7 @@ import createFormattedDate from '../../src/domain/DateFormat'
 
 // todo: abstract some of the setup
 
-describe('FlowRunner/navigateTo', async () => {
+describe('FlowRunner/navigateTo', () => {
   let dataset: IDataset
 
   beforeEach(() => {
@@ -31,7 +31,7 @@ describe('FlowRunner/navigateTo', async () => {
     expect(ctx.interactions.length).toBe(1)
   })
 
-  describe('simple cursor', async () => {
+  describe('simple cursor', () => {
     it('should overwrite on context when prev cursor absent and return same instance', async () => {
       const
           ctx = dataset.contexts[0],
@@ -123,7 +123,7 @@ describe('FlowRunner/navigateTo', async () => {
     })
   })
 
-  describe('interaction', async () => {
+  describe('interaction', () => {
     it('should have block provided', async () => {
       const
           ctx = dataset.contexts[0],
@@ -136,7 +136,7 @@ describe('FlowRunner/navigateTo', async () => {
       expect(ctx.interactions[0].blockId).toBe(block.uuid)
     })
 
-    describe('flowId', async () => {
+    describe('flowId', () => {
       it('should be from root flow when not nested', async () => {
         const
             ctx = dataset.contexts[0],
@@ -173,7 +173,7 @@ describe('FlowRunner/navigateTo', async () => {
       it.todo('should be from deepest nested flow when deeply nested')
     })
 
-    describe('originFlowId', async () => {
+    describe('originFlowId', () => {
       it('should be absent when on root flow', async () => {
         const ctx = dataset.contexts[0]
         const block = ctx.flows[0].blocks[0]
@@ -211,7 +211,7 @@ describe('FlowRunner/navigateTo', async () => {
       it.todo('should be from deepest nested flow when deeply nested')
     })
 
-    describe('originInteractionId', async () => {
+    describe('originInteractionId', () => {
       it('should be absent when on root flow', async () => {
         const
             ctx = dataset.contexts[0],
@@ -250,7 +250,7 @@ describe('FlowRunner/navigateTo', async () => {
     })
   })
 
-  describe('previous interaction', async () => {
+  describe('previous interaction', () => {
     it('should populate exitAt onto it when prev present', async () => {
       const
           ctx = dataset.contexts[1],

@@ -3,7 +3,7 @@ import IContext from '../../src/flow-spec/IContext'
 import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
 import NumericPrompt from '../../src/domain/prompt/NumericPrompt'
 
-describe('FlowRunner/isInputRequiredFor', async () => {
+describe('FlowRunner/isInputRequiredFor', () => {
   let runner: FlowRunner
 
   beforeEach(() => {

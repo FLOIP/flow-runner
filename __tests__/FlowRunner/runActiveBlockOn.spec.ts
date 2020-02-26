@@ -4,7 +4,7 @@ import {IContextInputRequired} from '../../src';
 import {createStaticFirstExitBlockRunnerFor} from "../../__test_fixtures__/fixtures/BlockRunner";
 
 
-describe('FlowRunner/runActiveBlockOn', async () => {
+describe('FlowRunner/runActiveBlockOn', () => {
   let dataset: IDataset
 
   beforeEach(() => {
@@ -41,7 +41,7 @@ describe('FlowRunner/runActiveBlockOn', async () => {
     expect(richCursor.interaction.selectedExitId).toBe(expectedExit.uuid)
   })
 
-  describe('when prompt present', async () => {
+  describe('when prompt present', () => {
     it('should flag on prompt as having been submitted + accepted by the flow runner', async () => {
       const
         ctx = dataset.contexts[1] as IContextInputRequired,

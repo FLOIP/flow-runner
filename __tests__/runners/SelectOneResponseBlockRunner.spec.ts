@@ -5,14 +5,14 @@ import ISelectOneResponseBlock from '../../src/model/block/ISelectOneResponseBlo
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
 import IContact from '../../src/flow-spec/IContact'
 
-describe('SelectOneResponseBlockRunner', async () => {
+describe('SelectOneResponseBlockRunner', () => {
   let dataset: IDataset
 
   beforeEach(() => {
     dataset = createDefaultDataset()
   })
 
-  describe('run', async () => {
+  describe('run', () => {
     it('sanity // should return an exit when some exist', async () => {
       const ctx: IContext = dataset.contexts[1]
       ;(ctx.contact as IContactWithAge).age = 12
