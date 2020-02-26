@@ -341,8 +341,6 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param ctx
    */
   runUntilInputRequiredFrom(ctx: IContextWithCursor): IRichCursorInputRequired | undefined {
-    /* todo: convert cursor to an object instead of tuple; since we don't have named tuples, a dictionary
-        would be more intuitive */
     let richCursor: IRichCursor = this.hydrateRichCursorFrom(ctx)
     let block: IBlock | undefined = this._contextService.findBlockOnActiveFlowWith(richCursor.interaction.blockId, ctx)
 
@@ -397,9 +395,15 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param ctx
    */
   complete(ctx: IContext): void {
-    // todo: should set selected exit ID on last interaction as well, with destination of null
 
-    (last(ctx.interactions) as IBlockInteraction).exitAt = createFormattedDate()
+    // todo!! should set selected exit ID on last interaction as well, with destination of null
+
+    const flowId = this._contextService.getActiveFlowIdFrom(ctx)
+    const lastInteraction = last(ctx.interactions)
+    if (lastInteraction != null && lastInteraction.flowId === flowId) {
+      lastInteraction.exitAt = createFormattedDate()
+    }
+
     delete ctx.cursor
     ctx.deliveryStatus = DeliveryStatus.FINISHED_COMPLETE
     ctx.exitAt = createFormattedDate()
@@ -523,7 +527,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     this.cacheInteractionByBlockName(richCursor.interaction, block as IMessageBlock, this.context)
 
     const lastInteraction = last(interactions)
-    if (lastInteraction != null) {
+    if (lastInteraction != null && lastInteraction.flowId === flowId) {
       lastInteraction.exitAt = createFormattedDate(navigatedAt)
     }
 
@@ -539,6 +543,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * `stepInto()` needs to be the thing that discovers ya from xa (via first on flow in flows list)
    * Then generating a cursor that indicates where we are.
    * ?? -> xa ->>> ya -> yb ->>> xb
+   *
    *
    * todo: would it be possible for stepping into and out of be handled by the RunFlow itself?
    *       Eg. these are esentially RunFlowRunner's .start() + .resume() equivalents */
@@ -578,7 +583,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    *       to next block; when stepping IN, we need an explicit navigation to inject RunFlow in between
    *       the two Flows. */
   stepOut(ctx: IContext): IBlock | undefined {
-    const {nestedFlowBlockInteractionIdStack} = ctx
+    const {interactions, nestedFlowBlockInteractionIdStack} = ctx
     const {_contextService: contextService} = this
 
     if (nestedFlowBlockInteractionIdStack.length === 0) {
@@ -591,9 +596,15 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     const lastRunFlowIntx = contextService.findInteractionWith(lastRunFlowIntxId, ctx)
     // find- + return- destination block from first exit on runflowblock (on interaction 👆)
     const lastRunFlowBlock = contextService.findBlockOnActiveFlowWith(lastRunFlowIntx.blockId, ctx)
-    const {uuid: lastRunFlowBlockFirstExitId, destinationBlock: destinationBlockId} = first(lastRunFlowBlock.exits) as IBlockExit
+    const {uuid: lastRunFlowBlockFirstExitId, destinationBlock: destinationBlockId} =
+      first(lastRunFlowBlock.exits) as IBlockExit
 
     lastRunFlowIntx.selectedExitId = lastRunFlowBlockFirstExitId
+
+    // close 'em out
+    const lastInteraction = last(interactions)
+    lastInteraction!.exitAt = createFormattedDate()
+    lastRunFlowIntx.exitAt = createFormattedDate() // maybe this still doesn't work, because complete will close out
 
     if (destinationBlockId == null) {
       return
@@ -626,6 +637,9 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     const {cursor} = ctx
 
     if (cursor == null) {
+
+
+
       return first(flow.blocks) // todo: use IFlow.firstBlockId
     }
 
@@ -686,7 +700,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       details: {},
       type,
 
-      // Nested flows:
+      // Nested flows behaviour:
       originFlowId,
       originBlockInteractionId,
     }
