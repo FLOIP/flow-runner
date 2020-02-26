@@ -350,7 +350,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     do {
       if (this.isInputRequiredFor(ctx)) {
         console.info('Attempted to resume when prompt is not yet fulfilled; resurfacing same prompt instance.')
-        return Promise.resolve(richCursor as IRichCursorInputRequired)
+        return richCursor as IRichCursorInputRequired
       }
 
       await this.runActiveBlockOn(richCursor, block)
@@ -383,7 +383,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     } while (block != null)
 
     this.complete(ctx)
-    return Promise.resolve(undefined)
+    return undefined
   }
 
   // exitEarlyThrough(block: IBlock) {
