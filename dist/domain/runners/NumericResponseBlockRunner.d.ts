@@ -9,7 +9,7 @@ export declare class NumericResponseBlockRunner implements IBlockRunner {
     context: IContext;
     constructor(block: INumericResponseBlock, context: IContext);
     initialize({ value }: IBlockInteraction): INumericPromptConfig;
-    run(): IBlockExit;
+    run(): Promise<IBlockExit>;
 }
 export default NumericResponseBlockRunner;
 //# sourceMappingURL=NumericResponseBlockRunner.d.ts.map

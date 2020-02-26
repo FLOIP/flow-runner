@@ -21,4 +21,5 @@
  * Generic exception for performing domain logic validation.
  */
 export class ValidationException extends Error {}
+
 export default ValidationException

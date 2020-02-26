@@ -40,7 +40,7 @@ describe('BacktrackingBehaviour', () => {
   describe('insertInteractionUsing', () => {
     describe('sealing this iteration', () => {
       describe('when block has been repeated since start of an iteration', () => {
-        it('should step in (aka perform an iteration rollup)', () => {
+        it('should step in (aka perform an iteration rollup)', async () => {
           const interactions = [
             {blockId: '0', uuid: 'abc-0'},
             {blockId: '1', uuid: 'abc-1'},
@@ -69,7 +69,7 @@ describe('BacktrackingBehaviour', () => {
       })
 
       describe('when block is at start of iteration', () => {
-        it('should roll up entire iteration into a stack', () => { // todo: should this nest a stack, or simply append another iteration???
+        it('should roll up entire iteration into a stack', async () => { // todo: should this nest a stack, or simply append another iteration???
           const interactions = [
             {blockId: '0', uuid: 'abc-0'},
             {blockId: '1', uuid: 'abc-1'},
@@ -96,7 +96,7 @@ describe('BacktrackingBehaviour', () => {
 
       describe('when block has not been repeated since start of iteration', () => {
         describe('when using fresh key', () => {
-          it('should insert at first position', () => {
+          it('should insert at first position', async () => {
             const interactionStack: IContextBacktrackingPlatformMetadata['backtracking']['interactionStack'] = createStack()
             const cursor: IContextBacktrackingPlatformMetadata['backtracking']['cursor'] = createKey()
             const interaction = {uuid: 'abc-123'} as IBlockInteraction
@@ -109,7 +109,7 @@ describe('BacktrackingBehaviour', () => {
         })
 
         describe('when on root stack', () => {
-          it('should insert at current position', () => {
+          it('should insert at current position', async () => {
             const interactions = [
               {blockId: '0', uuid: 'abc-0'},
               {blockId: '1', uuid: 'abc-1'},
@@ -129,7 +129,7 @@ describe('BacktrackingBehaviour', () => {
         })
 
         describe('when on nested stack', () => {
-          it('should insert at current position', () => {
+          it('should insert at current position', async () => {
             const sourceInteractions = createStackFrom([
               [{blockId: '1', uuid: 'abc-1'} as IEntity, createStackFrom([
                 [{blockId: '2', uuid: 'abc-2'} as IEntity, {blockId: '3', uuid: 'abc-3'} as IEntity, {blockId: '4', uuid: 'abc-4'} as IEntity],
@@ -155,7 +155,7 @@ describe('BacktrackingBehaviour', () => {
       })
 
       describe('when block matches any stack\'s first block', () => {
-        it('should step out when head found one level up', () => {
+        it('should step out when head found one level up', async () => {
           const sourceInteractions = createStackFrom([
             [{blockId: '1', uuid: 'abc-1'} as IEntity, createStackFrom([
                 [{blockId: '2', uuid: 'abc-2'} as IEntity, {blockId: '3', uuid: 'abc-3'} as IEntity, {blockId: '4', uuid: 'abc-4'} as IEntity],
@@ -179,7 +179,7 @@ describe('BacktrackingBehaviour', () => {
           expect(cursor).toEqual([createStackKey(0, 1), createStackKey(2, 0)])
         })
 
-        it('should step out multiple times when head found multiple levels up', () => {
+        it('should step out multiple times when head found multiple levels up', async () => {
           const sourceInteractions = createStackFrom([
             [{blockId: '1', uuid: 'abc-1'} as IEntity, createStackFrom([
               [{blockId: '2', uuid: 'abc-2'} as IEntity, {blockId: '3', uuid: 'abc-3'} as IEntity, {blockId: '4', uuid: 'abc-4'} as IEntity],
@@ -243,7 +243,7 @@ describe('BacktrackingBehaviour', () => {
       meta.interactionStack = createStack(cloneDeep(interactions))
     })
 
-    it('should initialize ghost stack as a clone of current stack', () => {
+    it('should initialize ghost stack as a clone of current stack', async () => {
       const expectedGhostStack = createStack(cloneDeep(interactions))
 
       expect(meta.ghostInteractionStacks).toEqual([])
@@ -252,19 +252,19 @@ describe('BacktrackingBehaviour', () => {
       expect(meta.ghostInteractionStacks).not.toBe(meta.interactionStack)
     })
 
-    it('should set cursor to point in time before the interaction we jump to; this gives space to run the block we\'re jumping to in place', () => {
+    it('should set cursor to point in time before the interaction we jump to; this gives space to run the block we\'re jumping to in place', async () => {
       expect(meta.cursor).toEqual(createKey())
       backtracking.jumpTo({uuid: 'abc-234', blockId: 'block/abc-234'} as IBlockInteraction, backtracking.context)
       expect(meta.cursor).toEqual(createKey(0))
     })
 
-    it('should truncate interactions off main context interactions list from jumped to onward', () => {
+    it('should truncate interactions off main context interactions list from jumped to onward', async () => {
       expect(backtracking.context.interactions).toEqual(interactions)
       backtracking.jumpTo({uuid: 'abc-234', blockId: 'block/abc-234'} as IBlockInteraction, backtracking.context)
       expect(backtracking.context.interactions).toEqual(interactions.slice(0, 1))
     })
 
-    it('should truncate hierarchical stack to match interactions list', () => {
+    it('should truncate hierarchical stack to match interactions list', async () => {
       backtracking.jumpTo({uuid: 'abc-234', blockId: 'block/abc-234'} as IBlockInteraction, backtracking.context)
       expect(meta.interactionStack).toEqual(createStack(interactions.slice(0, 1)))
     })
@@ -311,19 +311,19 @@ describe('BacktrackingBehaviour', () => {
         meta.interactionStack = createStack(cloneDeep(interactions))
       })
 
-      it('leave nesting at the same place if not jumping past a nesting', () => {
+      it('leave nesting at the same place if not jumping past a nesting', async () => {
         expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual(['intx-234-1', 'intx-789-1'])
         backtracking.jumpTo({uuid: 'intx-901-1', blockId: 'block-901'} as IBlockInteraction, backtracking.context)
         expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual(['intx-234-1', 'intx-789-1'])
       })
 
-      it('should handle peeling off one level of nesting when jumping past one run-flow block interaction', () => {
+      it('should handle peeling off one level of nesting when jumping past one run-flow block interaction', async () => {
         expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual(['intx-234-1', 'intx-789-1'])
         backtracking.jumpTo({uuid: 'intx-567-1', blockId: 'block-567'} as IBlockInteraction, backtracking.context)
         expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual(['intx-234-1'])
       })
 
-      it('should handle peeling off all nesting when jumping to interaction at top level', () => {
+      it('should handle peeling off all nesting when jumping to interaction at top level', async () => {
         expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual(['intx-234-1', 'intx-789-1'])
         backtracking.jumpTo({uuid: 'intx-234-1', blockId: 'block-234'} as IBlockInteraction, backtracking.context)
         expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual([])
@@ -349,12 +349,12 @@ describe('BacktrackingBehaviour', () => {
     //
     // We want to begin collapsing the hierarchy and slurp these out into the parent iteration, because keys need to match.
 
-    it('should at least execute', () => {
+    it('should at least execute', async () => {
       backtracking.syncGhostTo(createKey(), createKey(), createStack())
     })
 
     describe('when key for suggestion is ahead by a couple indices', () => {
-      it('should yank the items in between', () => {
+      it('should yank the items in between', async () => {
         const keyForSuggestion = createKey(5)
         const key = createKey(3)
         const ghost = createStack([{uuid: '1'}, {uuid: '2'}, {uuid: '3'}, {uuid: '8'}, {uuid: '9'}, {uuid: '4'}, {uuid: '5'}])
@@ -365,7 +365,7 @@ describe('BacktrackingBehaviour', () => {
     })
 
     describe('when keys match', () => {
-      it('should leave keys alone', () => {
+      it('should leave keys alone', async () => {
         const keyForSuggestion = createKey(3)
         const key = createKey(3)
         const ghost = createStack(['1', '2', '3', '4', '5'].map(uuid => ({uuid})))
@@ -375,7 +375,7 @@ describe('BacktrackingBehaviour', () => {
         expect(key).toEqual(createKey(3))
       })
 
-      it('should leave ghost stack alone', () => {
+      it('should leave ghost stack alone', async () => {
         const keyForSuggestion = createKey(3)
         const key = createKey(3)
         const ghost = createStack(['1', '2', '3', '4', '5'].map(uuid => ({uuid})))

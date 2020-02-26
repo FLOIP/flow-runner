@@ -8,7 +8,7 @@ export declare class ReadBlockRunner implements IBlockRunner {
     context: IContext;
     constructor(block: IReadBlock, context: IContext);
     initialize(): IReadPromptConfig;
-    run({ interaction, prompt }: IRichCursorInputRequired): IBlockExit;
+    run({ interaction, prompt }: IRichCursorInputRequired): Promise<IBlockExit>;
 }
 export default ReadBlockRunner;
 //# sourceMappingURL=ReadBlockRunner.d.ts.map

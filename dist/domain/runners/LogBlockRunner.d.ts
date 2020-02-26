@@ -7,7 +7,7 @@ export declare class LogBlockRunner implements IBlockRunner {
     context: IContext;
     constructor(block: ILogBlock, context: IContext);
     initialize(): undefined;
-    run(): IBlockExit;
+    run(): Promise<IBlockExit>;
 }
 export default LogBlockRunner;
 //# sourceMappingURL=LogBlockRunner.d.ts.map

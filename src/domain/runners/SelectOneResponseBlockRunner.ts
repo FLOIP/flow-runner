@@ -18,11 +18,7 @@
  **/
 
 import IBlockRunner from './IBlockRunner'
-import {
-  IBlockExitTestRequired,
-  ISelectOnePromptConfig,
-  KnownPrompts,
-} from '../..'
+import {IBlockExitTestRequired, ISelectOnePromptConfig, KnownPrompts} from '../..'
 import {findFirstTruthyEvaluatingBlockExitOn} from '../../flow-spec/IBlock'
 import IBlockExit from '../../flow-spec/IBlockExit'
 import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock'
@@ -71,7 +67,7 @@ export class SelectOneResponseBlockRunner implements IBlockRunner {
     }
   }
 
-  run(): IBlockExit {
+  async run(): Promise<IBlockExit> {
     return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context)
       ?? last(this.block.exits) as IBlockExitTestRequired
   }

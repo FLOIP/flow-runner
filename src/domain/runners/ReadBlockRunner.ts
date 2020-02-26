@@ -47,7 +47,7 @@ export class ReadBlockRunner implements IBlockRunner {
     }
   }
 
-  run({interaction, prompt}: IRichCursorInputRequired): IBlockExit {
+  async run({interaction, prompt}: IRichCursorInputRequired): Promise<IBlockExit> {
     interaction.value = zipObject(
       this.block.config.destinationVariables,
       (prompt as ReadPrompt).value as TReadableType[])

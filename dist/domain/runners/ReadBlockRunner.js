@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 const lodash_1 = require("lodash");
 const __1 = require("../..");
 class ReadBlockRunner {
@@ -18,14 +19,16 @@ class ReadBlockRunner {
         };
     }
     run({ interaction, prompt }) {
-        interaction.value = lodash_1.zipObject(this.block.config.destinationVariables, prompt.value);
-        const { error } = prompt;
-        if (error != null) {
-            interaction.details.readError = { message: error.message };
-        }
-        return prompt.isValid
-            ? this.block.exits[0]
-            : this.block.exits[1];
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            interaction.value = lodash_1.zipObject(this.block.config.destinationVariables, prompt.value);
+            const { error } = prompt;
+            if (error != null) {
+                interaction.details.readError = { message: error.message };
+            }
+            return prompt.isValid
+                ? this.block.exits[0]
+                : this.block.exits[1];
+        });
     }
 }
 exports.ReadBlockRunner = ReadBlockRunner;

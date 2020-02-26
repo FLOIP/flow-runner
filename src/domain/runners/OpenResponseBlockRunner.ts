@@ -63,7 +63,7 @@ export class OpenResponseBlockRunner implements IBlockRunner {
     }
   }
 
-  run(): IBlockExit {
+  async run(): Promise<IBlockExit> {
     // todo: should there be a BaseBlockRunner that defaults to returning first exit?
     return this.block.exits[0]
   }

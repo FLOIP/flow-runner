@@ -9,7 +9,7 @@ export declare class PrintBlockRunner implements IBlockRunner {
     console: Console;
     constructor(block: IPrintBlock, context: IContext, console?: Console);
     initialize(): undefined;
-    run(): IBlockExit;
+    run(): Promise<IBlockExit>;
 }
 export default PrintBlockRunner;
 //# sourceMappingURL=PrintBlockRunner.d.ts.map

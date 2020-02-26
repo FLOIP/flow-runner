@@ -1,6 +1,6 @@
 import IBehaviour from '../IBehaviour';
 import IBlockInteraction from '../../../flow-spec/IBlockInteraction';
-import IContext, { IRichCursorInputRequired, IRichCursor } from '../../../flow-spec/IContext';
+import IContext, { IRichCursor, IRichCursorInputRequired } from '../../../flow-spec/IContext';
 import { IFlowNavigator, IPromptBuilder } from '../../FlowRunner';
 export interface IBackTrackingBehaviour extends IBehaviour {
     rebuildIndex(): void;

@@ -46,7 +46,7 @@ export class RunFlowBlockRunner implements IBlockRunner {
     return undefined
   }
 
-  run(): IBlockExit {
+  async run(): Promise<IBlockExit> {
     return this.block.exits[0]
   }
 }

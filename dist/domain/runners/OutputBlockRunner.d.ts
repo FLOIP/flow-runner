@@ -7,7 +7,7 @@ export declare class OutputBlockRunner implements IBlockRunner {
     context: IContext;
     constructor(block: IOutputBlock, context: IContext);
     initialize(): undefined;
-    run(cursor: IRichCursor): IBlockExit;
+    run(cursor: IRichCursor): Promise<IBlockExit>;
 }
 export default OutputBlockRunner;
 //# sourceMappingURL=OutputBlockRunner.d.ts.map

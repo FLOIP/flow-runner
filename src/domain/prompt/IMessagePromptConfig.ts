@@ -23,5 +23,5 @@ import {IPromptConfig, KnownPrompts} from './IPrompt'
  * Interface for defining an {@link IPromptConfig} resolving to a {@link MessagePrompt}.
  */
 export interface IMessagePromptConfig extends IPromptConfig<null> {
-  kind: KnownPrompts.Message
+  kind: KnownPrompts.Message,
 }

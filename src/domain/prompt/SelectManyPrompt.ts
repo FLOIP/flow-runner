@@ -33,7 +33,7 @@ export const INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK = 'All selections must b
  * least one, from an {@link IContact}.
  */
 export class SelectManyPrompt extends BasePrompt<ISelectManyPromptConfig & IBasePromptConfig> {
-  validate(selections: IChoice['key'][]) {
+  validate(selections: IChoice['key'][]): boolean {
     const {isResponseRequired, choices} = this.config
 
     if (!isResponseRequired) {

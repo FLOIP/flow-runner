@@ -1,11 +1,9 @@
 import {last} from 'lodash'
 import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
-import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
-import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
-import {findInteractionWith, IRichCursor} from '../../src'
-import {IBasePromptConfig, KnownPrompts} from '../../src';
-import {createStaticFirstExitBlockRunnerFor} from "../../__test_fixtures__/fixtures/BlockRunner";
-import {INumericPromptConfig} from '../../src';
+import FlowRunner, {BlockRunnerFactoryStore} from '../../src/domain/FlowRunner'
+import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
+import {findInteractionWith, IBasePromptConfig, INumericPromptConfig, IRichCursor, KnownPrompts} from '../../src'
+import {createStaticFirstExitBlockRunnerFor} from '../../__test_fixtures__/fixtures/BlockRunner'
 import createFormattedDate from '../../src/domain/DateFormat'
 
 // todo: abstract some of the setup
@@ -21,7 +19,7 @@ describe('FlowRunner/navigateTo', () => {
     jest.restoreAllMocks()
   })
 
-  it('should push an additional interaction onto context\'s interaction stack', () => {
+  it('should push an additional interaction onto context\'s interaction stack', async () => {
     const
         ctx = dataset.contexts[0],
         block = ctx.flows[0].blocks[0],
@@ -34,7 +32,7 @@ describe('FlowRunner/navigateTo', () => {
   })
 
   describe('simple cursor', () => {
-    it('should overwrite on context when prev cursor absent and return same instance', () => {
+    it('should overwrite on context when prev cursor absent and return same instance', async () => {
       const
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
@@ -47,7 +45,7 @@ describe('FlowRunner/navigateTo', () => {
       expect(ctx.cursor).toEqual(runner.dehydrateCursor(richCursor))
     })
 
-    it('should overwrite on context when prev cursor present and return same instance', () => {
+    it('should overwrite on context when prev cursor present and return same instance', async () => {
       const
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
@@ -75,7 +73,7 @@ describe('FlowRunner/navigateTo', () => {
       expect(ctx.cursor).toEqual(cursor)
     })
 
-    it('should have interactionId from newly created+pushed interaction', () => {
+    it('should have interactionId from newly created+pushed interaction', async () => {
       const
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
@@ -86,7 +84,7 @@ describe('FlowRunner/navigateTo', () => {
       expect(interaction).toBe((last(ctx.interactions) as IBlockInteraction))
     })
 
-    it('should have prompt from runner when provided', () => {
+    it('should have prompt from runner when provided', async () => {
       const
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
@@ -113,7 +111,7 @@ describe('FlowRunner/navigateTo', () => {
       expect(cursor.promptConfig).toBe(expectedPrompt)
     })
 
-    it('should have null prompt from runner when null provided', () => {
+    it('should have null prompt from runner when null provided', async () => {
       const
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
@@ -126,7 +124,7 @@ describe('FlowRunner/navigateTo', () => {
   })
 
   describe('interaction', () => {
-    it('should have block provided', () => {
+    it('should have block provided', async () => {
       const
           ctx = dataset.contexts[0],
           block = ctx.flows[0].blocks[0],
@@ -139,7 +137,7 @@ describe('FlowRunner/navigateTo', () => {
     })
 
     describe('flowId', () => {
-      it('should be from root flow when not nested', () => {
+      it('should be from root flow when not nested', async () => {
         const
             ctx = dataset.contexts[0],
             block = ctx.flows[0].blocks[0],
@@ -153,12 +151,12 @@ describe('FlowRunner/navigateTo', () => {
         expect(ctx.interactions[0].flowId).toBe(ctx.firstFlowId)
       })
 
-      it('should be from nested flow when nested once', () => {
-        const
-            ctx = dataset.contexts[2], // RunFlow->(Message)->Message
-            block = ctx.flows[1].blocks[0], // todo: actually, this needs to be the first block on the nested flow!
-            runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-              ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
+      it('should be from nested flow when nested once', async () => {
+        const ctx = dataset.contexts[2]  // RunFlow->(Message)->Message
+        const block = ctx.flows[1].blocks[0]  // todo: actually, this needs to be the first block on the nested flow!
+        const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
+          ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],
+        ]))
 
         jest.spyOn(runner, 'cacheInteractionByBlockName') // todo: remove this once it's been pushed out to isolated behaviour
           .mockImplementation(() => {})
@@ -176,12 +174,12 @@ describe('FlowRunner/navigateTo', () => {
     })
 
     describe('originFlowId', () => {
-      it('should be absent when on root flow', () => {
-        const
-            ctx = dataset.contexts[0],
-            block = ctx.flows[0].blocks[0],
-            runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-              ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
+      it('should be absent when on root flow', async () => {
+        const ctx = dataset.contexts[0]
+        const block = ctx.flows[0].blocks[0]
+        const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
+          ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],
+        ]))
 
         expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(0)
         expect(ctx.interactions.length).toBe(0)
@@ -191,12 +189,12 @@ describe('FlowRunner/navigateTo', () => {
         expect(ctx.interactions[0].originFlowId).toBeUndefined()
       })
 
-      it('should be from root flow when nested once', () => {
-        const
-            ctx = dataset.contexts[2], // RunFlow->(Message)->Message
-            block = ctx.flows[1].blocks[0],
-            runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-              ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],]))
+      it('should be from root flow when nested once', async () => {
+        const ctx = dataset.contexts[2]  // RunFlow->(Message)->Message
+        const block = ctx.flows[1].blocks[0]
+        const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
+          ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],
+        ]))
 
         jest.spyOn(runner, 'cacheInteractionByBlockName') // todo: remove this once it's been pushed out to isolated behaviour
           .mockImplementation(() => {})
@@ -214,7 +212,7 @@ describe('FlowRunner/navigateTo', () => {
     })
 
     describe('originInteractionId', () => {
-      it('should be absent when on root flow', () => {
+      it('should be absent when on root flow', async () => {
         const
             ctx = dataset.contexts[0],
             block = ctx.flows[0].blocks[0],
@@ -229,7 +227,7 @@ describe('FlowRunner/navigateTo', () => {
         expect(ctx.interactions[0].originBlockInteractionId).toBeUndefined()
       })
 
-      it('should be from root flow\'s interaction when nested once', () => {
+      it('should be from root flow\'s interaction when nested once', async () => {
         const
             ctx = dataset.contexts[2], // RunFlow->(Message)->Message
             block = ctx.flows[1].blocks[0],
@@ -253,7 +251,7 @@ describe('FlowRunner/navigateTo', () => {
   })
 
   describe('previous interaction', () => {
-    it('should populate exitAt onto it when prev present', () => {
+    it('should populate exitAt onto it when prev present', async () => {
       const
           ctx = dataset.contexts[1],
           block = ctx.flows[1].blocks[0],

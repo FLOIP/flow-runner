@@ -17,10 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IResourceResolver, {
-  createTextResourceVariantWith,
-  IResource,
-} from './IResourceResolver'
+import IResourceResolver, {createTextResourceVariantWith, IResource} from './IResourceResolver'
 import {intersection} from 'lodash'
 import ResourceNotFoundException from './exceptions/ResourceNotFoundException'
 import IContext from '../flow-spec/IContext'

@@ -11,7 +11,7 @@ describe('HierarchicalIterStack', () => {
 
   describe('_append', () => {
     describe('when stack is empty', () => {
-      it('should update head on stack when appending items', () => {
+      it('should update head on stack when appending items', async () => {
         const stack: IStack = createStack()
         const entity: IEntity = {uuid: 'abc-12'}
 
@@ -22,7 +22,7 @@ describe('HierarchicalIterStack', () => {
     })
 
     describe('when stack not empty', () => {
-      it('should leave head the same', () => {
+      it('should leave head the same', async () => {
         const stack: IStack = createStack([{uuid: 'abc-123'}, {uuid: 'abc-234'}])
         const entity: IEntity = {uuid: 'abc-345'}
 
@@ -33,7 +33,7 @@ describe('HierarchicalIterStack', () => {
     })
 
     describe('when first item on subsequent iterations', () => {
-      it('should leave head alone', () => {
+      it('should leave head alone', async () => {
         const stack: IStack = createStackFrom([
           [{uuid: 'abc-123'}, {uuid: 'abc-234'}],
           []])
@@ -47,7 +47,7 @@ describe('HierarchicalIterStack', () => {
   })
 
   describe('truncateIterationFrom', () => {
-    it('should return empty list when empty key provided', () => {
+    it('should return empty list when empty key provided', async () => {
       const stack: IStack = createStack()
       const key: Key = []
 
@@ -55,7 +55,7 @@ describe('HierarchicalIterStack', () => {
     })
 
     describe('when on root stack', () => {
-      it('should return removed items; from last key iteration index when non-empty key provided', () => {
+      it('should return removed items; from last key iteration index when non-empty key provided', async () => {
         const stack: IStack = createStack([
           {uuid: 'abc-123'},
           {uuid: 'abc-234'},
@@ -78,7 +78,7 @@ describe('HierarchicalIterStack', () => {
     })
 
     describe('when on nested stack', () => {
-      it('should return removed items; from last key iteration index when non-empty key provided', () => {
+      it('should return removed items; from last key iteration index when non-empty key provided', async () => {
         const stack: IStack = createStack([
           createStack([
             {uuid: 'abc-123'},
@@ -106,7 +106,7 @@ describe('HierarchicalIterStack', () => {
   describe('deepTruncateIterationsFrom', () => {
     it.todo('would make sense to return removed items -- chain recursion with .concat()')
 
-    it('should remove items from deepest stack', () => {
+    it('should remove items from deepest stack', async () => {
       const stack: IStack = createStack([
         createStack([
           {uuid: 'abc-123'},

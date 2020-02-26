@@ -36,7 +36,7 @@ export class PrintBlockRunner implements IBlockRunner {
     return
   }
 
-  run(): IBlockExit {
+  async run(): Promise<IBlockExit> {
     this.console.log(
       this.block.type,
       evaluateToString(this.block.config.message, this.context))

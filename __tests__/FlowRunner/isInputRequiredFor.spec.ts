@@ -14,20 +14,20 @@ describe('FlowRunner/isInputRequiredFor', () => {
     jest.restoreAllMocks()
   })
 
-  it('should return false when cursor absent', () => {
+  it('should return false when cursor absent', async () => {
     expect(runner.isInputRequiredFor({} as IContext)).toBeFalsy()
   })
 
-  it('should return false when prompt absent', () => {
+  it('should return false when prompt absent', async () => {
     expect(runner.isInputRequiredFor({cursor: {interactionId: 'intx-123', promptConfig: undefined}} as IContext)).toBeFalsy()
   })
 
-  it('should return true when prompt config\'s value is undefined', () => {
+  it('should return true when prompt config\'s value is undefined', async () => {
     const promptConfig = {kind: KnownPrompts.Numeric, value: undefined} // invalid prompt value
     expect(runner.isInputRequiredFor({cursor: {interactionId: 'intx-123', promptConfig}} as IContext)).toBeTruthy()
   })
 
-  it('should return false when prompt validation succeeds', () => {
+  it('should return false when prompt validation succeeds', async () => {
     const promptConfig = {kind: KnownPrompts.Numeric, value: 12} // valid numeric prompt value
 
     jest.spyOn(runner, 'hydrateRichCursorFrom')
@@ -38,7 +38,7 @@ describe('FlowRunner/isInputRequiredFor', () => {
     expect(runner.isInputRequiredFor({cursor: {interactionId: 'intx-123', promptConfig}} as IContext)).toBeFalsy()
   })
 
-  it('should return true when prompt validation raises', () => {
+  it('should return true when prompt validation raises', async () => {
     const promptConfig = {kind: KnownPrompts.Numeric, value: 12, max: 5} as INumericPromptConfig & IBasePromptConfig // invalid numeric prompt value
 
     jest.spyOn(runner, 'hydrateRichCursorFrom')

@@ -17,12 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {
-  cloneDeep,
-  get as lodashGet,
-  isArray,
-  last as lodashLast,
-} from 'lodash'
+import {cloneDeep, get as lodashGet, isArray, last as lodashLast} from 'lodash'
 
 import ValidationException from '../../exceptions/ValidationException'
 
@@ -31,11 +26,12 @@ export type IterationNumber = number
 export type StackKey = ['stack', IterationNumber, IterationIndex] // string of 'stack' correlates to IStack['stack'] prop
 export type Key = StackKey[] //(IterationIndex | StackKey)[] // todo: are we only using a list of StackKey now? Eg. always in a stack
 export interface IEntity {uuid: string}
+
 export type Iteration = (IEntity | IStack)[]
 
 export interface IStack {  // todo: rename this so it's not `stack.stack` <-- rename stack.stack to stack.iterations
-  stack: Iteration[] // todo: rename to _stack, "private" becuase most manipulations should happen via behaviour provided
-  head?: IEntity // todo: ensure head is updated when manipulating an iteration
+  stack: Iteration[], // todo: rename to _stack, "private" becuase most manipulations should happen via behaviour provided
+  head?: IEntity, // todo: ensure head is updated when manipulating an iteration
 }
 
 export type Item = IEntity | Iteration | IStack
@@ -134,7 +130,7 @@ export function isStackEmpty({stack}: IStack): boolean {
 }
 
 export function getIterationFor(key: Key, stack: IStack): Iteration {
-  const containingStack = getStackFor(key ,stack)
+  const containingStack = getStackFor(key, stack)
   const iterationNumber = lodashLast(key)![STACK_KEY_ITERATION_NUMBER]
   const iteration = containingStack.stack[iterationNumber]
 
@@ -293,7 +289,12 @@ export function shallowIndexOfRightFrom(key: Key, stack: IStack, matcher: IEntit
 
 /**
  * Recursive left search of hierarchy from a particular point; excludes current pointer's entity. */
-export function deepFindFrom(key: Key, stack: IStack, matcher: IEntityMatcher, originalKey: Key = key): IEntity | undefined {
+export function deepFindFrom(
+  key: Key,
+  stack: IStack,
+  matcher: IEntityMatcher,
+  originalKey: Key = key,
+): IEntity | undefined {
   const keyForMatch: Key | undefined = deepIndexOfFrom(key, stack, matcher, originalKey)
   if (keyForMatch == null) {
     return
@@ -302,7 +303,12 @@ export function deepFindFrom(key: Key, stack: IStack, matcher: IEntityMatcher, o
   return getEntityAt(keyForMatch, stack)
 }
 
-export function deepIndexOfFrom(key: Key, stack: IStack, matcher: IEntityMatcher, originalKey: Key = key): Key | undefined {
+export function deepIndexOfFrom(
+  key: Key,
+  stack: IStack,
+  matcher: IEntityMatcher,
+  originalKey: Key = key,
+): Key | undefined {
   const duplicateKey = cloneDeep(key)
   let {
     [STACK_KEY_ITERATION_INDEX]: nextIndex,

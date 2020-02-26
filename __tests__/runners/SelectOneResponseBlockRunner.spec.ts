@@ -13,7 +13,7 @@ describe('SelectOneResponseBlockRunner', () => {
   })
 
   describe('run', () => {
-    it('sanity // should return an exit when some exist', () => {
+    it('sanity // should return an exit when some exist', async () => {
       const ctx: IContext = dataset.contexts[1]
       ;(ctx.contact as IContactWithAge).age = 12
 
@@ -29,7 +29,7 @@ describe('SelectOneResponseBlockRunner', () => {
       }) as ISelectOneResponseBlock
 
       const runner = new SelectOneResponseBlockRunner(block, ctx)
-      const exit: IBlockExit = runner.run()
+      const exit: IBlockExit = await runner.run()
       expect(exit).toBe(block.exits[3])
     })
 

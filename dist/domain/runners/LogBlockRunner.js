@@ -12,9 +12,11 @@ class LogBlockRunner {
         return;
     }
     run() {
-        this.context.logs[DateFormat_1.default()] =
-            __1.evaluateToString(this.block.config.message, this.context);
-        return this.block.exits[0];
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            this.context.logs[DateFormat_1.default()] =
+                __1.evaluateToString(this.block.config.message, this.context);
+            return this.block.exits[0];
+        });
     }
 }
 exports.LogBlockRunner = LogBlockRunner;

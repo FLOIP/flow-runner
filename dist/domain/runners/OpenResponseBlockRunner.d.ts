@@ -9,7 +9,7 @@ export declare class OpenResponseBlockRunner implements IBlockRunner {
     context: IContext;
     constructor(block: IOpenResponseBlock, context: IContext);
     initialize({ value }: IBlockInteraction): IOpenPromptConfig;
-    run(): IBlockExit;
+    run(): Promise<IBlockExit>;
 }
 export default OpenResponseBlockRunner;
 //# sourceMappingURL=OpenResponseBlockRunner.d.ts.map
