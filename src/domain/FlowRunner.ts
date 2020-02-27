@@ -61,16 +61,13 @@ import ResourceResolver from './ResourceResolver'
 import {IResource} from './IResourceResolver'
 import {TGenericPrompt} from './prompt/BasePrompt'
 import RunFlowBlockRunner from './runners/RunFlowBlockRunner'
-import ReadBlockRunner from './runners/ReadBlockRunner'
 import PrintBlockRunner from './runners/PrintBlockRunner'
 import LogBlockRunner from './runners/LogBlockRunner'
 import OutputBlockRunner from './runners/OutputBlockRunner'
 import IOutputBlock from '../model/block/IOutputBlock'
 import ILogBlock from '../model/block/ILogBlock'
 import IPrintBlock from '../model/block/IPrintBlock'
-import IReadBlock from '../model/block/IReadBlock'
 import IRunFlowBlock from '../model/block/IRunFlowBlock'
-import ReadPrompt from './prompt/ReadPrompt'
 import createFormattedDate from './DateFormat'
 
 
@@ -108,15 +105,24 @@ export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
   return new BlockRunnerFactoryStore([
     ['MobilePrimitives\\Message', (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
     ['MobilePrimitives\\OpenResponse', (block, ctx) => new OpenResponseBlockRunner(block as IOpenResponseBlock, ctx)],
-    ['MobilePrimitives\\NumericResponse', (block, ctx) => new NumericResponseBlockRunner(block as INumericResponseBlock, ctx)],
-    ['MobilePrimitives\\SelectOneResponse', (block, ctx) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
-    ['MobilePrimitives\\SelectManyResponse', (block, ctx) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
+    [
+      'MobilePrimitives\\NumericResponse',
+      (block, ctx) => new NumericResponseBlockRunner(block as INumericResponseBlock, ctx),
+    ],
+    [
+      'MobilePrimitives\\SelectOneResponse',
+      (block, ctx) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, ctx),
+    ],
+    [
+      'MobilePrimitives\\SelectManyResponse',
+      (block, ctx) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, ctx),
+    ],
     ['Core\\Case', (block, ctx) => new CaseBlockRunner(block as ICaseBlock, ctx)],
     ['Core\\Output', (block, ctx) => new OutputBlockRunner(block as IOutputBlock, ctx)],
     ['Core\\Log', (block, ctx) => new LogBlockRunner(block as ILogBlock, ctx)],
     ['ConsoleIO\\Print', (block, ctx) => new PrintBlockRunner(block as IPrintBlock, ctx)],
-    ['ConsoleIO\\Read', (block, ctx) => new ReadBlockRunner(block as IReadBlock, ctx)],
-    ['Core\\RunFlow', (block, ctx) => new RunFlowBlockRunner(block as IRunFlowBlock, ctx)]])
+    ['Core\\RunFlow', (block, ctx) => new RunFlowBlockRunner(block as IRunFlowBlock, ctx)],
+  ])
 }
 
 /**
@@ -128,7 +134,6 @@ export function createKindPromptMap() {
     [KnownPrompts.Message.toString()]: MessagePrompt,
     [KnownPrompts.Numeric.toString()]: NumericPrompt,
     [KnownPrompts.Open.toString()]: OpenPrompt,
-    [KnownPrompts.Read.toString()]: ReadPrompt,
     [KnownPrompts.SelectOne.toString()]: SelectOnePrompt,
     [KnownPrompts.SelectMany.toString()]: SelectManyPrompt,
   }
@@ -147,8 +152,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     /** Instance used to `generate()` unique IDs across interaction history. */
     protected idGenerator: IIdGenerator = new IdGeneratorUuidV4,
     /** Instances providing isolated functionality beyond the default runner, leveraging built-in hooks. */
-    public behaviours: { [key: string]: IBehaviour } = {},
-    public _contextService: IContextService = contextService
+    public behaviours: {[key: string]: IBehaviour} = {},
+    public _contextService: IContextService = contextService,
   ) {
     this.initializeBehaviours(DEFAULT_BEHAVIOUR_TYPES)
   }
@@ -270,7 +275,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   cacheInteractionByBlockName(
     {uuid, entryAt}: IBlockInteraction,
     {name, config: {prompt}}: IMessageBlock,
-    context: IContext=this.context): void {
+    context: IContext = this.context,
+  ): void {
 
     if (!('blockInteractionsByBlockName' in this.context.sessionVars)) {
       context.sessionVars.blockInteractionsByBlockName = {}
@@ -310,7 +316,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   applyReversibleDataOperation(
     forward: NonBreakingUpdateOperation,
     reverse: NonBreakingUpdateOperation,
-    context: IContext=this.context): void {
+    context: IContext = this.context,
+  ): void {
 
     context.sessionVars = update(context.sessionVars, forward)
     context.reversibleOperations.push({
@@ -324,7 +331,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * Pop last mutation to `sessionVars` and apply its reversal operation.
    * @param context
    */
-  reverseLastDataOperation(context: IContext=this.context): IReversibleUpdateOperation | undefined {
+  reverseLastDataOperation(context: IContext = this.context): IReversibleUpdateOperation | undefined {
     if (context.reversibleOperations.length === 0) {
       return
     }
@@ -387,9 +394,9 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   }
 
   // exitEarlyThrough(block: IBlock) {
-    // todo: generate link from current interaction to exit block (flow.exitBlockId)
-    // todo: raise if flow.exitBlockId not defined
-    // todo: set delivery status on context as INCOMPLETE
+  // todo: generate link from current interaction to exit block (flow.exitBlockId)
+  // todo: raise if flow.exitBlockId not defined
+  // todo: set delivery status on context as INCOMPLETE
   // }
 
   /**
@@ -416,8 +423,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   dehydrateCursor(richCursor: IRichCursor): ICursor {
     return {
       interactionId: richCursor.interaction.uuid,
-      promptConfig: richCursor.prompt != null ? richCursor.prompt.config : undefined
-}
+      promptConfig: richCursor.prompt != null ? richCursor.prompt.config : undefined,
+    }
   }
 
   /**
@@ -674,7 +681,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     {uuid: blockId, type}: IBlock,
     flowId: string,
     originFlowId: string | undefined,
-    originBlockInteractionId: string | undefined): IBlockInteraction {
+    originBlockInteractionId: string | undefined,
+  ): IBlockInteraction {
 
     return {
       uuid: this.idGenerator.generate(),
