@@ -201,6 +201,7 @@ module.exports = {
     // Argument for this best presented here: https://youtu.be/eEBOvqMfPoI?t=1665
     'no-else-return': ['off'],
     'spaced-comment': 'off',
+    'line-comment-position': ["error", { "position": "above" }],
 
     /**********
      * Lodash *
