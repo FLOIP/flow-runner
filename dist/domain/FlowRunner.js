@@ -23,11 +23,9 @@ const SelectManyResponseBlockRunner_1 = tslib_1.__importDefault(require("./runne
 const CaseBlockRunner_1 = tslib_1.__importDefault(require("./runners/CaseBlockRunner"));
 const ResourceResolver_1 = tslib_1.__importDefault(require("./ResourceResolver"));
 const RunFlowBlockRunner_1 = tslib_1.__importDefault(require("./runners/RunFlowBlockRunner"));
-const ReadBlockRunner_1 = tslib_1.__importDefault(require("./runners/ReadBlockRunner"));
 const PrintBlockRunner_1 = tslib_1.__importDefault(require("./runners/PrintBlockRunner"));
 const LogBlockRunner_1 = tslib_1.__importDefault(require("./runners/LogBlockRunner"));
 const OutputBlockRunner_1 = tslib_1.__importDefault(require("./runners/OutputBlockRunner"));
-const ReadPrompt_1 = tslib_1.__importDefault(require("./prompt/ReadPrompt"));
 const DateFormat_1 = tslib_1.__importDefault(require("./DateFormat"));
 class BlockRunnerFactoryStore extends Map {
 }
@@ -43,15 +41,23 @@ function createDefaultBlockRunnerStore() {
     return new BlockRunnerFactoryStore([
         ['MobilePrimitives\\Message', (block, ctx) => new MessageBlockRunner_1.default(block, ctx)],
         ['MobilePrimitives\\OpenResponse', (block, ctx) => new OpenResponseBlockRunner_1.default(block, ctx)],
-        ['MobilePrimitives\\NumericResponse', (block, ctx) => new NumericResponseBlockRunner_1.default(block, ctx)],
-        ['MobilePrimitives\\SelectOneResponse', (block, ctx) => new SelectOneResponseBlockRunner_1.default(block, ctx)],
-        ['MobilePrimitives\\SelectManyResponse', (block, ctx) => new SelectManyResponseBlockRunner_1.default(block, ctx)],
+        [
+            'MobilePrimitives\\NumericResponse',
+            (block, ctx) => new NumericResponseBlockRunner_1.default(block, ctx),
+        ],
+        [
+            'MobilePrimitives\\SelectOneResponse',
+            (block, ctx) => new SelectOneResponseBlockRunner_1.default(block, ctx),
+        ],
+        [
+            'MobilePrimitives\\SelectManyResponse',
+            (block, ctx) => new SelectManyResponseBlockRunner_1.default(block, ctx),
+        ],
         ['Core\\Case', (block, ctx) => new CaseBlockRunner_1.default(block, ctx)],
         ['Core\\Output', (block, ctx) => new OutputBlockRunner_1.default(block, ctx)],
         ['Core\\Log', (block, ctx) => new LogBlockRunner_1.default(block, ctx)],
         ['ConsoleIO\\Print', (block, ctx) => new PrintBlockRunner_1.default(block, ctx)],
-        ['ConsoleIO\\Read', (block, ctx) => new ReadBlockRunner_1.default(block, ctx)],
-        ['Core\\RunFlow', (block, ctx) => new RunFlowBlockRunner_1.default(block, ctx)]
+        ['Core\\RunFlow', (block, ctx) => new RunFlowBlockRunner_1.default(block, ctx)],
     ]);
 }
 exports.createDefaultBlockRunnerStore = createDefaultBlockRunnerStore;
@@ -60,7 +66,6 @@ function createKindPromptMap() {
         [IPrompt_1.KnownPrompts.Message.toString()]: MessagePrompt_1.default,
         [IPrompt_1.KnownPrompts.Numeric.toString()]: NumericPrompt_1.default,
         [IPrompt_1.KnownPrompts.Open.toString()]: OpenPrompt_1.default,
-        [IPrompt_1.KnownPrompts.Read.toString()]: ReadPrompt_1.default,
         [IPrompt_1.KnownPrompts.SelectOne.toString()]: SelectOnePrompt_1.default,
         [IPrompt_1.KnownPrompts.SelectMany.toString()]: SelectManyPrompt_1.default,
     };
@@ -214,7 +219,7 @@ class FlowRunner {
     dehydrateCursor(richCursor) {
         return {
             interactionId: richCursor.interaction.uuid,
-            promptConfig: richCursor.prompt != null ? richCursor.prompt.config : undefined
+            promptConfig: richCursor.prompt != null ? richCursor.prompt.config : undefined,
         };
     }
     hydrateRichCursorFrom(ctx) {

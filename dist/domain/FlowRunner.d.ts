@@ -15,7 +15,6 @@ import SelectManyPrompt from './prompt/SelectManyPrompt';
 import IBehaviour, { IBehaviourConstructor } from './behaviours/IBehaviour';
 import IMessageBlock from '../model/block/IMessageBlock';
 import { TGenericPrompt } from './prompt/BasePrompt';
-import ReadPrompt from './prompt/ReadPrompt';
 export declare class BlockRunnerFactoryStore extends Map<string, TBlockRunnerFactory> implements IBlockRunnerFactoryStore {
 }
 export interface IFlowNavigator {
@@ -27,7 +26,7 @@ export interface IPromptBuilder {
 export declare const NON_INTERACTIVE_BLOCK_TYPES: string[];
 export declare function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore;
 export declare function createKindPromptMap(): {
-    [x: string]: typeof MessagePrompt | typeof NumericPrompt | typeof OpenPrompt | typeof SelectOnePrompt | typeof SelectManyPrompt | typeof ReadPrompt;
+    [x: string]: typeof MessagePrompt | typeof NumericPrompt | typeof OpenPrompt | typeof SelectOnePrompt | typeof SelectManyPrompt;
 };
 export declare class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     context: IContext;
