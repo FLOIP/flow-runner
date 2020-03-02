@@ -1,17 +1,17 @@
 import {last} from 'lodash'
-import IFlow from '../../../src/flow-spec/IFlow'
-import FlowRunner from '../../../src/domain/FlowRunner'
-import {SupportedMode, createContextDataObjectFor, IRichCursorInputRequired, findInteractionWith} from '../../../src'
-import IContact from '../../../src/flow-spec/IContact'
-import SelectOnePrompt from '../../../src/domain/prompt/SelectOnePrompt'
-import {IBackTrackingBehaviour} from '../../../src/domain/behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
+import IFlow from '../../../flow-spec/IFlow'
+import FlowRunner from '../../../domain/FlowRunner'
+import {SupportedMode, createContextDataObjectFor, IRichCursorInputRequired, findInteractionWith} from '../../../index'
+import IContact from '../../../flow-spec/IContact'
+import SelectOnePrompt from '../../../domain/prompt/SelectOnePrompt'
+import {IBackTrackingBehaviour} from '../../../domain/behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
 
 
 describe.skip('FlowRunner integration', () => {
   let flow: IFlow
 
   beforeEach(() => {
-    flow = require('../../../__test_fixtures__/fixtures/2019-10-10-shortcut-flow.json')
+    flow = require('../../fixtures/2019-10-10-shortcut-flow.json')
   })
 
   it('should work when simple + single backtrack', async () => {

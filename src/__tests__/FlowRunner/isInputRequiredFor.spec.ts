@@ -1,7 +1,7 @@
-import {FlowRunner, IBasePromptConfig, INumericPromptConfig, KnownPrompts, ICursor} from '../../src'
-import IContext from '../../src/flow-spec/IContext'
-import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
-import NumericPrompt from '../../src/domain/prompt/NumericPrompt'
+import {FlowRunner, IBasePromptConfig, INumericPromptConfig, KnownPrompts, ICursor} from '../../index'
+import IContext from '../../flow-spec/IContext'
+import IBlockInteraction from '../../flow-spec/IBlockInteraction'
+import NumericPrompt from '../../domain/prompt/NumericPrompt'
 
 describe('FlowRunner/isInputRequiredFor', () => {
   let runner: FlowRunner

@@ -1,14 +1,14 @@
 import "reflect-metadata";
 import {flatMap} from 'lodash'
-import IDataset, {createDefaultDataset} from '../__test_fixtures__/fixtures/IDataset'
-import FlowRunner from '../src/domain/FlowRunner'
-import {createContextDataObjectFor, IResources, IRichCursorInputRequired, SupportedMode} from '../src'
-import IContext from '../src/flow-spec/IContext'
-import ValidationException from '../src/domain/exceptions/ValidationException'
+import IDataset, {createDefaultDataset} from './fixtures/IDataset'
+import FlowRunner from '../domain/FlowRunner'
+import {createContextDataObjectFor, IResources, IRichCursorInputRequired, SupportedMode} from '../index'
+import IContext from '../flow-spec/IContext'
+import ValidationException from '../domain/exceptions/ValidationException'
 import {deserialize, plainToClass, serialize} from 'class-transformer'
-import Context from '../src/flow-spec/Context'
-import IContact from '../src/flow-spec/IContact'
-import SelectOnePrompt from '../src/domain/prompt/SelectOnePrompt'
+import Context from '../flow-spec/Context'
+import IContact from '../flow-spec/IContact'
+import SelectOnePrompt from '../domain/prompt/SelectOnePrompt'
 
 
 describe('FlowRunner', () => {
@@ -91,7 +91,7 @@ describe('FlowRunner', () => {
 
     describe('case block unable to find cursor', () => {
       it('shouldnt raise an exception requiring prompt', async () => {
-        const context: IContext = require('../__test_fixtures__/fixtures/2019-10-08-case-block-eval-issue.json')
+        const context: IContext = require('./fixtures/2019-10-08-case-block-eval-issue.json')
         const runner = new FlowRunner(context)
 
         await expect(runner.run()).rejects.toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')
@@ -101,7 +101,7 @@ describe('FlowRunner', () => {
 
     xdescribe('case block always evaluates to false', () => {
       it('shouldnt raise an except requiring prompt', async () => {
-        const context: IContext = require('../__test_fixtures__/fixtures/2019-10-09-case-block-always-false.json')
+        const context: IContext = require('./fixtures/2019-10-09-case-block-always-false.json')
         const runner = new FlowRunner(context)
 
         // todo: update context + finish test once @george has resolved removal of `.value` lookups
@@ -111,7 +111,7 @@ describe('FlowRunner', () => {
 
     describe('VMO-1484-case-branching-improperly', () => {
       it('should hit Cats branch', async() => {
-        const {flows}: IContext = require('../__test_fixtures__/fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
+        const {flows}: IContext = require('./fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
         const resources: IResources = flatMap(flows, 'resources') // our server-side implementation currently returns
 
         const context = createContextDataObjectFor(
@@ -132,7 +132,7 @@ describe('FlowRunner', () => {
       })
 
       it('should hit Dogs branch', async () => {
-        const {flows}: IContext = require('../__test_fixtures__/fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
+        const {flows}: IContext = require('./fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
         const resources: IResources = flatMap(flows, 'resources') // our server-side implementation currently returns
 
         const context = createContextDataObjectFor(

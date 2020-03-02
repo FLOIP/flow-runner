@@ -6,10 +6,10 @@ import {
   IBlockWithTestExits,
   IEvalContextBlock,
   wrapInExprSyntaxWhenAbsent,
-} from '../../src'
-import IContext from '../../src/flow-spec/IContext'
-import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
-import createFormattedDate from '../../src/domain/DateFormat'
+} from '../../index'
+import IContext from '../../flow-spec/IContext'
+import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
+import createFormattedDate from '../../domain/DateFormat'
 
 
 describe('IBlock', () => {

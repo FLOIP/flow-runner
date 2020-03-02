@@ -1,7 +1,7 @@
-import FlowRunner from '../../src/domain/FlowRunner'
-import IContext, {IReversibleUpdateOperation} from '../../src/flow-spec/IContext'
-import IFlowRunner from '../../src/domain/IFlowRunner'
-import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
+import FlowRunner from '../../domain/FlowRunner'
+import IContext, {IReversibleUpdateOperation} from '../../flow-spec/IContext'
+import IFlowRunner from '../../domain/IFlowRunner'
+import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 
 describe('applyReversibleDataOperation', () => {
   let runner: IFlowRunner

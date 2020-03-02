@@ -1,9 +1,9 @@
-import SelectOneResponseBlockRunner from '../../src/domain/runners/SelectOneResponseBlockRunner'
-import IContext, {findBlockOnActiveFlowWith, findInteractionWith} from '../../src/flow-spec/IContext'
-import IBlockExit from '../../src/flow-spec/IBlockExit'
-import ISelectOneResponseBlock from '../../src/model/block/ISelectOneResponseBlock'
-import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
-import IContact from '../../src/flow-spec/IContact'
+import SelectOneResponseBlockRunner from '../../domain/runners/SelectOneResponseBlockRunner'
+import IContext, {findBlockOnActiveFlowWith, findInteractionWith} from '../../flow-spec/IContext'
+import IBlockExit from '../../flow-spec/IBlockExit'
+import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock'
+import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
+import IContact from '../../flow-spec/IContact'
 
 describe('SelectOneResponseBlockRunner', () => {
   let dataset: IDataset

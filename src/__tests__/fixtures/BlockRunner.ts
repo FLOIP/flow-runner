@@ -1,6 +1,6 @@
-import IBlock from '../../src/flow-spec/IBlock'
-import IBlockRunner from '../../src/domain/runners/IBlockRunner'
-import IContext from '../../src/flow-spec/IContext'
+import IBlock from '../../flow-spec/IBlock'
+import IBlockRunner from '../../domain/runners/IBlockRunner'
+import IContext from '../../flow-spec/IContext'
 
 export const createStaticFirstExitBlockRunnerFor = (block: IBlock, context: IContext) => ({
   block,

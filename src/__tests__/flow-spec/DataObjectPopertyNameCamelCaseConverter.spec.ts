@@ -1,4 +1,4 @@
-import convertKeysToCamelCase from '../../src/flow-spec/DataObjectPopertyNameCamelCaseConverter'
+import convertKeysToCamelCase from '../../flow-spec/DataObjectPopertyNameCamelCaseConverter'
 
 describe('convertKeysToCamelCase', () => {
   it.each([

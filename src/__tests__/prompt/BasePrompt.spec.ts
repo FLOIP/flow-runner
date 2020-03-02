@@ -1,12 +1,12 @@
-import MessagePrompt from '../../src/domain/prompt/MessagePrompt'
+import MessagePrompt from '../../domain/prompt/MessagePrompt'
 import {
   IBasePromptConfig,
   IContextInputRequired,
   IMessagePromptConfig,
   IPromptConfig, IRichCursorInputRequired,
-} from '../../src'
-import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
-import FlowRunner from '../../src/domain/FlowRunner'
+} from '../../index'
+import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
+import FlowRunner from '../../domain/FlowRunner'
 
 describe('BasePrompt', () => {
   let dataset: IDataset

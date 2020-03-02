@@ -1,13 +1,13 @@
 import {first, last} from 'lodash'
-import BacktrackingBehaviour from '../../src/domain/behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
-import IContext from '../../src/flow-spec/IContext'
-import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
-import IFlow from '../../src/flow-spec/IFlow'
-import {IBasePromptConfig, IPromptConfig} from '../../src'
-import {NON_INTERACTIVE_BLOCK_TYPES} from '../../src/domain/FlowRunner'
-import IPrompt from '../../src/domain/prompt/IPrompt'
-import IBlock from '../../src/flow-spec/IBlock'
-import BasicBacktrackingBehaviour from '../../src/domain/behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour'
+import BacktrackingBehaviour from '../../domain/behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
+import IContext from '../../flow-spec/IContext'
+import IBlockInteraction from '../../flow-spec/IBlockInteraction'
+import IFlow from '../../flow-spec/IFlow'
+import {IBasePromptConfig, IPromptConfig} from '../../index'
+import {NON_INTERACTIVE_BLOCK_TYPES} from '../../domain/FlowRunner'
+import IPrompt from '../../domain/prompt/IPrompt'
+import IBlock from '../../flow-spec/IBlock'
+import BasicBacktrackingBehaviour from '../../domain/behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour'
 
 
 describe('BasicBacktrackingBehaviour', () => {

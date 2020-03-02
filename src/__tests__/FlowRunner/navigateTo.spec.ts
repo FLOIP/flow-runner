@@ -1,10 +1,10 @@
 import {last} from 'lodash'
-import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
-import FlowRunner, {BlockRunnerFactoryStore} from '../../src/domain/FlowRunner'
-import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
-import {findInteractionWith, IBasePromptConfig, INumericPromptConfig, IRichCursor, KnownPrompts} from '../../src'
-import {createStaticFirstExitBlockRunnerFor} from '../../__test_fixtures__/fixtures/BlockRunner'
-import createFormattedDate from '../../src/domain/DateFormat'
+import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
+import FlowRunner, {BlockRunnerFactoryStore} from '../../domain/FlowRunner'
+import IBlockInteraction from '../../flow-spec/IBlockInteraction'
+import {findInteractionWith, IBasePromptConfig, INumericPromptConfig, IRichCursor, KnownPrompts} from '../../index'
+import {createStaticFirstExitBlockRunnerFor} from '../fixtures/BlockRunner'
+import createFormattedDate from '../../domain/DateFormat'
 
 // todo: abstract some of the setup
 

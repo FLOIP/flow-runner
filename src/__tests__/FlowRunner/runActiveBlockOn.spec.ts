@@ -1,7 +1,7 @@
-import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
-import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
-import {IContextInputRequired} from '../../src';
-import {createStaticFirstExitBlockRunnerFor} from "../../__test_fixtures__/fixtures/BlockRunner";
+import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
+import FlowRunner, {BlockRunnerFactoryStore} from "../../domain/FlowRunner";
+import {IContextInputRequired} from '../../index';
+import {createStaticFirstExitBlockRunnerFor} from "../fixtures/BlockRunner";
 
 
 describe('FlowRunner/runActiveBlockOn', () => {

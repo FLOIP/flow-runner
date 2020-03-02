@@ -1,11 +1,11 @@
-import IFlow from "../../src/flow-spec/IFlow";
-import IBlock from "../../src/flow-spec/IBlock";
-import IBlockExit from "../../src/flow-spec/IBlockExit";
-import IBlockInteraction from "../../src/flow-spec/IBlockInteraction";
-import IContext from "../../src/flow-spec/IContext";
+import IFlow from "../../flow-spec/IFlow";
+import IBlock from "../../flow-spec/IBlock";
+import IBlockExit from "../../flow-spec/IBlockExit";
+import IBlockInteraction from "../../flow-spec/IBlockInteraction";
+import IContext from "../../flow-spec/IContext";
 import {read} from 'yaml-import'
 import {cloneDeep} from 'lodash'
-import {IBasePromptConfig, IPromptConfig} from '../../src'
+import {IBasePromptConfig, IPromptConfig} from '../../index'
 
 export default interface IDataset {
   _prompts: (IPromptConfig<any> & IBasePromptConfig)[]
@@ -18,7 +18,7 @@ export default interface IDataset {
   _cursors: []
 }
 
-export const DATA_SOURCE = read('__test_fixtures__/fixtures/dataset.yml')
+export const DATA_SOURCE = read('src/__tests__/fixtures/dataset.yml')
 
 export function createDefaultDataset(): IDataset {
   return cloneDeep(DATA_SOURCE)

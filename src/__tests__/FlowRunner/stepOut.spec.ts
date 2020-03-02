@@ -1,11 +1,11 @@
-import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
-import FlowRunner from '../../src/domain/FlowRunner'
+import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
+import FlowRunner from '../../domain/FlowRunner'
 import {cloneDeep, last} from 'lodash'
-import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
-import IContext, {IContextService} from '../../src/flow-spec/IContext'
-import IBlock from '../../src/flow-spec/IBlock'
-import IBlockExit from '../../src/flow-spec/IBlockExit'
-import * as contextService from '../../src/flow-spec/IContext'
+import IBlockInteraction from '../../flow-spec/IBlockInteraction'
+import IContext, {IContextService} from '../../flow-spec/IContext'
+import IBlock from '../../flow-spec/IBlock'
+import IBlockExit from '../../flow-spec/IBlockExit'
+import * as contextService from '../../flow-spec/IContext'
 
 describe('FlowRunner/stepOut', () => {
   let dataset: IDataset

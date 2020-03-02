@@ -1,15 +1,15 @@
 import SelectManyPrompt, {
   INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK,
   INVALID_AT_LEAST_ONE_SELECTION_REQUIRED,
-} from '../../src/domain/prompt/SelectManyPrompt'
-import {IContextInputRequired} from '../../src/flow-spec/IContext'
-import {IBasePromptConfig, IPromptConfig} from '../../src/domain/prompt/IPrompt'
-import {IChoice} from '../../src'
-import {ISelectManyPromptConfig} from '../../src/domain/prompt/ISelectManyPromptConfig'
-import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
-import FlowRunner from '../../src/domain/FlowRunner'
-import InvalidChoiceException from '../../src/domain/exceptions/InvalidChoiceException'
-import ValidationException from '../../src/domain/exceptions/ValidationException'
+} from '../../domain/prompt/SelectManyPrompt'
+import {IContextInputRequired} from '../../flow-spec/IContext'
+import {IBasePromptConfig, IPromptConfig} from '../../domain/prompt/IPrompt'
+import {IChoice} from '../../index'
+import {ISelectManyPromptConfig} from '../../domain/prompt/ISelectManyPromptConfig'
+import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
+import FlowRunner from '../../domain/FlowRunner'
+import InvalidChoiceException from '../../domain/exceptions/InvalidChoiceException'
+import ValidationException from '../../domain/exceptions/ValidationException'
 
 
 describe('SelectManyPrompt', () => {

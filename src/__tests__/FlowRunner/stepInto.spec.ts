@@ -1,6 +1,6 @@
-import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
-import FlowRunner from "../../src/domain/FlowRunner";
-import ValidationException from "../../src/domain/exceptions/ValidationException";
+import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
+import FlowRunner from "../../domain/FlowRunner";
+import ValidationException from "../../domain/exceptions/ValidationException";
 
 
 describe('FlowRunner/stepInto', () => {

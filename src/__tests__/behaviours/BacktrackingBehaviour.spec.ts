@@ -1,9 +1,9 @@
 import {cloneDeep, first, last} from 'lodash'
 import BacktrackingBehaviour, {
   IContextBacktrackingPlatformMetadata,
-} from '../../src/domain/behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
-import IContext from '../../src/flow-spec/IContext'
-import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
+} from '../../domain/behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
+import IContext from '../../flow-spec/IContext'
+import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 import {
   _append,
   _loop,
@@ -13,13 +13,13 @@ import {
   createStackKey,
   getStackFor,
   IEntity,
-} from '../../src/domain/behaviours/BacktrackingBehaviour/HierarchicalIterStack'
-import IFlow from '../../src/flow-spec/IFlow'
-import IRunFlowBlockConfig from "../../src/model/block/IRunFlowBlockConfig"
-import {IBasePromptConfig, IPromptConfig} from '../../src'
-import {NON_INTERACTIVE_BLOCK_TYPES} from '../../src/domain/FlowRunner'
-import IPrompt from '../../src/domain/prompt/IPrompt'
-import IBlock from '../../src/flow-spec/IBlock'
+} from '../../domain/behaviours/BacktrackingBehaviour/HierarchicalIterStack'
+import IFlow from '../../flow-spec/IFlow'
+import IRunFlowBlockConfig from "../../model/block/IRunFlowBlockConfig"
+import {IBasePromptConfig, IPromptConfig} from '../../index'
+import {NON_INTERACTIVE_BLOCK_TYPES} from '../../domain/FlowRunner'
+import IPrompt from '../../domain/prompt/IPrompt'
+import IBlock from '../../flow-spec/IBlock'
 
 
 describe('BacktrackingBehaviour', () => {

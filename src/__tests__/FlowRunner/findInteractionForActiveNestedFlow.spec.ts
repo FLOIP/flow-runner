@@ -1,7 +1,7 @@
-import FlowRunner, {BlockRunnerFactoryStore} from '../../src/domain/FlowRunner'
-import IContext from '../../src/flow-spec/IContext'
-import ValidationException from '../../src/domain/exceptions/ValidationException'
-import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
+import FlowRunner, {BlockRunnerFactoryStore} from '../../domain/FlowRunner'
+import IContext from '../../flow-spec/IContext'
+import ValidationException from '../../domain/exceptions/ValidationException'
+import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 
 
 describe('FlowRunner/findInteractionForActiveNestedFlow', () => {

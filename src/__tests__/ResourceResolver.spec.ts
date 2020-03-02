@@ -1,4 +1,4 @@
-import ResourceResolver from '../src/domain/ResourceResolver'
+import ResourceResolver from '../domain/ResourceResolver'
 import {
   createContextDataObjectFor,
   IResource,
@@ -6,12 +6,12 @@ import {
   IResourceDefinitionContentTypeSpecific,
   SupportedContentType,
   SupportedMode,
-} from '../src'
-import ResourceNotFoundException from '../src/domain/exceptions/ResourceNotFoundException'
-import IResourceResolver from '../src/domain/IResourceResolver'
-import IContext from '../src/flow-spec/IContext'
-import IFlow from '../src/flow-spec/IFlow'
-import IContact from '../src/flow-spec/IContact'
+} from '../index'
+import ResourceNotFoundException from '../domain/exceptions/ResourceNotFoundException'
+import IResourceResolver from '../domain/IResourceResolver'
+import IContext from '../flow-spec/IContext'
+import IFlow from '../flow-spec/IFlow'
+import IContact from '../flow-spec/IContact'
 
 
 describe('ResourceResolver', () => {

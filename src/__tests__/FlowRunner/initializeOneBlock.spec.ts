@@ -1,12 +1,12 @@
-import IDataset, {createDefaultDataset} from '../../__test_fixtures__/fixtures/IDataset'
-import FlowRunner, {BlockRunnerFactoryStore} from '../../src/domain/FlowRunner'
-import IBlockInteraction from '../../src/flow-spec/IBlockInteraction'
+import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
+import FlowRunner, {BlockRunnerFactoryStore} from '../../domain/FlowRunner'
+import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 import {
   IBasePromptConfig,
   INumericPromptConfig,
   KnownPrompts,
   IRichCursor,
-} from '../../src'
+} from '../../index'
 
 
 describe('FlowRunner/initializeOneBlock', () => {

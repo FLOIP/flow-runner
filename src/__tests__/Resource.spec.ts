@@ -1,7 +1,7 @@
-import {IResource, IResourceDefinitionContentTypeSpecific, Resource, SupportedContentType, SupportedMode} from '../src'
+import {IResource, IResourceDefinitionContentTypeSpecific, Resource, SupportedContentType, SupportedMode} from '../index'
 
-import ResourceNotFoundException from '../src/domain/exceptions/ResourceNotFoundException'
-import IContext from '../src/flow-spec/IContext'
+import ResourceNotFoundException from '../domain/exceptions/ResourceNotFoundException'
+import IContext from '../flow-spec/IContext'
 
 describe('Resource', () => {
   let baseResource: IResourceDefinitionContentTypeSpecific
