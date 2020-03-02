@@ -38,8 +38,8 @@
   },
   "exclude": [
     "node_modules",
-    "__test_fixtures__",
-    "__tests__",
+    "src/__tests__/__test_fixtures__",
+    "src/__tests__",
     "dist"
   ]
 }
