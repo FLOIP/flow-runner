@@ -72,8 +72,8 @@ describe('FlowRunner/stepInto', () => {
       runFlowBlockIntx = ctx.interactions[0],
       runner = new FlowRunner(ctx)
 
-    runFlowBlockIntx.selectedExitId = null // setup for known un-exited interaction state
+    delete runFlowBlockIntx.selectedExitId // setup for known incomplete + un-exited interaction state
     runner.stepInto(block, ctx)
-    expect(runFlowBlockIntx.selectedExitId).toBeNull()
+    expect(runFlowBlockIntx.selectedExitId).toBeUndefined()
   })
 })

@@ -15,13 +15,13 @@ describe('FlowRunner/stepOut', () => {
   })
 
   describe('when not nested', () => {
-    it('should return null when not nested', async () => {
+    it('should raise when attempting to unnest', async () => {
       const
           ctx = dataset.contexts[0],
           runner = new FlowRunner(ctx)
 
       expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(0)
-      expect(runner.stepOut(ctx)).toBeUndefined()
+      expect(FlowRunner.prototype.stepOut.bind(runner, ctx)).toThrow('Unable to complete a nested flow when not nested.')
     })
 
     it('should leave last interaction as it is', async () => {
@@ -31,13 +31,27 @@ describe('FlowRunner/stepOut', () => {
           runner = new FlowRunner(ctx)
 
       expect(ctx.nestedFlowBlockInteractionIdStack.length).toBe(0)
-      runner.stepOut(ctx)
+
+      try {
+        runner.stepOut(ctx)
+      } catch (e) {/* do nothing */}
+
       expect(last(ctx.interactions)).toEqual(lastIntx)
     })
   })
 
   describe('when nested', () => {
-    it('should pop last interaction off nested flow interaction stack', async () => {
+    it('should raise when attempting to unnest and unable to find interaction we\'re nested under', () => {
+      const runner = new FlowRunner({} as IContext)
+      const ctx = {
+        nestedFlowBlockInteractionIdStack: ['non-existant-interactionId'],
+        interactions: [] as IBlockInteraction[]} as IContext
+
+      expect(FlowRunner.prototype.stepOut.bind(runner, ctx))
+        .toThrow('Unable to find interaction on context: non-existant-interactionId in []')
+    })
+
+    it('should unnest (aka: pop last interaction off nested flow interaction stack)', async () => {
       const
           ctx = dataset.contexts[2],
           snapshottedNFBIStack = cloneDeep(ctx.nestedFlowBlockInteractionIdStack),
@@ -61,11 +75,11 @@ describe('FlowRunner/stepOut', () => {
         runner = new FlowRunner(ctx)
 
       expect(ctx.nestedFlowBlockInteractionIdStack.length).toBeGreaterThan(0)
-      activeIntx.selectedExitId = null // pre-condition for "not-yet-stepped-out" state
+      delete activeIntx.selectedExitId // pre-condition for "not-yet-stepped-out" state
       runner.stepOut(ctx)
 
-      // todo: incorrect; needs to be a concrete exit with a null destinationBlock
-      expect(activeIntx.selectedExitId).toBe(null)
+      // todo: incorrect; needs to be a concrete exit with a null destinationBlock --- @bzabos: I believe this is resolved as of latest nestedFlow refactor.
+      expect(activeIntx.selectedExitId).toBeUndefined()
     })
 
     it('should tie run flow block\'s intx associated with provided run flow block to its first exit', async () => {
@@ -97,12 +111,11 @@ describe('FlowRunner/stepOut', () => {
             runFlowBlock,
             {uuid: 'block-234'} as IBlock]}],
         interactions,
+        firstFlowId: originFlowId,
         nestedFlowBlockInteractionIdStack: [originBlockInteractionId]} as IContext)
 
       expect(runFlowBlockIntx.selectedExitId).toBe(runFlowBlock.exits[0].uuid)
     })
-
-    it.todo('should reconcile exit at timestamps somehow') // todo: verify this
 
     describe('connecting block', () => {
       it('should return block last RunFlow was connected to in original flow', async () => {

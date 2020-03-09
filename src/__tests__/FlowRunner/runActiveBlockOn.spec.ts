@@ -11,6 +11,10 @@ describe('FlowRunner/runActiveBlockOn', () => {
     dataset = createDefaultDataset()
   })
 
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   it('should return exit provided by block runner\'s resume()', async () => {
     const
         ctx = dataset.contexts[1] as IContextInputRequired,
@@ -35,10 +39,42 @@ describe('FlowRunner/runActiveBlockOn', () => {
         ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],])),
       richCursor = runner.hydrateRichCursorFrom(ctx)
 
-    richCursor.interaction.selectedExitId = null // set as incomplete interaction state
+    delete richCursor.interaction.selectedExitId // set as incomplete interaction state
 
     await runner.runActiveBlockOn(richCursor, block)
     expect(richCursor.interaction.selectedExitId).toBe(expectedExit.uuid)
+  })
+
+  it('should complete interaction with selected exit', async () => {
+    const
+      ctx = dataset.contexts[1] as IContextInputRequired,
+      block = ctx.flows[1].blocks[0],
+      expectedExit = block.exits[0],
+      runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
+        ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],])),
+      richCursor = runner.hydrateRichCursorFrom(ctx)
+
+    jest.spyOn(runner, 'completeInteraction').mockImplementation(() => richCursor.interaction)
+    await runner.runActiveBlockOn(richCursor, block)
+    expect(runner.completeInteraction).toHaveBeenCalledTimes(1)
+    expect(runner.completeInteraction).toHaveBeenCalledWith(richCursor.interaction, expectedExit.uuid)
+  })
+
+  it('should raise when interaction has previously been flagged as processed', async () => {
+    const
+      ctx = dataset.contexts[1] as IContextInputRequired,
+      block = ctx.flows[1].blocks[0],
+      runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
+        ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],])),
+      richCursor = runner.hydrateRichCursorFrom(ctx)
+
+    richCursor.prompt!.config.isSubmitted = true
+
+    try {
+      await runner.runActiveBlockOn(richCursor, block)
+    } catch (e) {
+      expect(e.toString()).toEqual('Error: Unable to run against previously processed prompt')
+    }
   })
 
   describe('when prompt present', () => {

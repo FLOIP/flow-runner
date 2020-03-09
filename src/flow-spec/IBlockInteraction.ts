@@ -26,7 +26,7 @@ export interface IBlockInteraction {
   hasResponse: boolean,
   value?: string | number | object,
   details: IBlockInteractionDetails,
-  selectedExitId: string | null,
+  selectedExitId?: string,
   type: string,
 
   originBlockInteractionId?: string, // UUID64

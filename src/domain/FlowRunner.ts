@@ -18,7 +18,7 @@
  **/
 
 import {NonBreakingUpdateOperation, update} from 'sp2'
-import {find, findLast, first, includes, last, lowerFirst, trimEnd} from 'lodash'
+import {find, first, includes, last, lowerFirst, trimEnd} from 'lodash'
 import IBlock, {findBlockExitWith} from '../flow-spec/IBlock'
 import * as contextService from '../flow-spec/IContext'
 import IContext, {
@@ -270,7 +270,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     }
   }
 
-  // todo: this could be extracted to an Expressions Behaviour
+  // todo: this could be findFirstExitOnActiveFlowBlockFor to an Expressions Behaviour
   //       ie. cacheInteractionByBlockName, applyReversibleDataOperation and reverseLastDataOperation
   cacheInteractionByBlockName(
     {uuid, entryAt}: IBlockInteraction,
@@ -349,8 +349,6 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param ctx
    */
   async runUntilInputRequiredFrom(ctx: IContextWithCursor): Promise<IRichCursorInputRequired | undefined> {
-    /* todo: convert cursor to an object instead of tuple; since we don't have named tuples, a dictionary
-        would be more intuitive */
     let richCursor: IRichCursor = this.hydrateRichCursorFrom(ctx)
     let block: IBlock | undefined = this._contextService.findBlockOnActiveFlowWith(richCursor.interaction.blockId, ctx)
 
@@ -364,12 +362,9 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
 
       block = this.findNextBlockOnActiveFlowFor(ctx)
 
-      if (block == null) {
+      if (block == null && this._contextService.isNested(ctx)) {
+        // nested flow complete, while more of parent flow remains
         block = this.stepOut(ctx)
-
-        // todo: ensure that exitat is set to _after_ our last nested flow interaction
-        //       what happens with nested flow ending in MCQ -- shouldn't selectedExitId be set ?
-        //       null selectedExitId should actually have a selectedExitId that points to an exit that has a null destination block
       }
 
       if (block == null) {
@@ -390,7 +385,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     } while (block != null)
 
     this.complete(ctx)
-    return undefined
+    return
   }
 
   // exitEarlyThrough(block: IBlock) {
@@ -403,18 +398,57 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * Close off last interaction, push context status to complete, and write out exit timestamp.
    * Typically called internally.
    * @param ctx
+   * @param completedAt
    */
-  complete(ctx: IContext): void {
-    // todo: should set selected exit ID on last interaction as well, with destination of null
-
-    (last(ctx.interactions) as IBlockInteraction).exitAt = createFormattedDate()
+  complete(ctx: IContext, completedAt: Date = new Date): void {
     delete ctx.cursor
     ctx.deliveryStatus = DeliveryStatus.FINISHED_COMPLETE
-    ctx.exitAt = createFormattedDate()
+    ctx.exitAt = createFormattedDate(completedAt)
   }
 
   /**
-   * Take a richCursor down to the bare minumum for JSON-serializability.
+   * Seal up an [[IBlockInteraction]] with a timestamp once we've selected an exit.
+   * @param intx
+   * @param selectedExitId
+   * @param completedAt
+   */
+  completeInteraction(
+    intx: IBlockInteraction,
+    selectedExitId: IBlockExit['uuid'],
+    completedAt: Date = new Date): IBlockInteraction {
+
+    intx.exitAt = createFormattedDate(completedAt)
+    intx.selectedExitId = selectedExitId
+
+    return intx
+  }
+
+  /**
+   * Seal up an interaction with an [[IRunFlowBlock]] which spans multiple child [[IBlockInteraction]]s.
+   * This will apply a timestamp to parent [[IRunFlowBlock]]'s [[IBlockInteraction]], unnest active flow one level
+   * and return the interaction for that parent [[IRunFlowBlock]].
+   * @param ctx
+   * @param completedAt
+   */
+  completeActiveNestedFlow(ctx: IContext, completedAt: Date = new Date): IBlockInteraction {
+    const {nestedFlowBlockInteractionIdStack} = ctx
+
+    if (!this._contextService.isNested(ctx)) {
+      throw new ValidationException('Unable to complete a nested flow when not nested.')
+    }
+
+    const runFlowIntx = this._contextService.findInteractionWith(last(nestedFlowBlockInteractionIdStack) as string, ctx)
+
+    // once we are in a valid state and able to find our corresponding interaction, let's update active nested flow
+    nestedFlowBlockInteractionIdStack.pop()
+
+    // since we've unnested one level, we may seek using freshly active flow
+    const exit: IBlockExit = this.findFirstExitOnActiveFlowBlockFor(runFlowIntx, ctx)
+    return this.completeInteraction(runFlowIntx, exit.uuid, completedAt)
+  }
+
+  /**
+   * Take a richCursor down to the bare minimum for JSON-serializability.
    * interaction IBlockInteraction reduced to its UUID
    * prompt IPrompt reduced to its raw config object.
    * Reverse of `hydrateRichCursorFrom()`.
@@ -470,20 +504,29 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param block
    */
   async runActiveBlockOn(richCursor: IRichCursor, block: IBlock): Promise<IBlockExit> {
-    // todo: write test to guard against already isSubmitted at this point
+    const {prompt, interaction} = richCursor
+    const hasPrompt = prompt != null
 
-    if (richCursor.prompt != null) {
-      richCursor.interaction.value = richCursor.prompt.value
-      richCursor.interaction.hasResponse = true
+    if (interaction == null) {
+      throw new ValidationException('Unable to run with absent cursor interaction')
+    }
+
+    if (hasPrompt && prompt!.config.isSubmitted) {
+      throw new ValidationException('Unable to run against previously processed prompt')
+    }
+
+    if (prompt != null) {
+      interaction.value = prompt.value
+      interaction.hasResponse = true
     }
 
     const exit = await this.createBlockRunnerFor(block, this.context)
       .run(richCursor)
 
-    richCursor.interaction.selectedExitId = exit.uuid
+    this.completeInteraction(interaction, exit.uuid)
 
-    if (richCursor.prompt != null) {
-      richCursor.prompt.config.isSubmitted = true
+    if (hasPrompt) {
+      prompt!.config.isSubmitted = true
     }
 
     Object.values(this.behaviours)
@@ -512,9 +555,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * and apply new cursor onto context.
    * @param block
    * @param ctx
-   * @param navigatedAt
    */
-  navigateTo(block: IBlock, ctx: IContext, navigatedAt: Date = new Date): IRichCursor {
+  navigateTo(block: IBlock, ctx: IContext): IRichCursor {
     const {interactions, nestedFlowBlockInteractionIdStack} = ctx
     const flowId = this._contextService.getActiveFlowIdFrom(ctx)
     const originInteractionId = last(nestedFlowBlockInteractionIdStack)
@@ -528,13 +570,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       originInteraction == null ? undefined : originInteraction.flowId,
       originInteractionId)
 
-    // todo: this could be extracted to an Expressions Behaviour
+    // todo: this could be findFirstExitOnActiveFlowBlockFor to an Expressions Behaviour
     this.cacheInteractionByBlockName(richCursor.interaction, block as IMessageBlock, this.context)
-
-    const lastInteraction = last(interactions)
-    if (lastInteraction != null) {
-      lastInteraction.exitAt = createFormattedDate(navigatedAt)
-    }
 
     interactions.push(richCursor.interaction)
     ctx.cursor = this.dehydrateCursor(richCursor)
@@ -569,7 +606,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
 
     const firstNestedBlock = first(this._contextService.getActiveFlowFrom(ctx).blocks) // todo: use IFlow.firstBlockId
     if (firstNestedBlock == null) {
-      return undefined
+      return
     }
 
     return firstNestedBlock
@@ -587,41 +624,14 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    *       to next block; when stepping IN, we need an explicit navigation to inject RunFlow in between
    *       the two Flows. */
   stepOut(ctx: IContext): IBlock | undefined {
-    const {nestedFlowBlockInteractionIdStack} = ctx
-    const {_contextService: contextService} = this
-
-    if (nestedFlowBlockInteractionIdStack.length === 0) {
-      return
-    }
-
-    // pop last nested flow interaction id (aka unnest)
-    const lastRunFlowIntxId = nestedFlowBlockInteractionIdStack.pop() as string
-    // update last nested flow interaction
-    const lastRunFlowIntx = contextService.findInteractionWith(lastRunFlowIntxId, ctx)
-    // find- + return- destination block from first exit on runflowblock (on interaction 👆)
-    const lastRunFlowBlock = contextService.findBlockOnActiveFlowWith(lastRunFlowIntx.blockId, ctx)
-    const {uuid: lastRunFlowBlockFirstExitId, destinationBlock: destinationBlockId} = first(lastRunFlowBlock.exits) as IBlockExit
-
-    lastRunFlowIntx.selectedExitId = lastRunFlowBlockFirstExitId
-
-    if (destinationBlockId == null) {
-      return
-    }
-
-    return contextService.findBlockOnActiveFlowWith(destinationBlockId, ctx)
+    return this.findNextBlockFrom(
+      this.completeActiveNestedFlow(ctx),
+      ctx)
   }
 
-  findInteractionForActiveNestedFlow({nestedFlowBlockInteractionIdStack, interactions}: IContext): IBlockInteraction {
-    if (nestedFlowBlockInteractionIdStack.length === 0) {
-      throw new ValidationException('Unable to find interaction for nested flow when not nested')
-    }
-
-    const intx = findLast(interactions, {uuid: last(nestedFlowBlockInteractionIdStack)})
-    if (intx == null) {
-      throw new ValidationException('Unable to find interaction for deepest flow nesting')
-    }
-
-    return intx
+  findFirstExitOnActiveFlowBlockFor({blockId}: IBlockInteraction, ctx: IContext): IBlockExit {
+    const {exits} = this._contextService.findBlockOnActiveFlowWith(blockId, ctx)
+    return first(exits) as IBlockExit
   }
 
   /**
@@ -630,12 +640,12 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param ctx
    */
   findNextBlockOnActiveFlowFor(ctx: IContext): IBlock | undefined {
-    // cursor: IRichCursor | null, flow: IFlow): IBlock | null {
     const flow = this._contextService.getActiveFlowFrom(ctx)
     const {cursor} = ctx
 
     if (cursor == null) {
-      return first(flow.blocks) // todo: use IFlow.firstBlockId
+      // todo: use IFlow.firstBlockId
+      return first(flow.blocks)
     }
 
     const interaction = this._contextService.findInteractionWith(cursor.interactionId, ctx)
@@ -651,7 +661,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    */
   findNextBlockFrom({blockId, selectedExitId}: IBlockInteraction, ctx: IContext): IBlock | undefined {
     if (selectedExitId == null) {
-      // todo: maybe tighter check on this, like: prompt.isFulfilled() === false || !called block.run()
+      // todo: maybe tighten check on this, like: prompt.isFulfilled() === false || !called block.run()
       throw new ValidationException(
         'Unable to navigate past incomplete interaction; did you forget to call runner.run()?')
     }
@@ -692,11 +702,11 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       exitAt: undefined,
       hasResponse: false,
       value: undefined,
-      selectedExitId: null,
+      selectedExitId: undefined,
       details: {},
       type,
 
-      // Nested flows:
+      // Nested flows behaviour:
       originFlowId,
       originBlockInteractionId,
     }
