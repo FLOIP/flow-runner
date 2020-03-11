@@ -48,7 +48,7 @@ export interface IBlockRunner {
    * Converts an interaction and its block property into either a prompt configuration or `undefined`.
    * @param interaction
    */
-  initialize(interaction: IBlockInteraction): IPromptConfig<any> | undefined,
+  initialize(interaction: IBlockInteraction): Promise<IPromptConfig<any> | undefined>,
 
   /**
    * Takes the current point in our interaction history and performs some local logic to decide how the Flow should

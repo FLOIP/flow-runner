@@ -45,7 +45,7 @@ export class OpenResponseBlockRunner implements IBlockRunner {
     public block: IOpenResponseBlock,
     public context: IContext) {}
 
-  initialize({value}: IBlockInteraction): IOpenPromptConfig {
+  async initialize({value}: IBlockInteraction): Promise<IOpenPromptConfig> {
     const blockConfig = this.block.config
 
     let maxResponseCharacters

@@ -73,10 +73,12 @@ type BacktrackingIntxStack = IBacktrackingContext['interactionStack']
 export interface IBackTrackingBehaviour extends IBehaviour {
   rebuildIndex(): void,
 
-  // generates new prompt from new interaction + resets state to what was `interaction`'s moment
-  jumpTo(interaction: IBlockInteraction, context: IContext): IRichCursor, // todo: this should likely take in steps rather than interaction itself
   // regenerates prompt from previous interaction
-  peek(steps?: number): IPrompt<IPromptConfig<any> & IBasePromptConfig>,
+  // generates new prompt from new interaction + resets state to what was `interaction`'s moment
+  // todo: this should likely take in steps rather than interaction itself
+  jumpTo(interaction: IBlockInteraction, context: IContext): Promise<IRichCursor>,
+
+  peek(steps?: number): Promise<IPrompt<IPromptConfig<any> & IBasePromptConfig>>,
 }
 
 export class BacktrackingBehaviour implements IBackTrackingBehaviour {
@@ -195,7 +197,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     key.push(createStackKey(1, 0))
   }
 
-  jumpTo(interaction: IBlockInteraction, context: IContext): IRichCursor {
+  async jumpTo(interaction: IBlockInteraction, context: IContext): Promise<IRichCursor> {
     const {
       backtracking,
     } = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
@@ -251,7 +253,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
       this.context)
   }
 
-  peek(steps = 1): IPrompt<IPromptConfig<any> & IBasePromptConfig> {
+  async peek(steps = 1): Promise<IPrompt<IPromptConfig<any> & IBasePromptConfig>> {
     let _steps = steps
     const intx = findLast(this.context.interactions, ({type}) =>
       !includes(NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0)
@@ -264,7 +266,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
       intx.blockId,
       findFlowWith(intx.flowId, this.context))
 
-    const prompt = this.promptBuilder.buildPromptFor(block, intx)
+    const prompt = await this.promptBuilder.buildPromptFor(block, intx)
     if (prompt == null) {
       throw new ValidationException(`Unable to build a prompt for ${JSON.stringify({
         context: this.context.id,

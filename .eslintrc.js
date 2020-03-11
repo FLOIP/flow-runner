@@ -106,7 +106,7 @@ module.exports = {
     'import/no-absolute-path': 'off',
     'no-useless-constructor': 'off',
     'class-methods-use-this': 'off',
-    'no-empty-function': ['error', {allow: ['constructors']}],
+    'no-empty-function': ['error', {allow: ['constructors', 'arrowFunctions']}],
     'no-tabs': 'error',
 
     'no-use-before-define': [

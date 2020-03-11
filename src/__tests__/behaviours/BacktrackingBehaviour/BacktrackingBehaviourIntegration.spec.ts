@@ -38,16 +38,16 @@ describe.skip('FlowRunner integration', () => {
     prompt.value = (prompt as SelectOnePrompt).config.choices[1].key // no, end of children
 
     const backtracking: IBackTrackingBehaviour = runner.behaviours.backtracking as IBackTrackingBehaviour
-    prompt = backtracking.peek(5)
+    prompt = await backtracking.peek(5)
 
     // todo: assert that prompt is genned from specified interaction
     // const interactionIdPreviouslyAtIndex5 = prompt.interactionId
     const interactionPreviouslyAtPeek5 = findInteractionWith(prompt.interactionId, context)
     expect(prompt.interactionId).toBe(context.interactions.slice(-6, -5)[0].uuid) // assert we're in a known state: (++peeked * -1)
 
-    prompt = backtracking.jumpTo( // commit to change
+    prompt = (await backtracking.jumpTo( // commit to change
       findInteractionWith(prompt.interactionId, context),
-      context)!.prompt!
+      context))!.prompt!
 
 
     // todo: should peek1 really be peek0?

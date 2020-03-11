@@ -50,7 +50,7 @@ export class SelectOneResponseBlockRunner implements IBlockRunner {
     public block: ISelectOneResponseBlock,
     public context: IContext) {}
 
-  initialize({value}: IBlockInteraction): ISelectOnePromptConfig {
+  async initialize({value}: IBlockInteraction): Promise<ISelectOnePromptConfig> {
     const {prompt, choices} = this.block.config
 
     return {

@@ -36,7 +36,7 @@ export class CaseBlockRunner implements IBlockRunner {
     public block: ICaseBlock,
     public context: IContext) {}
 
-  initialize(): undefined {
+  async initialize(): Promise<undefined> {
     return undefined
   }
 

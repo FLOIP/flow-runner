@@ -50,7 +50,7 @@ export class SelectManyResponseBlockRunner implements IBlockRunner {
     public block: ISelectOneResponseBlock,
     public context: IContext) {}
 
-  initialize({value}: IBlockInteraction): ISelectManyPromptConfig {
+  async initialize({value}: IBlockInteraction): Promise<ISelectManyPromptConfig> {
     const {prompt, choices} = this.block.config
 
     return {

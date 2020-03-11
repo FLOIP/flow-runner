@@ -46,7 +46,7 @@ export class NumericResponseBlockRunner implements IBlockRunner {
     public block: INumericResponseBlock,
     public context: IContext) {}
 
-  initialize({value}: IBlockInteraction): INumericPromptConfig {
+  async initialize({value}: IBlockInteraction): Promise<INumericPromptConfig> {
     const {
       prompt,
       validationMinimum: min,

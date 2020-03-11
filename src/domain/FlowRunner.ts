@@ -77,12 +77,12 @@ export class BlockRunnerFactoryStore
 }
 
 export interface IFlowNavigator {
-  navigateTo(block: IBlock, ctx: IContext): IRichCursor,
+  navigateTo(block: IBlock, ctx: IContext): Promise<IRichCursor>,
 }
 
 export interface IPromptBuilder {
   buildPromptFor(block: IBlock, interaction: IBlockInteraction):
-    TGenericPrompt | undefined,
+    Promise<TGenericPrompt | undefined>,
 }
 
 const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
@@ -185,7 +185,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     ctx.deliveryStatus = DeliveryStatus.IN_PROGRESS
     ctx.entryAt = createFormattedDate()
 
-    return this.navigateTo(block, this.context) // kick-start by navigating to first block
+    // kick-start by navigating to first block
+    return this.navigateTo(block, this.context)
   }
 
   /**
@@ -240,7 +241,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     const {context: ctx} = this
     if (!this.isInitialized(ctx)) {
       /* const richCursor = */
-      this.initialize()
+      await this.initialize()
     }
 
     return this.runUntilInputRequiredFrom(ctx as IContextWithCursor)
@@ -373,19 +374,21 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       }
 
       if (block == null) {
-        continue // bail-- we're done.
+        // bail-- we're done.
+        continue
       }
 
       if (block.type === 'Core\\RunFlow') {
-        richCursor = this.navigateTo(block, ctx)
+        richCursor = await this.navigateTo(block, ctx)
         block = this.stepInto(block, ctx)
       }
 
       if (block == null) {
-        continue // bail-- we done.
+        // bail-- we done.
+        continue
       }
 
-      richCursor = this.navigateTo(block, ctx)
+      richCursor = await this.navigateTo(block, ctx)
 
     } while (block != null)
 
@@ -449,18 +452,18 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param originFlowId
    * @param originBlockInteractionId
    */
-  initializeOneBlock(
+  async initializeOneBlock(
     block: IBlock,
     flowId: string,
     originFlowId?: string,
     originBlockInteractionId?: string,
-  ): IRichCursor {
+  ): Promise<IRichCursor> {
     let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
 
     Object.values(this.behaviours)
       .forEach(b => interaction = b.postInteractionCreate(interaction, this.context))
 
-    return {interaction, prompt: this.buildPromptFor(block, interaction)}
+    return {interaction, prompt: await this.buildPromptFor(block, interaction)}
   }
 
   /**
@@ -500,7 +503,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    */
   createBlockRunnerFor(block: IBlock, ctx: IContext): IBlockRunner {
     const factory = this.runnerFactoryStore.get(block.type)
-    if (factory == null) { // todo: need to pass as no-op for beta
+    if (factory == null) {
+      // todo: need to pass as no-op for beta
       throw new ValidationException(`Unable to find factory for block type: ${block.type}`)
     }
 
@@ -514,7 +518,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param ctx
    * @param navigatedAt
    */
-  navigateTo(block: IBlock, ctx: IContext, navigatedAt: Date = new Date): IRichCursor {
+  async navigateTo(block: IBlock, ctx: IContext, navigatedAt: Date = new Date): Promise<IRichCursor> {
     const {interactions, nestedFlowBlockInteractionIdStack} = ctx
     const flowId = this._contextService.getActiveFlowIdFrom(ctx)
     const originInteractionId = last(nestedFlowBlockInteractionIdStack)
@@ -522,7 +526,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       ? this._contextService.findInteractionWith(originInteractionId, ctx)
       : null
 
-    const richCursor = this.initializeOneBlock(
+    const richCursor = await this.initializeOneBlock(
       block,
       flowId,
       originInteraction == null ? undefined : originInteraction.flowId,
@@ -567,7 +571,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
 
     ctx.nestedFlowBlockInteractionIdStack.push(runFlowInteraction.uuid)
 
-    const firstNestedBlock = first(this._contextService.getActiveFlowFrom(ctx).blocks) // todo: use IFlow.firstBlockId
+    const firstNestedBlock = first(this._contextService.getActiveFlowFrom(ctx).blocks)
+    // todo: use IFlow.firstBlockId
     if (firstNestedBlock == null) {
       return undefined
     }
@@ -635,7 +640,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     const {cursor} = ctx
 
     if (cursor == null) {
-      return first(flow.blocks) // todo: use IFlow.firstBlockId
+      // todo: use IFlow.firstBlockId
+      return first(flow.blocks)
     }
 
     const interaction = this._contextService.findInteractionWith(cursor.interactionId, ctx)
@@ -708,11 +714,11 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param block
    * @param interaction
    */
-  buildPromptFor(block: IBlock, interaction: IBlockInteraction):
-    TGenericPrompt | undefined {
+  async buildPromptFor(block: IBlock, interaction: IBlockInteraction):
+    Promise<TGenericPrompt | undefined> {
 
     const runner = this.createBlockRunnerFor(block, this.context)
-    const promptConfig = runner.initialize(interaction)
+    const promptConfig = await runner.initialize(interaction)
     return this.createPromptFrom(promptConfig, interaction)
   }
 
