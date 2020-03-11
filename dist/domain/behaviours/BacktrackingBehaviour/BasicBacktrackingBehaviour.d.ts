@@ -4,9 +4,9 @@ import IContext, { IRichCursor, IRichCursorInputRequired } from '../../../flow-s
 import { IFlowNavigator, IPromptBuilder } from '../../FlowRunner';
 export interface IBackTrackingBehaviour extends IBehaviour {
     rebuildIndex(): void;
-    jumpTo(interaction: IBlockInteraction): IRichCursor;
-    peek(steps?: number): IRichCursor;
-    seek(steps?: number): IRichCursor;
+    jumpTo(interaction: IBlockInteraction): Promise<IRichCursor>;
+    peek(steps?: number): Promise<IRichCursor>;
+    seek(steps?: number): Promise<IRichCursor>;
 }
 export declare class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
     context: IContext;
@@ -14,9 +14,9 @@ export declare class BasicBacktrackingBehaviour implements IBackTrackingBehaviou
     promptBuilder: IPromptBuilder;
     constructor(context: IContext, navigator: IFlowNavigator, promptBuilder: IPromptBuilder);
     rebuildIndex(): void;
-    seek(steps?: number, context?: IContext): IRichCursorInputRequired;
-    jumpTo(intx: IBlockInteraction, context?: IContext): IRichCursor;
-    peek(steps?: number, context?: IContext): IRichCursorInputRequired;
+    seek(steps?: number, context?: IContext): Promise<IRichCursorInputRequired>;
+    jumpTo(intx: IBlockInteraction, context?: IContext): Promise<IRichCursor>;
+    peek(steps?: number, context?: IContext): Promise<IRichCursorInputRequired>;
     postInteractionCreate(interaction: IBlockInteraction, _context: IContext): IBlockInteraction;
     postInteractionComplete(_interaction: IBlockInteraction, _context: IContext): void;
 }

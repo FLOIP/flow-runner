@@ -8,15 +8,17 @@ class NumericResponseBlockRunner {
         this.context = context;
     }
     initialize({ value }) {
-        const { prompt, validationMinimum: min, validationMaximum: max, } = this.block.config;
-        return {
-            kind: __1.KnownPrompts.Numeric,
-            prompt,
-            isResponseRequired: false,
-            min,
-            max,
-            value: value,
-        };
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const { prompt, validationMinimum: min, validationMaximum: max, } = this.block.config;
+            return {
+                kind: __1.KnownPrompts.Numeric,
+                prompt,
+                isResponseRequired: false,
+                min,
+                max,
+                value: value,
+            };
+        });
     }
     run() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {

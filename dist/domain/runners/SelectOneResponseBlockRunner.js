@@ -10,18 +10,20 @@ class SelectOneResponseBlockRunner {
         this.context = context;
     }
     initialize({ value }) {
-        const { prompt, choices } = this.block.config;
-        return {
-            kind: __1.KnownPrompts.SelectOne,
-            prompt,
-            isResponseRequired: true,
-            choices: Object.keys(choices)
-                .map(key => ({
-                key,
-                value: choices[key],
-            })),
-            value: value,
-        };
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const { prompt, choices } = this.block.config;
+            return {
+                kind: __1.KnownPrompts.SelectOne,
+                prompt,
+                isResponseRequired: true,
+                choices: Object.keys(choices)
+                    .map(key => ({
+                    key,
+                    value: choices[key],
+                })),
+                value: value,
+            };
+        });
     }
     run() {
         var _a;

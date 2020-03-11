@@ -18,10 +18,10 @@ import { TGenericPrompt } from './prompt/BasePrompt';
 export declare class BlockRunnerFactoryStore extends Map<string, TBlockRunnerFactory> implements IBlockRunnerFactoryStore {
 }
 export interface IFlowNavigator {
-    navigateTo(block: IBlock, ctx: IContext): IRichCursor;
+    navigateTo(block: IBlock, ctx: IContext): Promise<IRichCursor>;
 }
 export interface IPromptBuilder {
-    buildPromptFor(block: IBlock, interaction: IBlockInteraction): TGenericPrompt | undefined;
+    buildPromptFor(block: IBlock, interaction: IBlockInteraction): Promise<TGenericPrompt | undefined>;
 }
 export declare const NON_INTERACTIVE_BLOCK_TYPES: string[];
 export declare function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore;
@@ -53,17 +53,17 @@ export declare class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     complete(ctx: IContext): void;
     dehydrateCursor(richCursor: IRichCursor): ICursor;
     hydrateRichCursorFrom(ctx: IContextWithCursor): IRichCursor;
-    initializeOneBlock(block: IBlock, flowId: string, originFlowId?: string, originBlockInteractionId?: string): IRichCursor;
+    initializeOneBlock(block: IBlock, flowId: string, originFlowId?: string, originBlockInteractionId?: string): Promise<IRichCursor>;
     runActiveBlockOn(richCursor: IRichCursor, block: IBlock): Promise<IBlockExit>;
     createBlockRunnerFor(block: IBlock, ctx: IContext): IBlockRunner;
-    navigateTo(block: IBlock, ctx: IContext, navigatedAt?: Date): IRichCursor;
+    navigateTo(block: IBlock, ctx: IContext, navigatedAt?: Date): Promise<IRichCursor>;
     stepInto(runFlowBlock: IBlock, ctx: IContext): IBlock | undefined;
     stepOut(ctx: IContext): IBlock | undefined;
     findInteractionForActiveNestedFlow({ nestedFlowBlockInteractionIdStack, interactions }: IContext): IBlockInteraction;
     findNextBlockOnActiveFlowFor(ctx: IContext): IBlock | undefined;
     findNextBlockFrom({ blockId, selectedExitId }: IBlockInteraction, ctx: IContext): IBlock | undefined;
     private createBlockInteractionFor;
-    buildPromptFor(block: IBlock, interaction: IBlockInteraction): TGenericPrompt | undefined;
+    buildPromptFor(block: IBlock, interaction: IBlockInteraction): Promise<TGenericPrompt | undefined>;
     createPromptFrom(config?: IPromptConfig<any>, interaction?: IBlockInteraction): TGenericPrompt | undefined;
 }
 export default FlowRunner;

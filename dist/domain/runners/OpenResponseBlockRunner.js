@@ -8,18 +8,20 @@ class OpenResponseBlockRunner {
         this.context = context;
     }
     initialize({ value }) {
-        const blockConfig = this.block.config;
-        let maxResponseCharacters;
-        if (blockConfig.text != null) {
-            maxResponseCharacters = blockConfig.text.maxResponseCharacters;
-        }
-        return {
-            kind: __1.KnownPrompts.Open,
-            prompt: blockConfig.prompt,
-            isResponseRequired: true,
-            maxResponseCharacters: maxResponseCharacters,
-            value: value,
-        };
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const blockConfig = this.block.config;
+            let maxResponseCharacters;
+            if (blockConfig.text != null) {
+                maxResponseCharacters = blockConfig.text.maxResponseCharacters;
+            }
+            return {
+                kind: __1.KnownPrompts.Open,
+                prompt: blockConfig.prompt,
+                isResponseRequired: true,
+                maxResponseCharacters: maxResponseCharacters,
+                value: value,
+            };
+        });
     }
     run() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {

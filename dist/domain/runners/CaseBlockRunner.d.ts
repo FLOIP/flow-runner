@@ -6,7 +6,7 @@ export declare class CaseBlockRunner implements IBlockRunner {
     block: ICaseBlock;
     context: IContext;
     constructor(block: ICaseBlock, context: IContext);
-    initialize(): undefined;
+    initialize(): Promise<undefined>;
     run(): Promise<IBlockExitTestRequired>;
 }
 export default CaseBlockRunner;

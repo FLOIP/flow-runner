@@ -6,7 +6,7 @@ export declare class OutputBlockRunner implements IBlockRunner {
     block: IOutputBlock;
     context: IContext;
     constructor(block: IOutputBlock, context: IContext);
-    initialize(): undefined;
+    initialize(): Promise<undefined>;
     run(cursor: IRichCursor): Promise<IBlockExit>;
 }
 export default OutputBlockRunner;

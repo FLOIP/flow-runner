@@ -9,7 +9,9 @@ class PrintBlockRunner {
         this.console = console;
     }
     initialize() {
-        return;
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return;
+        });
     }
     run() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {

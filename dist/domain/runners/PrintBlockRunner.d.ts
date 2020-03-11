@@ -8,7 +8,7 @@ export declare class PrintBlockRunner implements IBlockRunner {
     context: IContext;
     console: Console;
     constructor(block: IPrintBlock, context: IContext, console?: Console);
-    initialize(): undefined;
+    initialize(): Promise<undefined>;
     run(): Promise<IBlockExit>;
 }
 export default PrintBlockRunner;

@@ -8,12 +8,14 @@ class MessageBlockRunner {
         this.context = context;
     }
     initialize() {
-        const { prompt } = this.block.config;
-        return {
-            kind: __1.KnownPrompts.Message,
-            prompt,
-            isResponseRequired: false,
-        };
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const { prompt } = this.block.config;
+            return {
+                kind: __1.KnownPrompts.Message,
+                prompt,
+                isResponseRequired: false,
+            };
+        });
     }
     run() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {

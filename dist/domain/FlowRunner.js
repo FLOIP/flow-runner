@@ -121,7 +121,7 @@ class FlowRunner {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const { context: ctx } = this;
             if (!this.isInitialized(ctx)) {
-                this.initialize();
+                yield this.initialize();
             }
             return this.runUntilInputRequiredFrom(ctx);
         });
@@ -198,13 +198,13 @@ class FlowRunner {
                     continue;
                 }
                 if (block.type === 'Core\\RunFlow') {
-                    richCursor = this.navigateTo(block, ctx);
+                    richCursor = yield this.navigateTo(block, ctx);
                     block = this.stepInto(block, ctx);
                 }
                 if (block == null) {
                     continue;
                 }
-                richCursor = this.navigateTo(block, ctx);
+                richCursor = yield this.navigateTo(block, ctx);
             } while (block != null);
             this.complete(ctx);
             return undefined;
@@ -229,10 +229,12 @@ class FlowRunner {
         return { interaction, prompt };
     }
     initializeOneBlock(block, flowId, originFlowId, originBlockInteractionId) {
-        let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId);
-        Object.values(this.behaviours)
-            .forEach(b => interaction = b.postInteractionCreate(interaction, this.context));
-        return { interaction, prompt: this.buildPromptFor(block, interaction) };
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId);
+            Object.values(this.behaviours)
+                .forEach(b => interaction = b.postInteractionCreate(interaction, this.context));
+            return { interaction, prompt: yield this.buildPromptFor(block, interaction) };
+        });
     }
     runActiveBlockOn(richCursor, block) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -259,21 +261,23 @@ class FlowRunner {
         return factory(block, ctx);
     }
     navigateTo(block, ctx, navigatedAt = new Date) {
-        const { interactions, nestedFlowBlockInteractionIdStack } = ctx;
-        const flowId = this._contextService.getActiveFlowIdFrom(ctx);
-        const originInteractionId = lodash_1.last(nestedFlowBlockInteractionIdStack);
-        const originInteraction = originInteractionId != null
-            ? this._contextService.findInteractionWith(originInteractionId, ctx)
-            : null;
-        const richCursor = this.initializeOneBlock(block, flowId, originInteraction == null ? undefined : originInteraction.flowId, originInteractionId);
-        this.cacheInteractionByBlockName(richCursor.interaction, block, this.context);
-        const lastInteraction = lodash_1.last(interactions);
-        if (lastInteraction != null) {
-            lastInteraction.exitAt = DateFormat_1.default(navigatedAt);
-        }
-        interactions.push(richCursor.interaction);
-        ctx.cursor = this.dehydrateCursor(richCursor);
-        return richCursor;
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const { interactions, nestedFlowBlockInteractionIdStack } = ctx;
+            const flowId = this._contextService.getActiveFlowIdFrom(ctx);
+            const originInteractionId = lodash_1.last(nestedFlowBlockInteractionIdStack);
+            const originInteraction = originInteractionId != null
+                ? this._contextService.findInteractionWith(originInteractionId, ctx)
+                : null;
+            const richCursor = yield this.initializeOneBlock(block, flowId, originInteraction == null ? undefined : originInteraction.flowId, originInteractionId);
+            this.cacheInteractionByBlockName(richCursor.interaction, block, this.context);
+            const lastInteraction = lodash_1.last(interactions);
+            if (lastInteraction != null) {
+                lastInteraction.exitAt = DateFormat_1.default(navigatedAt);
+            }
+            interactions.push(richCursor.interaction);
+            ctx.cursor = this.dehydrateCursor(richCursor);
+            return richCursor;
+        });
     }
     stepInto(runFlowBlock, ctx) {
         if (runFlowBlock.type !== 'Core\\RunFlow') {
@@ -354,9 +358,11 @@ class FlowRunner {
         };
     }
     buildPromptFor(block, interaction) {
-        const runner = this.createBlockRunnerFor(block, this.context);
-        const promptConfig = runner.initialize(interaction);
-        return this.createPromptFrom(promptConfig, interaction);
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const runner = this.createBlockRunnerFor(block, this.context);
+            const promptConfig = yield runner.initialize(interaction);
+            return this.createPromptFrom(promptConfig, interaction);
+        });
     }
     createPromptFrom(config, interaction) {
         if (config == null || interaction == null) {

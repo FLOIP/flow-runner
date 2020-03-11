@@ -6,7 +6,7 @@ import IContext from '../../flow-spec/IContext';
 export interface IBlockRunner {
     block: IBlock;
     context: IContext;
-    initialize(interaction: IBlockInteraction): IPromptConfig<any> | undefined;
+    initialize(interaction: IBlockInteraction): Promise<IPromptConfig<any> | undefined>;
     run(cursor: IRichCursor): Promise<IBlockExit>;
 }
 export default IBlockRunner;

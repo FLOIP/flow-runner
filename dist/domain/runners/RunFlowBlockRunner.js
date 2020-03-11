@@ -7,7 +7,9 @@ class RunFlowBlockRunner {
         this.context = context;
     }
     initialize() {
-        return undefined;
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return undefined;
+        });
     }
     run() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
