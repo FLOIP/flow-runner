@@ -42,7 +42,7 @@ export class RunFlowBlockRunner implements IBlockRunner {
     public block: IBlock & { config: IRunFlowBlockConfig },
     public context: IContext) {}
 
-  initialize(): undefined {
+  async initialize(): Promise<undefined> {
     return undefined
   }
 

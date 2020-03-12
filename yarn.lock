@@ -398,6 +398,11 @@
   dependencies:
     "@types/jest-diff" "*"
 
+"@types/js-yaml@^3.12.2":
+  version "3.12.2"
+  resolved "https://registry.yarnpkg.com/@types/js-yaml/-/js-yaml-3.12.2.tgz#a35a1809c33a68200fb6403d1ad708363c56470a"
+  integrity sha512-0CFu/g4mDSNkodVwWijdlr8jH7RoplRWNgovjFLEZeT+QEbbZXjBmCe3HwaWheAlCbHwomTwzZoSedeOycABug==
+
 "@types/json-schema@^7.0.3":
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.3.tgz#bdfd69d61e464dcc81b25159c270d75a73c1a636"
@@ -3999,11 +4004,6 @@ sax@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
-
-scanf@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/scanf/-/scanf-1.0.2.tgz#391cad4beff248b170e5bf968cdec8e3c8549026"
-  integrity sha512-3WTLRdIAypK0117Fqep8rXlUesYyz8kcMsC4ATSFO6tqGmxmzohFizIKOIrgKCs1b7RYR9QI6XOFrvH5ZGP/iA==
 
 "semver@2 || 3 || 4 || 5", semver@^5.3.0, semver@^5.4.1, semver@^5.5, semver@^5.5.0, semver@^5.6.0:
   version "5.7.1"

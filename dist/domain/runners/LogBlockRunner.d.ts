@@ -6,7 +6,7 @@ export declare class LogBlockRunner implements IBlockRunner {
     block: ILogBlock;
     context: IContext;
     constructor(block: ILogBlock, context: IContext);
-    initialize(): undefined;
+    initialize(): Promise<undefined>;
     run(): Promise<IBlockExit>;
 }
 export default LogBlockRunner;

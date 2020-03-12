@@ -16,9 +16,11 @@ describe('BasicBacktrackingBehaviour', () => {
   beforeEach(() => {
     backtracking = new BasicBacktrackingBehaviour(
       {platformMetadata: {}} as IContext,
-      {navigateTo: (_b, _c) => ({interaction: {} as IBlockInteraction, prompt: undefined})},
-      {buildPromptFor: (_b: IBlock, _i: IBlockInteraction):
-          IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined => undefined})
+      {navigateTo: async (_b, _c) => ({interaction: {} as IBlockInteraction, prompt: undefined})},
+      {
+        buildPromptFor: async (_b: IBlock, _i: IBlockInteraction):
+          Promise<IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined> => undefined,
+      })
   })
 
   describe('peek', () => {
@@ -26,7 +28,8 @@ describe('BasicBacktrackingBehaviour', () => {
 
     beforeEach(() => {
       backtracking.context = {
-        interactions: [ // assumption: all of these are interactive
+        interactions: [
+          // assumption: all of these are interactive
           {uuid: 'intx-123'},
           {uuid: 'intx-234'},
           {uuid: 'intx-345', flowId: 'flow-123', blockId: 'block-123', value: 'value #345'},
@@ -35,21 +38,21 @@ describe('BasicBacktrackingBehaviour', () => {
           {uuid: 'intx-678', flowId: 'flow-123', blockId: 'block-123', value: 'value #678'},
         ] as IBlockInteraction[],
         flows: [
-          {uuid: 'flow-123', blocks: [{uuid: 'block-123'} as IBlock]} as IFlow
+          {uuid: 'flow-123', blocks: [{uuid: 'block-123'} as IBlock]} as IFlow,
         ] as IFlow[],
       } as IContext
 
       virtualPrompt = {} as IPrompt<any>
 
       jest.spyOn(backtracking.promptBuilder, 'buildPromptFor')
-        .mockReturnValue(virtualPrompt)
+        .mockReturnValue(Promise.resolve(virtualPrompt))
     })
 
     it('should return prompt for last interaction when no args provided', async () => {
       const block: IBlock = backtracking.context.flows[0].blocks[0]
       const interaction: IBlockInteraction = last(backtracking.context.interactions)!
 
-      const cursor = backtracking.peek()
+      const cursor = await backtracking.peek()
       expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
       expect(interaction.value).toBeTruthy()
       expect(cursor.prompt).toBe(virtualPrompt)
@@ -60,7 +63,7 @@ describe('BasicBacktrackingBehaviour', () => {
       const block: IBlock = backtracking.context.flows[0].blocks[0]
       const interaction: IBlockInteraction = backtracking.context.interactions[2]
 
-      const cursor = backtracking.peek(3)
+      const cursor = await backtracking.peek(3)
       expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
       expect(interaction.value).toBeTruthy()
       expect(cursor.prompt).toBe(virtualPrompt)
@@ -74,7 +77,7 @@ describe('BasicBacktrackingBehaviour', () => {
       const block: IBlock = backtracking.context.flows[0].blocks[0]
       const interaction: IBlockInteraction = backtracking.context.interactions[2]
 
-      const cursor = backtracking.peek(1)
+      const cursor = await backtracking.peek(1)
       expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
       expect(interaction.value).toBeTruthy()
       expect(cursor.prompt).toBe(virtualPrompt)
@@ -82,7 +85,8 @@ describe('BasicBacktrackingBehaviour', () => {
     })
 
     it('should raise when trying to step back further than can be stepped', async () => {
-      expect(BacktrackingBehaviour.prototype.peek.bind(backtracking, 7))
+      await expect(BacktrackingBehaviour.prototype.peek.bind(backtracking)(7))
+        .rejects
         .toThrow('Unable to backtrack to an interaction that far back {"steps":7}')
     })
   })

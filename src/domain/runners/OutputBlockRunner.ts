@@ -39,7 +39,7 @@ export class OutputBlockRunner implements IBlockRunner {
     public block: IOutputBlock,
     public context: IContext) {}
 
-  initialize(): undefined {
+  async initialize(): Promise<undefined> {
     return
   }
 

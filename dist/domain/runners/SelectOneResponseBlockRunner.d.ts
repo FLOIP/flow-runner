@@ -8,7 +8,7 @@ export declare class SelectOneResponseBlockRunner implements IBlockRunner {
     block: ISelectOneResponseBlock;
     context: IContext;
     constructor(block: ISelectOneResponseBlock, context: IContext);
-    initialize({ value }: IBlockInteraction): ISelectOnePromptConfig;
+    initialize({ value }: IBlockInteraction): Promise<ISelectOnePromptConfig>;
     run(): Promise<IBlockExit>;
 }
 export default SelectOneResponseBlockRunner;

@@ -32,7 +32,7 @@ export class PrintBlockRunner implements IBlockRunner {
     public context: IContext,
     public console: Console = console) {}
 
-  initialize(): undefined {
+  async initialize(): Promise<undefined> {
     return
   }
 

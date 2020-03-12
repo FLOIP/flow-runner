@@ -8,7 +8,9 @@ class OutputBlockRunner {
         this.context = context;
     }
     initialize() {
-        return;
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return;
+        });
     }
     run(cursor) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {

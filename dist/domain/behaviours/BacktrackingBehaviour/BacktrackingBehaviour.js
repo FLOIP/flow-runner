@@ -72,38 +72,42 @@ class BacktrackingBehaviour {
         key.push(HierarchicalIterStack_1.createStackKey(1, 0));
     }
     jumpTo(interaction, context) {
-        const { backtracking, } = this.context.platformMetadata;
-        const keyForLastOccurrenceOfInteraction = HierarchicalIterStack_1.deepIndexOfFrom(HierarchicalIterStack_1.createKey(), backtracking.interactionStack, ({ uuid }) => uuid === interaction.uuid);
-        if (keyForLastOccurrenceOfInteraction == null) {
-            throw new ValidationException_1.default('Unable to find destination interaction in backtracking stack for jumpTo()');
-        }
-        backtracking.ghostInteractionStacks.push(lodash_1.cloneDeep(backtracking.interactionStack));
-        const discarded = context.interactions.splice(lodash_1.findLastIndex(context.interactions, interaction), context.interactions.length);
-        lodash_1.forEachRight(discarded, intx => intx.uuid === lodash_1.last(context.nestedFlowBlockInteractionIdStack)
-            ? context.nestedFlowBlockInteractionIdStack.pop()
-            : null);
-        const deepestStackKeyForIntx = lodash_1.last(keyForLastOccurrenceOfInteraction);
-        const keyToTruncateFrom = HierarchicalIterStack_1.cloneKeyAndMoveTo(HierarchicalIterStack_1.createStackKey(deepestStackKeyForIntx[HierarchicalIterStack_1.STACK_KEY_ITERATION_NUMBER], deepestStackKeyForIntx[HierarchicalIterStack_1.STACK_KEY_ITERATION_INDEX] - 1), keyForLastOccurrenceOfInteraction, backtracking.interactionStack);
-        HierarchicalIterStack_1.deepTruncateIterationsFrom(keyToTruncateFrom, backtracking.interactionStack);
-        backtracking.cursor = keyToTruncateFrom;
-        return this.navigator.navigateTo(IContext_1.findBlockOnActiveFlowWith(interaction.blockId, this.context), this.context);
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const { backtracking, } = this.context.platformMetadata;
+            const keyForLastOccurrenceOfInteraction = HierarchicalIterStack_1.deepIndexOfFrom(HierarchicalIterStack_1.createKey(), backtracking.interactionStack, ({ uuid }) => uuid === interaction.uuid);
+            if (keyForLastOccurrenceOfInteraction == null) {
+                throw new ValidationException_1.default('Unable to find destination interaction in backtracking stack for jumpTo()');
+            }
+            backtracking.ghostInteractionStacks.push(lodash_1.cloneDeep(backtracking.interactionStack));
+            const discarded = context.interactions.splice(lodash_1.findLastIndex(context.interactions, interaction), context.interactions.length);
+            lodash_1.forEachRight(discarded, intx => intx.uuid === lodash_1.last(context.nestedFlowBlockInteractionIdStack)
+                ? context.nestedFlowBlockInteractionIdStack.pop()
+                : null);
+            const deepestStackKeyForIntx = lodash_1.last(keyForLastOccurrenceOfInteraction);
+            const keyToTruncateFrom = HierarchicalIterStack_1.cloneKeyAndMoveTo(HierarchicalIterStack_1.createStackKey(deepestStackKeyForIntx[HierarchicalIterStack_1.STACK_KEY_ITERATION_NUMBER], deepestStackKeyForIntx[HierarchicalIterStack_1.STACK_KEY_ITERATION_INDEX] - 1), keyForLastOccurrenceOfInteraction, backtracking.interactionStack);
+            HierarchicalIterStack_1.deepTruncateIterationsFrom(keyToTruncateFrom, backtracking.interactionStack);
+            backtracking.cursor = keyToTruncateFrom;
+            return this.navigator.navigateTo(IContext_1.findBlockOnActiveFlowWith(interaction.blockId, this.context), this.context);
+        });
     }
     peek(steps = 1) {
-        let _steps = steps;
-        const intx = lodash_1.findLast(this.context.interactions, ({ type }) => !lodash_1.includes(FlowRunner_1.NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0);
-        if (intx == null || _steps > 0) {
-            throw new ValidationException_1.default(`Unable to backtrack to an interaction that far back ${JSON.stringify({ steps })}`);
-        }
-        const block = __1.findBlockWith(intx.blockId, IContext_1.findFlowWith(intx.flowId, this.context));
-        const prompt = this.promptBuilder.buildPromptFor(block, intx);
-        if (prompt == null) {
-            throw new ValidationException_1.default(`Unable to build a prompt for ${JSON.stringify({
-                context: this.context.id,
-                intx,
-                block,
-            })}`);
-        }
-        return Object.assign(prompt, { value: intx.value });
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            let _steps = steps;
+            const intx = lodash_1.findLast(this.context.interactions, ({ type }) => !lodash_1.includes(FlowRunner_1.NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0);
+            if (intx == null || _steps > 0) {
+                throw new ValidationException_1.default(`Unable to backtrack to an interaction that far back ${JSON.stringify({ steps })}`);
+            }
+            const block = __1.findBlockWith(intx.blockId, IContext_1.findFlowWith(intx.flowId, this.context));
+            const prompt = yield this.promptBuilder.buildPromptFor(block, intx);
+            if (prompt == null) {
+                throw new ValidationException_1.default(`Unable to build a prompt for ${JSON.stringify({
+                    context: this.context.id,
+                    intx,
+                    block,
+                })}`);
+            }
+            return Object.assign(prompt, { value: intx.value });
+        });
     }
     findIndexOfSuggestionFor({ blockId }, key, stack) {
         const keyForSuggestion = HierarchicalIterStack_1.deepIndexOfFrom(key, stack, intx => intx.blockId === blockId);

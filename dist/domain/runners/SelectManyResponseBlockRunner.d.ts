@@ -8,7 +8,7 @@ export declare class SelectManyResponseBlockRunner implements IBlockRunner {
     block: ISelectOneResponseBlock;
     context: IContext;
     constructor(block: ISelectOneResponseBlock, context: IContext);
-    initialize({ value }: IBlockInteraction): ISelectManyPromptConfig;
+    initialize({ value }: IBlockInteraction): Promise<ISelectManyPromptConfig>;
     run(): Promise<IBlockExit>;
 }
 export default SelectManyResponseBlockRunner;

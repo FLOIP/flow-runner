@@ -7,7 +7,7 @@ export declare class MessageBlockRunner implements IBlockRunner {
     block: IMessageBlock;
     context: IContext;
     constructor(block: IMessageBlock, context: IContext);
-    initialize(): IMessagePromptConfig;
+    initialize(): Promise<IMessagePromptConfig>;
     run(): Promise<IBlockExit>;
 }
 export default MessageBlockRunner;

@@ -42,7 +42,7 @@ export class MessageBlockRunner implements IBlockRunner {
     public block: IMessageBlock,
     public context: IContext) {}
 
-  initialize(): IMessagePromptConfig {
+  async initialize(): Promise<IMessagePromptConfig> {
     const {prompt} = this.block.config
     return {
       kind: KnownPrompts.Message,

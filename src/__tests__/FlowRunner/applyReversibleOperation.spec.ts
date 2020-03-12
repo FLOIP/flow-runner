@@ -12,7 +12,8 @@ describe('applyReversibleDataOperation', () => {
     context = {
       interactions: [] as IBlockInteraction[],
       sessionVars: {},
-      reversibleOperations: [] as IReversibleUpdateOperation[]} as IContext
+      reversibleOperations: [] as IReversibleUpdateOperation[]
+} as IContext
     runner = new FlowRunner(context)
     operation = {
       forward: {$set: {'sampleKey.sampleNestedKey': 'sample forward val'}},

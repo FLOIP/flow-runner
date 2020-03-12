@@ -38,7 +38,7 @@ export class LogBlockRunner implements IBlockRunner {
     public block: ILogBlock,
     public context: IContext) {}
 
-  initialize(): undefined {
+  async initialize(): Promise<undefined> {
     return
   }
 

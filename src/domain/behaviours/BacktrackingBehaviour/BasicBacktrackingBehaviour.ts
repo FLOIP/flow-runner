@@ -43,19 +43,19 @@ export interface IBackTrackingBehaviour extends IBehaviour {
    * Generates new prompt from new interaction + resets state to what was {@link IContext.interactions}'s moment
    * @param interaction
    * todo: this should likely take in steps rather than interaction itself */
-  jumpTo(interaction: IBlockInteraction): IRichCursor,
+  jumpTo(interaction: IBlockInteraction): Promise<IRichCursor>,
 
   /**
    * Regenerates prompt from previous interaction
    * @param steps
    */
-  peek(steps?: number): IRichCursor,
+  peek(steps?: number): Promise<IRichCursor>,
 
   /**
    * Regenerates prompt + interaction in place of previous interaction; updates {@link IContext.cursor}
    * @param steps
    */
-  seek(steps?: number): IRichCursor,
+  seek(steps?: number): Promise<IRichCursor>,
 }
 
 /**
@@ -74,10 +74,10 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
     // do nothing for now
   }
 
-  seek(steps = 0, context: IContext = this.context): IRichCursorInputRequired {
-    const {interaction: prevIntx, prompt: virtualPrompt}: IRichCursorInputRequired = this.peek(steps, context)
+  async seek(steps = 0, context: IContext = this.context): Promise<IRichCursorInputRequired> {
+    const {interaction: prevIntx, prompt: virtualPrompt}: IRichCursorInputRequired = await this.peek(steps, context)
     // then generate a cursor from desired interaction && set cursor on context
-    const cursor: IRichCursorInputRequired = this.jumpTo(prevIntx, context) as IRichCursorInputRequired
+    const cursor: IRichCursorInputRequired = await this.jumpTo(prevIntx, context) as IRichCursorInputRequired
 
     // pre-populate previous value onto prompt for new interaction
     cursor.prompt.value = virtualPrompt.value
@@ -85,7 +85,7 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
     return cursor
   }
 
-  jumpTo(intx: IBlockInteraction, context: IContext = this.context): IRichCursor {
+  async jumpTo(intx: IBlockInteraction, context: IContext = this.context): Promise<IRichCursor> {
     // jump context.interactions back in time
     const discarded = context.interactions.splice( // truncate intx list to pull us back in time; include provided intx
       findLastIndex(context.interactions, intx),
@@ -109,7 +109,7 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
       context)
   }
 
-  peek(steps = 0, context: IContext = this.context): IRichCursorInputRequired {
+  async peek(steps = 0, context: IContext = this.context): Promise<IRichCursorInputRequired> {
     let _steps = steps + 1 // setup for while-loop
     const intx = findLast(context.interactions, ({type}) =>
       !includes(NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0)
@@ -122,7 +122,7 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
       intx.blockId,
       findFlowWith(intx.flowId, context))
 
-    const prompt = this.promptBuilder.buildPromptFor(block, intx)
+    const prompt = await this.promptBuilder.buildPromptFor(block, intx)
     if (prompt == null) {
       throw new ValidationException(`Unable to build a prompt for ${JSON.stringify({
         context: context.id,

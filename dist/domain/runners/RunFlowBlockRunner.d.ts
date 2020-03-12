@@ -11,7 +11,7 @@ export declare class RunFlowBlockRunner implements IBlockRunner {
     constructor(block: IBlock & {
         config: IRunFlowBlockConfig;
     }, context: IContext);
-    initialize(): undefined;
+    initialize(): Promise<undefined>;
     run(): Promise<IBlockExit>;
 }
 export default RunFlowBlockRunner;

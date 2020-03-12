@@ -8,7 +8,7 @@ export declare class NumericResponseBlockRunner implements IBlockRunner {
     block: INumericResponseBlock;
     context: IContext;
     constructor(block: INumericResponseBlock, context: IContext);
-    initialize({ value }: IBlockInteraction): INumericPromptConfig;
+    initialize({ value }: IBlockInteraction): Promise<INumericPromptConfig>;
     run(): Promise<IBlockExit>;
 }
 export default NumericResponseBlockRunner;
