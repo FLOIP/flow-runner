@@ -49,17 +49,12 @@ export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptCo
   implements IPrompt<PromptConfigType> {
 
   error: PromptValidationException | null = null
-  isValid = false
 
   constructor(
     public config: PromptConfigType & IBasePromptConfig,
     public interactionId: string,
     public runner: IFlowRunner
   ) {
-    // Needs to default to whatever isResponseRequired, for cases where no selection/value is a valid state
-    if (!config.isResponseRequired) {
-      this.value = null
-    }
     // todo: add canPerformEarlyExit() behaviour
   }
 
@@ -78,7 +73,7 @@ export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptCo
    * regardless of any {@link PromptValidationException}s raised. */
   set value(val: PromptConfigType['value']) {
     try {
-      this.isValid = this.validate(val)
+      this.validate(val)
     } catch (e) {
       if (!(e instanceof PromptValidationException)) {
         throw e
@@ -101,6 +96,14 @@ export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptCo
     }
 
     return this.runner.run()
+  }
+
+  public isValid(): boolean {
+    try {
+      return this.validate(this.config.value)
+    } catch (e) {
+      return false
+    }
   }
 
   /**
