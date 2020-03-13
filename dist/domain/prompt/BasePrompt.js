@@ -8,17 +8,13 @@ class BasePrompt {
         this.interactionId = interactionId;
         this.runner = runner;
         this.error = null;
-        this.isValid = false;
-        if (!config.isResponseRequired) {
-            this.value = null;
-        }
     }
     get value() {
         return this.config.value;
     }
     set value(val) {
         try {
-            this.isValid = this.validate(val);
+            this.validate(val);
         }
         catch (e) {
             if (!(e instanceof PromptValidationException_1.default)) {
@@ -38,6 +34,14 @@ class BasePrompt {
             }
             return this.runner.run();
         });
+    }
+    isValid() {
+        try {
+            return this.validate(this.config.value);
+        }
+        catch (e) {
+            return false;
+        }
     }
 }
 exports.BasePrompt = BasePrompt;

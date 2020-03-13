@@ -11,12 +11,12 @@ export declare abstract class BasePrompt<PromptConfigType extends IPromptConfig<
     interactionId: string;
     runner: IFlowRunner;
     error: PromptValidationException | null;
-    isValid: boolean;
     constructor(config: PromptConfigType & IBasePromptConfig, interactionId: string, runner: IFlowRunner);
     get value(): PromptConfigType['value'];
     set value(val: PromptConfigType['value']);
     get isEmpty(): boolean;
     fulfill(val: PromptConfigType['value'] | undefined): Promise<IRichCursorInputRequired | undefined>;
+    isValid(): boolean;
     abstract validate(val?: PromptConfigType['value']): boolean;
 }
 export default BasePrompt;

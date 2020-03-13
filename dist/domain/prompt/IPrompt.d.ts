@@ -7,7 +7,7 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
     runner: IFlowRunner;
     value: PromptConfigType['value'];
     error: PromptValidationException | null;
-    isValid: boolean;
+    isValid(): boolean;
     validate(val: PromptConfigType['value']): boolean;
     fulfill(val: PromptConfigType['value']): Promise<IRichCursorInputRequired | undefined>;
 }
