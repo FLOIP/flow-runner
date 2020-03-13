@@ -34,7 +34,7 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
   /** Eror populated when {@link IPrompt.value} assignment raises  */
   error: PromptValidationException | null,
   /** State populated when {@link IPrompt.value} is assigned */
-  isValid: boolean, // !this.error
+  isValid(): boolean,
 
 
   /** @see {@link BasePrompt.validate} */
