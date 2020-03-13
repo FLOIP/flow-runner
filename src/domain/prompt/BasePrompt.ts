@@ -56,7 +56,10 @@ export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptCo
     public interactionId: string,
     public runner: IFlowRunner
   ) {
-
+    // Needs to default to whatever isResponseRequired, for cases where no selection/value is a valid state
+    if (!config.isResponseRequired) {
+      this.value = null
+    }
     // todo: add canPerformEarlyExit() behaviour
   }
 

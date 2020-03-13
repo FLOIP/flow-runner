@@ -27,11 +27,11 @@ import {ISelectOnePromptConfig} from './ISelectOnePromptConfig'
  * {@link IContact}.
  */
 export class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig & IBasePromptConfig> {
-  validate(choiceKey: string) {
+
+  validate(choiceKey?: string | null) {
     const {isResponseRequired, choices} = this.config
 
-    if (isResponseRequired
-      && choices.find(({key}) => key === choiceKey) == null) {
+    if (isResponseRequired && choices.find(({key}) => key === choiceKey) == null) {
       throw new ValidationException('Value provided must be in list of choices')
     }
 
