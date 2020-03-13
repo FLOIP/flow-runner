@@ -6,8 +6,7 @@ const ValidationException_1 = tslib_1.__importDefault(require("../exceptions/Val
 class SelectOnePrompt extends BasePrompt_1.default {
     validate(choiceKey) {
         const { isResponseRequired, choices } = this.config;
-        if (isResponseRequired
-            && choices.find(({ key }) => key === choiceKey) == null) {
+        if (isResponseRequired && choices.find(({ key }) => key === choiceKey) == null) {
             throw new ValidationException_1.default('Value provided must be in list of choices');
         }
         return true;

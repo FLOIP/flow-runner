@@ -2,6 +2,7 @@ import { IPromptConfig, KnownPrompts } from './IPrompt';
 export interface ISelectOnePromptConfig extends IPromptConfig<IChoice['key'] | null> {
     kind: KnownPrompts.SelectOne;
     choices: IChoice[];
+    emptyChoicesMessage?: string;
 }
 export interface IChoice {
     key: string;

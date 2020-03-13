@@ -9,6 +9,9 @@ class BasePrompt {
         this.runner = runner;
         this.error = null;
         this.isValid = false;
+        if (!config.isResponseRequired) {
+            this.value = null;
+        }
     }
     get value() {
         return this.config.value;
