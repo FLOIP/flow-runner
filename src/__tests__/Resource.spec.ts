@@ -1,7 +1,14 @@
-import {IResource, IResourceDefinitionContentTypeSpecific, Resource, SupportedContentType, SupportedMode} from '../index'
+import {
+  IContact,
+  IContext,
+  IResource,
+  IResourceDefinitionContentTypeSpecific,
+  Resource,
+  SupportedContentType,
+  SupportedMode,
+} from '../index'
 
 import ResourceNotFoundException from '../domain/exceptions/ResourceNotFoundException'
-import IContext from '../flow-spec/IContext'
 
 describe('Resource', () => {
   let baseResource: IResourceDefinitionContentTypeSpecific
@@ -29,12 +36,12 @@ describe('Resource', () => {
 
     resource = new Resource('some-uuid', values, {
       contact: {
-        id:'0',
-        name: 'Expressions'
-      },
+        id: '0',
+        name: 'Expressions',
+      } as IContact,
       languageId: 'some-language-id',
-      mode: SupportedMode.SMS
-    })
+      mode: SupportedMode.SMS,
+    } as IContext)
   })
 
   describe('getAudio', () => {
