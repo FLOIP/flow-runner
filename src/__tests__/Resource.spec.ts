@@ -28,10 +28,13 @@ describe('Resource', () => {
     ]
 
     resource = new Resource('some-uuid', values, {
-      contact: {name: 'Expressions'},
+      contact: {
+        id:'0',
+        name: 'Expressions'
+      },
       languageId: 'some-language-id',
       mode: SupportedMode.SMS
-    } as IContext)
+    })
   })
 
   describe('getAudio', () => {
