@@ -19,8 +19,9 @@
 
 export interface IContact {
   id: string,
-  name: string,
-  createdAt: string,
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: string | undefined,
 }
 
 export default IContact
