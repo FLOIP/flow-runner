@@ -164,7 +164,7 @@ export function createContextDataObjectFor(
 export function findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction {
   const interaction = findLast(interactions, {uuid})
   if (interaction == null) {
-    throw new ValidationException(`Unable to find interaction on context: ${uuid} in ${interactions.map(i => i.uuid)}`)
+    throw new ValidationException(`Unable to find interaction on context: ${uuid} in [${interactions.map(i => i.uuid)}]`)
   }
 
   return interaction
@@ -210,8 +210,12 @@ export function getActiveFlowFrom(ctx: IContext): IFlow {
   return findFlowWith(getActiveFlowIdFrom(ctx), ctx)
 }
 
-export function isLastBlockOn({nestedFlowBlockInteractionIdStack}: IContext, block: IBlock): boolean {
-  return nestedFlowBlockInteractionIdStack.length === 0 && isLastBlock(block)
+export function isLastBlockOn(ctx: IContext, block: IBlock): boolean {
+  return !isNested(ctx) && isLastBlock(block)
+}
+
+export function isNested({nestedFlowBlockInteractionIdStack}: IContext): boolean {
+  return nestedFlowBlockInteractionIdStack.length > 0
 }
 
 export const contextService: IContextService = {
@@ -222,6 +226,7 @@ export const contextService: IContextService = {
   getActiveFlowIdFrom,
   getActiveFlowFrom,
   isLastBlockOn,
+  isNested,
 }
 
 export interface IContextService {
@@ -232,4 +237,5 @@ export interface IContextService {
   getActiveFlowIdFrom(ctx: IContext): string,
   getActiveFlowFrom(ctx: IContext): IFlow,
   isLastBlockOn(ctx: IContext, block: IBlock): boolean,
+  isNested(ctx: IContext): boolean,
 }

@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {flatMap} from 'lodash'
+import {flatMap, set} from 'lodash'
 import IDataset, {createDefaultDataset} from './fixtures/IDataset'
 import FlowRunner from '../domain/FlowRunner'
 import {createContextDataObjectFor, IResources, IRichCursorInputRequired, SupportedMode} from '../index'
@@ -92,6 +92,8 @@ describe('FlowRunner', () => {
     describe('case block unable to find cursor', () => {
       it('shouldnt raise an exception requiring prompt', async () => {
         const context: IContext = require('./fixtures/2019-10-08-case-block-eval-issue.json')
+        set(context, 'cursor.promptConfig.isSubmitted', false) // this should be okay since we're attempting to replay a scenario
+
         const runner = new FlowRunner(context)
 
         await expect(runner.run()).rejects.toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')

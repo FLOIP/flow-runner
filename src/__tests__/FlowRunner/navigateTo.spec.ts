@@ -4,7 +4,6 @@ import FlowRunner, {BlockRunnerFactoryStore} from '../../domain/FlowRunner'
 import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 import {findInteractionWith, IBasePromptConfig, INumericPromptConfig, IRichCursor, KnownPrompts} from '../../index'
 import {createStaticFirstExitBlockRunnerFor} from '../fixtures/BlockRunner'
-import createFormattedDate from '../../domain/DateFormat'
 
 // todo: abstract some of the setup
 
@@ -153,7 +152,7 @@ describe('FlowRunner/navigateTo', () => {
         expect(ctx.interactions[0].flowId).toBe(ctx.firstFlowId)
       })
 
-      it('should be from nested flow when nested once', async () => {
+      it('should be from nested flow when nested once', async () => { // todo: not anymore?
 
         // RunFlow->(Message)->Message
         const ctx = dataset.contexts[2]
@@ -261,23 +260,6 @@ describe('FlowRunner/navigateTo', () => {
       })
 
       it.todo('should be from deepest nested flow\'s interaction when deeply nested')
-    })
-  })
-
-  describe('previous interaction', () => {
-    it('should populate exitAt onto it when prev present', async () => {
-      const ctx = dataset.contexts[1]
-      const block = ctx.flows[1].blocks[0]
-      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([
-        ['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor],
-      ]))
-      const lastIntx = last(ctx.interactions) as IBlockInteraction
-      const navigatedAt = new Date
-
-      expect(ctx.interactions.length).toBeGreaterThan(0)
-      expect(lastIntx.exitAt).toBeNull()
-      await runner.navigateTo(block, ctx, navigatedAt)
-      expect(lastIntx.exitAt).toBe(createFormattedDate(navigatedAt))
     })
   })
 })
