@@ -2,7 +2,12 @@ import "reflect-metadata";
 import {flatMap, set} from 'lodash'
 import IDataset, {createDefaultDataset} from './fixtures/IDataset'
 import FlowRunner from '../domain/FlowRunner'
-import {createContextDataObjectFor, IResources, IRichCursorInputRequired, SupportedMode} from '../index'
+import {
+  createContextDataObjectFor,
+  IResources,
+  IRichCursorInputRequired,
+  SupportedMode,
+} from '../index'
 import IContext from '../flow-spec/IContext'
 import ValidationException from '../domain/exceptions/ValidationException'
 import {deserialize, plainToClass, serialize} from 'class-transformer'
@@ -152,6 +157,50 @@ describe('FlowRunner', () => {
 
         prompt = (await runner.run())!.prompt
         expect(prompt.config.prompt).toEqual("95bd9e4a-9300-400a-9f61-8ede0325225f"); // the next prompt is the dogs message
+      })
+    })
+
+    describe('nested flow', () => {
+      it('should run', async () => {
+        const {flows, resources}: IContext = require('./fixtures/2020-04-14-run-flow-unable-to-find-flow.json')
+
+        const context = createContextDataObjectFor(
+          {id: '1'} as IContact,
+          'user-1234',
+          'org-1234',
+          flows,
+          'en_US',
+          SupportedMode.OFFLINE,
+          resources)
+
+        const runner = new FlowRunner(context)
+
+        let {prompt}: IRichCursorInputRequired = (await runner.run())!
+        expect(prompt).toBeTruthy()
+
+        prompt.value = null
+        prompt = (await runner.run())!.prompt
+        expect(prompt).toBeTruthy()
+
+        prompt.value = null
+        prompt = (await runner.run())!.prompt
+        expect(prompt).toBeTruthy()
+
+        prompt.value = null
+        prompt = (await runner.run())!.prompt
+        expect(prompt).toBeTruthy()
+
+        prompt.value = null
+        prompt = (await runner.run())!.prompt
+        expect(prompt).toBeTruthy()
+
+        prompt.value = null
+        prompt = (await runner.run())!.prompt
+        expect(prompt).toBeTruthy()
+
+        prompt.value = null
+        expect(await runner.run()!).toBeUndefined()
+        console.log(JSON.stringify(context))
       })
     })
   })
