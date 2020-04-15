@@ -191,7 +191,7 @@ class FlowRunner {
                 }
                 yield this.runActiveBlockOn(richCursor, block);
                 block = this.findNextBlockOnActiveFlowFor(ctx);
-                if (block == null) {
+                if (block == null && this._contextService.isNested(ctx)) {
                     block = this.stepOut(ctx);
                 }
                 if (block == null) {
@@ -207,14 +207,28 @@ class FlowRunner {
                 richCursor = yield this.navigateTo(block, ctx);
             } while (block != null);
             this.complete(ctx);
-            return undefined;
+            return;
         });
     }
-    complete(ctx) {
-        lodash_1.last(ctx.interactions).exitAt = DateFormat_1.default();
+    complete(ctx, completedAt = new Date) {
         delete ctx.cursor;
         ctx.deliveryStatus = DeliveryStatus_1.default.FINISHED_COMPLETE;
-        ctx.exitAt = DateFormat_1.default();
+        ctx.exitAt = DateFormat_1.default(completedAt);
+    }
+    completeInteraction(intx, selectedExitId, completedAt = new Date) {
+        intx.exitAt = DateFormat_1.default(completedAt);
+        intx.selectedExitId = selectedExitId;
+        return intx;
+    }
+    completeActiveNestedFlow(ctx, completedAt = new Date) {
+        const { nestedFlowBlockInteractionIdStack } = ctx;
+        if (!this._contextService.isNested(ctx)) {
+            throw new ValidationException_1.default('Unable to complete a nested flow when not nested.');
+        }
+        const runFlowIntx = this._contextService.findInteractionWith(lodash_1.last(nestedFlowBlockInteractionIdStack), ctx);
+        nestedFlowBlockInteractionIdStack.pop();
+        const exit = this.findFirstExitOnActiveFlowBlockFor(runFlowIntx, ctx);
+        return this.completeInteraction(runFlowIntx, exit.uuid, completedAt);
     }
     dehydrateCursor(richCursor) {
         return {
@@ -238,15 +252,23 @@ class FlowRunner {
     }
     runActiveBlockOn(richCursor, block) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            if (richCursor.prompt != null) {
-                richCursor.interaction.value = richCursor.prompt.value;
-                richCursor.interaction.hasResponse = true;
+            const { prompt, interaction } = richCursor;
+            const hasPrompt = prompt != null;
+            if (interaction == null) {
+                throw new ValidationException_1.default('Unable to run with absent cursor interaction');
+            }
+            if (hasPrompt && prompt.config.isSubmitted) {
+                throw new ValidationException_1.default('Unable to run against previously processed prompt');
+            }
+            if (prompt != null) {
+                interaction.value = prompt.value;
+                interaction.hasResponse = true;
             }
             const exit = yield this.createBlockRunnerFor(block, this.context)
                 .run(richCursor);
-            richCursor.interaction.selectedExitId = exit.uuid;
-            if (richCursor.prompt != null) {
-                richCursor.prompt.config.isSubmitted = true;
+            this.completeInteraction(interaction, exit.uuid);
+            if (hasPrompt) {
+                prompt.config.isSubmitted = true;
             }
             Object.values(this.behaviours)
                 .forEach(b => b.postInteractionComplete(richCursor.interaction, this.context));
@@ -260,7 +282,7 @@ class FlowRunner {
         }
         return factory(block, ctx);
     }
-    navigateTo(block, ctx, navigatedAt = new Date) {
+    navigateTo(block, ctx) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const { interactions, nestedFlowBlockInteractionIdStack } = ctx;
             const flowId = this._contextService.getActiveFlowIdFrom(ctx);
@@ -270,10 +292,6 @@ class FlowRunner {
                 : null;
             const richCursor = yield this.initializeOneBlock(block, flowId, originInteraction == null ? undefined : originInteraction.flowId, originInteractionId);
             this.cacheInteractionByBlockName(richCursor.interaction, block, this.context);
-            const lastInteraction = lodash_1.last(interactions);
-            if (lastInteraction != null) {
-                lastInteraction.exitAt = DateFormat_1.default(navigatedAt);
-            }
             interactions.push(richCursor.interaction);
             ctx.cursor = this.dehydrateCursor(richCursor);
             return richCursor;
@@ -293,35 +311,16 @@ class FlowRunner {
         ctx.nestedFlowBlockInteractionIdStack.push(runFlowInteraction.uuid);
         const firstNestedBlock = lodash_1.first(this._contextService.getActiveFlowFrom(ctx).blocks);
         if (firstNestedBlock == null) {
-            return undefined;
+            return;
         }
         return firstNestedBlock;
     }
     stepOut(ctx) {
-        const { nestedFlowBlockInteractionIdStack } = ctx;
-        const { _contextService: contextService } = this;
-        if (nestedFlowBlockInteractionIdStack.length === 0) {
-            return;
-        }
-        const lastRunFlowIntxId = nestedFlowBlockInteractionIdStack.pop();
-        const lastRunFlowIntx = contextService.findInteractionWith(lastRunFlowIntxId, ctx);
-        const lastRunFlowBlock = contextService.findBlockOnActiveFlowWith(lastRunFlowIntx.blockId, ctx);
-        const { uuid: lastRunFlowBlockFirstExitId, destinationBlock: destinationBlockId } = lodash_1.first(lastRunFlowBlock.exits);
-        lastRunFlowIntx.selectedExitId = lastRunFlowBlockFirstExitId;
-        if (destinationBlockId == null) {
-            return;
-        }
-        return contextService.findBlockOnActiveFlowWith(destinationBlockId, ctx);
+        return this.findNextBlockFrom(this.completeActiveNestedFlow(ctx), ctx);
     }
-    findInteractionForActiveNestedFlow({ nestedFlowBlockInteractionIdStack, interactions }) {
-        if (nestedFlowBlockInteractionIdStack.length === 0) {
-            throw new ValidationException_1.default('Unable to find interaction for nested flow when not nested');
-        }
-        const intx = lodash_1.findLast(interactions, { uuid: lodash_1.last(nestedFlowBlockInteractionIdStack) });
-        if (intx == null) {
-            throw new ValidationException_1.default('Unable to find interaction for deepest flow nesting');
-        }
-        return intx;
+    findFirstExitOnActiveFlowBlockFor({ blockId }, ctx) {
+        const { exits } = this._contextService.findBlockOnActiveFlowWith(blockId, ctx);
+        return lodash_1.first(exits);
     }
     findNextBlockOnActiveFlowFor(ctx) {
         const flow = this._contextService.getActiveFlowFrom(ctx);
@@ -350,7 +349,7 @@ class FlowRunner {
             exitAt: undefined,
             hasResponse: false,
             value: undefined,
-            selectedExitId: null,
+            selectedExitId: undefined,
             details: {},
             type,
             originFlowId,

@@ -34,7 +34,7 @@ exports.createContextDataObjectFor = createContextDataObjectFor;
 function findInteractionWith(uuid, { interactions }) {
     const interaction = lodash_1.findLast(interactions, { uuid });
     if (interaction == null) {
-        throw new ValidationException_1.default(`Unable to find interaction on context: ${uuid} in ${interactions.map(i => i.uuid)}`);
+        throw new ValidationException_1.default(`Unable to find interaction on context: ${uuid} in [${interactions.map(i => i.uuid)}]`);
     }
     return interaction;
 }
@@ -74,10 +74,14 @@ function getActiveFlowFrom(ctx) {
     return findFlowWith(getActiveFlowIdFrom(ctx), ctx);
 }
 exports.getActiveFlowFrom = getActiveFlowFrom;
-function isLastBlockOn({ nestedFlowBlockInteractionIdStack }, block) {
-    return nestedFlowBlockInteractionIdStack.length === 0 && IBlock_1.isLastBlock(block);
+function isLastBlockOn(ctx, block) {
+    return !isNested(ctx) && IBlock_1.isLastBlock(block);
 }
 exports.isLastBlockOn = isLastBlockOn;
+function isNested({ nestedFlowBlockInteractionIdStack }) {
+    return nestedFlowBlockInteractionIdStack.length > 0;
+}
+exports.isNested = isNested;
 exports.contextService = {
     findInteractionWith,
     findFlowWith,
@@ -86,5 +90,6 @@ exports.contextService = {
     getActiveFlowIdFrom,
     getActiveFlowFrom,
     isLastBlockOn,
+    isNested,
 };
 //# sourceMappingURL=IContext.js.map
