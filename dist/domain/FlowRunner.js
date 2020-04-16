@@ -291,9 +291,9 @@ class FlowRunner {
                 ? this._contextService.findInteractionWith(originInteractionId, ctx)
                 : null;
             const richCursor = yield this.initializeOneBlock(block, flowId, originInteraction == null ? undefined : originInteraction.flowId, originInteractionId);
-            this.cacheInteractionByBlockName(richCursor.interaction, block, this.context);
             interactions.push(richCursor.interaction);
             ctx.cursor = this.dehydrateCursor(richCursor);
+            this.cacheInteractionByBlockName(richCursor.interaction, block, this.context);
             return richCursor;
         });
     }
