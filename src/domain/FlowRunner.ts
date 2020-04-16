@@ -574,11 +574,11 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       originInteraction == null ? undefined : originInteraction.flowId,
       originInteractionId)
 
-    // todo: this could be findFirstExitOnActiveFlowBlockFor to an Expressions Behaviour
-    this.cacheInteractionByBlockName(richCursor.interaction, block as IMessageBlock, this.context)
-
     interactions.push(richCursor.interaction)
     ctx.cursor = this.dehydrateCursor(richCursor)
+
+    // todo: this could be findFirstExitOnActiveFlowBlockFor to an Expressions Behaviour
+    this.cacheInteractionByBlockName(richCursor.interaction, block as IMessageBlock, this.context)
 
     return richCursor
   }
