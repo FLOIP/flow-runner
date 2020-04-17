@@ -520,7 +520,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
 
     if (prompt != null) {
       interaction.value = prompt.value
-      interaction.hasResponse = true
+      interaction.hasResponse = interaction.value != null
     }
 
     const exit = await this.createBlockRunnerFor(block, this.context)

@@ -22,6 +22,13 @@ _defaults:
     <<: *defaults/block
     type: Core\RunFlow
 
+  - &defaults/blocks/OpenResponse
+    <<: *defaults/block
+    config:
+      prompt: My first block config's prompt
+      promptAudio: 066a593b-16e7-4b70-887a-bf6cb7f3fdff
+    type: MobilePrimitives\OpenResponse
+
   - &defaults/intx
     entryAt: "2020-10-10T00:00:00.000Z"
     exitAt:
@@ -132,6 +139,12 @@ _blocks:
     uuid: &blockId/RunFlow->()/fe809b0a-d4d5-45bd-941c-defb12237165 fe809b0a-d4d5-45bd-941c-defb12237165
     type: Core\RunFlow
 
+  - &block/OpenResponse->(void)/74651b3c-941b-427c-853e-50b3d864967e
+    <<: *defaults/blocks/OpenResponse
+    uuid: &blockId/OpenResponse->()/74651b3c-941b-427c-853e-50b3d864967e 74651b3c-941b-427c-853e-50b3d864967e
+    exits:
+      - *exit/->void/b9485293-90a6-456e-9291-81de5e3a4a89
+
 _flows:
   - &flow/(Message)/957a8923-428a-420f-8053-d23927e0eea0
     <<: *defaults/flow
@@ -154,6 +167,12 @@ _flows:
       - *block/RunFlow->(Message)/efec92a9-a4b1-482c-b448-3901b84c0cd1
       - *block/Message->(void)/164f04f7-3daf-420b-9a5b-0d3b16144ec5
 
+  - &flow/(OpenResponse)/c1130165-4d53-44c7-af5e-4eb743316f43
+    <<: *defaults/flow
+    uuid: &flowId/(OpenResponse)/c1130165-4d53-44c7-af5e-4eb743316f43 c1130165-4d53-44c7-af5e-4eb743316f43
+    blocks:
+      - *block/OpenResponse->(void)/74651b3c-941b-427c-853e-50b3d864967e
+
 _block_interactions:
   - &intx/Message->void/1c7317fc-b644-4da4-b1ff-1807ce55c17e
     <<: *defaults/intx
@@ -166,6 +185,7 @@ _block_interactions:
     uuid: &intxId/Message->Message/09894745-38ba-456f-aab4-720b7d09d5b3 09894745-38ba-456f-aab4-720b7d09d5b3
     blockId: *blockId/Message->(Message)/5e5d397a-a606-49e0-9a4d-8553a1af52aa
     flowId: *flowId/(Message|Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
+    # TODO: Message block can't have a value here, should be null
     value: Test value
     entryAt: "2023-10-10T23:23:23.023Z"
     selectedExitId: *exitId/->Message/5670b311-0895-43ba-acc4-07136cf64591
@@ -183,6 +203,14 @@ _block_interactions:
     blockId: *blockId/RunFlow->()/efec92a9-a4b1-482c-b448-3901b84c0cd1
     flowId: *flowId/(RunFlow|Message)/028a055c-e988-4050-81a2-e11934bdbcad
     selectedExitId: *exitId/->Message/36b2c0ee-bcba-463c-aeab-9f9c8fb990df
+
+  - &intx/OpenResponse->void/d0c0c282-6653-41b0-99e0-ac8f2333773f
+    <<: *defaults/intx
+    uuid: &intxId/OpenResponse->void/d0c0c282-6653-41b0-99e0-ac8f2333773f d0c0c282-6653-41b0-99e0-ac8f2333773f
+    blockId: *blockId/OpenResponse->()/74651b3c-941b-427c-853e-50b3d864967e
+    flowId: *flowId/(OpenResponse)/c1130165-4d53-44c7-af5e-4eb743316f43
+    value: Test value
+    entryAt: "2023-10-10T23:23:23.023Z"
 
 _resources:
   - &res/42e635ea-bc57-4c68-a8d6-20f648968bec
@@ -288,3 +316,21 @@ contexts:
       - *res/164f04f7-3daf-420b-9a5b-0d3b16144ec5
       - *res/efec92a9-a4b1-482c-b448-3901b84c0cd1
       - *res/fe809b0a-d4d5-45bd-941c-defb12237165
+
+  # single flow, single interaction, OpenResponseBlock
+  - <<: *defaults/context
+    flows:
+      - *flow/(OpenResponse)/c1130165-4d53-44c7-af5e-4eb743316f43
+    firstFlowId: *flowId/(OpenResponse)/c1130165-4d53-44c7-af5e-4eb743316f43
+    interactions:
+      - *intx/OpenResponse->void/d0c0c282-6653-41b0-99e0-ac8f2333773f
+    cursor:
+      interactionId: *intxId/OpenResponse->void/d0c0c282-6653-41b0-99e0-ac8f2333773f
+      promptConfig:
+        kind: Open
+        prompt: What is it?
+        isResponseRequired: true
+        value: "it is it"
+        isSubmitted: false
+    # TODO: An AudioPrompt Resource missing that could cause problems when trying to use it
+    resources: []
