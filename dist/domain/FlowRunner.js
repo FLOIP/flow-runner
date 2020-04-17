@@ -262,7 +262,7 @@ class FlowRunner {
             }
             if (prompt != null) {
                 interaction.value = prompt.value;
-                interaction.hasResponse = true;
+                interaction.hasResponse = interaction.value != null;
             }
             const exit = yield this.createBlockRunnerFor(block, this.context)
                 .run(richCursor);
