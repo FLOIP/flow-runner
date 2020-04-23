@@ -363,7 +363,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
 
       block = this.findNextBlockOnActiveFlowFor(ctx)
 
-      if (block == null && this._contextService.isNested(ctx)) {
+      while (block == null && this._contextService.isNested(ctx)) {
         // nested flow complete, while more of parent flow remains
         block = this.stepOut(ctx)
       }
@@ -578,7 +578,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     ctx.cursor = this.dehydrateCursor(richCursor)
 
     // todo: this could be findFirstExitOnActiveFlowBlockFor to an Expressions Behaviour
-    this.cacheInteractionByBlockName(richCursor.interaction, block as IMessageBlock, this.context)
+    this.cacheInteractionByBlockName(richCursor.interaction, block as IMessageBlock, ctx)
 
     return richCursor
   }
