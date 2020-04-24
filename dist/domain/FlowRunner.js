@@ -191,7 +191,7 @@ class FlowRunner {
                 }
                 yield this.runActiveBlockOn(richCursor, block);
                 block = this.findNextBlockOnActiveFlowFor(ctx);
-                if (block == null && this._contextService.isNested(ctx)) {
+                while (block == null && this._contextService.isNested(ctx)) {
                     block = this.stepOut(ctx);
                 }
                 if (block == null) {
@@ -293,7 +293,7 @@ class FlowRunner {
             const richCursor = yield this.initializeOneBlock(block, flowId, originInteraction == null ? undefined : originInteraction.flowId, originInteractionId);
             interactions.push(richCursor.interaction);
             ctx.cursor = this.dehydrateCursor(richCursor);
-            this.cacheInteractionByBlockName(richCursor.interaction, block, this.context);
+            this.cacheInteractionByBlockName(richCursor.interaction, block, ctx);
             return richCursor;
         });
     }
