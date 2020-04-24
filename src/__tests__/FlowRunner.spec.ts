@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {flatMap, set} from 'lodash'
+import {flatMap, set, every} from 'lodash'
 import IDataset, {createDefaultDataset} from './fixtures/IDataset'
 import FlowRunner from '../domain/FlowRunner'
 import {
@@ -14,6 +14,7 @@ import {deserialize, plainToClass, serialize} from 'class-transformer'
 import Context from '../flow-spec/Context'
 import IContact from '../flow-spec/IContact'
 import SelectOnePrompt from '../domain/prompt/SelectOnePrompt'
+import DeliveryStatus from '../flow-spec/DeliveryStatus'
 
 
 describe('FlowRunner', () => {
@@ -200,7 +201,38 @@ describe('FlowRunner', () => {
 
         prompt.value = null
         expect(await runner.run()!).toBeUndefined()
-        console.log(JSON.stringify(context))
+      })
+
+      it('should handle stepping out multiple times', async () => {
+        const context: IContext = require('./fixtures/2020-04-23-run-flow-unable-to-step-out-doubly-nested.context.json')
+        const runner = new FlowRunner(context)
+
+        let {prompt}: IRichCursorInputRequired = (await runner.run())!
+        expect(prompt).toBeTruthy()
+
+        prompt.value = 'Run Tree B' // selects Run Tree B [Message, SelectOne, RunFlow(5b8c87d6-de90-4bc4-8668-4f0400002a2d)]
+        prompt = (await runner.run())!.prompt
+        expect(prompt).toBeTruthy()
+
+        prompt.value = null // message
+        prompt = (await runner.run())!.prompt
+        expect(prompt).toBeTruthy()
+
+        prompt.value = 'Two' // select two, next block is RunFlow regardless of choice
+        prompt = (await runner.run())!.prompt
+        expect(prompt).toBeTruthy()
+
+        prompt.value = null
+        prompt = (await runner.run())!.prompt
+        expect(prompt).toBeTruthy()
+
+        prompt.value = 50
+        const cursor = await runner.run()
+        expect(cursor).toBeUndefined()
+        expect(context.deliveryStatus).toBe(DeliveryStatus.FINISHED_COMPLETE)
+        expect(context.exitAt).toBeTruthy()
+
+        expect(every(context.interactions, i => i.exitAt)).toBeTruthy()
       })
     })
   })
