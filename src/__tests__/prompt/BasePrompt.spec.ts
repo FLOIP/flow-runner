@@ -78,12 +78,13 @@ describe('BasePrompt', () => {
   describe('block', () => {
     it('should return block when block exists on runner', () => {
       const config: IPromptConfig<any> & IBasePromptConfig = dataset._prompts[0]
+      const firstInteractionId = '09894745-38ba-456f-aab4-720b7d09d5b3'
       const
         ctx = dataset.contexts[1] as IContextInputRequired,
         runner = new FlowRunner(ctx),
         prompt = new MessagePrompt(
           config as IMessagePromptConfig & IBasePromptConfig,
-          '09894745-38ba-456f-aab4-720b7d09d5b3', // first interaction
+          firstInteractionId,
           runner)
 
       expect(prompt.block).toBe(ctx.flows[1].blocks[0])
