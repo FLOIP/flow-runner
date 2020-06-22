@@ -1,7 +1,7 @@
 import IPrompt, { IBasePromptConfig, IPromptConfig } from './IPrompt';
 import PromptValidationException from '../exceptions/PromptValidationException';
 import IFlowRunner from '../IFlowRunner';
-import { IRichCursorInputRequired } from '../..';
+import { IBlock, IRichCursorInputRequired } from '../..';
 export declare type TGenericPrompt = IPrompt<IPromptConfig<any> & IBasePromptConfig>;
 export interface IBasePromptConstructor {
     new (): IPrompt<IPromptConfig<any> & IBasePromptConfig>;
@@ -15,6 +15,7 @@ export declare abstract class BasePrompt<PromptConfigType extends IPromptConfig<
     get value(): PromptConfigType['value'];
     set value(val: PromptConfigType['value']);
     get isEmpty(): boolean;
+    get block(): IBlock | undefined;
     fulfill(val: PromptConfigType['value'] | undefined): Promise<IRichCursorInputRequired | undefined>;
     isValid(): boolean;
     abstract validate(val?: PromptConfigType['value']): boolean;

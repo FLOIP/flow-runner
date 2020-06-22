@@ -2,6 +2,10 @@ import IBehaviour from '../IBehaviour';
 import IBlockInteraction from '../../../flow-spec/IBlockInteraction';
 import IContext, { IRichCursor, IRichCursorInputRequired } from '../../../flow-spec/IContext';
 import { IFlowNavigator, IPromptBuilder } from '../../FlowRunner';
+export declare enum PeekDirection {
+    RIGHT = "RIGHT",
+    LEFT = "LEFT"
+}
 export interface IBackTrackingBehaviour extends IBehaviour {
     rebuildIndex(): void;
     jumpTo(interaction: IBlockInteraction): Promise<IRichCursor>;
@@ -16,7 +20,8 @@ export declare class BasicBacktrackingBehaviour implements IBackTrackingBehaviou
     rebuildIndex(): void;
     seek(steps?: number, context?: IContext): Promise<IRichCursorInputRequired>;
     jumpTo(intx: IBlockInteraction, context?: IContext): Promise<IRichCursor>;
-    peek(steps?: number, context?: IContext): Promise<IRichCursorInputRequired>;
+    _findInteractiveInteractionAt(steps?: number, context?: IContext, direction?: PeekDirection): IBlockInteraction;
+    peek(steps?: number, context?: IContext, direction?: PeekDirection): Promise<IRichCursorInputRequired>;
     postInteractionCreate(interaction: IBlockInteraction, _context: IContext): IBlockInteraction;
     postInteractionComplete(_interaction: IBlockInteraction, _context: IContext): void;
 }
