@@ -31,8 +31,8 @@ import FlowRunner, {IFlowNavigator, IPromptBuilder, NON_INTERACTIVE_BLOCK_TYPES}
 import {findBlockWith} from '../../..'
 
 export enum PeekDirection {
-  FROM_LEFT = 'FROM_LEFT',
-  FROM_RIGHT = 'FROM_RIGHT',
+  RIGHT = 'RIGHT',
+  LEFT = 'LEFT',
 }
 
 /**
@@ -114,10 +114,10 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
       context)
   }
   
-  _findInteractiveInteractionAt(steps = 0, context: IContext = this.context, direction = PeekDirection.FROM_RIGHT): IBlockInteraction {
+  _findInteractiveInteractionAt(steps = 0, context: IContext = this.context, direction = PeekDirection.LEFT): IBlockInteraction {
     const _find = {
-      [PeekDirection.FROM_RIGHT]: findLast,
-      [PeekDirection.FROM_LEFT]: find,
+      [PeekDirection.RIGHT]: find,
+      [PeekDirection.LEFT]: findLast,
     }[direction]
     
     if (_find == null) {
@@ -136,7 +136,7 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
     return intx
   }
 
-  async peek(steps = 0, context: IContext = this.context, direction = PeekDirection.FROM_RIGHT): Promise<IRichCursorInputRequired> {
+  async peek(steps = 0, context: IContext = this.context, direction = PeekDirection.LEFT): Promise<IRichCursorInputRequired> {
     const intx = this._findInteractiveInteractionAt(steps, context, direction)
     const block = findBlockWith(
       intx.blockId,

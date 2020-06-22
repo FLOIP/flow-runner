@@ -68,7 +68,7 @@ describe('BasicBacktrackingBehaviour', () => {
       const block: IBlock = backtracking.context.flows[0].blocks[0]
       const interaction: IBlockInteraction = first(backtracking.context.interactions)!
 
-      const cursor = await backtracking.peek(0, backtracking.context, PeekDirection.FROM_LEFT)
+      const cursor = await backtracking.peek(0, backtracking.context, PeekDirection.RIGHT)
       expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
       expect(interaction.value).toBeTruthy()
       expect(cursor.prompt).toBe(virtualPrompt)
