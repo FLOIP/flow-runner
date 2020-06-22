@@ -22,7 +22,10 @@
 import IPrompt, {IBasePromptConfig, IPromptConfig} from './IPrompt'
 import PromptValidationException from '../exceptions/PromptValidationException'
 import IFlowRunner from '../IFlowRunner'
-import {IRichCursorInputRequired} from '../..'
+import {IBlock, IRichCursorInputRequired} from '../..'
+import {findFlowWith, findInteractionWith} from '../../flow-spec/IContext'
+import {findBlockWith} from '../../flow-spec/IFlow'
+import {ValidationException} from '../../domain/exceptions/ValidationException'
 
 // export enum KnownPrompts {
 //   Message,
@@ -86,8 +89,24 @@ export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptCo
   }
 
   /** Whether or not a value has been set on this instance. */
-  get isEmpty() {
+  get isEmpty(): boolean {
     return this.value === undefined
+  }
+  
+  get block(): IBlock | undefined {
+    const ctx = this.runner.context
+    const intx = findInteractionWith(this.interactionId, ctx)
+    const flow = findFlowWith(intx.flowId, ctx)
+
+    try {
+      return findBlockWith(intx.blockId, flow)
+    } catch (e) {
+      if (!(e instanceof ValidationException)) {
+        throw e
+      }
+      
+      return
+    }
   }
 
   async fulfill(val: PromptConfigType['value'] | undefined): Promise<IRichCursorInputRequired | undefined> {

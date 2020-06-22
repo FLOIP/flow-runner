@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {findLast, findLastIndex, forEachRight, includes, last} from 'lodash'
+import {findLast, findLastIndex, forEachRight, includes, last, find} from 'lodash'
 import IBehaviour from '../IBehaviour'
 import IBlockInteraction from '../../../flow-spec/IBlockInteraction'
 import IContext, {
@@ -29,6 +29,11 @@ import IContext, {
 import ValidationException from '../../exceptions/ValidationException'
 import FlowRunner, {IFlowNavigator, IPromptBuilder, NON_INTERACTIVE_BLOCK_TYPES} from '../../FlowRunner'
 import {findBlockWith} from '../../..'
+
+export enum PeekDirection {
+  RIGHT = 'RIGHT',
+  LEFT = 'LEFT',
+}
 
 /**
  * Interface for time-travel within interaction history.
@@ -108,16 +113,31 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
       findBlockOnActiveFlowWith(intx.blockId, context),
       context)
   }
-
-  async peek(steps = 0, context: IContext = this.context): Promise<IRichCursorInputRequired> {
+  
+  _findInteractiveInteractionAt(steps = 0, context: IContext = this.context, direction = PeekDirection.LEFT): IBlockInteraction {
+    const _find = {
+      [PeekDirection.RIGHT]: find,
+      [PeekDirection.LEFT]: findLast,
+    }[direction]
+    
+    if (_find == null) {
+      throw new ValidationException(`Unknown \`direction\` provided to findInteractiveInteractionAt() - 
+        ${JSON.stringify(direction)}`)
+    }
+    
     let _steps = steps + 1 // setup for while-loop
-    const intx = findLast(context.interactions, ({type}) =>
+    const intx = _find(context.interactions, ({type}) =>
       !includes(NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0)
 
     if (intx == null || _steps > 0) {
       throw new ValidationException(`Unable to backtrack to an interaction that far back ${JSON.stringify({steps})}`)
     }
+    
+    return intx
+  }
 
+  async peek(steps = 0, context: IContext = this.context, direction = PeekDirection.LEFT): Promise<IRichCursorInputRequired> {
+    const intx = this._findInteractiveInteractionAt(steps, context, direction)
     const block = findBlockWith(
       intx.blockId,
       findFlowWith(intx.flowId, context))

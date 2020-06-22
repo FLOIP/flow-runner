@@ -7,7 +7,7 @@ import {IBasePromptConfig, IPromptConfig} from '../../index'
 import {NON_INTERACTIVE_BLOCK_TYPES} from '../../domain/FlowRunner'
 import IPrompt from '../../domain/prompt/IPrompt'
 import IBlock from '../../flow-spec/IBlock'
-import BasicBacktrackingBehaviour from '../../domain/behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour'
+import BasicBacktrackingBehaviour, {PeekDirection} from '../../domain/behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour'
 
 
 describe('BasicBacktrackingBehaviour', () => {
@@ -53,6 +53,22 @@ describe('BasicBacktrackingBehaviour', () => {
       const interaction: IBlockInteraction = last(backtracking.context.interactions)!
 
       const cursor = await backtracking.peek()
+      expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
+      expect(interaction.value).toBeTruthy()
+      expect(cursor.prompt).toBe(virtualPrompt)
+      expect(cursor.prompt.value).toEqual(interaction.value)
+    })
+
+    it('should return prompt for first interaction when default args provided and `fromLeft` is truthy', async () => {
+      // set up for fromLeft // reverse traversal
+      const firstInteraction = backtracking.context.interactions[0]
+      backtracking.context.interactions[0] = backtracking.context.interactions[5]
+      backtracking.context.interactions[5] = firstInteraction
+
+      const block: IBlock = backtracking.context.flows[0].blocks[0]
+      const interaction: IBlockInteraction = first(backtracking.context.interactions)!
+
+      const cursor = await backtracking.peek(0, backtracking.context, PeekDirection.RIGHT)
       expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
       expect(interaction.value).toBeTruthy()
       expect(cursor.prompt).toBe(virtualPrompt)
