@@ -7,7 +7,7 @@ import {IBasePromptConfig, IPromptConfig} from '../../index'
 import {NON_INTERACTIVE_BLOCK_TYPES} from '../../domain/FlowRunner'
 import IPrompt from '../../domain/prompt/IPrompt'
 import IBlock from '../../flow-spec/IBlock'
-import BasicBacktrackingBehaviour from '../../domain/behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour'
+import BasicBacktrackingBehaviour, {PeekDirection} from '../../domain/behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour'
 
 
 describe('BasicBacktrackingBehaviour', () => {
@@ -68,7 +68,7 @@ describe('BasicBacktrackingBehaviour', () => {
       const block: IBlock = backtracking.context.flows[0].blocks[0]
       const interaction: IBlockInteraction = first(backtracking.context.interactions)!
 
-      const cursor = await backtracking.peek(0, backtracking.context, true)
+      const cursor = await backtracking.peek(0, backtracking.context, PeekDirection.FROM_LEFT)
       expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
       expect(interaction.value).toBeTruthy()
       expect(cursor.prompt).toBe(virtualPrompt)

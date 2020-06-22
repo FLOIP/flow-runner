@@ -30,6 +30,11 @@ import ValidationException from '../../exceptions/ValidationException'
 import FlowRunner, {IFlowNavigator, IPromptBuilder, NON_INTERACTIVE_BLOCK_TYPES} from '../../FlowRunner'
 import {findBlockWith} from '../../..'
 
+export enum PeekDirection {
+  FROM_LEFT = 'FROM_LEFT',
+  FROM_RIGHT = 'FROM_RIGHT',
+}
+
 /**
  * Interface for time-travel within interaction history.
  */
@@ -109,9 +114,18 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
       context)
   }
   
-  _findInteractiveInteractionAt(steps = 0, context: IContext = this.context, fromLeft = false): IBlockInteraction {
+  _findInteractiveInteractionAt(steps = 0, context: IContext = this.context, direction = PeekDirection.FROM_RIGHT): IBlockInteraction {
+    const _find = {
+      [PeekDirection.FROM_RIGHT]: findLast,
+      [PeekDirection.FROM_LEFT]: find,
+    }[direction]
+    
+    if (_find == null) {
+      throw new ValidationException(`Unknown \`direction\` provided to findInteractiveInteractionAt() - 
+        ${JSON.stringify(direction)}`)
+    }
+    
     let _steps = steps + 1 // setup for while-loop
-    const _find = fromLeft ? find : findLast
     const intx = _find(context.interactions, ({type}) =>
       !includes(NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0)
 
@@ -122,8 +136,8 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
     return intx
   }
 
-  async peek(steps = 0, context: IContext = this.context, fromLeft = false): Promise<IRichCursorInputRequired> {
-    const intx = this._findInteractiveInteractionAt(steps, context, fromLeft)
+  async peek(steps = 0, context: IContext = this.context, direction = PeekDirection.FROM_RIGHT): Promise<IRichCursorInputRequired> {
+    const intx = this._findInteractiveInteractionAt(steps, context, direction)
     const block = findBlockWith(
       intx.blockId,
       findFlowWith(intx.flowId, context))
