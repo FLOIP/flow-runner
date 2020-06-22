@@ -19,7 +19,7 @@
 
 import PromptValidationException from '../exceptions/PromptValidationException'
 import IFlowRunner from '../IFlowRunner'
-import {IRichCursorInputRequired} from '../..'
+import {IBlock, IRichCursorInputRequired} from '../..'
 
 /**
  * Primary interface for interacting with an {@link IContact}; typically not immplemented fully, it is recommended that
@@ -30,6 +30,7 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
   config: PromptConfigType,
   runner: IFlowRunner,
 
+  block?: IBlock,
   value: PromptConfigType['value'],
   /** Eror populated when {@link IPrompt.value} assignment raises  */
   error: PromptValidationException | null,
