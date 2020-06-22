@@ -59,6 +59,22 @@ describe('BasicBacktrackingBehaviour', () => {
       expect(cursor.prompt.value).toEqual(interaction.value)
     })
 
+    it('should return prompt for first interaction when default args provided and `fromLeft` is truthy', async () => {
+      // set up for fromLeft // reverse traversal
+      const firstInteraction = backtracking.context.interactions[0]
+      backtracking.context.interactions[0] = backtracking.context.interactions[5]
+      backtracking.context.interactions[5] = firstInteraction
+
+      const block: IBlock = backtracking.context.flows[0].blocks[0]
+      const interaction: IBlockInteraction = first(backtracking.context.interactions)!
+
+      const cursor = await backtracking.peek(0, backtracking.context, true)
+      expect(backtracking.promptBuilder.buildPromptFor).toHaveBeenCalledWith(block, interaction)
+      expect(interaction.value).toBeTruthy()
+      expect(cursor.prompt).toBe(virtualPrompt)
+      expect(cursor.prompt.value).toEqual(interaction.value)
+    })
+
     it('should use interaction `steps` places from the end of interactions list', async () => {
       const block: IBlock = backtracking.context.flows[0].blocks[0]
       const interaction: IBlockInteraction = backtracking.context.interactions[2]

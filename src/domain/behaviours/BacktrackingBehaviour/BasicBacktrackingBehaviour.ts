@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {findLast, findLastIndex, forEachRight, includes, last} from 'lodash'
+import {findLast, findLastIndex, forEachRight, includes, last, find} from 'lodash'
 import IBehaviour from '../IBehaviour'
 import IBlockInteraction from '../../../flow-spec/IBlockInteraction'
 import IContext, {
@@ -108,16 +108,22 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
       findBlockOnActiveFlowWith(intx.blockId, context),
       context)
   }
-
-  async peek(steps = 0, context: IContext = this.context): Promise<IRichCursorInputRequired> {
+  
+  _findInteractiveInteractionAt(steps = 0, context: IContext = this.context, fromLeft = false): IBlockInteraction {
     let _steps = steps + 1 // setup for while-loop
-    const intx = findLast(context.interactions, ({type}) =>
+    const _find = fromLeft ? find : findLast
+    const intx = _find(context.interactions, ({type}) =>
       !includes(NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0)
 
     if (intx == null || _steps > 0) {
       throw new ValidationException(`Unable to backtrack to an interaction that far back ${JSON.stringify({steps})}`)
     }
+    
+    return intx
+  }
 
+  async peek(steps = 0, context: IContext = this.context, fromLeft = false): Promise<IRichCursorInputRequired> {
+    const intx = this._findInteractiveInteractionAt(steps, context, fromLeft)
     const block = findBlockWith(
       intx.blockId,
       findFlowWith(intx.flowId, context))
