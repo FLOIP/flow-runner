@@ -1,10 +1,11 @@
 import PromptValidationException from '../exceptions/PromptValidationException';
 import IFlowRunner from '../IFlowRunner';
-import { IRichCursorInputRequired } from '../..';
+import { IBlock, IRichCursorInputRequired } from '../..';
 export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
     interactionId: string;
     config: PromptConfigType;
     runner: IFlowRunner;
+    block?: IBlock;
     value: PromptConfigType['value'];
     error: PromptValidationException | null;
     isValid(): boolean;
