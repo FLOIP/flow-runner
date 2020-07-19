@@ -20,7 +20,7 @@
   "dependencies": {
     "@floip/expression-evaluator": "^1.1.3",
     "class-transformer": "^0.2.3",
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.19",
     "reflect-metadata": "^0.1.13",
     "sp2": "^1.5.1",
     "tslib": "^1.10.0",
