@@ -59,3 +59,6 @@ export * from './flow-spec/IContext'
 export * from './flow-spec/IFlow'
 export * from './flow-spec/IContact'
 export * from './flow-spec/SupportedMode'
+
+export * from './flow-spec/Contact'
+export * from './flow-spec/ContactProperty'
