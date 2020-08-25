@@ -18,9 +18,7 @@
  **/
 
  export interface IContactProperty {
-  id: string,
   contactPropertyFieldName: string,
-  orgId: string,
   createdAt: string,
   updatedAt: string,
   deletedAt: string | undefined,

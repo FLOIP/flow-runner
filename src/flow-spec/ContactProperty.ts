@@ -18,13 +18,13 @@
  **/
 
  import IContactProperty from './IContactProperty'
+ import moment from 'moment'
 
 export class ContactProperty implements IContactProperty {
   deletedAt: string | undefined
-  createdAt: string = Date.now().toString()
-  updatedAt: string = Date.now().toString()
+  createdAt: string = new Date().toISOString()
+  updatedAt: string = new Date().toISOString()
   __value__!: string
-  id!: string
 
   constructor() {}
 
@@ -34,16 +34,7 @@ export class ContactProperty implements IContactProperty {
 
   set contactPropertyFieldName(contactPropertyFieldName: string) {
       this.contactPropertyFieldName = contactPropertyFieldName
-      this.updatedAt = Date.now().toString()
-  }
-
-  get orgId(): string {
-      return this.orgId
-  }
-
-  set orgId(orgId: string) {
-      this.orgId = orgId
-      this.updatedAt = Date.now().toString()
+      this.updatedAt = new Date().toISOString()
   }
 
   get value(): string {
@@ -52,7 +43,7 @@ export class ContactProperty implements IContactProperty {
 
   set value(value: string) {
       this.__value__ = value
-      this.updatedAt = Date.now().toString()
+      this.updatedAt = new Date().toISOString()
   }
 }
 
