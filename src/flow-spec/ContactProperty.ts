@@ -18,7 +18,6 @@
  **/
 
  import IContactProperty from './IContactProperty'
- import moment from 'moment'
 
 export class ContactProperty implements IContactProperty {
   deletedAt: string | undefined
