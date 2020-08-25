@@ -18,8 +18,7 @@
  **/
 
 import {cloneDeep, get as lodashGet, isArray, last as lodashLast} from 'lodash'
-
-import ValidationException from '../../exceptions/ValidationException'
+import {ValidationException} from '../../..'
 
 export type IterationIndex = number
 export type IterationNumber = number
@@ -158,7 +157,7 @@ export function getStackFor(key: Key, stack: IStack): IStack {
   return containingStack
 }
 
-export function _insertAt(i: number, entity: IEntity, iter: Iteration) {
+export function _insertAt(i: number, entity: IEntity, iter: Iteration): (IEntity | IStack)[] {
   // todo: update head + tail
   return iter.splice(i, 0, entity)
 }

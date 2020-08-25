@@ -17,11 +17,9 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlock from '../../flow-spec/IBlock'
-import IReadBlockConfig from './IReadBlockConfig'
+import {IBlock, IReadBlockConfig} from '../..'
+
 
 export interface IReadBlock extends IBlock {
   config: IReadBlockConfig,
 }
-
-export default IReadBlock

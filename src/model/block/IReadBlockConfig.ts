@@ -26,5 +26,3 @@ export interface IReadBlockConfig {
    *  The number of variable names must match the number of %-characters in format_string. */
   destinationVariables: string[],
 }
-
-export default IReadBlockConfig

@@ -4,8 +4,7 @@ import {
   createStackFrom, createStackKey, deepTruncateIterationsFrom,
   IEntity,
   IStack, Key, truncateIterationFrom,
-} from '../../../domain/behaviours/BacktrackingBehaviour/HierarchicalIterStack'
-
+} from '../../..'
 
 describe('HierarchicalIterStack', () => {
 

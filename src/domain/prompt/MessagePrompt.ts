@@ -17,17 +17,17 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import BasePrompt from './BasePrompt'
-import {IBasePromptConfig} from './IPrompt'
-import {IMessagePromptConfig} from './IMessagePromptConfig'
+import {BasePrompt, IMessagePromptConfig} from '../..'
+
+
+export const MESSAGE_PROMPT_KEY = 'Message'
 
 /**
  * Concrete implementation of {@link BasePrompt} to present a message to an {@link IContact}.
  */
-export class MessagePrompt extends BasePrompt<IMessagePromptConfig & IBasePromptConfig> {
-  validate() {
+export class MessagePrompt extends BasePrompt<IMessagePromptConfig> {
+
+  validate(): boolean {
     return true
   }
 }
-
-export default MessagePrompt

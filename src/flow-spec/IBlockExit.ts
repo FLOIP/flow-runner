@@ -31,8 +31,6 @@ export interface IBlockExit {
   default?: boolean,
 }
 
-export default IBlockExit
-
 export interface IBlockExitTestRequired extends IBlockExit {
   test: string,
 }

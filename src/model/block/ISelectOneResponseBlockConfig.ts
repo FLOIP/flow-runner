@@ -25,6 +25,4 @@ export interface ISelectOneResponseBlockConfig {
   choices: StringMapType,
 }
 
-export default ISelectOneResponseBlockConfig
-
 type StringMapType = {[k: string]: string}

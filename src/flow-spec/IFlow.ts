@@ -17,12 +17,9 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-// import UUID32 from "../model/UUID32";
-import IBlock from './IBlock'
+import {IBlock, ILanguage, SupportedMode, ValidationException} from '..'
 import {find} from 'lodash'
-import ValidationException from '../domain/exceptions/ValidationException'
-import SupportedMode from './SupportedMode'
-import ILanguage from './ILanguage'
+
 
 export interface IFlow {
   uuid: string, // UUID32
@@ -40,8 +37,6 @@ export interface IFlow {
   firstBlockId: string,
   exitBlockId?: string,
 }
-
-export default IFlow
 
 export function findBlockWith(uuid: string, {blocks}: IFlow): IBlock {
   const block = find(blocks, {uuid})

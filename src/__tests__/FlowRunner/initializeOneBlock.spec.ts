@@ -1,7 +1,12 @@
-import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
-import FlowRunner, {BlockRunnerFactoryStore} from '../../domain/FlowRunner'
-import IBlockInteraction from '../../flow-spec/IBlockInteraction'
-import {IBasePromptConfig, INumericPromptConfig, IRichCursor, KnownPrompts} from '../../index'
+import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
+import {
+  BlockRunnerFactoryStore,
+  FlowRunner,
+  IBlockInteraction,
+  INumericPromptConfig,
+  IRichCursor,
+  NUMERIC_PROMPT_KEY,
+} from '../..'
 
 
 describe('FlowRunner/initializeOneBlock', () => {
@@ -32,7 +37,7 @@ describe('FlowRunner/initializeOneBlock', () => {
 
   it('should return cursor with prompt from runner when prompt provided', async () => {
     // todo: this should use a jest.SpyInstance
-    let expectedPrompt: (INumericPromptConfig & IBasePromptConfig) | null = null
+    let expectedPrompt: (INumericPromptConfig) | null = null
 
     const ctx = dataset.contexts[0]
     const flow = ctx.flows[0]
@@ -42,8 +47,8 @@ describe('FlowRunner/initializeOneBlock', () => {
         'MobilePrimitives\\Message', (block, context) => ({
         block,
         context,
-        initialize: async (): Promise<INumericPromptConfig & IBasePromptConfig> => expectedPrompt = {
-          kind: KnownPrompts.Numeric,
+        initialize: async (): Promise<INumericPromptConfig> => expectedPrompt = {
+          kind: NUMERIC_PROMPT_KEY,
           prompt: 'What age are you at?',
           value: null,
           isResponseRequired: false,

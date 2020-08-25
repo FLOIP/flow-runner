@@ -16,53 +16,40 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
+import {
+  findBlockWith,
+  findFlowWith,
+  findInteractionWith,
+  IBlock,
+  IFlowRunner,
+  IPrompt,
+  IPromptConfig,
+  IRichCursorInputRequired,
+  PromptValidationException,
+  ValidationException,
+} from '../..'
 
-// import UUID32 from "../../model/UUID32"
-// import UUID64 from "../../model/UUID64"
-import IPrompt, {IBasePromptConfig, IPromptConfig} from './IPrompt'
-import PromptValidationException from '../exceptions/PromptValidationException'
-import IFlowRunner from '../IFlowRunner'
-import {IBlock, IRichCursorInputRequired} from '../..'
-import {findFlowWith, findInteractionWith} from '../../flow-spec/IContext'
-import {findBlockWith} from '../../flow-spec/IFlow'
-import {ValidationException} from '../../domain/exceptions/ValidationException'
-
-// export enum KnownPrompts {
-//   Message,
-//   Numeric,
-//   SelectOne,
-//   Open,
-// }
-
-
-// type Validator = <PromptType>(val: PromptType) => boolean
-// type x = {<PromptType>(arg: PromptType): PromptType}
-
-export type TGenericPrompt = IPrompt<IPromptConfig<any> & IBasePromptConfig>
-
-export interface IBasePromptConstructor {
-  new (): IPrompt<IPromptConfig<any> & IBasePromptConfig>,
-}
+export type TGenericPrompt = IPrompt<IPromptConfig<any>>
 
 /**
  * Abstract implementation of {@link IPrompt}, intended to be consumed as a common parent for concrete {@link IPrompt}
  * implementations.
  */
-export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig>
-  implements IPrompt<PromptConfigType> {
+export abstract class BasePrompt<T extends IPromptConfig<T['value']>>
+  implements IPrompt<T> {
 
   error: PromptValidationException | null = null
 
   constructor(
-    public config: PromptConfigType & IBasePromptConfig,
+    public config: T,
     public interactionId: string,
-    public runner: IFlowRunner
+    public runner: IFlowRunner,
   ) {
     // todo: add canPerformEarlyExit() behaviour
   }
 
   /** Retrieve local {@link IPromptConfig.value} */
-  get value(): PromptConfigType['value'] {
+  get value(): T['value'] {
     // todo: need a simple way to specify type as typeof <IPrompt['value']> corresponding to generics injection for this instance
     return this.config.value
   }
@@ -74,7 +61,7 @@ export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptCo
    *
    * It's important to note that {@link value} property will be set (proxied onto local {@link IPromptConfig.value})
    * regardless of any {@link PromptValidationException}s raised. */
-  set value(val: PromptConfigType['value']) {
+  set value(val: T['value']) {
     try {
       this.validate(val)
     } catch (e) {
@@ -92,7 +79,7 @@ export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptCo
   get isEmpty(): boolean {
     return this.value === undefined
   }
-  
+
   get block(): IBlock | undefined {
     const ctx = this.runner.context
     const intx = findInteractionWith(this.interactionId, ctx)
@@ -104,13 +91,15 @@ export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptCo
       if (!(e instanceof ValidationException)) {
         throw e
       }
-      
+
       return
     }
   }
 
-  async fulfill(val: PromptConfigType['value'] | undefined): Promise<IRichCursorInputRequired | undefined> {
-    if (val !== undefined) { // allow prompt.fulfill() for continuation
+  async fulfill(val: T['value'] | undefined): Promise<IRichCursorInputRequired | undefined> {
+
+    // allow prompt.fulfill() for continuation
+    if (val !== undefined) {
       this.value = val
     }
 
@@ -129,7 +118,5 @@ export abstract class BasePrompt<PromptConfigType extends IPromptConfig<PromptCo
    * Template method to be implemented by concrete {@link IPrompt} implementations.
    * @param val
    */
-  abstract validate(val?: PromptConfigType['value']): boolean
+  abstract validate(val?: T['value']): boolean
 }
-
-export default BasePrompt

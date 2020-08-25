@@ -17,12 +17,15 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlockRunner from './IBlockRunner'
-import IBlockExit from '../../flow-spec/IBlockExit'
-import {INumericPromptConfig, KnownPrompts} from '../..'
-import INumericResponseBlock from '../../model/block/INumericResponseBlock'
-import IContext from '../../flow-spec/IContext'
-import IBlockInteraction from '../../flow-spec/IBlockInteraction'
+import {
+  IBlockExit,
+  IBlockInteraction,
+  IBlockRunner,
+  IContext,
+  INumericPromptConfig,
+  INumericResponseBlock,
+  NUMERIC_PROMPT_KEY,
+} from '../..'
 
 /**
  * Block runner for `MobilePrimitives\NumericResponse` - Obtains a numeric response from the contact.
@@ -44,7 +47,9 @@ import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 export class NumericResponseBlockRunner implements IBlockRunner {
   constructor(
     public block: INumericResponseBlock,
-    public context: IContext) {}
+    public context: IContext,
+  ) {
+  }
 
   async initialize({value}: IBlockInteraction): Promise<INumericPromptConfig> {
     const {
@@ -54,7 +59,7 @@ export class NumericResponseBlockRunner implements IBlockRunner {
     } = this.block.config
 
     return {
-      kind: KnownPrompts.Numeric,
+      kind: NUMERIC_PROMPT_KEY,
       prompt,
       isResponseRequired: false,
 
@@ -70,4 +75,3 @@ export class NumericResponseBlockRunner implements IBlockRunner {
   }
 }
 
-export default NumericResponseBlockRunner

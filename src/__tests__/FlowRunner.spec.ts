@@ -1,20 +1,21 @@
-import "reflect-metadata";
-import {flatMap, set, every} from 'lodash'
-import IDataset, {createDefaultDataset} from './fixtures/IDataset'
-import FlowRunner from '../domain/FlowRunner'
+import 'reflect-metadata'
+import {every, flatMap, set} from 'lodash'
+import {createDefaultDataset, IDataset} from './fixtures/IDataset'
+import {deserialize, plainToClass, serialize} from 'class-transformer'
+
 import {
+  Context,
   createContextDataObjectFor,
+  DeliveryStatus,
+  FlowRunner,
+  IContact,
+  IContext,
   IResources,
   IRichCursorInputRequired,
+  SelectOnePrompt,
   SupportedMode,
-} from '../index'
-import IContext from '../flow-spec/IContext'
-import ValidationException from '../domain/exceptions/ValidationException'
-import {deserialize, plainToClass, serialize} from 'class-transformer'
-import Context from '../flow-spec/Context'
-import IContact from '../flow-spec/IContact'
-import SelectOnePrompt from '../domain/prompt/SelectOnePrompt'
-import DeliveryStatus from '../flow-spec/DeliveryStatus'
+  ValidationException,
+} from '..'
 
 
 describe('FlowRunner', () => {
@@ -25,11 +26,11 @@ describe('FlowRunner', () => {
   })
 
   describe('serialization', () => {
-    it ('should be stringifiable', () => {
+    it('should be stringifiable', () => {
       const context = dataset.contexts[2]
       const contextObj = plainToClass(Context, context)
-      const serializedContext = serialize(contextObj);
-      const deserializedContext = deserialize(Context, serializedContext);
+      const serializedContext = serialize(contextObj)
+      const deserializedContext = deserialize(Context, serializedContext)
 
       expect(contextObj).toEqual(deserializedContext)
       expect(contextObj.getResource).toBeInstanceOf(Function)
@@ -55,7 +56,7 @@ describe('FlowRunner', () => {
       // block1
       let cursor: IRichCursorInputRequired | void = await runner.run()
 
-      if (!cursor) {
+      if (cursor == null) {
         throw new ValidationException('Omg, no cursor?')
       }
 
@@ -102,12 +103,14 @@ describe('FlowRunner', () => {
 
         const runner = new FlowRunner(context)
 
-        await expect(runner.run()).rejects.toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')
+        await expect(runner.run())
+          .rejects
+          .toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')
         // expect((await runner.run())![0].blockId).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
       })
     })
 
-    xdescribe('case block always evaluates to false', () => {
+    describe.skip('case block always evaluates to false', () => {
       it('shouldnt raise an except requiring prompt', async () => {
         const context: IContext = require('./fixtures/2019-10-09-case-block-always-false.json')
         const runner = new FlowRunner(context)
@@ -118,7 +121,7 @@ describe('FlowRunner', () => {
     })
 
     describe('VMO-1484-case-branching-improperly', () => {
-      it('should hit Cats branch', async() => {
+      it('should hit Cats branch', async () => {
         const {flows}: IContext = require('./fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
         const resources: IResources = flatMap(flows, 'resources') // our server-side implementation currently returns
 
@@ -136,7 +139,7 @@ describe('FlowRunner', () => {
         prompt.value = (prompt as SelectOnePrompt).config.choices[1].key // cats
 
         prompt = (await runner.run())!.prompt
-        expect(prompt.config.prompt).toEqual("95bd9e4a-9300-400a-9f61-8ede034f93d8"); // the next prompt is the cats message
+        expect(prompt.config.prompt).toEqual('95bd9e4a-9300-400a-9f61-8ede034f93d8') // the next prompt is the cats message
       })
 
       it('should hit Dogs branch', async () => {
@@ -157,7 +160,7 @@ describe('FlowRunner', () => {
         prompt.value = (prompt as SelectOnePrompt).config.choices[0].key // dogs
 
         prompt = (await runner.run())!.prompt
-        expect(prompt.config.prompt).toEqual("95bd9e4a-9300-400a-9f61-8ede0325225f"); // the next prompt is the dogs message
+        expect(prompt.config.prompt).toEqual('95bd9e4a-9300-400a-9f61-8ede0325225f') // the next prompt is the dogs message
       })
     })
 

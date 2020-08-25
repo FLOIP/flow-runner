@@ -17,11 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlockRunner from './IBlockRunner'
-import IBlockExit from '../../flow-spec/IBlockExit'
-import IContext from '../../flow-spec/IContext'
-import {evaluateToString} from '../..'
-import IPrintBlock from '../../model/block/IPrintBlock'
+import {evaluateToString, IBlockExit, IBlockRunner, IContext, IPrintBlock} from '../..'
 
 /**
  * Block runner for `ConsoleIO\Print` - Prints a message to standard output, by evaluating an expression.
@@ -30,7 +26,9 @@ export class PrintBlockRunner implements IBlockRunner {
   constructor(
     public block: IPrintBlock,
     public context: IContext,
-    public console: Console = console) {}
+    public console: Console = console,
+  ) {
+  }
 
   async initialize(): Promise<undefined> {
     return
@@ -45,5 +43,3 @@ export class PrintBlockRunner implements IBlockRunner {
     return this.block.exits[0]
   }
 }
-
-export default PrintBlockRunner

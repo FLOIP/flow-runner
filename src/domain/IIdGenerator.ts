@@ -25,7 +25,5 @@
  * For a reference version, see {@link IdGeneratorUuidV4}.
  */
 export interface IIdGenerator {
-	generate(): string,
+  generate(): string,
 }
-
-export default IIdGenerator

@@ -17,14 +17,18 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlockRunner from './IBlockRunner'
-import {IBlockExitTestRequired, ISelectOnePromptConfig, KnownPrompts} from '../..'
-import {findFirstTruthyEvaluatingBlockExitOn} from '../../flow-spec/IBlock'
-import IBlockExit from '../../flow-spec/IBlockExit'
-import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock'
-import IContext from '../../flow-spec/IContext'
+import {
+  findFirstTruthyEvaluatingBlockExitOn,
+  IBlockExit,
+  IBlockExitTestRequired,
+  IBlockInteraction,
+  IBlockRunner,
+  IContext,
+  ISelectOnePromptConfig,
+  ISelectOneResponseBlock,
+  SELECT_ONE_PROMPT_KEY,
+} from '../..'
 import {last} from 'lodash'
-import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 
 /**
  * Block runner for `MobilePrimitives\SelectOneResponse` - Obtains the answer to a Multiple Choice question from the
@@ -48,13 +52,15 @@ import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 export class SelectOneResponseBlockRunner implements IBlockRunner {
   constructor(
     public block: ISelectOneResponseBlock,
-    public context: IContext) {}
+    public context: IContext,
+  ) {
+  }
 
   async initialize({value}: IBlockInteraction): Promise<ISelectOnePromptConfig> {
     const {prompt, choices} = this.block.config
 
     return {
-      kind: KnownPrompts.SelectOne,
+      kind: SELECT_ONE_PROMPT_KEY,
       prompt,
       isResponseRequired: true,
       choices: Object.keys(choices)
@@ -73,4 +79,3 @@ export class SelectOneResponseBlockRunner implements IBlockRunner {
   }
 }
 
-export default SelectOneResponseBlockRunner

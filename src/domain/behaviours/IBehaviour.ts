@@ -17,10 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlockInteraction from '../../flow-spec/IBlockInteraction'
-import IContext from '../../flow-spec/IContext'
-import {IFlowNavigator, IPromptBuilder} from '../FlowRunner'
-
+import {IBlockInteraction, IContext, IFlowNavigator, IPromptBuilder} from '../..'
 
 export interface IBehaviourConstructor {
   new(
@@ -60,5 +57,3 @@ export interface IBehaviour {
    */
   postInteractionComplete(interaction: IBlockInteraction, context: IContext): void,
 }
-
-export default IBehaviour

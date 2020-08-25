@@ -1,7 +1,5 @@
-import FlowRunner from '../../domain/FlowRunner'
-import IContext, {IReversibleUpdateOperation} from '../../flow-spec/IContext'
-import IFlowRunner from '../../domain/IFlowRunner'
-import IBlockInteraction from '../../flow-spec/IBlockInteraction'
+import {FlowRunner, IBlockInteraction, IContext, IFlowRunner, IReversibleUpdateOperation} from '../..'
+
 
 describe('applyReversibleDataOperation', () => {
   let runner: IFlowRunner
@@ -12,8 +10,8 @@ describe('applyReversibleDataOperation', () => {
     context = {
       interactions: [] as IBlockInteraction[],
       sessionVars: {},
-      reversibleOperations: [] as IReversibleUpdateOperation[]
-} as IContext
+      reversibleOperations: [] as IReversibleUpdateOperation[],
+    } as IContext
     runner = new FlowRunner(context)
     operation = {
       forward: {$set: {'sampleKey.sampleNestedKey': 'sample forward val'}},

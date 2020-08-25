@@ -24,4 +24,3 @@ export interface IContact {
   [key: string]: string | undefined,
 }
 
-export default IContact

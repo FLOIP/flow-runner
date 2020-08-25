@@ -17,11 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlock from '../../flow-spec/IBlock'
-import IBlockInteraction from '../../flow-spec/IBlockInteraction'
-import IBlockExit from '../../flow-spec/IBlockExit'
-import {IPromptConfig, IRichCursor} from '../..'
-import IContext from '../../flow-spec/IContext'
+import {IBlock, IBlockExit, IBlockInteraction, IContext, IPromptConfig, IRichCursor} from '../..'
 
 /**
  * Interface for running a new block type.
@@ -58,5 +54,3 @@ export interface IBlockRunner {
    */
   run(cursor: IRichCursor): Promise<IBlockExit>,
 }
-
-export default IBlockRunner

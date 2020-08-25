@@ -17,11 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlockRunner from './IBlockRunner'
-import IBlock from '../../flow-spec/IBlock'
-import IBlockExit from '../../flow-spec/IBlockExit'
-import IRunFlowBlockConfig from '../../model/block/IRunFlowBlockConfig'
-import IContext from '../../flow-spec/IContext'
+import {IBlockRunner,IBlock, IBlockExit, IContext, IRunFlowBlockConfig} from '../..'
 
 /**
  * Block runner for `Core\RunFlow` - This block starts and runs another {@link IFlow}, and returns execution to the
@@ -39,8 +35,10 @@ import IContext from '../../flow-spec/IContext'
  */
 export class RunFlowBlockRunner implements IBlockRunner {
   constructor(
-    public block: IBlock & { config: IRunFlowBlockConfig },
-    public context: IContext) {}
+    public block: IBlock & {config: IRunFlowBlockConfig},
+    public context: IContext,
+  ) {
+  }
 
   async initialize(): Promise<undefined> {
     return undefined
@@ -51,4 +49,3 @@ export class RunFlowBlockRunner implements IBlockRunner {
   }
 }
 
-export default RunFlowBlockRunner

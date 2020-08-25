@@ -29,5 +29,3 @@ export interface IOpenResponseBlockConfig {
     maxResponseCharacters?: number,
   },
 }
-
-export default IOpenResponseBlockConfig

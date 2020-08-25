@@ -1,8 +1,16 @@
 import {last} from 'lodash'
-import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
-import FlowRunner, {BlockRunnerFactoryStore} from '../../domain/FlowRunner'
-import IBlockInteraction from '../../flow-spec/IBlockInteraction'
-import {findInteractionWith, IBasePromptConfig, INumericPromptConfig, IRichCursor, KnownPrompts} from '../../index'
+import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
+import {
+  BlockRunnerFactoryStore,
+  findInteractionWith,
+  FlowRunner,
+  IBlockInteraction,
+  INumericPromptConfig,
+  IRichCursor,
+  NUMERIC_PROMPT_KEY,
+} from '../..'
+
+
 import {createStaticFirstExitBlockRunnerFor} from '../fixtures/BlockRunner'
 
 // todo: abstract some of the setup
@@ -57,8 +65,8 @@ describe('FlowRunner/navigateTo', () => {
         })
 
       const previousIntxId = 'some-fake-block-interaction-uuid'
-      const promptConfig: INumericPromptConfig & IBasePromptConfig = {
-        kind: KnownPrompts.Numeric,
+      const promptConfig: INumericPromptConfig = {
+        kind: NUMERIC_PROMPT_KEY,
         prompt: 'What age are you at?',
         value: null,
         isResponseRequired: false,
@@ -95,8 +103,8 @@ describe('FlowRunner/navigateTo', () => {
       ]))
 
       const startSpy = jest.spyOn(messageBlockRunner, 'initialize')
-        .mockImplementation(async (): Promise<INumericPromptConfig & IBasePromptConfig> => ({
-          kind: KnownPrompts.Numeric,
+        .mockImplementation(async (): Promise<INumericPromptConfig> => ({
+          kind: NUMERIC_PROMPT_KEY,
           prompt: 'What age are you at?',
           value: null,
           isResponseRequired: false,
@@ -107,7 +115,7 @@ describe('FlowRunner/navigateTo', () => {
 
       const richCursor: IRichCursor = await runner.navigateTo(block, ctx)
       const cursor = runner.dehydrateCursor(richCursor)
-      const expectedPrompt: Promise<INumericPromptConfig & IBasePromptConfig> = startSpy.mock.results[0].value
+      const expectedPrompt: Promise<INumericPromptConfig> = startSpy.mock.results[0].value
 
       expect(cursor.promptConfig).toBe(await expectedPrompt)
     })

@@ -1,23 +1,24 @@
 import {cloneDeep, first, last} from 'lodash'
-import BacktrackingBehaviour, {IContextBacktrackingPlatformMetadata} from '../../domain/behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
-import IContext from '../../flow-spec/IContext'
-import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 import {
   _append,
   _loop,
+  BacktrackingBehaviour,
   createKey,
   createStack,
   createStackFrom,
   createStackKey,
   getStackFor,
+  IBlock,
+  IBlockInteraction,
+  IContext,
+  IContextBacktrackingPlatformMetadata,
   IEntity,
-} from '../../domain/behaviours/BacktrackingBehaviour/HierarchicalIterStack'
-import IFlow from '../../flow-spec/IFlow'
-import IRunFlowBlockConfig from '../../model/block/IRunFlowBlockConfig'
-import {IBasePromptConfig, IPromptConfig} from '../../index'
-import {NON_INTERACTIVE_BLOCK_TYPES} from '../../domain/FlowRunner'
-import IPrompt from '../../domain/prompt/IPrompt'
-import IBlock from '../../flow-spec/IBlock'
+  IFlow,
+  IPrompt,
+  IPromptConfig,
+  IRunFlowBlockConfig,
+  NON_INTERACTIVE_BLOCK_TYPES,
+} from '../..'
 
 
 describe('BacktrackingBehaviour', () => {
@@ -29,7 +30,7 @@ describe('BacktrackingBehaviour', () => {
       {navigateTo: async (_b, _c) => ({interaction: {} as IBlockInteraction, prompt: undefined})},
       {
         buildPromptFor: async (_b: IBlock, _i: IBlockInteraction):
-          Promise<IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined> => undefined,
+          Promise<IPrompt<IPromptConfig<any>> | undefined> => undefined,
       })
   })
 
@@ -159,7 +160,7 @@ describe('BacktrackingBehaviour', () => {
               ],
             ])
 
-            const interactionStack = cloneDeep(sourceInteractions) as IContextBacktrackingPlatformMetadata['backtracking']['interactionStack']
+            const interactionStack = cloneDeep(sourceInteractions)
 
             const cursor: IContextBacktrackingPlatformMetadata['backtracking']['cursor'] = [
               createStackKey(0, 1),
@@ -170,7 +171,7 @@ describe('BacktrackingBehaviour', () => {
 
             backtracking.insertInteractionUsing(cursor, interaction, interactionStack)
 
-            const expected = cloneDeep(sourceInteractions) as IContextBacktrackingPlatformMetadata['backtracking']['interactionStack']
+            const expected = cloneDeep(sourceInteractions)
             _append(interaction, getStackFor(cursor, expected))
 
             expect(interactionStack).toEqual(expected)
@@ -205,7 +206,7 @@ describe('BacktrackingBehaviour', () => {
             ],
           ])
 
-          const interactionStack = cloneDeep(sourceInteractions) as IContextBacktrackingPlatformMetadata['backtracking']['interactionStack']
+          const interactionStack = cloneDeep(sourceInteractions)
 
           const cursor: IContextBacktrackingPlatformMetadata['backtracking']['cursor'] = [
             createStackKey(0, 1),
@@ -216,7 +217,7 @@ describe('BacktrackingBehaviour', () => {
 
           backtracking.insertInteractionUsing(cursor, interaction, interactionStack)
 
-          const expected = cloneDeep(sourceInteractions) as IContextBacktrackingPlatformMetadata['backtracking']['interactionStack']
+          const expected = cloneDeep(sourceInteractions)
           _loop(getStackFor([createStackKey(0, 1), createStackKey(1, 1)], expected), [interaction])
 
           expect(interactionStack).toEqual(expected)
@@ -248,7 +249,7 @@ describe('BacktrackingBehaviour', () => {
             ],
           ])
 
-          const interactionStack = cloneDeep(sourceInteractions) as IContextBacktrackingPlatformMetadata['backtracking']['interactionStack']
+          const interactionStack = cloneDeep(sourceInteractions)
 
           const cursor: IContextBacktrackingPlatformMetadata['backtracking']['cursor'] = [
             createStackKey(0, 1),
@@ -259,7 +260,7 @@ describe('BacktrackingBehaviour', () => {
 
           backtracking.insertInteractionUsing(cursor, interaction, interactionStack)
 
-          const expected = cloneDeep(sourceInteractions) as IContextBacktrackingPlatformMetadata['backtracking']['interactionStack']
+          const expected = cloneDeep(sourceInteractions)
           _loop(expected, [interaction])
 
           expect(interactionStack).toEqual(expected)
@@ -306,7 +307,7 @@ describe('BacktrackingBehaviour', () => {
       backtracking.context.flows = [{uuid: 'flow/abc-123', blocks: [{uuid: 'block/abc-234'}]} as IFlow]
       backtracking.context.nestedFlowBlockInteractionIdStack = []
 
-      meta = (backtracking.context.platformMetadata as IContextBacktrackingPlatformMetadata).backtracking
+      meta = (backtracking.context.platformMetadata as unknown as IContextBacktrackingPlatformMetadata).backtracking
       meta.interactionStack = createStack(cloneDeep(interactions))
     })
 
@@ -385,7 +386,7 @@ describe('BacktrackingBehaviour', () => {
           'intx-789-1',
         ]
 
-        meta = (backtracking.context.platformMetadata as IContextBacktrackingPlatformMetadata).backtracking
+        meta = (backtracking.context.platformMetadata as unknown as IContextBacktrackingPlatformMetadata).backtracking
         meta.interactionStack = createStack(cloneDeep(interactions))
       })
 
@@ -493,7 +494,7 @@ describe('BacktrackingBehaviour', () => {
     })
 
     // todo: fix this test, it's breaking
-    xdescribe(
+    describe.skip(
       'when key for suggestion is nested multiple times deeper + on non-first iteration + iterations exist afterwards',
       () => {
         // [1, 2, 3, [[7, 8],
@@ -611,9 +612,9 @@ describe('BacktrackingBehaviour', () => {
     })
 
     it('should raise when trying to step back further than can be stepped', async () => {
-       await expect(BacktrackingBehaviour.prototype.peek.bind(backtracking)( 7))
-         .rejects
-         .toThrow('Unable to backtrack to an interaction that far back {"steps":7}')
+      await expect(BacktrackingBehaviour.prototype.peek.bind(backtracking)(7))
+        .rejects
+        .toThrow('Unable to backtrack to an interaction that far back {"steps":7}')
     })
   })
 })

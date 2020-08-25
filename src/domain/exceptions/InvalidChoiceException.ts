@@ -28,5 +28,3 @@ export class InvalidChoiceException<ChoiceType> extends Error {
     super(message)
   }
 }
-
-export default InvalidChoiceException

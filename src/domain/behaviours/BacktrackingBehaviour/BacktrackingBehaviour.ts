@@ -18,9 +18,6 @@
  **/
 
 import {cloneDeep, findLast, findLastIndex, forEachRight, includes, isEqual, last} from 'lodash'
-import IBehaviour from '../IBehaviour'
-import IBlockInteraction from '../../../flow-spec/IBlockInteraction'
-import IContext, {findBlockOnActiveFlowWith, findFlowWith, IRichCursor} from '../../../flow-spec/IContext'
 import {
   _append,
   _loop,
@@ -31,25 +28,35 @@ import {
   createStackKeyForLastIterAndLastIndexOf,
   deepIndexOfFrom,
   deepTruncateIterationsFrom,
+  findBlockOnActiveFlowWith,
+  findBlockWith,
+  findFlowWith,
   findHeadRightFrom,
   forceGet,
   getEntityAt,
   getIterationFor,
   getStackFor,
+  IBehaviour,
+  IBlockInteraction,
+  IContext,
+  IFlowNavigator,
+  IPrompt,
+  IPromptBuilder,
+  IPromptConfig,
+  IRichCursor,
   isEntity,
   IStack,
   Key,
   moveStackIndexTo,
+  NON_INTERACTIVE_BLOCK_TYPES,
   shallowIndexOfRightFrom,
   STACK_KEY_ITERATION_INDEX,
   STACK_KEY_ITERATION_NUMBER,
   StackKey,
   truncateIterationFrom,
-} from './HierarchicalIterStack'
-import ValidationException from '../../exceptions/ValidationException'
-import {IFlowNavigator, IPromptBuilder, NON_INTERACTIVE_BLOCK_TYPES} from '../../FlowRunner'
-import IPrompt, {IBasePromptConfig, IPromptConfig} from '../../prompt/IPrompt'
-import {findBlockWith} from '../../..'
+  ValidationException,
+} from '../../..'
+
 
 export interface IBacktrackingContext {
   /**
@@ -78,7 +85,7 @@ export interface IBackTrackingBehaviour extends IBehaviour {
   // todo: this should likely take in steps rather than interaction itself
   jumpTo(interaction: IBlockInteraction, context: IContext): Promise<IRichCursor>,
 
-  peek(steps?: number): Promise<IPrompt<IPromptConfig<any> & IBasePromptConfig>>,
+  peek(steps?: number): Promise<IPrompt<IPromptConfig<any>>>,
 }
 
 export class BacktrackingBehaviour implements IBackTrackingBehaviour {
@@ -92,7 +99,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
   }
 
   initializeBacktrackingContext() {
-    const meta: IContextBacktrackingPlatformMetadata = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
+    const meta: IContextBacktrackingPlatformMetadata = this.context.platformMetadata as unknown as IContextBacktrackingPlatformMetadata
 
     if (meta.backtracking == null) {
       meta.backtracking = {
@@ -111,7 +118,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
   }
 
   hasIndex() {
-    const meta: IContextBacktrackingPlatformMetadata = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
+    const meta: IContextBacktrackingPlatformMetadata = this.context.platformMetadata as unknown as IContextBacktrackingPlatformMetadata
     return meta.backtracking.interactionStack != null
       && meta.backtracking.cursor != null
   }
@@ -119,7 +126,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
   rebuildIndex() {
     const {
       backtracking,
-    } = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
+    } = this.context.platformMetadata as unknown as IContextBacktrackingPlatformMetadata
 
     const key = backtracking.cursor = createKey()
     const stack = backtracking.interactionStack = createStack()
@@ -182,14 +189,17 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
   ) {
 
     const iteration = getIterationFor(key, interactionStack)
-    const i = last(keyForIntxOfRepeatedBlock)![STACK_KEY_ITERATION_INDEX] // todo: abstract key operations
+    // todo: abstract key operations
+    const i = last(keyForIntxOfRepeatedBlock)![STACK_KEY_ITERATION_INDEX]
 
     // take from i to the end
     const nestedIteration = iteration.splice(i)
 
     // append taken items (returned); append [intx]
     const nestedStack = createStack(nestedIteration)
-    iteration.push(nestedStack) // append onto parent <-- todo: update head! // todo: let's use _append() here
+
+    // append onto parent <-- todo: update head! // todo: let's use _append() here
+    iteration.push(nestedStack)
     _loop(nestedStack, [interaction])
 
     // update key like: replace current key w/ found index; append [1 (new stack), 1 (second iteration)]
@@ -200,7 +210,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
   async jumpTo(interaction: IBlockInteraction, context: IContext): Promise<IRichCursor> {
     const {
       backtracking,
-    } = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
+    } = this.context.platformMetadata as unknown as IContextBacktrackingPlatformMetadata
 
     // find a key for provided past interaction
     const keyForLastOccurrenceOfInteraction = deepIndexOfFrom(
@@ -253,7 +263,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
       this.context)
   }
 
-  async peek(steps = 1): Promise<IPrompt<IPromptConfig<any> & IBasePromptConfig>> {
+  async peek(steps = 1): Promise<IPrompt<IPromptConfig<any>>> {
     let _steps = steps
     const intx = findLast(this.context.interactions, ({type}) =>
       !includes(NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0)
@@ -303,7 +313,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
         // interactionStack,
         ghostInteractionStacks,
       },
-    } = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
+    } = this.context.platformMetadata as unknown as IContextBacktrackingPlatformMetadata
 
     if (ghostInteractionStacks.length === 0) { // can't suggest when we don't have ghost interactions from the past
       return interaction
@@ -397,7 +407,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
         interactionStack,
         ghostInteractionStacks,
       },
-    } = this.context.platformMetadata as IContextBacktrackingPlatformMetadata
+    } = this.context.platformMetadata as unknown as IContextBacktrackingPlatformMetadata
 
     this.insertInteractionUsing(key, interaction, interactionStack)
 
@@ -422,5 +432,3 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     })
   }
 }
-
-export default BacktrackingBehaviour

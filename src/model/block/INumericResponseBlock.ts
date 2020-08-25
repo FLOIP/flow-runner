@@ -17,11 +17,9 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlock from '../../flow-spec/IBlock'
-import INumericBlockConfig from './INumericBlockConfig'
+import {IBlock,INumericBlockConfig} from '../..'
+
 
 export interface INumericResponseBlock extends IBlock {
   config: INumericBlockConfig,
 }
-
-export default INumericResponseBlock

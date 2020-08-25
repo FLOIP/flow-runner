@@ -17,9 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {SupportedMode} from '..'
-import IContext from '../flow-spec/IContext'
-
+import {IContext, SupportedMode} from '..'
 
 export enum SupportedContentType {
   TEXT = 'text',
@@ -50,18 +48,22 @@ export interface IResource {
   context: IContext,
 
   hasText(): boolean,
+
   /** @throws ResourceNotFoundException */
   getText(): string,
 
   hasAudio(): boolean,
+
   /** @throws ResourceNotFoundException */
   getAudio(): string,
 
   hasImage(): boolean,
+
   /** @throws ResourceNotFoundException */
   getImage(): string,
 
   hasVideo(): boolean,
+
   /** @throws ResourceNotFoundException */
   getVideo(): string,
 }
@@ -71,8 +73,6 @@ export interface IResourceResolver {
 
   resolve(resourceId: string): IResource,
 }
-
-export default IResourceResolver
 
 export function createTextResourceVariantWith(value: string, ctx: IContext): IResourceDefinitionContentTypeSpecific {
   return {

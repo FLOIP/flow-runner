@@ -1,7 +1,12 @@
-import {FlowRunner, IBasePromptConfig, INumericPromptConfig, KnownPrompts, ICursor} from '../../index'
-import IContext from '../../flow-spec/IContext'
-import IBlockInteraction from '../../flow-spec/IBlockInteraction'
-import NumericPrompt from '../../domain/prompt/NumericPrompt'
+import {
+  FlowRunner,
+  IBlockInteraction,
+  IContext,
+  ICursor,
+  INumericPromptConfig,
+  NUMERIC_PROMPT_KEY,
+  NumericPrompt,
+} from '../..'
 
 describe('FlowRunner/isInputRequiredFor', () => {
   let runner: FlowRunner
@@ -19,37 +24,41 @@ describe('FlowRunner/isInputRequiredFor', () => {
   })
 
   it('should return false when prompt absent', async () => {
-    expect(runner.isInputRequiredFor({cursor: {interactionId: 'intx-123', promptConfig: undefined}} as IContext)).toBeFalsy()
+    expect(runner.isInputRequiredFor({cursor: {interactionId: 'intx-123', promptConfig: undefined}} as IContext))
+      .toBeFalsy()
   })
 
   it('should return true when prompt config\'s value is undefined', async () => {
-    const promptConfig = {kind: KnownPrompts.Numeric, value: undefined} // invalid prompt value
+    const promptConfig = {kind: NUMERIC_PROMPT_KEY, value: undefined} // invalid prompt value
     expect(runner.isInputRequiredFor({cursor: {interactionId: 'intx-123', promptConfig}} as IContext)).toBeTruthy()
   })
 
   it('should return false when prompt validation succeeds', async () => {
-    const promptConfig = {kind: KnownPrompts.Numeric, value: 12} // valid numeric prompt value
+    const promptConfig = {kind: NUMERIC_PROMPT_KEY, value: 12} // valid numeric prompt value
 
     jest.spyOn(runner, 'hydrateRichCursorFrom')
       .mockImplementation(() => ({
         interaction: {uuid: 'intx-123'} as IBlockInteraction,
-        prompt: createNumericPromptFor(promptConfig, runner)})) // assertion consumes this prompt instance
+        prompt: createNumericPromptFor(promptConfig, runner),
+      })) // assertion consumes this prompt instance
 
     expect(runner.isInputRequiredFor({cursor: {interactionId: 'intx-123', promptConfig}} as IContext)).toBeFalsy()
   })
 
   it('should return true when prompt validation raises', async () => {
-    const promptConfig = {kind: KnownPrompts.Numeric, value: 12, max: 5} as INumericPromptConfig & IBasePromptConfig // invalid numeric prompt value
+    const promptConfig = {kind: NUMERIC_PROMPT_KEY, value: 12, max: 5} as INumericPromptConfig // invalid numeric prompt value
 
     jest.spyOn(runner, 'hydrateRichCursorFrom')
       .mockImplementation(() => ({
         interaction: {uuid: 'intx-123'} as IBlockInteraction,
-        prompt: createNumericPromptFor(promptConfig, runner)})) // assertion consumes this prompt instance
+        prompt: createNumericPromptFor(promptConfig, runner),
+      })) // assertion consumes this prompt instance
 
-    expect(runner.isInputRequiredFor({cursor: {interactionId: 'intx-123', promptConfig} as ICursor} as IContext)).toBeTruthy()
+    expect(runner.isInputRequiredFor({cursor: {interactionId: 'intx-123', promptConfig} as ICursor} as IContext))
+      .toBeTruthy()
   })
 
 })
 
 const createNumericPromptFor = (promptConfig: object, runner: FlowRunner) =>
-  new NumericPrompt(promptConfig as INumericPromptConfig & IBasePromptConfig, 'intx-1234', runner)
+  new NumericPrompt(promptConfig as INumericPromptConfig, 'intx-1234', runner)

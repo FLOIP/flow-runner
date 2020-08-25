@@ -17,11 +17,15 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IResourceResolver, {createTextResourceVariantWith, IResource} from './IResourceResolver'
+import {
+  createTextResourceVariantWith,
+  IContext,
+  IResource,
+  IResourceResolver,
+  Resource,
+  ResourceNotFoundException,
+} from '..'
 import {intersection} from 'lodash'
-import ResourceNotFoundException from './exceptions/ResourceNotFoundException'
-import IContext from '../flow-spec/IContext'
-import {Resource} from './Resource'
 
 const UUID_MATCHER = /[\d\w]{8}(-[\d\w]{4}){3}-[\d\w]{12}/i
 
@@ -31,7 +35,8 @@ function isUUID(uuid: string): boolean {
 }
 
 export class ResourceResolver implements IResourceResolver {
-  constructor(public context: IContext) {}
+  constructor(public context: IContext) {
+  }
 
   resolve(resourceId: string): IResource {
     const {mode, languageId} = this.context
@@ -53,10 +58,8 @@ export class ResourceResolver implements IResourceResolver {
     }
 
     const values = resource.values.filter(def => def.languageId === languageId
-                                              && intersection(def.modes, [mode]).length > 0)
+      && intersection(def.modes, [mode]).length > 0)
 
     return new Resource(resourceId, values, this.context)
   }
 }
-
-export default ResourceResolver

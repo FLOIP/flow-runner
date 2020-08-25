@@ -17,17 +17,22 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IResource, IResourceDefinitionContentTypeSpecific, SupportedContentType} from './IResourceResolver'
-import ResourceNotFoundException from './exceptions/ResourceNotFoundException'
-import IContext from '../flow-spec/IContext'
+import {
+  createEvalContextFrom,
+  IContext,
+  IResource,
+  IResourceDefinitionContentTypeSpecific,
+  ResourceNotFoundException,
+  SupportedContentType,
+} from '..'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
-import {createEvalContextFrom} from '../flow-spec/IBlock'
 
 export class Resource implements IResource {
   constructor(
     public uuid: string,
     public values: IResourceDefinitionContentTypeSpecific[],
-    public context: IContext) {
+    public context: IContext,
+  ) {
   }
 
   _getValueByContentType(contentType: SupportedContentType): string {
@@ -35,7 +40,11 @@ export class Resource implements IResource {
 
     if (def == null) {
       const {languageId, mode} = this.context
-      throw new ResourceNotFoundException(`Unable to find resource for ${JSON.stringify({contentType, languageId, mode})}`)
+      throw new ResourceNotFoundException(`Unable to find resource for ${JSON.stringify({
+        contentType,
+        languageId,
+        mode,
+      })}`)
     }
 
     return def.value

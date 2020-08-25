@@ -17,15 +17,15 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IPromptConfig, KnownPrompts} from './IPrompt'
+import {IPromptConfig} from '../..'
 
 
 // todo: can our value type use some fancy keyof magic to say we need a value that's of the type of one of the {key} props in choices?
 /**
  * Interface for defining an {@link IPromptConfig} resolving to a {@link SelectOnePrompt}.
  */
-export interface ISelectOnePromptConfig extends IPromptConfig<IChoice['key'] | null> {
-  kind: KnownPrompts.SelectOne,
+export interface ISelectOnePromptConfig extends IPromptConfig<string | null> {
+  kind: string,
   choices: IChoice[],
   emptyChoicesMessage?: string,
 }

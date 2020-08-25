@@ -26,5 +26,3 @@ export interface ILanguage {
   code?: string,
   deletedAt?: string,
 }
-
-export default ILanguage

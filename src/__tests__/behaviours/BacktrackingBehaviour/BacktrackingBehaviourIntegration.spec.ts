@@ -1,11 +1,16 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {last} from 'lodash'
-import IFlow from '../../../flow-spec/IFlow'
-import FlowRunner from '../../../domain/FlowRunner'
-import {SupportedMode, createContextDataObjectFor, IRichCursorInputRequired, findInteractionWith} from '../../../index'
-import IContact from '../../../flow-spec/IContact'
-import SelectOnePrompt from '../../../domain/prompt/SelectOnePrompt'
-import {IBackTrackingBehaviour} from '../../../domain/behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
-
+import {
+  createContextDataObjectFor,
+  findInteractionWith,
+  FlowRunner,
+  IBackTrackingBehaviour,
+  IContact,
+  IFlow,
+  IRichCursorInputRequired,
+  SelectOnePrompt,
+  SupportedMode,
+} from '../../..'
 
 describe.skip('FlowRunner integration', () => {
   let flow: IFlow
@@ -20,32 +25,41 @@ describe.skip('FlowRunner integration', () => {
 
     const runner = new FlowRunner(context)
     let {prompt}: IRichCursorInputRequired = (await runner.run())!
-    prompt.value = (prompt as SelectOnePrompt).config.choices[0].key // yes, more children
 
+    // yes, more children
+    prompt.value = (prompt as SelectOnePrompt).config.choices[0].key
     prompt = (await runner.run())!.prompt
-    prompt.value = 17 // age
 
+    // age
+    prompt.value = 17
     prompt = (await runner.run())!.prompt
-    prompt.value = (prompt as SelectOnePrompt).config.choices[0].key // yes, enjoy reading
 
+    // yes, enjoy reading
+    prompt.value = (prompt as SelectOnePrompt).config.choices[0].key
     prompt = (await runner.run())!.prompt
-    prompt.value = 12 // books per year
 
+    // books per year
+    prompt.value = 12
     prompt = (await runner.run())!.prompt
-    prompt.value = 'Ella' // name
 
+    // name
+    prompt.value = 'Ella'
     prompt = (await runner.run())!.prompt
-    prompt.value = (prompt as SelectOnePrompt).config.choices[1].key // no, end of children
 
+    // no, end of children
+    prompt.value = (prompt as SelectOnePrompt).config.choices[1].key
     const backtracking: IBackTrackingBehaviour = runner.behaviours.backtracking as IBackTrackingBehaviour
     prompt = await backtracking.peek(5)
 
     // todo: assert that prompt is genned from specified interaction
     // const interactionIdPreviouslyAtIndex5 = prompt.interactionId
     const interactionPreviouslyAtPeek5 = findInteractionWith(prompt.interactionId, context)
-    expect(prompt.interactionId).toBe(context.interactions.slice(-6, -5)[0].uuid) // assert we're in a known state: (++peeked * -1)
 
-    prompt = (await backtracking.jumpTo( // commit to change
+    // assert we're in a known state: (++peeked * -1)
+    expect(prompt.interactionId).toBe(context.interactions.slice(-6, -5)[0].uuid)
+
+    // commit to change
+    prompt = (await backtracking.jumpTo(
       findInteractionWith(prompt.interactionId, context),
       context))!.prompt!
 
@@ -53,13 +67,19 @@ describe.skip('FlowRunner integration', () => {
     // todo: should peek1 really be peek0?
     // todo: assert that prompt is new and fresh interaction state at this point
     const interactionAtPeek1 = findInteractionWith(prompt.interactionId, context)
-    expect(interactionAtPeek1).toEqual(last(context.interactions)) // assert change
-    expect(interactionAtPeek1).not.toEqual(interactionPreviouslyAtPeek5) // assert difference
-    expect(prompt.value).toEqual(interactionPreviouslyAtPeek5.value) // assert difference
 
-    prompt = (await prompt.fulfill(17))!.prompt // todo: I think we're wiping our ghost at this point; need to look into our sync() bhaviour at this point :)
+    // assert change
+    expect(interactionAtPeek1).toEqual(last(context.interactions))
+
+    // assert difference
+    expect(interactionAtPeek1).not.toEqual(interactionPreviouslyAtPeek5)
+
+    // assert difference
+    expect(prompt.value).toEqual(interactionPreviouslyAtPeek5.value)
+
+    // todo: I think we're wiping our ghost at this point; need to look into our sync() behaviour at this point :)
+    prompt = (await prompt.fulfill(17))!.prompt
     expect(prompt.value).toEqual(12)
-
 
 
   })

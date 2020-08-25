@@ -17,12 +17,20 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlockExit, {IBlockExitTestRequired} from './IBlockExit'
+import {
+  findBlockWith,
+  findInteractionWith,
+  getActiveFlowFrom,
+  IBlockExit,
+  IBlockExitTestRequired,
+  IContext,
+  ICursor,
+  IFlow,
+  ValidationException,
+} from '..'
 import {extend, find, get, has, startsWith} from 'lodash'
-import ValidationException from '../domain/exceptions/ValidationException'
-import IContext, {findInteractionWith, getActiveFlowFrom, ICursor} from './IContext'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
-import IFlow, {findBlockWith} from './IFlow'
+
 
 export interface IBlock {
   uuid: string,
@@ -33,8 +41,6 @@ export interface IBlock {
   config: object,
   exits: IBlockExit[],
 }
-
-export default IBlock
 
 export interface IBlockWithTestExits extends IBlock {
   exits: IBlockExitTestRequired[],
@@ -50,7 +56,10 @@ export function findBlockExitWith(uuid: string, block: IBlock): IBlockExit {
   return exit
 }
 
-export function findFirstTruthyEvaluatingBlockExitOn(block: IBlockWithTestExits, context: IContext): IBlockExitTestRequired | undefined {
+export function findFirstTruthyEvaluatingBlockExitOn(
+  block: IBlockWithTestExits,
+  context: IContext,
+): IBlockExitTestRequired | undefined {
   const {exits} = block
   if (exits.length === 0) {
     throw new ValidationException(`Unable to find exits on block ${block.uuid}`)
@@ -83,6 +92,7 @@ export interface IEvalContextBlock {
 }
 
 export type TEvalContextBlockMap = {[k: string]: IEvalContextBlock}
+
 export function generateCachedProxyForBlockName(target: object, ctx: IContext): TEvalContextBlockMap {
   // create a proxy that traps get() and attempts a lookup of blocks by name
   return new Proxy(target, {
@@ -112,7 +122,7 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext): 
     has(target, prop) {
       return prop in target
         || has(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`)
-    }
+    },
   }) as TEvalContextBlockMap
 }
 
@@ -164,11 +174,21 @@ export function wrapInExprSyntaxWhenAbsent(expr: string): string {
 
 export interface IBlockService {
   findBlockExitWith(uuid: string, block: IBlock): IBlockExit,
-  findFirstTruthyEvaluatingBlockExitOn(block: IBlockWithTestExits, context: IContext): IBlockExitTestRequired | undefined,
+
+  findFirstTruthyEvaluatingBlockExitOn(
+    block: IBlockWithTestExits,
+    context: IContext,
+  ): IBlockExitTestRequired | undefined,
+
   findDefaultBlockExitOn(block: IBlock): IBlockExit,
+
   isLastBlock(block: IBlock): boolean,
+
   findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx: IContext): IEvalContextBlock | undefined,
+
   generateCachedProxyForBlockName(target: object, ctx: IContext): object,
+
   createEvalContextFrom(context: IContext): object,
+
   evaluateToBool(expr: string, ctx: object): boolean,
 }

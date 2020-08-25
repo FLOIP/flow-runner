@@ -17,13 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlockRunner from './IBlockRunner'
-import IBlockExit from '../../flow-spec/IBlockExit'
-import IContext from '../../flow-spec/IContext'
-import ILogBlock from '../../model/block/ILogBlock'
-import {evaluateToString} from '../..'
-import createFormattedDate from '../DateFormat'
-
+import {evaluateToString, IBlockExit, IBlockRunner, IContext, ILogBlock} from '../..'
+import {createFormattedDate} from '../DateFormat'
 
 /**
  * Block runner for `Core\Log` - Appends a low-level message to {@link IContext.logs}.
@@ -36,7 +31,9 @@ import createFormattedDate from '../DateFormat'
 export class LogBlockRunner implements IBlockRunner {
   constructor(
     public block: ILogBlock,
-    public context: IContext) {}
+    public context: IContext,
+  ) {
+  }
 
   async initialize(): Promise<undefined> {
     return
@@ -51,5 +48,3 @@ export class LogBlockRunner implements IBlockRunner {
     return this.block.exits[0]
   }
 }
-
-export default LogBlockRunner

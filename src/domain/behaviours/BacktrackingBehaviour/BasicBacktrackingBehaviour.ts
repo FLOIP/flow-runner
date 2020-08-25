@@ -17,18 +17,22 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {findLast, findLastIndex, forEachRight, includes, last, find} from 'lodash'
-import IBehaviour from '../IBehaviour'
-import IBlockInteraction from '../../../flow-spec/IBlockInteraction'
-import IContext, {
+import {find, findLast, findLastIndex, forEachRight, includes, last} from 'lodash'
+import {
   findBlockOnActiveFlowWith,
+  findBlockWith,
   findFlowWith,
+  FlowRunner,
+  IBehaviour,
+  IBlockInteraction,
+  IContext,
+  IFlowNavigator,
+  IPromptBuilder,
   IRichCursor,
   IRichCursorInputRequired,
-} from '../../../flow-spec/IContext'
-import ValidationException from '../../exceptions/ValidationException'
-import FlowRunner, {IFlowNavigator, IPromptBuilder, NON_INTERACTIVE_BLOCK_TYPES} from '../../FlowRunner'
-import {findBlockWith} from '../../..'
+  NON_INTERACTIVE_BLOCK_TYPES,
+  ValidationException,
+} from '../../..'
 
 export enum PeekDirection {
   RIGHT = 'RIGHT',
@@ -38,7 +42,7 @@ export enum PeekDirection {
 /**
  * Interface for time-travel within interaction history.
  */
-export interface IBackTrackingBehaviour extends IBehaviour {
+export interface IBasicBackTrackingBehaviour extends IBehaviour {
   /**
    * Rebuild index over interaction history from scratch.
    */
@@ -67,7 +71,7 @@ export interface IBackTrackingBehaviour extends IBehaviour {
  * Basic implementation of time-travel. Solely provides ability to preview what's happened in the past, while any
  * modifications will clear the past's future.
  */
-export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
+export class BasicBacktrackingBehaviour implements IBasicBackTrackingBehaviour {
   constructor(
     public context: IContext,
     public navigator: IFlowNavigator,
@@ -113,18 +117,22 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
       findBlockOnActiveFlowWith(intx.blockId, context),
       context)
   }
-  
-  _findInteractiveInteractionAt(steps = 0, context: IContext = this.context, direction = PeekDirection.LEFT): IBlockInteraction {
+
+  _findInteractiveInteractionAt(
+    steps = 0,
+    context: IContext = this.context,
+    direction = PeekDirection.LEFT,
+  ): IBlockInteraction {
     const _find = {
       [PeekDirection.RIGHT]: find,
       [PeekDirection.LEFT]: findLast,
     }[direction]
-    
+
     if (_find == null) {
       throw new ValidationException(`Unknown \`direction\` provided to findInteractiveInteractionAt() - 
         ${JSON.stringify(direction)}`)
     }
-    
+
     let _steps = steps + 1 // setup for while-loop
     const intx = _find(context.interactions, ({type}) =>
       !includes(NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0)
@@ -132,11 +140,15 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
     if (intx == null || _steps > 0) {
       throw new ValidationException(`Unable to backtrack to an interaction that far back ${JSON.stringify({steps})}`)
     }
-    
+
     return intx
   }
 
-  async peek(steps = 0, context: IContext = this.context, direction = PeekDirection.LEFT): Promise<IRichCursorInputRequired> {
+  async peek(
+    steps = 0,
+    context: IContext = this.context,
+    direction = PeekDirection.LEFT,
+  ): Promise<IRichCursorInputRequired> {
     const intx = this._findInteractiveInteractionAt(steps, context, direction)
     const block = findBlockWith(
       intx.blockId,
@@ -167,5 +179,3 @@ export class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
     // do nothing
   }
 }
-
-export default BasicBacktrackingBehaviour

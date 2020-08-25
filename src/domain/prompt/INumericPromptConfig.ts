@@ -17,13 +17,13 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IPromptConfig, KnownPrompts} from './IPrompt'
+import {IPromptConfig} from '../..'
 
 /**
  * Interface for defining an {@link IPromptConfig} resolving to a {@link NumericPrompt}.
  */
 export interface INumericPromptConfig extends IPromptConfig<number | null> {
-  kind: KnownPrompts.Numeric,
+  kind: string,
   min: number,
   max: number,
 }

@@ -18,22 +18,26 @@
  **/
 
 import {NonBreakingUpdateOperation} from 'sp2'
-
-import IContact from './IContact'
-import IFlow, {findBlockWith} from './IFlow'
-import IBlockInteraction from './IBlockInteraction'
-import IPrompt, {IBasePromptConfig, IPromptConfig} from '../domain/prompt/IPrompt'
-import IBlock, {isLastBlock} from './IBlock'
-import IRunFlowBlockConfig from '../model/block/IRunFlowBlockConfig'
+import {
+  createFormattedDate,
+  DeliveryStatus,
+  findBlockWith,
+  IBlock,
+  IBlockInteraction,
+  IContact,
+  IdGeneratorUuidV4,
+  IFlow,
+  IIdGenerator,
+  IPrompt,
+  IPromptConfig,
+  IResourceDefinition,
+  IResources,
+  IRunFlowBlockConfig,
+  isLastBlock,
+  SupportedMode,
+  ValidationException,
+} from '..'
 import {find, findLast, last} from 'lodash'
-import ValidationException from '../domain/exceptions/ValidationException'
-import DeliveryStatus from './DeliveryStatus'
-import SupportedMode from './SupportedMode'
-import {IResourceDefinition, IResources} from '..'
-import IIdGenerator from '../domain/IIdGenerator'
-import IdGeneratorUuidV4 from '../domain/IdGeneratorUuidV4'
-import createFormattedDate from '../domain/DateFormat'
-
 
 export interface ICursor {
   /**
@@ -45,12 +49,12 @@ export interface ICursor {
    * If it does, we call it an `ICursorInputRequired`.
    * If not, `ICursorNoInputRequired` will have a `null-ish` `promptConfig`.
    */
-  promptConfig?: (IPromptConfig<any> & IBasePromptConfig),
+  promptConfig?: (IPromptConfig<unknown>),
 }
 
 export interface ICursorInputRequired {
   interactionId: string,
-  promptConfig: IPromptConfig<any> & IBasePromptConfig,
+  promptConfig: IPromptConfig<unknown>,
 }
 
 export interface ICursorNoInputRequired {
@@ -68,12 +72,12 @@ export interface IRichCursor {
    * When present, we call it a TRichCursorInputRequired.
    * In absence, the TRichCursorNoInputRequired will maintain `prompt` with a null-ish value.
    */
-  prompt?: IPrompt<IPromptConfig<any> & IBasePromptConfig>,
+  prompt?: IPrompt<IPromptConfig<any>>,
 }
 
 export interface IRichCursorInputRequired {
   interaction: IBlockInteraction,
-  prompt: IPrompt<IPromptConfig<any> & IBasePromptConfig>,
+  prompt: IPrompt<IPromptConfig<any>>,
 }
 
 export interface IRichCursorNoInputRequired {
@@ -100,7 +104,8 @@ export interface IContext {
   languageId: string,
 
   contact: IContact,
-  sessionVars: any, // todo: what is an object type with any properties?
+
+  sessionVars: {[k: string]: unknown},
   interactions: IBlockInteraction[],
   nestedFlowBlockInteractionIdStack: string[],
   reversibleOperations: IReversibleUpdateOperation[],
@@ -109,12 +114,10 @@ export interface IContext {
   flows: IFlow[],
   firstFlowId: string,
   resources: IResources,
-  platformMetadata: object,
+  platformMetadata: {[k: string]: unknown},
 
   logs: {[k: string]: string},
 }
-
-export default IContext
 
 export interface IContextWithCursor extends IContext {
   cursor: ICursor,
@@ -231,11 +234,29 @@ export const contextService: IContextService = {
 
 export interface IContextService {
   findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction,
+
   findFlowWith(uuid: string, ctx: IContext): IFlow,
+
   findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock,
+
   findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext): string,
+
   getActiveFlowIdFrom(ctx: IContext): string,
+
   getActiveFlowFrom(ctx: IContext): IFlow,
+
   isLastBlockOn(ctx: IContext, block: IBlock): boolean,
+
   isNested(ctx: IContext): boolean,
+}
+
+export const ContextService: IContextService = {
+  findInteractionWith,
+  findFlowWith,
+  findBlockOnActiveFlowWith,
+  findNestedFlowIdFor,
+  getActiveFlowIdFrom,
+  getActiveFlowFrom,
+  isLastBlockOn,
+  isNested,
 }

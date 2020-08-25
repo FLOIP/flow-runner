@@ -27,5 +27,3 @@ export interface INumericBlockConfig {
     maxDigits: number,
   },
 }
-
-export default INumericBlockConfig

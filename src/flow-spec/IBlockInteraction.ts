@@ -18,22 +18,28 @@
  **/
 
 export interface IBlockInteraction {
-  uuid: string, // UUID64
-  blockId: string, // UUID32
-  flowId: string, // UUID32
+  // UUID64
+  uuid: string,
+
+  // UUID32
+  blockId: string,
+
+  // UUID32
+  flowId: string,
   entryAt: string,
   exitAt?: string,
   hasResponse: boolean,
-  value?: string | number | object,
+  value?: unknown,
   details: IBlockInteractionDetails,
   selectedExitId?: string,
   type: string,
 
-  originBlockInteractionId?: string, // UUID64
-  originFlowId?: string, // UUID64
-}
+  // UUID64
+  originBlockInteractionId?: string,
 
-export default IBlockInteraction
+  // UUID64
+  originFlowId?: string,
+}
 
 export interface IBlockInteractionDetails {
 }

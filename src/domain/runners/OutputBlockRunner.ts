@@ -17,11 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlockRunner from './IBlockRunner'
-import IBlockExit from '../../flow-spec/IBlockExit'
-import IContext, {IRichCursor} from '../../flow-spec/IContext'
-import IOutputBlock from '../../model/block/IOutputBlock'
-import {evaluateToString} from '../..'
+import {evaluateToString, IBlockExit, IBlockRunner, IContext, IOutputBlock, IRichCursor} from '../..'
+
 
 /**
  * Block runner for `Core\Output` - This block provides a connection to the
@@ -37,7 +34,9 @@ import {evaluateToString} from '../..'
 export class OutputBlockRunner implements IBlockRunner {
   constructor(
     public block: IOutputBlock,
-    public context: IContext) {}
+    public context: IContext,
+  ) {
+  }
 
   async initialize(): Promise<undefined> {
     return
@@ -50,4 +49,3 @@ export class OutputBlockRunner implements IBlockRunner {
   }
 }
 
-export default OutputBlockRunner

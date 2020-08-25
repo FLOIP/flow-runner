@@ -1,14 +1,16 @@
 import {first, last} from 'lodash'
-import BacktrackingBehaviour from '../../domain/behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
-import IContext from '../../flow-spec/IContext'
-import IBlockInteraction from '../../flow-spec/IBlockInteraction'
-import IFlow from '../../flow-spec/IFlow'
-import {IBasePromptConfig, IPromptConfig} from '../../index'
-import {NON_INTERACTIVE_BLOCK_TYPES} from '../../domain/FlowRunner'
-import IPrompt from '../../domain/prompt/IPrompt'
-import IBlock from '../../flow-spec/IBlock'
-import BasicBacktrackingBehaviour, {PeekDirection} from '../../domain/behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour'
-
+import {
+  BacktrackingBehaviour,
+  IBlock,
+  IBlockInteraction,
+  IContext,
+  IFlow,
+  IPrompt,
+  IPromptConfig,
+  NON_INTERACTIVE_BLOCK_TYPES,
+  BasicBacktrackingBehaviour,
+  PeekDirection,
+} from '../..'
 
 describe('BasicBacktrackingBehaviour', () => {
   let backtracking: BasicBacktrackingBehaviour
@@ -19,7 +21,7 @@ describe('BasicBacktrackingBehaviour', () => {
       {navigateTo: async (_b, _c) => ({interaction: {} as IBlockInteraction, prompt: undefined})},
       {
         buildPromptFor: async (_b: IBlock, _i: IBlockInteraction):
-          Promise<IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined> => undefined,
+          Promise<IPrompt<IPromptConfig<any>> | undefined> => undefined,
       })
   })
 
