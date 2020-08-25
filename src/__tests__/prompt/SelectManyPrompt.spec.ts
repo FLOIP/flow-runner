@@ -13,7 +13,6 @@ import {
 import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
 
 describe('SelectManyPrompt', () => {
-
   let dataset: IDataset
 
   beforeEach(() => {
@@ -27,10 +26,7 @@ describe('SelectManyPrompt', () => {
       const ctx = dataset.contexts[1] as IContextInputRequired
       const runner = new FlowRunner(ctx)
 
-      prompt = new SelectManyPrompt(
-        config as ISelectManyPromptConfig,
-        'intx-123',
-        runner)
+      prompt = new SelectManyPrompt(config as ISelectManyPromptConfig, 'intx-123', runner)
     })
 
     describe('when a response isRequired', () => {
@@ -41,7 +37,8 @@ describe('SelectManyPrompt', () => {
           prompt.validate.bind(prompt, selections),
           InvalidChoiceException,
           INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK,
-          ['key-not-in-prompt-config'])
+          ['key-not-in-prompt-config']
+        )
       })
 
       it('should raise when all selections are invalid', async () => {
@@ -56,15 +53,13 @@ describe('SelectManyPrompt', () => {
           prompt.validate.bind(prompt, selections),
           InvalidChoiceException,
           INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK,
-          selections)
+          selections
+        )
       })
 
       it('should raise when no selections are provided', async () => {
         const selections: IChoice['key'][] = []
-        verifyValidationThrows(
-          prompt.validate.bind(prompt, selections),
-          ValidationException,
-          INVALID_AT_LEAST_ONE_SELECTION_REQUIRED)
+        verifyValidationThrows(prompt.validate.bind(prompt, selections), ValidationException, INVALID_AT_LEAST_ONE_SELECTION_REQUIRED)
       })
     })
 
@@ -82,12 +77,7 @@ describe('SelectManyPrompt', () => {
   })
 })
 
-const verifyValidationThrows = /*<E extends Error>*/(
-  invoker: Function,
-  ErrorType: Function,
-  msg: string,
-  choices?: IChoice['key'][],
-) => {
+const verifyValidationThrows = /*<E extends Error>*/ (invoker: Function, ErrorType: Function, msg: string, choices?: IChoice['key'][]) => {
   try {
     invoker()
 

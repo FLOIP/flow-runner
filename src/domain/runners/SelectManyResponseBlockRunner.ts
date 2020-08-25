@@ -50,11 +50,7 @@ import {last} from 'lodash'
  *   a menu selection.
  */
 export class SelectManyResponseBlockRunner implements IBlockRunner {
-  constructor(
-    public block: ISelectOneResponseBlock,
-    public context: IContext,
-  ) {
-  }
+  constructor(public block: ISelectOneResponseBlock, public context: IContext) {}
 
   async initialize({value}: IBlockInteraction): Promise<ISelectManyPromptConfig> {
     const {prompt, choices} = this.block.config
@@ -63,18 +59,16 @@ export class SelectManyResponseBlockRunner implements IBlockRunner {
       kind: SELECT_MANY_PROMPT_KEY,
       prompt,
       isResponseRequired: true,
-      choices: Object.keys(choices)
-        .map(key => ({
-          key,
-          value: choices[key],
-        })),
+      choices: Object.keys(choices).map(key => ({
+        key,
+        value: choices[key],
+      })),
 
       value: value as ISelectManyPromptConfig['value'],
     }
   }
 
   async run(): Promise<IBlockExit> {
-    return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context)
-      ?? last(this.block.exits) as IBlockExitTestRequired
+    return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? (last(this.block.exits) as IBlockExitTestRequired)
   }
 }

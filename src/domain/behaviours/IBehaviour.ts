@@ -20,20 +20,16 @@
 import {IBlockInteraction, IContext, IFlowNavigator, IPromptBuilder} from '../..'
 
 export interface IBehaviourConstructor {
-  new(
-    context: IContext,
-    navigator: IFlowNavigator,
-    promptBuilder: IPromptBuilder,
-  ): IBehaviour,
+  new(context: IContext, navigator: IFlowNavigator, promptBuilder: IPromptBuilder): IBehaviour
 }
 
 /**
  * Inteface for {@link FlowRunner} extensibility; provides hooks into core runner behaviour.
  */
 export interface IBehaviour {
-  context: IContext,
-  navigator: IFlowNavigator,
-  promptBuilder: IPromptBuilder,
+  context: IContext
+  navigator: IFlowNavigator
+  promptBuilder: IPromptBuilder
 
   /**
    * {@link FlowRunner} hook:
@@ -45,7 +41,7 @@ export interface IBehaviour {
    * @param interaction
    * @param context
    */
-  postInteractionCreate(interaction: IBlockInteraction, context: IContext): IBlockInteraction,
+  postInteractionCreate(interaction: IBlockInteraction, context: IContext): IBlockInteraction
 
   /**
    * {@link FlowRunner} hook:
@@ -55,5 +51,5 @@ export interface IBehaviour {
    * @param interaction
    * @param context
    */
-  postInteractionComplete(interaction: IBlockInteraction, context: IContext): void,
+  postInteractionComplete(interaction: IBlockInteraction, context: IContext): void
 }

@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlockRunner,IBlock, IBlockExit, IContext, IRunFlowBlockConfig} from '../..'
+import {IBlock, IBlockExit, IBlockRunner, IContext, IRunFlowBlockConfig} from '../..'
 
 /**
  * Block runner for `Core\RunFlow` - This block starts and runs another {@link IFlow}, and returns execution to the
@@ -34,11 +34,7 @@ import {IBlockRunner,IBlock, IBlockExit, IContext, IRunFlowBlockConfig} from '..
  * flow proceeds through the error exit.
  */
 export class RunFlowBlockRunner implements IBlockRunner {
-  constructor(
-    public block: IBlock & {config: IRunFlowBlockConfig},
-    public context: IContext,
-  ) {
-  }
+  constructor(public block: IBlock & {config: IRunFlowBlockConfig}, public context: IContext) {}
 
   async initialize(): Promise<undefined> {
     return undefined
@@ -48,4 +44,3 @@ export class RunFlowBlockRunner implements IBlockRunner {
     return this.block.exits[0]
   }
 }
-

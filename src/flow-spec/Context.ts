@@ -36,7 +36,6 @@ import {
 
 // noinspection DuplicatedCode
 export class Context implements IContext {
-
   public id: string
   public createdAt: string
   public deliveryStatus: DeliveryStatus
@@ -78,7 +77,7 @@ export class Context implements IContext {
     orgId?: string,
     cursor?: ICursor,
     platformMetadata: {[k: string]: unknown} = {},
-    logs: {[k: string]: string} = {},
+    logs: {[k: string]: string} = {}
   ) {
     this.logs = logs
     this.platformMetadata = platformMetadata
@@ -108,7 +107,6 @@ export class Context implements IContext {
 
   // noinspection JSUnusedGlobalSymbols
   static readonly Builder = class {
-
     id?: string
     createdAt: string = createFormattedDate()
     deliveryStatus: DeliveryStatus = DeliveryStatus.QUEUED
@@ -258,9 +256,8 @@ export class Context implements IContext {
         this.orgId,
         this.cursor,
         this.platformMetadata,
-        this.logs,
+        this.logs
       )
     }
   }
 }
-

@@ -18,5 +18,5 @@
  **/
 
 export interface IOutputBlockConfig {
-  value: string,
+  value: string
 }

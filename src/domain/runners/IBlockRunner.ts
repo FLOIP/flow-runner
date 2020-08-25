@@ -37,14 +37,14 @@ import {IBlock, IBlockExit, IBlockInteraction, IContext, IPromptConfig, IRichCur
  *   single exit, but many cases have more complexity around this part of the puzzle.
  */
 export interface IBlockRunner {
-  block: IBlock,
-  context: IContext,
+  block: IBlock
+  context: IContext
 
   /**
    * Converts an interaction and its block property into either a prompt configuration or `undefined`.
    * @param interaction
    */
-  initialize(interaction: IBlockInteraction): Promise<IPromptConfig<any> | undefined>,
+  initialize(interaction: IBlockInteraction): Promise<IPromptConfig<any> | undefined>
 
   /**
    * Takes the current point in our interaction history and performs some local logic to decide how the Flow should
@@ -52,5 +52,5 @@ export interface IBlockRunner {
    * but many cases have more complexity around this part of the puzzle.
    * @param cursor
    */
-  run(cursor: IRichCursor): Promise<IBlockExit>,
+  run(cursor: IRichCursor): Promise<IBlockExit>
 }

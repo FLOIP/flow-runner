@@ -28,23 +28,20 @@ import {
 import {EvaluatorFactory} from '@floip/expression-evaluator'
 
 export class Resource implements IResource {
-  constructor(
-    public uuid: string,
-    public values: IResourceDefinitionContentTypeSpecific[],
-    public context: IContext,
-  ) {
-  }
+  constructor(public uuid: string, public values: IResourceDefinitionContentTypeSpecific[], public context: IContext) {}
 
   _getValueByContentType(contentType: SupportedContentType): string {
     const def = this._findByContentType(contentType)
 
     if (def == null) {
       const {languageId, mode} = this.context
-      throw new ResourceNotFoundException(`Unable to find resource for ${JSON.stringify({
-        contentType,
-        languageId,
-        mode,
-      })}`)
+      throw new ResourceNotFoundException(
+        `Unable to find resource for ${JSON.stringify({
+          contentType,
+          languageId,
+          mode,
+        })}`
+      )
     }
 
     return def.value
@@ -67,10 +64,7 @@ export class Resource implements IResource {
   }
 
   getText(): string {
-    return EvaluatorFactory.create()
-      .evaluate(
-        this._getValueByContentType(SupportedContentType.TEXT),
-        createEvalContextFrom(this.context))
+    return EvaluatorFactory.create().evaluate(this._getValueByContentType(SupportedContentType.TEXT), createEvalContextFrom(this.context))
   }
 
   getVideo(): string {

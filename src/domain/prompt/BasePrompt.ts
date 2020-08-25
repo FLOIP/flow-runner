@@ -35,16 +35,10 @@ export type TGenericPrompt = IPrompt<IPromptConfig<any>>
  * Abstract implementation of {@link IPrompt}, intended to be consumed as a common parent for concrete {@link IPrompt}
  * implementations.
  */
-export abstract class BasePrompt<T extends IPromptConfig<T['value']>>
-  implements IPrompt<T> {
-
+export abstract class BasePrompt<T extends IPromptConfig<T['value']>> implements IPrompt<T> {
   error: PromptValidationException | null = null
 
-  constructor(
-    public config: T,
-    public interactionId: string,
-    public runner: IFlowRunner,
-  ) {
+  constructor(public config: T, public interactionId: string, public runner: IFlowRunner) {
     // todo: add canPerformEarlyExit() behaviour
   }
 
@@ -97,7 +91,6 @@ export abstract class BasePrompt<T extends IPromptConfig<T['value']>>
   }
 
   async fulfill(val: T['value'] | undefined): Promise<IRichCursorInputRequired | undefined> {
-
     // allow prompt.fulfill() for continuation
     if (val !== undefined) {
       this.value = val

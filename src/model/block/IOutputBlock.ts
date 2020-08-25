@@ -20,5 +20,5 @@
 import {IBlock, IOutputBlockConfig} from '../..'
 
 export interface IOutputBlock extends IBlock {
-  config: IOutputBlockConfig,
+  config: IOutputBlockConfig
 }

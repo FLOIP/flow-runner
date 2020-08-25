@@ -72,18 +72,14 @@ import {
   ValidationException,
 } from '..'
 
-export class BlockRunnerFactoryStore
-  extends Map<string, TBlockRunnerFactory>
-  implements IBlockRunnerFactoryStore {
-}
+export class BlockRunnerFactoryStore extends Map<string, TBlockRunnerFactory> implements IBlockRunnerFactoryStore {}
 
 export interface IFlowNavigator {
-  navigateTo(block: IBlock, ctx: IContext): Promise<IRichCursor>,
+  navigateTo(block: IBlock, ctx: IContext): Promise<IRichCursor>
 }
 
 export interface IPromptBuilder {
-  buildPromptFor(block: IBlock, interaction: IBlockInteraction):
-    Promise<TGenericPrompt | undefined>,
+  buildPromptFor(block: IBlock, interaction: IBlockInteraction): Promise<TGenericPrompt | undefined>
 }
 
 const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
@@ -94,10 +90,7 @@ const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
 /**
  * Block types that do not request additional input from an `IContact`
  */
-export const NON_INTERACTIVE_BLOCK_TYPES = [
-  'Core\\Case',
-  'Core\\RunFlow',
-]
+export const NON_INTERACTIVE_BLOCK_TYPES = ['Core\\Case', 'Core\\RunFlow']
 
 /**
  * A map of `IBlock.type` to an `TBlockRunnerFactory` function.
@@ -106,18 +99,9 @@ export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
   return new BlockRunnerFactoryStore([
     ['MobilePrimitives\\Message', (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
     ['MobilePrimitives\\OpenResponse', (block, ctx) => new OpenResponseBlockRunner(block as IOpenResponseBlock, ctx)],
-    [
-      'MobilePrimitives\\NumericResponse',
-      (block, ctx) => new NumericResponseBlockRunner(block as INumericResponseBlock, ctx),
-    ],
-    [
-      'MobilePrimitives\\SelectOneResponse',
-      (block, ctx) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, ctx),
-    ],
-    [
-      'MobilePrimitives\\SelectManyResponse',
-      (block, ctx) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, ctx),
-    ],
+    ['MobilePrimitives\\NumericResponse', (block, ctx) => new NumericResponseBlockRunner(block as INumericResponseBlock, ctx)],
+    ['MobilePrimitives\\SelectOneResponse', (block, ctx) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
+    ['MobilePrimitives\\SelectManyResponse', (block, ctx) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
     ['Core\\Case', (block, ctx) => new CaseBlockRunner(block as ICaseBlock, ctx)],
     ['Core\\Output', (block, ctx) => new OutputBlockRunner(block as IOutputBlock, ctx)],
     ['Core\\Log', (block, ctx) => new LogBlockRunner(block as ILogBlock, ctx)],
@@ -138,7 +122,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   public runnerFactoryStore: IBlockRunnerFactoryStore = createDefaultBlockRunnerStore()
 
   /** Instance used to `generate()` unique IDs across interaction history. */
-  protected idGenerator: IIdGenerator = new IdGeneratorUuidV4
+  protected idGenerator: IIdGenerator = new IdGeneratorUuidV4()
 
   /** Instances providing isolated functionality beyond the default runner, leveraging built-in hooks. */
   public behaviours: {[key: string]: IBehaviour} = {}
@@ -148,9 +132,9 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   constructor(
     context: IContext,
     runnerFactoryStore: IBlockRunnerFactoryStore = createDefaultBlockRunnerStore(),
-    idGenerator: IIdGenerator = new IdGeneratorUuidV4,
+    idGenerator: IIdGenerator = new IdGeneratorUuidV4(),
     behaviours: {[key: string]: IBehaviour} = {},
-    _contextService: IContextService = ContextService,
+    _contextService: IContextService = ContextService
   ) {
     this._contextService = _contextService
     this.behaviours = behaviours
@@ -167,9 +151,14 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * runner.behaviours.mySecond instanceof MySecondBehaviour
    * ``` */
   initializeBehaviours(behaviourConstructors: IBehaviourConstructor[]): void {
-    behaviourConstructors.forEach(behaviourConstructor =>
-      this.behaviours[lowerFirst(trimEnd(behaviourConstructor.name, 'Behaviour|Behavior'))]
-        = new behaviourConstructor(this.context, this, this))
+    behaviourConstructors.forEach(
+      behaviourConstructor =>
+        (this.behaviours[lowerFirst(trimEnd(behaviourConstructor.name, 'Behaviour|Behavior'))] = new behaviourConstructor(
+          this.context,
+          this,
+          this
+        ))
+    )
   }
 
   /**
@@ -213,8 +202,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       return true
     }
 
-    const firstInteractiveIntx = find(interactions, ({type}) =>
-      !includes(NON_INTERACTIVE_BLOCK_TYPES, type))
+    const firstInteractiveIntx = find(interactions, ({type}) => !includes(NON_INTERACTIVE_BLOCK_TYPES, type))
 
     if (firstInteractiveIntx == null) {
       return true
@@ -261,8 +249,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       return true
     }
 
-    const {prompt}: IRichCursorInputRequired =
-      this.hydrateRichCursorFrom(ctx as IContextInputRequired) as IRichCursorInputRequired
+    const {prompt}: IRichCursorInputRequired = this.hydrateRichCursorFrom(ctx as IContextInputRequired) as IRichCursorInputRequired
 
     try {
       prompt.validate(prompt.value)
@@ -277,9 +264,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   cacheInteractionByBlockName(
     {uuid, entryAt}: IBlockInteraction,
     {name, config: {prompt}}: IMessageBlock,
-    context: IContext = this.context,
+    context: IContext = this.context
   ): void {
-
     if (!('blockInteractionsByBlockName' in this.context.sessionVars)) {
       context.sessionVars.blockInteractionsByBlockName = {}
     }
@@ -291,21 +277,15 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     // create a cache of `{[block.name]: {...}}` for subsequent lookups
     const blockNameKey = `blockInteractionsByBlockName.${name}`
     const previous = this.context.sessionVars[blockNameKey]
-    const resource = prompt == null
-      ? undefined
-      : new ResourceResolver(context).resolve(prompt)
+    const resource = prompt == null ? undefined : new ResourceResolver(context).resolve(prompt)
 
     const current = {
       __interactionId: uuid,
       time: entryAt,
-      text: resource != null && resource.hasText()
-        ? resource.getText()
-        : '',
+      text: resource != null && resource.hasText() ? resource.getText() : '',
     }
 
-    this.applyReversibleDataOperation(
-      {$set: {[blockNameKey]: current}},
-      {$set: {[blockNameKey]: previous}})
+    this.applyReversibleDataOperation({$set: {[blockNameKey]: current}}, {$set: {[blockNameKey]: previous}})
   }
 
   /**
@@ -318,9 +298,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   applyReversibleDataOperation(
     forward: NonBreakingUpdateOperation,
     reverse: NonBreakingUpdateOperation,
-    context: IContext = this.context,
+    context: IContext = this.context
   ): void {
-
     context.sessionVars = update(context.sessionVars, forward)
     context.reversibleOperations.push({
       interactionId: last(context.interactions)?.uuid,
@@ -385,7 +364,6 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       }
 
       richCursor = await this.navigateTo(block, ctx)
-
     } while (block != null)
 
     this.complete(ctx)
@@ -404,7 +382,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param ctx
    * @param completedAt
    */
-  complete(ctx: IContext, completedAt: Date = new Date): void {
+  complete(ctx: IContext, completedAt: Date = new Date()): void {
     delete ctx.cursor
     ctx.deliveryStatus = DeliveryStatus.FINISHED_COMPLETE
     ctx.exitAt = createFormattedDate(completedAt)
@@ -416,12 +394,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param selectedExitId
    * @param completedAt
    */
-  completeInteraction(
-    intx: IBlockInteraction,
-    selectedExitId: IBlockExit['uuid'],
-    completedAt: Date = new Date,
-  ): IBlockInteraction {
-
+  completeInteraction(intx: IBlockInteraction, selectedExitId: IBlockExit['uuid'], completedAt: Date = new Date()): IBlockInteraction {
     intx.exitAt = createFormattedDate(completedAt)
     intx.selectedExitId = selectedExitId
 
@@ -435,7 +408,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param ctx
    * @param completedAt
    */
-  completeActiveNestedFlow(ctx: IContext, completedAt: Date = new Date): IBlockInteraction {
+  completeActiveNestedFlow(ctx: IContext, completedAt: Date = new Date()): IBlockInteraction {
     const {nestedFlowBlockInteractionIdStack} = ctx
 
     if (!this._contextService.isNested(ctx)) {
@@ -488,16 +461,10 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param originFlowId
    * @param originBlockInteractionId
    */
-  async initializeOneBlock(
-    block: IBlock,
-    flowId: string,
-    originFlowId?: string,
-    originBlockInteractionId?: string,
-  ): Promise<IRichCursor> {
+  async initializeOneBlock(block: IBlock, flowId: string, originFlowId?: string, originBlockInteractionId?: string): Promise<IRichCursor> {
     let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
 
-    Object.values(this.behaviours)
-      .forEach(b => interaction = b.postInteractionCreate(interaction, this.context))
+    Object.values(this.behaviours).forEach(b => (interaction = b.postInteractionCreate(interaction, this.context)))
 
     return {interaction, prompt: await this.buildPromptFor(block, interaction)}
   }
@@ -515,7 +482,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     assertNotNull(
       interaction,
       () => 'Unable to run with absent cursor interaction',
-      errorMessage => new ValidationException(errorMessage))
+      errorMessage => new ValidationException(errorMessage)
+    )
 
     if (hasPrompt && prompt?.config?.isSubmitted) {
       throw new ValidationException('Unable to run against previously processed prompt')
@@ -526,8 +494,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       interaction.hasResponse = interaction.value != null
     }
 
-    const exit = await this.createBlockRunnerFor(block, this.context)
-      .run(richCursor)
+    const exit = await this.createBlockRunnerFor(block, this.context).run(richCursor)
 
     this.completeInteraction(interaction, exit.uuid)
 
@@ -535,8 +502,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       prompt!.config.isSubmitted = true
     }
 
-    Object.values(this.behaviours)
-      .forEach(b => b.postInteractionComplete(richCursor.interaction, this.context))
+    Object.values(this.behaviours).forEach(b => b.postInteractionComplete(richCursor.interaction, this.context))
 
     return exit
   }
@@ -567,15 +533,14 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     const {interactions, nestedFlowBlockInteractionIdStack} = ctx
     const flowId = this._contextService.getActiveFlowIdFrom(ctx)
     const originInteractionId = last(nestedFlowBlockInteractionIdStack)
-    const originInteraction = originInteractionId != null
-      ? this._contextService.findInteractionWith(originInteractionId, ctx)
-      : null
+    const originInteraction = originInteractionId != null ? this._contextService.findInteractionWith(originInteractionId, ctx) : null
 
     const richCursor = await this.initializeOneBlock(
       block,
       flowId,
       originInteraction == null ? undefined : originInteraction.flowId,
-      originInteractionId)
+      originInteractionId
+    )
 
     interactions.push(richCursor.interaction)
     ctx.cursor = this.dehydrateCursor(richCursor)
@@ -602,11 +567,11 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
 
     const runFlowInteraction = last(ctx.interactions)
     if (runFlowInteraction == null) {
-      throw new ValidationException('Unable to step into Core\\RunFlow that hasn\'t yet been started')
+      throw new ValidationException("Unable to step into Core\\RunFlow that hasn't yet been started")
     }
 
     if (runFlowBlock.uuid !== runFlowInteraction.blockId) {
-      throw new ValidationException('Unable to step into Core\\RunFlow block that doesn\'t match last interaction')
+      throw new ValidationException("Unable to step into Core\\RunFlow block that doesn't match last interaction")
     }
 
     ctx.nestedFlowBlockInteractionIdStack.push(runFlowInteraction.uuid)
@@ -632,9 +597,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    *       to next block; when stepping IN, we need an explicit navigation to inject RunFlow in between
    *       the two Flows. */
   stepOut(ctx: IContext): IBlock | undefined {
-    return this.findNextBlockFrom(
-      this.completeActiveNestedFlow(ctx),
-      ctx)
+    return this.findNextBlockFrom(this.completeActiveNestedFlow(ctx), ctx)
   }
 
   findFirstExitOnActiveFlowBlockFor({blockId}: IBlockInteraction, ctx: IContext): IBlockExit {
@@ -670,8 +633,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   findNextBlockFrom({blockId, selectedExitId}: IBlockInteraction, ctx: IContext): IBlock | undefined {
     if (selectedExitId == null) {
       // todo: maybe tighten check on this, like: prompt.isFulfilled() === false || !called block.run()
-      throw new ValidationException(
-        'Unable to navigate past incomplete interaction; did you forget to call runner.run()?')
+      throw new ValidationException('Unable to navigate past incomplete interaction; did you forget to call runner.run()?')
     }
 
     const block = this._contextService.findBlockOnActiveFlowWith(blockId, ctx)
@@ -699,9 +661,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     {uuid: blockId, type}: IBlock,
     flowId: string,
     originFlowId: string | undefined,
-    originBlockInteractionId: string | undefined,
+    originBlockInteractionId: string | undefined
   ): IBlockInteraction {
-
     return {
       uuid: this.idGenerator.generate(),
       blockId,
@@ -726,9 +687,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param block
    * @param interaction
    */
-  async buildPromptFor(block: IBlock, interaction: IBlockInteraction):
-    Promise<TGenericPrompt | undefined> {
-
+  async buildPromptFor(block: IBlock, interaction: IBlockInteraction): Promise<TGenericPrompt | undefined> {
     const runner = this.createBlockRunnerFor(block, this.context)
     const promptConfig = await runner.initialize(interaction)
     return this.createPromptFrom(promptConfig, interaction)
@@ -757,7 +716,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   static readonly Builder = class {
     context?: IContext
     runnerFactoryStore: BlockRunnerFactoryStore = createDefaultBlockRunnerStore()
-    idGenerator: IIdGenerator = new IdGeneratorUuidV4
+    idGenerator: IIdGenerator = new IdGeneratorUuidV4()
     behaviours: {[key: string]: IBehaviour} = {}
     _contextService: IContextService = ContextService
 
@@ -787,15 +746,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     }
 
     build(): FlowRunner {
-      assertNotNull(
-        this.context,
-        () => 'FlowRunner.Builder.setContext() must be called before FlowRunner.Builder.build()')
-      return new FlowRunner(
-        this.context,
-        this.runnerFactoryStore,
-        this.idGenerator,
-        this.behaviours,
-        this._contextService)
+      assertNotNull(this.context, () => 'FlowRunner.Builder.setContext() must be called before FlowRunner.Builder.build()')
+      return new FlowRunner(this.context, this.runnerFactoryStore, this.idGenerator, this.behaviours, this._contextService)
     }
   }
 }

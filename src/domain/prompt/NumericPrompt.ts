@@ -19,7 +19,6 @@
 
 import {BasePrompt, INumericPromptConfig, ValidationException} from '../..'
 
-
 export const NUMERIC_PROMPT_KEY = 'Numeric'
 
 /**

@@ -18,6 +18,7 @@
  **/
 
 import {BasePrompt, ISelectOnePromptConfig, ValidationException} from '../..'
+
 export const SELECT_ONE_PROMPT_KEY = 'SelectOne'
 
 /**
@@ -25,7 +26,6 @@ export const SELECT_ONE_PROMPT_KEY = 'SelectOne'
  * {@link IContact}.
  */
 export class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig> {
-
   validate(choiceKey?: string | null): boolean {
     const {isResponseRequired, choices} = this.config
 

@@ -29,19 +29,14 @@ import {createFormattedDate} from '../DateFormat'
  * to the log object within the Context as below, and then proceed to the next block.
  */
 export class LogBlockRunner implements IBlockRunner {
-  constructor(
-    public block: ILogBlock,
-    public context: IContext,
-  ) {
-  }
+  constructor(public block: ILogBlock, public context: IContext) {}
 
   async initialize(): Promise<undefined> {
     return
   }
 
   async run(): Promise<IBlockExit> {
-    this.context.logs[createFormattedDate()] =
-      evaluateToString(this.block.config.message, this.context)
+    this.context.logs[createFormattedDate()] = evaluateToString(this.block.config.message, this.context)
 
     // todo: should we also write this as the value of the block interaction like the output block?
 

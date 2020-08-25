@@ -19,7 +19,6 @@
 
 import {evaluateToString, IBlockExit, IBlockRunner, IContext, IOutputBlock, IRichCursor} from '../..'
 
-
 /**
  * Block runner for `Core\Output` - This block provides a connection to the
  * [Flow Results specification](https://github.com/FLOIP/flow-results/blob/master/specification.md), by storing a named
@@ -32,11 +31,7 @@ import {evaluateToString, IBlockExit, IBlockRunner, IContext, IOutputBlock, IRic
  * by the value expression.
  */
 export class OutputBlockRunner implements IBlockRunner {
-  constructor(
-    public block: IOutputBlock,
-    public context: IContext,
-  ) {
-  }
+  constructor(public block: IOutputBlock, public context: IContext) {}
 
   async initialize(): Promise<undefined> {
     return
@@ -48,4 +43,3 @@ export class OutputBlockRunner implements IBlockRunner {
     return this.block.exits[0]
   }
 }
-

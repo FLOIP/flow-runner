@@ -17,7 +17,7 @@ import {
  * `Prompt.addCustomPrompt()`.
  */
 export class Prompt {
-  // TODO: This could be a Map
+
   private static VALUES: Prompt[] = []
 
   public static readonly MESSAGE = new Prompt(MessagePrompt, MESSAGE_PROMPT_KEY)
@@ -58,13 +58,7 @@ export class Prompt {
 
   /** Remove custom prompts from the Enum Class */
   static reset(): void {
-    Prompt.VALUES = [
-      Prompt.MESSAGE,
-      Prompt.NUMERIC,
-      Prompt.SELECT_ONE,
-      Prompt.SELECT_MANY,
-      Prompt.OPEN,
-    ]
+    Prompt.VALUES = [Prompt.MESSAGE, Prompt.NUMERIC, Prompt.SELECT_ONE, Prompt.SELECT_MANY, Prompt.OPEN]
   }
 
   /**

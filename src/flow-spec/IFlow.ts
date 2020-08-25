@@ -20,22 +20,26 @@
 import {IBlock, ILanguage, SupportedMode, ValidationException} from '..'
 import {find} from 'lodash'
 
-
 export interface IFlow {
-  uuid: string, // UUID32
-  orgId: string,
-  name: string,
-  label?: string,
-  lastModified: string, // UTC like: 2016-12-25 13:42:05.234598
-  interactionTimeout: number,
-  platformMetadata: object,
+  // UUID32
+  uuid: string
+  orgId: string
+  name: string
+  label?: string
 
-  supportedModes: SupportedMode[],
-  languages: ILanguage[], // eunm for ISO 639-3 codes
-  blocks: IBlock[],
+  // UTC like: 2016-12-25 13:42:05.234598
+  lastModified: string
+  interactionTimeout: number
+  platformMetadata: object
 
-  firstBlockId: string,
-  exitBlockId?: string,
+  supportedModes: SupportedMode[]
+
+  // eunm for ISO 639-3 codes
+  languages: ILanguage[]
+  blocks: IBlock[]
+
+  firstBlockId: string
+  exitBlockId?: string
 }
 
 export function findBlockWith(uuid: string, {blocks}: IFlow): IBlock {
@@ -48,5 +52,5 @@ export function findBlockWith(uuid: string, {blocks}: IFlow): IBlock {
 }
 
 export interface IFlowService {
-  findBlockWith(uuid: string, flow: IFlow): IBlock,
+  findBlockWith(uuid: string, flow: IFlow): IBlock
 }

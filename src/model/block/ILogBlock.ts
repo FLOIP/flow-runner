@@ -20,5 +20,5 @@
 import {IBlock, ILogBlockConfig} from '../..'
 
 export interface ILogBlock extends IBlock {
-  config: ILogBlockConfig,
+  config: ILogBlockConfig
 }

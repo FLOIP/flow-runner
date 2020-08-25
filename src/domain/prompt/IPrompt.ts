@@ -19,30 +19,28 @@
 
 import {BasePrompt, IBlock, IFlowRunner, IRichCursorInputRequired, PromptValidationException} from '../..'
 
-
 /**
  * Primary interface for interacting with an {@link IContact}; typically not immplemented fully, it is recommended that
  * additional {@link IPrompt} implementations rather extend provided {@link BasePrompt}.
  */
 export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']>> {
-  interactionId: string,
-  config: PromptConfigType,
-  runner: IFlowRunner,
+  interactionId: string
+  config: PromptConfigType
+  runner: IFlowRunner
 
-  block?: IBlock,
-  value: PromptConfigType['value'],
+  block?: IBlock
+  value: PromptConfigType['value']
   /** Eror populated when {@link IPrompt.value} assignment raises  */
-  error: PromptValidationException | null,
+  error: PromptValidationException | null
 
   /** State populated when {@link IPrompt.value} is assigned */
-  isValid(): boolean,
-
+  isValid(): boolean
 
   /** @see {@link BasePrompt.validate} */
-  validate(val: PromptConfigType['value']): boolean,
+  validate(val: PromptConfigType['value']): boolean
 
   /** @see {@link BasePrompt.fulfill} */
-  fulfill(val: PromptConfigType['value']): Promise<IRichCursorInputRequired | undefined>,
+  fulfill(val: PromptConfigType['value']): Promise<IRichCursorInputRequired | undefined>
 }
 
 // todo: implement a pattern using Generics
@@ -50,22 +48,17 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
 
 /** Interface for configuration to resolve and build a {@link BasePrompt} instance. */
 export interface IPromptConfig<T> extends IBasePromptConfig {
-  kind: string,
-  isResponseRequired: boolean,
-  prompt: string,
-  value?: T,
+  kind: string
+  isResponseRequired: boolean
+  prompt: string
+  value?: T
 }
 
 /** Interface for local {@link BasePrompt} properties not intersecting with {@link IPromptConfig} */
 export interface IBasePromptConfig {
-  isSubmitted?: boolean,
+  isSubmitted?: boolean
 }
 
-
 export interface PromptConstructor<T> {
-  new(
-    config: T,
-    interactionId: string,
-    runner: IFlowRunner,
-  ): BasePrompt<any>,
+  new(config: T, interactionId: string, runner: IFlowRunner): BasePrompt<any>
 }

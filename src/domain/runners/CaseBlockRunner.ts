@@ -26,7 +26,6 @@ import {
   IContext,
 } from '../..'
 
-
 /**
  * Block runner for `Core\Case` - Evaluates a list of expressions, one for each exit, and terminates through the first
  * exit where the corresponding expression evaluates to a "truthy" result.
@@ -37,10 +36,7 @@ import {
  * proceeds through the default exit.
  */
 export class CaseBlockRunner implements IBlockRunner {
-  constructor(
-    public block: ICaseBlock,
-    public context: IContext,
-  ) {
+  constructor(public block: ICaseBlock, public context: IContext) {
   }
 
   async initialize(): Promise<undefined> {
@@ -48,7 +44,6 @@ export class CaseBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExitTestRequired> {
-    return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context)
-      ?? findDefaultBlockExitOn(this.block) as IBlockExitTestRequired
+    return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? (findDefaultBlockExitOn(this.block) as IBlockExitTestRequired)
   }
 }

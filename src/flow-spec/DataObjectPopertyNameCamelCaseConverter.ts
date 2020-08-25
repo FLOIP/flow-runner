@@ -11,10 +11,13 @@ export function convertKeysToCamelCase(x: any, exclusions = EXCLUDED_DATA_HIERAR
     return x
   }
 
-  return reduce(x, (memo: any, value: any, key: string) => {
-    memo[includes(exclusions, key) ? key : camelCase(key)] =
-      convertKeysToCamelCase(value, exclusions)
+  return reduce(
+    x,
+    (memo: any, value: any, key: string) => {
+      memo[includes(exclusions, key) ? key : camelCase(key)] = convertKeysToCamelCase(value, exclusions)
 
-    return memo
-  }, {})
+      return memo
+    },
+    {}
+  )
 }

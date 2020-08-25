@@ -19,7 +19,6 @@
 
 import {IBlock, IReadBlockConfig} from '../..'
 
-
 export interface IReadBlock extends IBlock {
-  config: IReadBlockConfig,
+  config: IReadBlockConfig
 }

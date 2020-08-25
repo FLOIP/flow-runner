@@ -17,7 +17,6 @@ import {
   ValidationException,
 } from '..'
 
-
 describe('FlowRunner', () => {
   let dataset: IDataset
 
@@ -98,20 +97,21 @@ describe('FlowRunner', () => {
 
     describe('case block unable to find cursor', () => {
       it('shouldnt raise an exception requiring prompt', async () => {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const context: IContext = require('./fixtures/2019-10-08-case-block-eval-issue.json')
-        set(context, 'cursor.promptConfig.isSubmitted', false) // this should be okay since we're attempting to replay a scenario
+        // this should be okay since we're attempting to replay a scenario
+        set(context, 'cursor.promptConfig.isSubmitted', false)
 
         const runner = new FlowRunner(context)
 
-        await expect(runner.run())
-          .rejects
-          .toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')
+        await expect(runner.run()).rejects.toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')
         // expect((await runner.run())![0].blockId).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
       })
     })
 
     describe.skip('case block always evaluates to false', () => {
       it('shouldnt raise an except requiring prompt', async () => {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const context: IContext = require('./fixtures/2019-10-09-case-block-always-false.json')
         const runner = new FlowRunner(context)
 
@@ -122,8 +122,10 @@ describe('FlowRunner', () => {
 
     describe('VMO-1484-case-branching-improperly', () => {
       it('should hit Cats branch', async () => {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const {flows}: IContext = require('./fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
-        const resources: IResources = flatMap(flows, 'resources') // our server-side implementation currently returns
+        // our server-side implementation currently returns
+        const resources: IResources = flatMap(flows, 'resources')
 
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
@@ -132,19 +134,24 @@ describe('FlowRunner', () => {
           flows,
           'en_US',
           SupportedMode.OFFLINE,
-          resources)
+          resources,
+        )
 
         const runner = new FlowRunner(context)
         let {prompt}: IRichCursorInputRequired = (await runner.run())!
-        prompt.value = (prompt as SelectOnePrompt).config.choices[1].key // cats
+        // cats
+        prompt.value = (prompt as SelectOnePrompt).config.choices[1].key
 
         prompt = (await runner.run())!.prompt
-        expect(prompt.config.prompt).toEqual('95bd9e4a-9300-400a-9f61-8ede034f93d8') // the next prompt is the cats message
+        // the next prompt is the cats message
+        expect(prompt.config.prompt).toEqual('95bd9e4a-9300-400a-9f61-8ede034f93d8')
       })
 
       it('should hit Dogs branch', async () => {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const {flows}: IContext = require('./fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
-        const resources: IResources = flatMap(flows, 'resources') // our server-side implementation currently returns
+        // our server-side implementation currently returns
+        const resources: IResources = flatMap(flows, 'resources')
 
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
@@ -153,19 +160,24 @@ describe('FlowRunner', () => {
           flows,
           'en_US',
           SupportedMode.OFFLINE,
-          resources)
+          resources,
+        )
 
         const runner = new FlowRunner(context)
         let {prompt}: IRichCursorInputRequired = (await runner.run())!
-        prompt.value = (prompt as SelectOnePrompt).config.choices[0].key // dogs
 
+        // dogs
+        prompt.value = (prompt as SelectOnePrompt).config.choices[0].key
         prompt = (await runner.run())!.prompt
-        expect(prompt.config.prompt).toEqual('95bd9e4a-9300-400a-9f61-8ede0325225f') // the next prompt is the dogs message
+
+        // the next prompt is the dogs message
+        expect(prompt.config.prompt).toEqual('95bd9e4a-9300-400a-9f61-8ede0325225f')
       })
     })
 
     describe('nested flow', () => {
       it('should run', async () => {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const {flows, resources}: IContext = require('./fixtures/2020-04-14-run-flow-unable-to-find-flow.json')
 
         const context = createContextDataObjectFor(
@@ -175,7 +187,8 @@ describe('FlowRunner', () => {
           flows,
           'en_US',
           SupportedMode.OFFLINE,
-          resources)
+          resources,
+        )
 
         const runner = new FlowRunner(context)
 
@@ -207,21 +220,25 @@ describe('FlowRunner', () => {
       })
 
       it('should handle stepping out multiple times', async () => {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const context: IContext = require('./fixtures/2020-04-23-run-flow-unable-to-step-out-doubly-nested.context.json')
         const runner = new FlowRunner(context)
 
         let {prompt}: IRichCursorInputRequired = (await runner.run())!
         expect(prompt).toBeTruthy()
 
-        prompt.value = 'Run Tree B' // selects Run Tree B [Message, SelectOne, RunFlow(5b8c87d6-de90-4bc4-8668-4f0400002a2d)]
+        // selects Run Tree B [Message, SelectOne, RunFlow(5b8c87d6-de90-4bc4-8668-4f0400002a2d)]
+        prompt.value = 'Run Tree B'
         prompt = (await runner.run())!.prompt
         expect(prompt).toBeTruthy()
 
-        prompt.value = null // message
+        // message
+        prompt.value = null
         prompt = (await runner.run())!.prompt
         expect(prompt).toBeTruthy()
 
-        prompt.value = 'Two' // select two, next block is RunFlow regardless of choice
+        // select two, next block is RunFlow regardless of choice
+        prompt.value = 'Two'
         prompt = (await runner.run())!.prompt
         expect(prompt).toBeTruthy()
 

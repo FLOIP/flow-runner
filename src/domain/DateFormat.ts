@@ -19,9 +19,8 @@
 
 /**
  * Extracted function encapsulating date string formatted like `2020-01-17 17:58:08.090Z`.
- * @param d
+ * @param date
  */
-export function createFormattedDate(d: Date = new Date): string {
-  return d.toISOString()
-    .replace('T', ' ')
+export function createFormattedDate(date: Date = new Date()): string {
+  return date.toISOString().replace('T', ' ')
 }

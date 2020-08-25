@@ -20,5 +20,5 @@
 import {IBlock, IPrintBlockConfig} from '../..'
 
 export interface IPrintBlock extends IBlock {
-  config: IPrintBlockConfig,
+  config: IPrintBlockConfig
 }

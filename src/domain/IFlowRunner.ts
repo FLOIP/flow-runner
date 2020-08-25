@@ -25,18 +25,14 @@ export type TBlockRunnerFactory = {(block: IBlock, ctx: IContext): IBlockRunner}
 export type IBlockRunnerFactoryStore = Map<string, TBlockRunnerFactory>
 
 export interface IFlowRunner {
-  context: IContext,
-  runnerFactoryStore: IBlockRunnerFactoryStore,
+  context: IContext
+  runnerFactoryStore: IBlockRunnerFactoryStore
 
   // new (context: IContext): IFlowRunner
 
-  initialize(): Promise<IRichCursor | undefined>,
+  initialize(): Promise<IRichCursor | undefined>
 
-  run(): Promise<IRichCursorInputRequired | undefined>,
+  run(): Promise<IRichCursorInputRequired | undefined>
 
-  applyReversibleDataOperation(
-    forward: NonBreakingUpdateOperation,
-    reverse: NonBreakingUpdateOperation,
-    context: IContext,
-  ): void,
+  applyReversibleDataOperation(forward: NonBreakingUpdateOperation, reverse: NonBreakingUpdateOperation, context: IContext): void
 }

@@ -21,10 +21,7 @@
  * Generic exception for selection validation; typically leveraged by {@link IPrompt} implementations.
  */
 export class InvalidChoiceException<ChoiceType> extends Error {
-  constructor(
-    message?: string,
-    public choices?: ChoiceType[],
-  ) {
+  constructor(message?: string, public choices?: ChoiceType[]) {
     super(message)
   }
 }

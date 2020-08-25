@@ -19,18 +19,17 @@
 
 import {IPromptConfig} from '../..'
 
-
 // todo: can our value type use some fancy keyof magic to say we need a value that's of the type of one of the {key} props in choices?
 /**
  * Interface for defining an {@link IPromptConfig} resolving to a {@link SelectOnePrompt}.
  */
 export interface ISelectOnePromptConfig extends IPromptConfig<string | null> {
-  kind: string,
-  choices: IChoice[],
-  emptyChoicesMessage?: string,
+  kind: string
+  choices: IChoice[]
+  emptyChoicesMessage?: string
 }
 
 export interface IChoice {
-  key: string,
-  value: string,
+  key: string
+  value: string
 }

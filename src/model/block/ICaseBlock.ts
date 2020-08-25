@@ -19,8 +19,7 @@
 
 import {IBlock, IBlockExitTestRequired, ICaseBlockConfig} from '../..'
 
-
 export interface ICaseBlock extends IBlock {
-  config: ICaseBlockConfig,
-  exits: IBlockExitTestRequired[],
+  config: ICaseBlockConfig
+  exits: IBlockExitTestRequired[]
 }

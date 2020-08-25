@@ -18,9 +18,8 @@
  **/
 
 export interface IContact {
-  id: string,
+  id: string
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: string | undefined,
+  [key: string]: string | undefined
 }
-

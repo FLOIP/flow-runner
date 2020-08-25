@@ -19,7 +19,6 @@
 
 import {IBlock, IRunFlowBlockConfig} from '../..'
 
-
 export interface IRunFlowBlock extends IBlock {
-  config: IRunFlowBlockConfig,
+  config: IRunFlowBlockConfig
 }

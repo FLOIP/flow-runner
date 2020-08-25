@@ -23,7 +23,7 @@ import {IPromptConfig} from '../..'
  * Interface for defining an {@link IPromptConfig} resolving to a {@link NumericPrompt}.
  */
 export interface INumericPromptConfig extends IPromptConfig<number | null> {
-  kind: string,
-  min: number,
-  max: number,
+  kind: string
+  min: number
+  max: number
 }

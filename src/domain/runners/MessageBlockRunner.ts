@@ -19,7 +19,6 @@
 
 import {IBlockExit, IBlockRunner, IContext, IMessageBlock, IMessagePromptConfig, MESSAGE_PROMPT_KEY} from '../..'
 
-
 /**
  * Block runner for `MobilePrimitives\Message` - Presents a single message to the contact. The form of the message can
  * depend on the channel: e.g. a voice recording for the ivr channel, and text for the text channel.
@@ -34,11 +33,7 @@ import {IBlockExit, IBlockRunner, IContext, IMessageBlock, IMessagePromptConfig,
  * - offline: Display message within the session with the contact.
  */
 export class MessageBlockRunner implements IBlockRunner {
-  constructor(
-    public block: IMessageBlock,
-    public context: IContext,
-  ) {
-  }
+  constructor(public block: IMessageBlock, public context: IContext) {}
 
   async initialize(): Promise<IMessagePromptConfig> {
     const {prompt} = this.block.config
@@ -53,4 +48,3 @@ export class MessageBlockRunner implements IBlockRunner {
     return this.block.exits[0]
   }
 }
-

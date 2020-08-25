@@ -17,9 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlock,INumericBlockConfig} from '../..'
-
+import {IBlock, INumericBlockConfig} from '../..'
 
 export interface INumericResponseBlock extends IBlock {
-  config: INumericBlockConfig,
+  config: INumericBlockConfig
 }

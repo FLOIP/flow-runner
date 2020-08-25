@@ -20,8 +20,7 @@ describe.skip('FlowRunner integration', () => {
   })
 
   it('should work when simple + single backtrack', async () => {
-    const context = createContextDataObjectFor(
-      {id: '1'} as IContact, 'user-1234', 'org-1234', [flow], 'en_US', SupportedMode.OFFLINE)
+    const context = createContextDataObjectFor({id: '1'} as IContact, 'user-1234', 'org-1234', [flow], 'en_US', SupportedMode.OFFLINE)
 
     const runner = new FlowRunner(context)
     let {prompt}: IRichCursorInputRequired = (await runner.run())!
@@ -59,10 +58,7 @@ describe.skip('FlowRunner integration', () => {
     expect(prompt.interactionId).toBe(context.interactions.slice(-6, -5)[0].uuid)
 
     // commit to change
-    prompt = (await backtracking.jumpTo(
-      findInteractionWith(prompt.interactionId, context),
-      context))!.prompt!
-
+    prompt = (await backtracking.jumpTo(findInteractionWith(prompt.interactionId, context), context))!.prompt!
 
     // todo: should peek1 really be peek0?
     // todo: assert that prompt is new and fresh interaction state at this point
@@ -80,7 +76,5 @@ describe.skip('FlowRunner integration', () => {
     // todo: I think we're wiping our ghost at this point; need to look into our sync() behaviour at this point :)
     prompt = (await prompt.fulfill(17))!.prompt
     expect(prompt.value).toEqual(12)
-
-
   })
 })

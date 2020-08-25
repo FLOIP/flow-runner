@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {ValidationException, BasePrompt, IOpenPromptConfig} from '../..'
+import {BasePrompt, IOpenPromptConfig, ValidationException} from '../..'
 
 export const OPEN_PROMPT_KEY = 'Open'
 
@@ -26,7 +26,6 @@ export const OPEN_PROMPT_KEY = 'Open'
  * from an {@link IContact}.
  */
 export class OpenPrompt extends BasePrompt<IOpenPromptConfig> {
-
   validate(val: string): boolean {
     const {maxResponseCharacters: maxLength} = this.config
 

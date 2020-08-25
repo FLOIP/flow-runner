@@ -18,5 +18,5 @@
  **/
 
 export interface ILogBlockConfig {
-  message: string,
+  message: string
 }

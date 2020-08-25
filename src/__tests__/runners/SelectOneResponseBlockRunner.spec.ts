@@ -37,10 +37,10 @@ describe('SelectOneResponseBlockRunner', () => {
       expect(exit).toBe(block.exits[3])
     })
 
-    it.todo('should raise an exception when an expression is provided that doesn\'t evaluate to bool.')
+    it.todo("should raise an exception when an expression is provided that doesn't evaluate to bool.")
   })
 })
 
 interface IContactWithAge extends IContact {
-  age: string,
+  age: string
 }

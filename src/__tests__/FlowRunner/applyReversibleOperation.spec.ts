@@ -1,6 +1,5 @@
 import {FlowRunner, IBlockInteraction, IContext, IFlowRunner, IReversibleUpdateOperation} from '../..'
 
-
 describe('applyReversibleDataOperation', () => {
   let runner: IFlowRunner
   let context: IContext

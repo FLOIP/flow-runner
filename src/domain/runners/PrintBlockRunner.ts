@@ -23,21 +23,14 @@ import {evaluateToString, IBlockExit, IBlockRunner, IContext, IPrintBlock} from 
  * Block runner for `ConsoleIO\Print` - Prints a message to standard output, by evaluating an expression.
  */
 export class PrintBlockRunner implements IBlockRunner {
-  constructor(
-    public block: IPrintBlock,
-    public context: IContext,
-    public console: Console = console,
-  ) {
-  }
+  constructor(public block: IPrintBlock, public context: IContext, public console: Console = console) {}
 
   async initialize(): Promise<undefined> {
     return
   }
 
   async run(): Promise<IBlockExit> {
-    this.console.log(
-      this.block.type,
-      evaluateToString(this.block.config.message, this.context))
+    this.console.log(this.block.type, evaluateToString(this.block.config.message, this.context))
 
     // todo: should we also write this as the value of the block interaction like the output block?
     return this.block.exits[0]

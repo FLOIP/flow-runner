@@ -23,5 +23,5 @@ import {IPromptConfig} from '../..'
  * Interface for defining an {@link IPromptConfig} resolving to a {@link OpenPrompt}.
  */
 export interface IOpenPromptConfig extends IPromptConfig<string | null> {
-  maxResponseCharacters?: number,
+  maxResponseCharacters?: number
 }

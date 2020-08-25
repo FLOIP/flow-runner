@@ -17,16 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {
-  IBlockExit,
-  IBlockInteraction,
-  IBlockRunner,
-  IContext,
-  IOpenPromptConfig,
-  IOpenResponseBlock,
-  OPEN_PROMPT_KEY,
-} from '../..'
-
+import {IBlockExit, IBlockInteraction, IBlockRunner, IContext, IOpenPromptConfig, IOpenResponseBlock, OPEN_PROMPT_KEY} from '../..'
 
 /**
  * Block runner for `MobilePrimitives\OpenResponse` - Obtains an open-ended response from the contact. Dependent on the
@@ -45,11 +36,7 @@ import {
  *   widget. Wait to capture a response.
  */
 export class OpenResponseBlockRunner implements IBlockRunner {
-  constructor(
-    public block: IOpenResponseBlock,
-    public context: IContext,
-  ) {
-  }
+  constructor(public block: IOpenResponseBlock, public context: IContext) {}
 
   async initialize({value}: IBlockInteraction): Promise<IOpenPromptConfig> {
     const blockConfig = this.block.config
@@ -74,4 +61,3 @@ export class OpenResponseBlockRunner implements IBlockRunner {
     return this.block.exits[0]
   }
 }
-

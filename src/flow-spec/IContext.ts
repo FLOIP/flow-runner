@@ -43,88 +43,88 @@ export interface ICursor {
   /**
    * UUID of the current interaction with a block.
    */
-  interactionId: string,
+  interactionId: string
   /**
    * A prompt configuration data object; optional, because not every block requests input from the Contact.
    * If it does, we call it an `ICursorInputRequired`.
    * If not, `ICursorNoInputRequired` will have a `null-ish` `promptConfig`.
    */
-  promptConfig?: (IPromptConfig<unknown>),
+  promptConfig?: IPromptConfig<unknown>
 }
 
 export interface ICursorInputRequired {
-  interactionId: string,
-  promptConfig: IPromptConfig<unknown>,
+  interactionId: string
+  promptConfig: IPromptConfig<unknown>
 }
 
 export interface ICursorNoInputRequired {
-  interactionId: string,
-  promptConfig: undefined,
+  interactionId: string
+  promptConfig: undefined
 }
 
 export interface IRichCursor {
   /**
    * An object representation of the current interaction with a block.
    */
-  interaction: IBlockInteraction,
+  interaction: IBlockInteraction
   /**
    * In IPrompt instance.
    * When present, we call it a TRichCursorInputRequired.
    * In absence, the TRichCursorNoInputRequired will maintain `prompt` with a null-ish value.
    */
-  prompt?: IPrompt<IPromptConfig<any>>,
+  prompt?: IPrompt<IPromptConfig<any>>
 }
 
 export interface IRichCursorInputRequired {
-  interaction: IBlockInteraction,
-  prompt: IPrompt<IPromptConfig<any>>,
+  interaction: IBlockInteraction
+  prompt: IPrompt<IPromptConfig<any>>
 }
 
 export interface IRichCursorNoInputRequired {
-  interaction: IBlockInteraction,
-  prompt: undefined,
+  interaction: IBlockInteraction
+  prompt: undefined
 }
 
 export interface IReversibleUpdateOperation {
-  interactionId?: string,
-  forward: NonBreakingUpdateOperation,
-  reverse: NonBreakingUpdateOperation,
+  interactionId?: string
+  forward: NonBreakingUpdateOperation
+  reverse: NonBreakingUpdateOperation
 }
 
 export interface IContext {
-  id: string,
-  createdAt: string,
-  entryAt?: string,
-  exitAt?: string,
-  deliveryStatus: DeliveryStatus,
+  id: string
+  createdAt: string
+  entryAt?: string
+  exitAt?: string
+  deliveryStatus: DeliveryStatus
 
-  userId?: string,
-  orgId?: string,
-  mode: SupportedMode,
-  languageId: string,
+  userId?: string
+  orgId?: string
+  mode: SupportedMode
+  languageId: string
 
-  contact: IContact,
+  contact: IContact
 
-  sessionVars: {[k: string]: unknown},
-  interactions: IBlockInteraction[],
-  nestedFlowBlockInteractionIdStack: string[],
-  reversibleOperations: IReversibleUpdateOperation[],
-  cursor?: ICursor,
+  sessionVars: {[k: string]: unknown}
+  interactions: IBlockInteraction[]
+  nestedFlowBlockInteractionIdStack: string[]
+  reversibleOperations: IReversibleUpdateOperation[]
+  cursor?: ICursor
 
-  flows: IFlow[],
-  firstFlowId: string,
-  resources: IResources,
-  platformMetadata: {[k: string]: unknown},
+  flows: IFlow[]
+  firstFlowId: string
+  resources: IResources
+  platformMetadata: {[k: string]: unknown}
 
-  logs: {[k: string]: string},
+  logs: {[k: string]: string}
 }
 
 export interface IContextWithCursor extends IContext {
-  cursor: ICursor,
+  cursor: ICursor
 }
 
 export interface IContextInputRequired extends IContext {
-  cursor: ICursorInputRequired,
+  cursor: ICursorInputRequired
 }
 
 export function createContextDataObjectFor(
@@ -135,9 +135,8 @@ export function createContextDataObjectFor(
   languageId: string,
   mode: SupportedMode = SupportedMode.OFFLINE,
   resources: IResourceDefinition[] = [],
-  idGenerator: IIdGenerator = new IdGeneratorUuidV4(),
+  idGenerator: IIdGenerator = new IdGeneratorUuidV4()
 ): IContext {
-
   return {
     id: idGenerator.generate(),
     createdAt: createFormattedDate(),
@@ -233,21 +232,21 @@ export const contextService: IContextService = {
 }
 
 export interface IContextService {
-  findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction,
+  findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction
 
-  findFlowWith(uuid: string, ctx: IContext): IFlow,
+  findFlowWith(uuid: string, ctx: IContext): IFlow
 
-  findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock,
+  findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock
 
-  findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext): string,
+  findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext): string
 
-  getActiveFlowIdFrom(ctx: IContext): string,
+  getActiveFlowIdFrom(ctx: IContext): string
 
-  getActiveFlowFrom(ctx: IContext): IFlow,
+  getActiveFlowFrom(ctx: IContext): IFlow
 
-  isLastBlockOn(ctx: IContext, block: IBlock): boolean,
+  isLastBlockOn(ctx: IContext, block: IBlock): boolean
 
-  isNested(ctx: IContext): boolean,
+  isNested(ctx: IContext): boolean
 }
 
 export const ContextService: IContextService = {
