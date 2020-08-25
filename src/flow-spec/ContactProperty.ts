@@ -21,8 +21,8 @@
 
 export class ContactProperty implements IContactProperty {
   deletedAt: string | undefined
-  createdAt: string = new Date().toISOString()
-  updatedAt: string = new Date().toISOString()
+  createdAt: string = new Date().toISOString().replace('T', ' ')
+  updatedAt: string = new Date().toISOString().replace('T', ' ')
   __value__!: string
 
   constructor() {}
@@ -33,7 +33,7 @@ export class ContactProperty implements IContactProperty {
 
   set contactPropertyFieldName(contactPropertyFieldName: string) {
       this.contactPropertyFieldName = contactPropertyFieldName
-      this.updatedAt = new Date().toISOString()
+      this.updatedAt = new Date().toISOString().replace('T', ' ')
   }
 
   get value(): string {
@@ -42,7 +42,7 @@ export class ContactProperty implements IContactProperty {
 
   set value(value: string) {
       this.__value__ = value
-      this.updatedAt = new Date().toISOString()
+      this.updatedAt = new Date().toISOString().replace('T', ' ')
   }
 }
 
