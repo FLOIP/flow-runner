@@ -17,7 +17,16 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlockExit, IBlockInteraction, IBlockRunner, IContext, IOpenPromptConfig, IOpenResponseBlock, OPEN_PROMPT_KEY} from '../..'
+import {
+  IBlockExit,
+  IBlockInteraction,
+  IBlockRunner,
+  IContext,
+  IOpenPromptConfig,
+  IOpenResponseBlock,
+  OPEN_PROMPT_KEY,
+  setContactProperty,
+} from '../..'
 
 /**
  * Block runner for `MobilePrimitives\OpenResponse` - Obtains an open-ended response from the contact. Dependent on the
@@ -57,6 +66,7 @@ export class OpenResponseBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExit> {
+    setContactProperty(this.block, this.context)
     // todo: should there be a BaseBlockRunner that defaults to returning first exit?
     return this.block.exits[0]
   }

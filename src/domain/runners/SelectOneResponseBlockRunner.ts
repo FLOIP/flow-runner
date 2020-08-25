@@ -27,6 +27,7 @@ import {
   ISelectOnePromptConfig,
   ISelectOneResponseBlock,
   SELECT_ONE_PROMPT_KEY,
+  setContactProperty,
 } from '../..'
 import {last} from 'lodash'
 
@@ -69,6 +70,7 @@ export class SelectOneResponseBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExit> {
+    setContactProperty(this.block, this.context)
     return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? (last(this.block.exits) as IBlockExitTestRequired)
   }
 }

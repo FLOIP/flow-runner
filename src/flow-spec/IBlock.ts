@@ -27,6 +27,7 @@ import {
   ICursor,
   IFlow,
   ValidationException,
+  isSetContactPropertyConfig,
 } from '..'
 import {extend, find, get, has, startsWith} from 'lodash'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
@@ -163,6 +164,15 @@ export function evaluateToString(expr: string, ctx: object): string {
 
 export function wrapInExprSyntaxWhenAbsent(expr: string): string {
   return startsWith(expr, '@(') ? expr : `@(${expr})`
+}
+
+export function setContactProperty(block: IBlock, context: IContext): void {
+  if (isSetContactPropertyConfig(block.config)) {
+    const key = block.config.setContactProperty?.propertyKey as string
+    const valueExpression = block.config.setContactProperty?.propertyValue as string
+    const value = evaluateToString(valueExpression, createEvalContextFrom(context))
+    context.contact[key] = value
+  }
 }
 
 export interface IBlockService {
