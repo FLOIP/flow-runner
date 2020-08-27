@@ -713,7 +713,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   }
 
   // noinspection JSUnusedGlobalSymbols
-  static readonly Builder = class {
+  public static Builder = class {
     context?: IContext
     runnerFactoryStore: BlockRunnerFactoryStore = createDefaultBlockRunnerStore()
     idGenerator: IIdGenerator = new IdGeneratorUuidV4()

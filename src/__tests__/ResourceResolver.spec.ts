@@ -19,12 +19,12 @@ describe('ResourceResolver', () => {
 
   beforeEach(() => {
     ctx = createContextDataObjectFor(
-      {id: 'contact-123', name: 'Bert'} as IContact,
+      ({id: 'contact-123', name: 'Bert'} as unknown) as IContact,
       'user-123',
       'org-123',
       [{uuid: 'flow-123'} as IFlow],
       'eng',
-      SupportedMode.OFFLINE,
+      SupportedMode.OFFLINE
     )
 
     resolver = new ResourceResolver(ctx)
@@ -100,21 +100,13 @@ describe('ResourceResolver', () => {
               createResourceDefWith('fre', SupportedContentType.TEXT, [SupportedMode.USSD]),
               /* 11 */
               createResourceDefWith('fre', SupportedContentType.TEXT, [SupportedMode.IVR, SupportedMode.RICH_MESSAGING]),
-            ]),
+            ])
         )
 
         test.each`
           modeFilter            | languageIdFilter | expectedResourceDefIndices | desc
-          ${SupportedMode.USSD} | ${'eng'}         | ${[
-          0,
-          1,
-          3,
-          4,
-        ]}            | ${'list of multiple matches when mode present in supported modes on multiple and language matches'}
-          ${SupportedMode.IVR}  | ${'eng'}         | ${[
-          2,
-          5,
-        ]}                  | ${'list of single match when mode in supported modes and language matches'}
+          ${SupportedMode.USSD} | ${'eng'}         | ${[0, 1, 3, 4]}            | ${'list of multiple matches when mode present in supported modes on multiple and language matches'}
+          ${SupportedMode.IVR}  | ${'eng'}         | ${[2, 5]}                  | ${'list of single match when mode in supported modes and language matches'}
           ${'some-mode'}        | ${'eng'}         | ${[]}                      | ${'nothing when mode not found and languag matches'}
           ${SupportedMode.USSD} | ${'abc'}         | ${[]}                      | ${'nothing when mode present in supported modes on multiple and langauge not found'}
           ${SupportedMode.IVR}  | ${'abc'}         | ${[]}                      | ${'nothing when mode in supported modes and langauge not found'}
@@ -145,7 +137,7 @@ function createResourceDefWith(
   languageId: IResourceDefinitionContentTypeSpecific['languageId'],
   contentType: IResourceDefinitionContentTypeSpecific['contentType'],
   modes: IResourceDefinitionContentTypeSpecific['modes'],
-  value: IResourceDefinitionContentTypeSpecific['value'] = 'sample-resource-value',
+  value: IResourceDefinitionContentTypeSpecific['value'] = 'sample-resource-value'
 ): IResourceDefinitionContentTypeSpecific {
   return {languageId, contentType, value, modes}
 }

@@ -20,11 +20,11 @@
 import {IContactProperty} from '..'
 
 export interface IContact {
-  id: IContactProperty | ((...args: any[]) => IContactProperty | undefined) |  string | undefined,
+  id: IContactProperty | ((...args: string[]) => IContactProperty | undefined) | string | undefined
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: IContactProperty | ((...args: any[]) => IContactProperty | undefined) |  string | undefined,
+  [key: string]: IContactProperty | ((...args: string[]) => IContactProperty | undefined) | string | undefined
 
-  setProperty: (name: string, value: any) => IContactProperty,
-  getProperty: (name: string) => IContactProperty | undefined,
+  setProperty: (name: string, value?: string) => IContactProperty
+  getProperty: (name: string) => IContactProperty | undefined
 }
