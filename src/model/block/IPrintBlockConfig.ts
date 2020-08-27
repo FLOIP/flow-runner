@@ -18,7 +18,5 @@
  **/
 
 export interface IPrintBlockConfig {
-  message: string,
+  message: string
 }
-
-export default IPrintBlockConfig

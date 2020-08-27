@@ -3,7 +3,6 @@
 // import FlowRunner, {BlockRunnerFactoryStore} from "../../src/domain/FlowRunner";
 // import IBlock from "../../src/flow-spec/IBlock";
 
-
 describe('FlowRunner/createBlockRunnerFor', () => {
   // let dataset: IDataset
   //

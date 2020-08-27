@@ -17,16 +17,16 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import BasePrompt from './BasePrompt'
-import {INumericPromptConfig} from './INumericPromptConfig'
-import {IBasePromptConfig} from './IPrompt'
-import ValidationException from '../exceptions/ValidationException'
+import {BasePrompt, INumericPromptConfig, ValidationException} from '../..'
+
+export const NUMERIC_PROMPT_KEY = 'Numeric'
 
 /**
  * Concrete implementation of {@link BasePrompt} to request a number, optionally within particular bounds, from an
  * {@link IContact}.
  */
-export class NumericPrompt extends BasePrompt<INumericPromptConfig & IBasePromptConfig> {
+export class NumericPrompt extends BasePrompt<INumericPromptConfig> {
+  static readonly promptKey = 'Numeric'
 
   validate(val: number): boolean {
     if (Number.isNaN(val) || val === null) {
@@ -46,5 +46,3 @@ export class NumericPrompt extends BasePrompt<INumericPromptConfig & IBasePrompt
     return true
   }
 }
-
-export default NumericPrompt

@@ -21,5 +21,3 @@
  * Generic exception for stunted extension, or in-progress implementations.
  */
 export class NotImplementedException extends Error {}
-
-export default NotImplementedException

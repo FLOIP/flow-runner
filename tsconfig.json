@@ -11,7 +11,7 @@
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "lib": [
-      "es6"
+      "ES2020"
     ],
     "newLine": "LF",
     "module": "commonjs",
@@ -41,7 +41,6 @@
   ],
   "exclude": [
     "node_modules",
-    "src/__tests__",
     "dist"
   ]
 }

@@ -18,20 +18,30 @@
  **/
 
 import {cloneDeep, get as lodashGet, isArray, last as lodashLast} from 'lodash'
-
-import ValidationException from '../../exceptions/ValidationException'
+import {ValidationException} from '../../..'
 
 export type IterationIndex = number
 export type IterationNumber = number
-export type StackKey = ['stack', IterationNumber, IterationIndex] // string of 'stack' correlates to IStack['stack'] prop
-export type Key = StackKey[] //(IterationIndex | StackKey)[] // todo: are we only using a list of StackKey now? Eg. always in a stack
-export interface IEntity {uuid: string}
+
+// string of 'stack' correlates to IStack['stack'] prop
+export type StackKey = ['stack', IterationNumber, IterationIndex]
+
+//(IterationIndex | StackKey)[] // todo: are we only using a list of StackKey now? Eg. always in a stack
+export type Key = StackKey[]
+
+export interface IEntity {
+  uuid: string
+}
 
 export type Iteration = (IEntity | IStack)[]
 
-export interface IStack {  // todo: rename this so it's not `stack.stack` <-- rename stack.stack to stack.iterations
-  stack: Iteration[], // todo: rename to _stack, "private" becuase most manipulations should happen via behaviour provided
-  head?: IEntity, // todo: ensure head is updated when manipulating an iteration
+export interface IStack {
+  // todo: rename this so it's not `stack.stack` <-- rename stack.stack to stack.iterations
+  // todo: rename to _stack, "private" becuase most manipulations should happen via behaviour provided
+  stack: Iteration[]
+
+  // todo: ensure head is updated when manipulating an iteration
+  head?: IEntity
 }
 
 export type Item = IEntity | Iteration | IStack
@@ -41,7 +51,6 @@ export const STACK_KEY_ITERATION_NUMBER = 1
 export const STACK_KEY_ITERATION_INDEX = 2
 
 const DEFAULT_JOIN_SEPARATOR_MATCHER = /,/g
-
 
 export function createStack(firstIteration: Iteration = []): IStack {
   return createStackFrom([firstIteration])
@@ -58,10 +67,10 @@ export function _findHeadOn(stack: IStack): IEntity | undefined {
     return
   }
 
-  const first = stack.stack[0][0] // [1st-iteration][1st-element]
-  return isEntity(first)
-    ? first
-    : _findHeadOn(first)
+  // [1st-iteration][1st-element]
+  const first = stack.stack[0][0]
+
+  return isEntity(first) ? first : _findHeadOn(first)
 }
 
 /**
@@ -85,7 +94,8 @@ export function _findHeadOn(stack: IStack): IEntity | undefined {
  *                                   ^
  */
 export function createKey(index = -1, iteration = 0): Key {
-  return [createStackKey(iteration, index)] // `-1` so that the typing needn't allow nulls, it's a non-existent value.
+  // `-1` so that the typing needn't allow nulls, it's a non-existent value.
+  return [createStackKey(iteration, index)]
 }
 
 export function createStackKey(iteration: number, index: number): StackKey {
@@ -105,14 +115,12 @@ export function isStack(subject: Item): subject is IStack {
 }
 
 export function isIteration(subject: Item): subject is Iteration {
-  return isArray(subject)
-    && !isEntity(subject)
-    && !isStack(subject)
+  return isArray(subject) && !isEntity(subject) && !isStack(subject)
 }
 
 export function forceGet(key: Key, stack: IStack): Item {
-  return lodashGet(stack, key.join()
-    .replace(DEFAULT_JOIN_SEPARATOR_MATCHER, '.')) // stacks are nested, so we just make a 2nd pass to cover all commas at once
+  // stacks are nested, so we just make a 2nd pass to cover all commas at once
+  return lodashGet(stack, key.join().replace(DEFAULT_JOIN_SEPARATOR_MATCHER, '.'))
 }
 
 export function getEntityAt(key: Key, stack: IStack): IEntity {
@@ -125,8 +133,7 @@ export function getEntityAt(key: Key, stack: IStack): IEntity {
 }
 
 export function isStackEmpty({stack}: IStack): boolean {
-  return stack.length === 0
-    || stack[0].length === 0
+  return stack.length === 0 || stack[0].length === 0
 }
 
 export function getIterationFor(key: Key, stack: IStack): Iteration {
@@ -158,7 +165,7 @@ export function getStackFor(key: Key, stack: IStack): IStack {
   return containingStack
 }
 
-export function _insertAt(i: number, entity: IEntity, iter: Iteration) {
+export function _insertAt(i: number, entity: IEntity, iter: Iteration): (IEntity | IStack)[] {
   // todo: update head + tail
   return iter.splice(i, 0, entity)
 }
@@ -190,9 +197,7 @@ export function _loop(stack: IStack, nextIteration: Iteration = []) {
  * Remove tail end of current iteration _after_ cursor and up hierarchy as well. */
 export function deepTruncateIterationsFrom(key: Key, stack: IStack) {
   truncateIterationFrom(key, stack)
-  getStackFor(key, stack)
-    .stack
-    .splice(lodashLast(key)![STACK_KEY_ITERATION_NUMBER] + 1, Number.MAX_VALUE)
+  getStackFor(key, stack).stack.splice(lodashLast(key)![STACK_KEY_ITERATION_NUMBER] + 1, Number.MAX_VALUE)
 
   if (key.length <= 1) {
     return
@@ -210,15 +215,16 @@ export function truncateIterationFrom(key: Key, stack: IStack): Iteration {
   }
 
   // get iter + splice from that index
-  return getIterationFor(key, stack)
-    .splice(lodashLast(key)![STACK_KEY_ITERATION_INDEX] + 1, Number.MAX_VALUE)
+  return getIterationFor(key, stack).splice(lodashLast(key)![STACK_KEY_ITERATION_INDEX] + 1, Number.MAX_VALUE)
 }
 
 export function cloneKeyAndMoveTo(stackKey: StackKey, key: Key, stack: IStack): Key {
   const duplicateKey = cloneDeep(key)
 
   const duplicateKeyAtNewPosition = [...duplicateKey.slice(0, -1), stackKey]
-  const x: Item = forceGet(duplicateKeyAtNewPosition, stack) // todo: how is forceGet() typed as Item -- this could be `undefined`
+
+  // todo: how is forceGet() typed as Item -- this could be `undefined`
+  const x: Item = forceGet(duplicateKeyAtNewPosition, stack)
   if (x == null) {
     throw new ValidationException(`Unable to find item at ${key}`)
   }
@@ -234,9 +240,7 @@ export function moveStackIndexTo(dest: StackKey, key: Key): Key {
 }
 
 export function createStackKeyForLastIterAndLastIndexOf({stack}: IStack): StackKey {
-  return createStackKey(
-    Math.max(stack.length - 1, 0),
-    Math.max(lodashLast(stack)!.length - 1, 0))
+  return createStackKey(Math.max(stack.length - 1, 0), Math.max(lodashLast(stack)!.length - 1, 0))
 }
 
 /**
@@ -260,9 +264,7 @@ export function findHeadRightFrom(key: Key, stack: IStack, matcher: IEntityMatch
   }
 
   // containingStack is stack when we're at root
-  return isStackEmpty(containingStack) || containingStack === stack
-    ? undefined
-    : findHeadRightFrom(key.slice(0, -1), stack, matcher)
+  return isStackEmpty(containingStack) || containingStack === stack ? undefined : findHeadRightFrom(key.slice(0, -1), stack, matcher)
 }
 
 /**
@@ -289,12 +291,7 @@ export function shallowIndexOfRightFrom(key: Key, stack: IStack, matcher: IEntit
 
 /**
  * Recursive left search of hierarchy from a particular point; excludes current pointer's entity. */
-export function deepFindFrom(
-  key: Key,
-  stack: IStack,
-  matcher: IEntityMatcher,
-  originalKey: Key = key,
-): IEntity | undefined {
+export function deepFindFrom(key: Key, stack: IStack, matcher: IEntityMatcher, originalKey: Key = key): IEntity | undefined {
   const keyForMatch: Key | undefined = deepIndexOfFrom(key, stack, matcher, originalKey)
   if (keyForMatch == null) {
     return
@@ -303,29 +300,23 @@ export function deepFindFrom(
   return getEntityAt(keyForMatch, stack)
 }
 
-export function deepIndexOfFrom(
-  key: Key,
-  stack: IStack,
-  matcher: IEntityMatcher,
-  originalKey: Key = key,
-): Key | undefined {
+export function deepIndexOfFrom(key: Key, stack: IStack, matcher: IEntityMatcher, originalKey: Key = key): Key | undefined {
   const duplicateKey = cloneDeep(key)
-  let {
-    [STACK_KEY_ITERATION_INDEX]: nextIndex,
-    [STACK_KEY_ITERATION_NUMBER]: nextIter,
-  } = lodashLast(duplicateKey)!
+  let {[STACK_KEY_ITERATION_INDEX]: nextIndex, [STACK_KEY_ITERATION_NUMBER]: nextIter} = lodashLast(duplicateKey)!
 
   const isNextIndexOutOfBounds = stack.stack[nextIter].length <= ++nextIndex
-  const isOutOfBounds = key.join() === originalKey.join() // we're at original depth; don't step outside this iteration
-    ? isNextIndexOutOfBounds
-    : isNextIndexOutOfBounds && stack.stack.length <= ++nextIter
+  // we're at original depth; don't step outside this iteration
+  const isOutOfBounds =
+    key.join() === originalKey.join() ? isNextIndexOutOfBounds : isNextIndexOutOfBounds && stack.stack.length <= ++nextIter
 
   if (isOutOfBounds) {
-    return // get out, we didn't find it
+    // get out, we didn't find it
+    return
   }
 
   if (isNextIndexOutOfBounds) {
-    nextIndex = 0 // iteration was incremented; we're checking a nested stack
+    // iteration was incremented; we're checking a nested stack
+    nextIndex = 0
   }
 
   const keyForNextItem = moveStackIndexTo(createStackKey(nextIter, nextIndex), duplicateKey)

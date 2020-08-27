@@ -17,12 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlockRunner from './IBlockRunner'
-import IBlockExit from '../../flow-spec/IBlockExit'
-import {IMessagePromptConfig, KnownPrompts} from '../..'
-import IMessageBlock from '../../model/block/IMessageBlock'
-import IContext from '../../flow-spec/IContext'
-
+import {IBlockExit, IBlockRunner, IContext, IMessageBlock, IMessagePromptConfig, MESSAGE_PROMPT_KEY} from '../..'
 
 /**
  * Block runner for `MobilePrimitives\Message` - Presents a single message to the contact. The form of the message can
@@ -38,14 +33,12 @@ import IContext from '../../flow-spec/IContext'
  * - offline: Display message within the session with the contact.
  */
 export class MessageBlockRunner implements IBlockRunner {
-  constructor(
-    public block: IMessageBlock,
-    public context: IContext) {}
+  constructor(public block: IMessageBlock, public context: IContext) {}
 
   async initialize(): Promise<IMessagePromptConfig> {
     const {prompt} = this.block.config
     return {
-      kind: KnownPrompts.Message,
+      kind: MESSAGE_PROMPT_KEY,
       prompt,
       isResponseRequired: false,
     }
@@ -55,5 +48,3 @@ export class MessageBlockRunner implements IBlockRunner {
     return this.block.exits[0]
   }
 }
-
-export default MessageBlockRunner

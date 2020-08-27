@@ -21,5 +21,3 @@
  * Specialized exception for {@link IResource} lookups.
  */
 export class ResourceNotFoundException extends Error {}
-
-export default ResourceNotFoundException

@@ -18,7 +18,5 @@
  **/
 
 export interface IRunFlowBlockConfig {
-  flowId: string,
+  flowId: string
 }
-
-export default IRunFlowBlockConfig

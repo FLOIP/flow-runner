@@ -4,11 +4,10 @@ import {
   IResource,
   IResourceDefinitionContentTypeSpecific,
   Resource,
+  ResourceNotFoundException,
   SupportedContentType,
   SupportedMode,
-} from '../index'
-
-import ResourceNotFoundException from '../domain/exceptions/ResourceNotFoundException'
+} from '..'
 
 describe('Resource', () => {
   let baseResource: IResourceDefinitionContentTypeSpecific

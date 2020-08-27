@@ -17,13 +17,9 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlock from '../../flow-spec/IBlock'
-import ICaseBlockConfig from './ICaseBlockConfig'
-import {IBlockExitTestRequired} from '../../flow-spec/IBlockExit'
+import {IBlock, IBlockExitTestRequired, ICaseBlockConfig} from '../..'
 
 export interface ICaseBlock extends IBlock {
-  config: ICaseBlockConfig,
-  exits: IBlockExitTestRequired[],
+  config: ICaseBlockConfig
+  exits: IBlockExitTestRequired[]
 }
-
-export default ICaseBlock

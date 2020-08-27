@@ -17,11 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlock from '../../flow-spec/IBlock'
-import IMessageBlockConfig from './IMessageBlockConfig'
+import {IBlock, IMessageBlockConfig} from '../..'
 
 export interface IMessageBlock extends IBlock {
-  config: IMessageBlockConfig,
+  config: IMessageBlockConfig
 }
-
-export default IMessageBlock

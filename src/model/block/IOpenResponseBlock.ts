@@ -17,11 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlock from '../../flow-spec/IBlock'
-import IOpenResponseBlockConfig from './IOpenResponseBlockConfig'
+import {IBlock, IOpenResponseBlockConfig} from '../..'
 
 export interface IOpenResponseBlock extends IBlock {
-  config: IOpenResponseBlockConfig,
+  config: IOpenResponseBlockConfig
 }
-
-export default IOpenResponseBlock

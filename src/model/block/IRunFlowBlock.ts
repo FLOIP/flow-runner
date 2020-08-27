@@ -17,11 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlock from '../../flow-spec/IBlock'
-import IRunFlowBlockConfig from './IRunFlowBlockConfig'
+import {IBlock, IRunFlowBlockConfig} from '../..'
 
 export interface IRunFlowBlock extends IBlock {
-  config: IRunFlowBlockConfig,
+  config: IRunFlowBlockConfig
 }
-
-export default IRunFlowBlock

@@ -333,7 +333,7 @@ class NumericResponseBlockRunner implements IBlockRunner {
 
   initialize({value}: IBlockInteraction): INumericPromptConfig {
     return {
-      kind: KnownPrompts.Numeric,
+      kind: NUMERIC_PROMPT_KEY,
       prompt: this.block.config.prompt,
       isResponseRequired: false,
 

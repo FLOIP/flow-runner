@@ -17,22 +17,18 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import BasePrompt from './BasePrompt'
-import {IBasePromptConfig} from './IPrompt'
-import ValidationException from '../exceptions/ValidationException'
-import {ISelectManyPromptConfig} from './ISelectManyPromptConfig'
+import {BasePrompt, IChoice, InvalidChoiceException, ISelectManyPromptConfig, ValidationException} from '../..'
 import {difference, map} from 'lodash'
-import {IChoice} from './ISelectOnePromptConfig'
-import InvalidChoiceException from '../exceptions/InvalidChoiceException'
 
 export const INVALID_AT_LEAST_ONE_SELECTION_REQUIRED = 'At least one selection is required, but none provided'
 export const INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK = 'All selections must be valid choices on block'
+export const SELECT_MANY_PROMPT_KEY = 'SelectMany'
 
 /**
  * Concrete implementation of {@link BasePrompt} to request a selection from multiple choices, optionally requiring at
  * least one, from an {@link IContact}.
  */
-export class SelectManyPrompt extends BasePrompt<ISelectManyPromptConfig & IBasePromptConfig> {
+export class SelectManyPrompt extends BasePrompt<ISelectManyPromptConfig> {
   validate(selections: IChoice['key'][]): boolean {
     const {isResponseRequired, choices} = this.config
 
@@ -52,5 +48,3 @@ export class SelectManyPrompt extends BasePrompt<ISelectManyPromptConfig & IBase
     return true
   }
 }
-
-export default SelectManyPrompt

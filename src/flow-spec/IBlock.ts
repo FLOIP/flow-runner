@@ -17,29 +17,33 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlockExit, {IBlockExitTestRequired} from './IBlockExit'
+import {
+  findBlockWith,
+  findInteractionWith,
+  getActiveFlowFrom,
+  IBlockExit,
+  IBlockExitTestRequired,
+  IContext,
+  ICursor,
+  IFlow,
+  ValidationException,
+} from '..'
 import {extend, find, get, has, startsWith} from 'lodash'
-import ValidationException from '../domain/exceptions/ValidationException'
-import IContext, {findInteractionWith, getActiveFlowFrom, ICursor} from './IContext'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
-import IFlow, {findBlockWith} from './IFlow'
 
 export interface IBlock {
-  uuid: string,
-  name: string,
-  label?: string,
-  semanticLabel?: string,
-  type: string,
-  config: object,
-  exits: IBlockExit[],
+  uuid: string
+  name: string
+  label?: string
+  semanticLabel?: string
+  type: string
+  config: object
+  exits: IBlockExit[]
 }
-
-export default IBlock
 
 export interface IBlockWithTestExits extends IBlock {
-  exits: IBlockExitTestRequired[],
+  exits: IBlockExitTestRequired[]
 }
-
 
 export function findBlockExitWith(uuid: string, block: IBlock): IBlockExit {
   const exit = find(block.exits, {uuid})
@@ -57,8 +61,10 @@ export function findFirstTruthyEvaluatingBlockExitOn(block: IBlockWithTestExits,
   }
 
   const evalContext = createEvalContextFrom(context)
-  return find<IBlockExitTestRequired>(exits, ({test, default: isDefault = false}) =>
-    !isDefault && evaluateToBool(String(test), evalContext))
+  return find<IBlockExitTestRequired>(
+    exits,
+    ({test, default: isDefault = false}) => !isDefault && evaluateToBool(String(test), evalContext)
+  )
 }
 
 export function findDefaultBlockExitOn(block: IBlock): IBlockExit {
@@ -75,14 +81,15 @@ export function isLastBlock({exits}: IBlock): boolean {
 }
 
 export interface IEvalContextBlock {
-  __value__: any,
-  time: string,
-  __interactionId: string,
-  value: any,
-  text: string,
+  __value__: any
+  time: string
+  __interactionId: string
+  value: any
+  text: string
 }
 
 export type TEvalContextBlockMap = {[k: string]: IEvalContextBlock}
+
 export function generateCachedProxyForBlockName(target: object, ctx: IContext): TEvalContextBlockMap {
   // create a proxy that traps get() and attempts a lookup of blocks by name
   return new Proxy(target, {
@@ -110,9 +117,8 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext): 
     },
 
     has(target, prop) {
-      return prop in target
-        || has(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`)
-    }
+      return prop in target || has(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`)
+    },
   }) as TEvalContextBlockMap
 }
 
@@ -123,26 +129,26 @@ export function createEvalContextFrom(context: IContext): object {
   let block: IBlock | undefined
   let prompt: ICursor['promptConfig']
 
-  if (cursor != null) { // because evalContext.block references the current block we're working on
+  if (cursor != null) {
+    // because evalContext.block references the current block we're working on
     flow = getActiveFlowFrom(context)
-    block = findBlockWith(
-      findInteractionWith(cursor.interactionId, context).blockId,
-      flow)
+    block = findBlockWith(findInteractionWith(cursor.interactionId, context).blockId, flow)
     prompt = cursor.promptConfig
   }
 
   return {
     contact,
     channel: {mode},
-    flow: generateCachedProxyForBlockName({
-      ...flow,
-      language, // todo: why isn't this languageId?
-    }, context),
+    flow: generateCachedProxyForBlockName(
+      {
+        ...flow,
+        language, // todo: why isn't this languageId?
+      },
+      context
+    ),
     block: {
       ...block, // todo: should this differ from our IEvalContextBlock lookups on flow?
-      value: prompt != null
-        ? prompt.value
-        : undefined,
+      value: prompt != null ? prompt.value : undefined,
     },
   }
 }
@@ -152,23 +158,27 @@ export function evaluateToBool(expr: string, ctx: object): boolean {
 }
 
 export function evaluateToString(expr: string, ctx: object): string {
-  return EvaluatorFactory.create()
-    .evaluate(wrapInExprSyntaxWhenAbsent(expr), ctx)
+  return EvaluatorFactory.create().evaluate(wrapInExprSyntaxWhenAbsent(expr), ctx)
 }
 
 export function wrapInExprSyntaxWhenAbsent(expr: string): string {
-  return startsWith(expr, '@(')
-    ? expr
-    : `@(${expr})`
+  return startsWith(expr, '@(') ? expr : `@(${expr})`
 }
 
 export interface IBlockService {
-  findBlockExitWith(uuid: string, block: IBlock): IBlockExit,
-  findFirstTruthyEvaluatingBlockExitOn(block: IBlockWithTestExits, context: IContext): IBlockExitTestRequired | undefined,
-  findDefaultBlockExitOn(block: IBlock): IBlockExit,
-  isLastBlock(block: IBlock): boolean,
-  findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx: IContext): IEvalContextBlock | undefined,
-  generateCachedProxyForBlockName(target: object, ctx: IContext): object,
-  createEvalContextFrom(context: IContext): object,
-  evaluateToBool(expr: string, ctx: object): boolean,
+  findBlockExitWith(uuid: string, block: IBlock): IBlockExit
+
+  findFirstTruthyEvaluatingBlockExitOn(block: IBlockWithTestExits, context: IContext): IBlockExitTestRequired | undefined
+
+  findDefaultBlockExitOn(block: IBlock): IBlockExit
+
+  isLastBlock(block: IBlock): boolean
+
+  findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx: IContext): IEvalContextBlock | undefined
+
+  generateCachedProxyForBlockName(target: object, ctx: IContext): object
+
+  createEvalContextFrom(context: IContext): object
+
+  evaluateToBool(expr: string, ctx: object): boolean
 }
