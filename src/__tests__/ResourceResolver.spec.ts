@@ -19,7 +19,7 @@ describe('ResourceResolver', () => {
 
   beforeEach(() => {
     ctx = createContextDataObjectFor(
-      {id: 'contact-123', name: 'Bert'} as IContact,
+      { id: 'contact-123', name: 'Bert' } as unknown as IContact,
       'user-123',
       'org-123',
       [{uuid: 'flow-123'} as IFlow],

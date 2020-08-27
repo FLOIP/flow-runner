@@ -37,7 +37,7 @@ describe('Resource', () => {
       contact: {
         id: '0',
         name: 'Expressions',
-      } as IContact,
+      } as unknown as IContact,
       languageId: 'some-language-id',
       mode: SupportedMode.SMS,
     } as IContext)
