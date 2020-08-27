@@ -17,9 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {SupportedMode} from '..'
-import IContext from '../flow-spec/IContext'
-
+import {IContext, SupportedMode} from '..'
 
 export enum SupportedContentType {
   TEXT = 'text',
@@ -28,16 +26,17 @@ export enum SupportedContentType {
   VIDEO = 'video',
 }
 
-export interface IResourceDefinitionContentTypeSpecific { // todo: rename to IResourceDefinitionVariant
-  languageId: string,
-  contentType: SupportedContentType,
-  modes: SupportedMode[],
-  value: string,
+export interface IResourceDefinitionContentTypeSpecific {
+  // todo: rename to IResourceDefinitionVariant
+  languageId: string
+  contentType: SupportedContentType
+  modes: SupportedMode[]
+  value: string
 }
 
 export interface IResourceDefinition {
-  uuid: string,
-  values: IResourceDefinitionContentTypeSpecific[], // each to be tailored to a particular content type
+  uuid: string
+  values: IResourceDefinitionContentTypeSpecific[] // each to be tailored to a particular content type
 }
 
 export type IResources = IResourceDefinition[]
@@ -45,34 +44,36 @@ export type IResources = IResourceDefinition[]
 /** Basically, a smarter version of an IResourceDefinition with
  * her values having been filtered by (languageId, modes). */
 export interface IResource {
-  uuid: string,
-  values: IResourceDefinitionContentTypeSpecific[],
-  context: IContext,
+  uuid: string
+  values: IResourceDefinitionContentTypeSpecific[]
+  context: IContext
 
-  hasText(): boolean,
-  /** @throws ResourceNotFoundException */
-  getText(): string,
+  hasText(): boolean
 
-  hasAudio(): boolean,
   /** @throws ResourceNotFoundException */
-  getAudio(): string,
+  getText(): string
 
-  hasImage(): boolean,
-  /** @throws ResourceNotFoundException */
-  getImage(): string,
+  hasAudio(): boolean
 
-  hasVideo(): boolean,
   /** @throws ResourceNotFoundException */
-  getVideo(): string,
+  getAudio(): string
+
+  hasImage(): boolean
+
+  /** @throws ResourceNotFoundException */
+  getImage(): string
+
+  hasVideo(): boolean
+
+  /** @throws ResourceNotFoundException */
+  getVideo(): string
 }
 
 export interface IResourceResolver {
-  context: IContext,
+  context: IContext
 
-  resolve(resourceId: string): IResource,
+  resolve(resourceId: string): IResource
 }
-
-export default IResourceResolver
 
 export function createTextResourceVariantWith(value: string, ctx: IContext): IResourceDefinitionContentTypeSpecific {
   return {

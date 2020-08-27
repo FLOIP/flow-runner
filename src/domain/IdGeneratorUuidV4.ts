@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IIdGenerator from './IIdGenerator'
+import {IIdGenerator} from '..'
 import uuid from 'uuid'
 
 /**
@@ -28,5 +28,3 @@ export class IdGeneratorUuidV4 implements IIdGenerator {
     return uuid.v4()
   }
 }
-
-export default IdGeneratorUuidV4

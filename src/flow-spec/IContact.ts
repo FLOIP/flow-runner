@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IContactProperty from './IContactProperty'
+import {IContactProperty} from '..'
 
 export interface IContact {
   id: IContactProperty | ((...args: any[]) => IContactProperty | undefined) |  string | undefined,
@@ -28,5 +28,3 @@ export interface IContact {
   setProperty: (name: string, value: any) => IContactProperty,
   getProperty: (name: string) => IContactProperty | undefined,
 }
-
-export default IContact

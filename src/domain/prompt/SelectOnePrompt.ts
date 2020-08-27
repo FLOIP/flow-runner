@@ -17,18 +17,16 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import BasePrompt from './BasePrompt'
-import {IBasePromptConfig} from './IPrompt'
-import ValidationException from '../exceptions/ValidationException'
-import {ISelectOnePromptConfig} from './ISelectOnePromptConfig'
+import {BasePrompt, ISelectOnePromptConfig, ValidationException} from '../..'
+
+export const SELECT_ONE_PROMPT_KEY = 'SelectOne'
 
 /**
  * Concrete implementation of {@link BasePrompt} to request, at most, one selection from multiple choices, from an
  * {@link IContact}.
  */
-export class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig & IBasePromptConfig> {
-
-  validate(choiceKey?: string | null) {
+export class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig> {
+  validate(choiceKey?: string | null): boolean {
     const {isResponseRequired, choices} = this.config
 
     if (isResponseRequired && choices.find(({key}) => key === choiceKey) == null) {
@@ -38,5 +36,3 @@ export class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig & IBasePr
     return true
   }
 }
-
-export default SelectOnePrompt

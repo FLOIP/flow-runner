@@ -17,14 +17,12 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlockInteractionDetails} from './IBlockInteraction'
+import {IBlockInteractionDetails} from '..'
 
 export interface IReadBlockInteractionDetails extends IBlockInteractionDetails {
-  readError: IReadError,
+  readError: IReadError
 }
 
 export interface IReadError {
-  message: string,
+  message: string
 }
-
-export default IReadBlockInteractionDetails

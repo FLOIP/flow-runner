@@ -17,11 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlock from '../../flow-spec/IBlock'
-import IPrintBlockConfig from './IPrintBlockConfig'
+import {IBlock, IPrintBlockConfig} from '../..'
 
 export interface IPrintBlock extends IBlock {
-  config: IPrintBlockConfig,
+  config: IPrintBlockConfig
 }
-
-export default IPrintBlock

@@ -17,12 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlockRunner from './IBlockRunner'
-import IBlockExit from '../../flow-spec/IBlockExit'
-import {IOpenPromptConfig, KnownPrompts} from '../..'
-import IOpenResponseBlock from '../../model/block/IOpenResponseBlock'
-import IContext from '../../flow-spec/IContext'
-import IBlockInteraction from '../../flow-spec/IBlockInteraction'
+import {IBlockExit, IBlockInteraction, IBlockRunner, IContext, IOpenPromptConfig, IOpenResponseBlock, OPEN_PROMPT_KEY} from '../..'
 
 /**
  * Block runner for `MobilePrimitives\OpenResponse` - Obtains an open-ended response from the contact. Dependent on the
@@ -41,9 +36,7 @@ import IBlockInteraction from '../../flow-spec/IBlockInteraction'
  *   widget. Wait to capture a response.
  */
 export class OpenResponseBlockRunner implements IBlockRunner {
-  constructor(
-    public block: IOpenResponseBlock,
-    public context: IContext) {}
+  constructor(public block: IOpenResponseBlock, public context: IContext) {}
 
   async initialize({value}: IBlockInteraction): Promise<IOpenPromptConfig> {
     const blockConfig = this.block.config
@@ -54,7 +47,7 @@ export class OpenResponseBlockRunner implements IBlockRunner {
     }
 
     return {
-      kind: KnownPrompts.Open,
+      kind: OPEN_PROMPT_KEY,
       prompt: blockConfig.prompt,
       isResponseRequired: true,
       maxResponseCharacters: maxResponseCharacters,
@@ -68,5 +61,3 @@ export class OpenResponseBlockRunner implements IBlockRunner {
     return this.block.exits[0]
   }
 }
-
-export default OpenResponseBlockRunner

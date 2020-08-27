@@ -17,10 +17,14 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlockRunner from './IBlockRunner'
-import {findDefaultBlockExitOn, findFirstTruthyEvaluatingBlockExitOn, IBlockExitTestRequired} from '../..'
-import IContext from '../../flow-spec/IContext'
-import ICaseBlock from '../../model/block/ICaseBlock'
+import {
+  findDefaultBlockExitOn,
+  findFirstTruthyEvaluatingBlockExitOn,
+  IBlockExitTestRequired,
+  IBlockRunner,
+  ICaseBlock,
+  IContext,
+} from '../..'
 
 /**
  * Block runner for `Core\Case` - Evaluates a list of expressions, one for each exit, and terminates through the first
@@ -32,18 +36,14 @@ import ICaseBlock from '../../model/block/ICaseBlock'
  * proceeds through the default exit.
  */
 export class CaseBlockRunner implements IBlockRunner {
-  constructor(
-    public block: ICaseBlock,
-    public context: IContext) {}
+  constructor(public block: ICaseBlock, public context: IContext) {
+  }
 
   async initialize(): Promise<undefined> {
     return undefined
   }
 
   async run(): Promise<IBlockExitTestRequired> {
-    return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context)
-      ?? findDefaultBlockExitOn(this.block) as IBlockExitTestRequired
+    return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? (findDefaultBlockExitOn(this.block) as IBlockExitTestRequired)
   }
 }
-
-export default CaseBlockRunner

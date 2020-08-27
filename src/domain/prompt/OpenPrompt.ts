@@ -17,20 +17,19 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import BasePrompt from './BasePrompt'
-import {IBasePromptConfig} from './IPrompt'
-import {IOpenPromptConfig} from './IOpenPromptConfig'
-import ValidationException from '../exceptions/ValidationException'
+import {BasePrompt, IOpenPromptConfig, ValidationException} from '../..'
+
+export const OPEN_PROMPT_KEY = 'Open'
 
 /**
  * Concrete implementation of {@link BasePrompt} to request a string of text, optionally with a maximum length boundary,
  * from an {@link IContact}.
  */
-export class OpenPrompt extends BasePrompt<IOpenPromptConfig & IBasePromptConfig> {
+export class OpenPrompt extends BasePrompt<IOpenPromptConfig> {
   validate(val: string): boolean {
     const {maxResponseCharacters: maxLength} = this.config
 
-    if (maxLength && val.length > maxLength) {
+    if (maxLength != null && val.length > maxLength) {
       // todo: add ability to provide validation codes to ValidationException for use as comparator in consumers
       // todo: need a method to define resources frontend needs from backend
       throw new ValidationException('Too many characters on value provided')
@@ -39,5 +38,3 @@ export class OpenPrompt extends BasePrompt<IOpenPromptConfig & IBasePromptConfig
     return true
   }
 }
-
-export default OpenPrompt

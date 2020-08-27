@@ -17,14 +17,18 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IBlockRunner from './IBlockRunner'
-import {findFirstTruthyEvaluatingBlockExitOn, IBlockExitTestRequired, KnownPrompts} from '../..'
-import IBlockExit from '../../flow-spec/IBlockExit'
-import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock'
-import IContext from '../../flow-spec/IContext'
+import {
+  findFirstTruthyEvaluatingBlockExitOn,
+  IBlockExit,
+  IBlockExitTestRequired,
+  IBlockInteraction,
+  IBlockRunner,
+  IContext,
+  ISelectManyPromptConfig,
+  ISelectOneResponseBlock,
+  SELECT_MANY_PROMPT_KEY,
+} from '../..'
 import {last} from 'lodash'
-import {ISelectManyPromptConfig} from '../prompt/ISelectManyPromptConfig'
-import IBlockInteraction from '../../flow-spec/IBlockInteraction'
 
 /**
  * Block runner for `MobilePrimitives\SelectManyResponse` - Obtains the answer to a Multiple Choice question from the
@@ -46,31 +50,25 @@ import IBlockInteraction from '../../flow-spec/IBlockInteraction'
  *   a menu selection.
  */
 export class SelectManyResponseBlockRunner implements IBlockRunner {
-  constructor(
-    public block: ISelectOneResponseBlock,
-    public context: IContext) {}
+  constructor(public block: ISelectOneResponseBlock, public context: IContext) {}
 
   async initialize({value}: IBlockInteraction): Promise<ISelectManyPromptConfig> {
     const {prompt, choices} = this.block.config
 
     return {
-      kind: KnownPrompts.SelectMany,
+      kind: SELECT_MANY_PROMPT_KEY,
       prompt,
       isResponseRequired: true,
-      choices: Object.keys(choices)
-        .map(key => ({
-          key,
-          value: choices[key],
-        })),
+      choices: Object.keys(choices).map(key => ({
+        key,
+        value: choices[key],
+      })),
 
       value: value as ISelectManyPromptConfig['value'],
     }
   }
 
   async run(): Promise<IBlockExit> {
-    return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context)
-      ?? last(this.block.exits) as IBlockExitTestRequired
+    return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? (last(this.block.exits) as IBlockExitTestRequired)
   }
 }
-
-export default SelectManyResponseBlockRunner

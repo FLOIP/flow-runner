@@ -1,10 +1,10 @@
 module.exports = {
-  'parser': '@typescript-eslint/parser',
-  'parserOptions': {
-    'ecmaFeatures': {
-      'jsx': true,
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
     },
-    'project': './tsconfig.json',
+    project: './tsconfig.json',
   },
 
   extends: [
@@ -19,6 +19,12 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
+
+    // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
+    'prettier/@typescript-eslint',
+
+    // Enables eslint-plugin-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
+    'plugin:prettier/recommended',
   ],
 
   plugins: [
@@ -33,7 +39,7 @@ module.exports = {
 
   overrides: [
     {
-      'files': [
+      files: [
         '*.vue',
         '*.js',
         '*.ts',
@@ -46,17 +52,23 @@ module.exports = {
     /********************
      * Typescript rules *
      ********************/
-    /********************
-     * Typescript rules *
-     ********************/
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/strict-boolean-expressions': [
       'error',
       {
-        allowNullable: true,
+        allowNullableBoolean: true,
       },
     ],
+    // Disabled until we can take the time to fix uses of object
+    '@typescript-eslint/ban-types': 'off',
+
+    // Disabled until we can take the time to fix uses
+    '@typescript-eslint/restrict-template-expressions': 'off',
+
+    '@typescript-eslint/no-unsafe-call': 'off',
+    '@typescript-eslint/no-unsafe-return': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/semi': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
@@ -64,6 +76,9 @@ module.exports = {
     '@typescript-eslint/explicit-member-accessibility': 'off',
     '@typescript-eslint/no-object-literal-type-assertion': 'off',
     '@typescript-eslint/require-await': 'off',
+    '@typescript-eslint/no-floating-promises': 'off',
+    // Might be able to get rid of this after TS 4.0
+    '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/explicit-function-return-type': [
       'warn',
       {
@@ -73,7 +88,7 @@ module.exports = {
       },
     ],
     '@typescript-eslint/member-delimiter-style': [
-      'warn',
+      'off',
       {
         multiline: {
           delimiter: 'comma',
@@ -85,8 +100,6 @@ module.exports = {
         },
       },
     ],
-
-
 
     /*************************
      * Modified ESLint rules *
@@ -106,8 +119,9 @@ module.exports = {
     'import/no-absolute-path': 'off',
     'no-useless-constructor': 'off',
     'class-methods-use-this': 'off',
-    'no-empty-function': ['error', {allow: ['constructors', 'arrowFunctions']}],
+    'no-empty-function': 'off',
     'no-tabs': 'error',
+    'no-debugger': 'warn',
 
     'no-use-before-define': [
       'off',
@@ -129,7 +143,7 @@ module.exports = {
         asyncArrow: 'always',
       }],
     'no-console': [
-      'error',
+      'warn',
       {
         allow: [
           'warn',
@@ -201,7 +215,7 @@ module.exports = {
     // Argument for this best presented here: https://youtu.be/eEBOvqMfPoI?t=1665
     'no-else-return': ['off'],
     'spaced-comment': 'off',
-    'line-comment-position': ["error", { "position": "above" }],
+    'line-comment-position': ['error', {'position': 'above'}],
 
     /**********
      * Lodash *
@@ -227,6 +241,8 @@ module.exports = {
     'lodash/prefer-some': 'off',
     'lodash/prefer-startswith': 'off',
     'lodash/prefer-times': 'off',
+
+    // this is as warning, as it breaks type inference
     'lodash/prop-shorthand': ['warn', 'never'],
 
     /**************
@@ -237,7 +253,5 @@ module.exports = {
     'jest/no-identical-title': 'error',
     'jest/prefer-to-have-length': 'warn',
     'jest/valid-expect': 'error',
-
   },
 }
-

@@ -25,5 +25,3 @@ export enum SupportedMode {
   RICH_MESSAGING = 'rich_messaging',
   OFFLINE = 'offline',
 }
-
-export default SupportedMode

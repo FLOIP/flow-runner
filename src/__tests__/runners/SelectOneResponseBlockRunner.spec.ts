@@ -1,9 +1,13 @@
-import SelectOneResponseBlockRunner from '../../domain/runners/SelectOneResponseBlockRunner'
-import IContext, {findBlockOnActiveFlowWith, findInteractionWith} from '../../flow-spec/IContext'
-import IBlockExit from '../../flow-spec/IBlockExit'
-import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock'
-import IDataset, {createDefaultDataset} from '../fixtures/IDataset'
-import IContact from '../../flow-spec/IContact'
+import {
+  findBlockOnActiveFlowWith,
+  findInteractionWith,
+  IBlockExit,
+  IContact,
+  IContext,
+  ISelectOneResponseBlock,
+  SelectOneResponseBlockRunner,
+} from '../..'
+import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
 
 describe('SelectOneResponseBlockRunner', () => {
   let dataset: IDataset
@@ -25,7 +29,7 @@ describe('SelectOneResponseBlockRunner', () => {
           {test: '@(contact.age > 25)'} as IBlockExit,
           {test: '@(contact.age > 8)'} as IBlockExit,
           {test: '@(contact.age > 0)'} as IBlockExit,
-        ]
+        ],
       }) as ISelectOneResponseBlock
 
       const runner = new SelectOneResponseBlockRunner(block, ctx)
@@ -33,7 +37,7 @@ describe('SelectOneResponseBlockRunner', () => {
       expect(exit).toBe(block.exits[3])
     })
 
-    it.todo('should raise an exception when an expression is provided that doesn\'t evaluate to bool.')
+    it.todo("should raise an exception when an expression is provided that doesn't evaluate to bool.")
   })
 })
 

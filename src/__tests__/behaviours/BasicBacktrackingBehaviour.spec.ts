@@ -1,14 +1,16 @@
 import {first, last} from 'lodash'
-import BacktrackingBehaviour from '../../domain/behaviours/BacktrackingBehaviour/BacktrackingBehaviour'
-import IContext from '../../flow-spec/IContext'
-import IBlockInteraction from '../../flow-spec/IBlockInteraction'
-import IFlow from '../../flow-spec/IFlow'
-import {IBasePromptConfig, IPromptConfig} from '../../index'
-import {NON_INTERACTIVE_BLOCK_TYPES} from '../../domain/FlowRunner'
-import IPrompt from '../../domain/prompt/IPrompt'
-import IBlock from '../../flow-spec/IBlock'
-import BasicBacktrackingBehaviour, {PeekDirection} from '../../domain/behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour'
-
+import {
+  BacktrackingBehaviour,
+  BasicBacktrackingBehaviour,
+  IBlock,
+  IBlockInteraction,
+  IContext,
+  IFlow,
+  IPrompt,
+  IPromptConfig,
+  NON_INTERACTIVE_BLOCK_TYPES,
+  PeekDirection,
+} from '../..'
 
 describe('BasicBacktrackingBehaviour', () => {
   let backtracking: BasicBacktrackingBehaviour
@@ -18,9 +20,9 @@ describe('BasicBacktrackingBehaviour', () => {
       {platformMetadata: {}} as IContext,
       {navigateTo: async (_b, _c) => ({interaction: {} as IBlockInteraction, prompt: undefined})},
       {
-        buildPromptFor: async (_b: IBlock, _i: IBlockInteraction):
-          Promise<IPrompt<IPromptConfig<any> & IBasePromptConfig> | undefined> => undefined,
-      })
+        buildPromptFor: async (_b: IBlock, _i: IBlockInteraction): Promise<IPrompt<IPromptConfig<any>> | undefined> => undefined,
+      }
+    )
   })
 
   describe('peek', () => {
@@ -37,15 +39,12 @@ describe('BasicBacktrackingBehaviour', () => {
           {uuid: 'intx-567'},
           {uuid: 'intx-678', flowId: 'flow-123', blockId: 'block-123', value: 'value #678'},
         ] as IBlockInteraction[],
-        flows: [
-          {uuid: 'flow-123', blocks: [{uuid: 'block-123'} as IBlock]} as IFlow,
-        ] as IFlow[],
+        flows: [{uuid: 'flow-123', blocks: [{uuid: 'block-123'} as IBlock]} as IFlow] as IFlow[],
       } as IContext
 
       virtualPrompt = {} as IPrompt<any>
 
-      jest.spyOn(backtracking.promptBuilder, 'buildPromptFor')
-        .mockReturnValue(Promise.resolve(virtualPrompt))
+      jest.spyOn(backtracking.promptBuilder, 'buildPromptFor').mockReturnValue(Promise.resolve(virtualPrompt))
     })
 
     it('should return prompt for last interaction when no args provided', async () => {
@@ -101,9 +100,9 @@ describe('BasicBacktrackingBehaviour', () => {
     })
 
     it('should raise when trying to step back further than can be stepped', async () => {
-      await expect(BacktrackingBehaviour.prototype.peek.bind(backtracking)(7))
-        .rejects
-        .toThrow('Unable to backtrack to an interaction that far back {"steps":7}')
+      await expect(BacktrackingBehaviour.prototype.peek.bind(backtracking)(7)).rejects.toThrow(
+        'Unable to backtrack to an interaction that far back {"steps":7}'
+      )
     })
   })
 })
