@@ -18,6 +18,7 @@
  **/
 
 import {IContact, IContactProperty} from '..'
+import { createFormattedDate } from '../domain/DateFormat'
 
 export class Contact implements IContact {
   [key: string]: IContactProperty | ((...args: any[]) => IContactProperty | undefined) | string | undefined
@@ -28,8 +29,8 @@ export class Contact implements IContact {
     const prop: IContactProperty = {
       __value__: value,
       contactPropertyFieldName: name,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt: createFormattedDate(),
+      updatedAt: createFormattedDate(),
       deletedAt: undefined,
     }
     this[name] = prop
