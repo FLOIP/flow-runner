@@ -18,11 +18,12 @@
  **/
 
 import {IContactProperty} from '..'
+import { createFormattedDate } from '../domain/DateFormat'
 
 export class ContactProperty implements IContactProperty {
   deletedAt: string | undefined
-  createdAt: string = new Date().toISOString().replace('T', ' ')
-  updatedAt: string = new Date().toISOString().replace('T', ' ')
+  createdAt: string = createFormattedDate()
+  updatedAt: string = createFormattedDate()
   __value__!: string
 
   constructor() {}
@@ -33,7 +34,7 @@ export class ContactProperty implements IContactProperty {
 
   set contactPropertyFieldName(contactPropertyFieldName: string) {
     this.contactPropertyFieldName = contactPropertyFieldName
-    this.updatedAt = new Date().toISOString().replace('T', ' ')
+    this.updatedAt = createFormattedDate()
   }
 
   get value(): string {
@@ -42,7 +43,7 @@ export class ContactProperty implements IContactProperty {
 
   set value(value: string) {
     this.__value__ = value
-    this.updatedAt = new Date().toISOString().replace('T', ' ')
+    this.updatedAt = createFormattedDate()
   }
 }
 

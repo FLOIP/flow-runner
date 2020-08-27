@@ -473,18 +473,18 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@floip/expression-evaluator@^1.1.3":
-  version "1.1.3"
-  resolved "https://npm.pkg.github.com/download/@floip/expression-evaluator/1.1.3/8884d675177454d9b126c58582027fc0293409be971db82ef5f27f923a450c2d#8a1f7e199045862fd8a24b2cf16c76d68daede38"
-  integrity sha512-73Xwtr1ntexdcP1pA8yVsYCjxV4WebmWC5ILLC+vhfcFTD+mv27gqsIgR5tkQGfHwEXERwpytyO2v/rgD1Pi5A==
+"@floip/expression-evaluator@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@floip/expression-evaluator/-/expression-evaluator-1.3.0.tgz#073f3f9fe166ce903e9a3a64d614a4fc9bc54c77"
+  integrity sha512-8eGQ+pSM0msMjwOiuI0LCl4jsHLbgZJmzKLzUnhAIEEFxT0cwL+G8MX5desLPHsjE0uOt90AlloEeFYe/W0/8Q==
   dependencies:
-    "@floip/expression-parser" "^1.6.1"
+    "@floip/expression-parser" "^1.10.0"
     moment "^2.24.0"
 
-"@floip/expression-parser@^1.6.1":
-  version "1.6.1"
-  resolved "https://npm.pkg.github.com/download/@floip/expression-parser/1.6.1/cff204e03d6b89f5ec1420fea2d9ccec994ab244375f302c4b3c6dee2e5c7a12#534030a657e66282ee2a015a41bc01757d9a863c"
-  integrity sha512-DfYemmXIgkFa7Sqb4v0IoRzlJUQq/luYoiMNgZ9FYoVTLlWeuZoMYgbgpX4WbHfZoo7tEGvvBKd/fgCCu3dFaQ==
+"@floip/expression-parser@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@floip/expression-parser/-/expression-parser-1.10.0.tgz#386cb9fbfb2afc951daae40e03845a87bacf3509"
+  integrity sha512-pLR8p2z6q87O9c1XkP4DYfuEX+cKMn14a4jYkZ/t4ky1k+MEvp69zj662xJTzCkbH3ABsrwaxx7fP1FWASlEZw==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
