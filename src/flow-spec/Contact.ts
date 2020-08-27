@@ -17,11 +17,10 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import IContact from './IContact'
-import IContactProperty from './IContactProperty'
+import {IContact, IContactProperty} from '..'
 
 export class Contact implements IContact {
-  [key: string]: IContactProperty | ((...args: any[]) => IContactProperty | undefined) | string |undefined
+  [key: string]: IContactProperty | ((...args: any[]) => IContactProperty | undefined) | string | undefined
 
   id!: string
 

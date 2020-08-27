@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
- import IContactProperty from './IContactProperty'
+import {IContactProperty} from '..'
 
 export class ContactProperty implements IContactProperty {
   deletedAt: string | undefined
@@ -28,21 +28,21 @@ export class ContactProperty implements IContactProperty {
   constructor() {}
 
   get contactPropertyFieldName(): string {
-      return this.contactPropertyFieldName
+    return this.contactPropertyFieldName
   }
 
   set contactPropertyFieldName(contactPropertyFieldName: string) {
-      this.contactPropertyFieldName = contactPropertyFieldName
-      this.updatedAt = new Date().toISOString().replace('T', ' ')
+    this.contactPropertyFieldName = contactPropertyFieldName
+    this.updatedAt = new Date().toISOString().replace('T', ' ')
   }
 
   get value(): string {
-      return this.__value__
+    return this.__value__
   }
 
   set value(value: string) {
-      this.__value__ = value
-      this.updatedAt = new Date().toISOString().replace('T', ' ')
+    this.__value__ = value
+    this.updatedAt = new Date().toISOString().replace('T', ' ')
   }
 }
 

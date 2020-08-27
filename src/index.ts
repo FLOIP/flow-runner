@@ -71,6 +71,7 @@ export * from './domain/runners/SelectOneResponseBlockRunner'
 
 export * from './flow-spec/Contact'
 export * from './flow-spec/ContactProperty'
+export * from './flow-spec/IContactProperty'
 export * from './flow-spec/Context'
 export * from './flow-spec/DataObjectPopertyNameCamelCaseConverter'
 export * from './flow-spec/DeliveryStatus'

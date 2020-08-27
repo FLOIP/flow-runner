@@ -17,12 +17,12 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
- export interface IContactProperty {
-  contactPropertyFieldName: string,
-  createdAt: string,
-  updatedAt: string,
-  deletedAt: string | undefined,
-  __value__: string | undefined,
+export interface IContactProperty {
+  contactPropertyFieldName: string
+  createdAt: string
+  updatedAt: string
+  deletedAt: string | undefined
+  __value__: string | undefined
 }
 
 export default IContactProperty
