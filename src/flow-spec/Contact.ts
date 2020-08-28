@@ -18,12 +18,14 @@
  **/
 
 import {IContact, IContactProperty} from '..'
-import { createFormattedDate } from '../domain/DateFormat'
+import {createFormattedDate} from '../domain/DateFormat'
 
 export class Contact implements IContact {
   [key: string]: IContactProperty | ((...args: any[]) => IContactProperty | undefined) | string | undefined
 
   id!: string
+
+  constructor() {}
 
   public setProperty(name: string, value: any): IContactProperty {
     const prop: IContactProperty = {
