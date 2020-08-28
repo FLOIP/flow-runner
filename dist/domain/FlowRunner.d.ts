@@ -49,22 +49,22 @@ export declare class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     private createBlockInteractionFor;
     buildPromptFor(block: IBlock, interaction: IBlockInteraction): Promise<TGenericPrompt | undefined>;
     createPromptFrom<T>(config?: IPromptConfig<T>, interaction?: IBlockInteraction): TGenericPrompt | undefined;
-    static Builder: {
-        new (): {
-            context?: IContext | undefined;
-            runnerFactoryStore: BlockRunnerFactoryStore;
-            idGenerator: IIdGenerator;
-            behaviours: {
-                [key: string]: IBehaviour;
-            };
-            _contextService: IContextService;
-            setContext(context: IContext): this;
-            addBlockRunner(add: (store: BlockRunnerFactoryStore) => BlockRunnerFactoryStore): this;
-            setIdGenerator(idGenerator: IIdGenerator): this;
-            addBehaviour(behaviourKey: string, behaviour: IBehaviour): this;
-            addCustomPrompt<T>(constructor: PromptConstructor<T>, promptKey: string): this;
-            build(): FlowRunner;
+}
+export declare namespace FlowRunner {
+    class Builder {
+        context?: IContext;
+        runnerFactoryStore: BlockRunnerFactoryStore;
+        idGenerator: IIdGenerator;
+        behaviours: {
+            [key: string]: IBehaviour;
         };
-    };
+        _contextService: IContextService;
+        setContext(context: IContext): FlowRunner.Builder;
+        addBlockRunner(add: (store: BlockRunnerFactoryStore) => BlockRunnerFactoryStore): FlowRunner.Builder;
+        setIdGenerator(idGenerator: IIdGenerator): FlowRunner.Builder;
+        addBehaviour(behaviourKey: string, behaviour: IBehaviour): FlowRunner.Builder;
+        addCustomPrompt<T>(constructor: PromptConstructor<T>, promptKey: string): FlowRunner.Builder;
+        build(): FlowRunner;
+    }
 }
 //# sourceMappingURL=FlowRunner.d.ts.map

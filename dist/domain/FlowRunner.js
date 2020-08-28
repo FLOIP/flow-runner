@@ -327,36 +327,39 @@ class FlowRunner {
     }
 }
 exports.FlowRunner = FlowRunner;
-FlowRunner.Builder = class {
-    constructor() {
-        this.runnerFactoryStore = createDefaultBlockRunnerStore();
-        this.idGenerator = new __1.IdGeneratorUuidV4();
-        this.behaviours = {};
-        this._contextService = __1.ContextService;
+(function (FlowRunner) {
+    class Builder {
+        constructor() {
+            this.runnerFactoryStore = createDefaultBlockRunnerStore();
+            this.idGenerator = new __1.IdGeneratorUuidV4();
+            this.behaviours = {};
+            this._contextService = __1.ContextService;
+        }
+        setContext(context) {
+            this.context = context;
+            return this;
+        }
+        addBlockRunner(add) {
+            add(this.runnerFactoryStore);
+            return this;
+        }
+        setIdGenerator(idGenerator) {
+            this.idGenerator = idGenerator;
+            return this;
+        }
+        addBehaviour(behaviourKey, behaviour) {
+            this.behaviours[behaviourKey] = behaviour;
+            return this;
+        }
+        addCustomPrompt(constructor, promptKey) {
+            __1.Prompt.addCustomPrompt(constructor, promptKey);
+            return this;
+        }
+        build() {
+            __1.assertNotNull(this.context, () => 'FlowRunner.Builder.setContext() must be called before FlowRunner.Builder.build()');
+            return new FlowRunner(this.context, this.runnerFactoryStore, this.idGenerator, this.behaviours, this._contextService);
+        }
     }
-    setContext(context) {
-        this.context = context;
-        return this;
-    }
-    addBlockRunner(add) {
-        add(this.runnerFactoryStore);
-        return this;
-    }
-    setIdGenerator(idGenerator) {
-        this.idGenerator = idGenerator;
-        return this;
-    }
-    addBehaviour(behaviourKey, behaviour) {
-        this.behaviours[behaviourKey] = behaviour;
-        return this;
-    }
-    addCustomPrompt(constructor, promptKey) {
-        __1.Prompt.addCustomPrompt(constructor, promptKey);
-        return this;
-    }
-    build() {
-        __1.assertNotNull(this.context, () => 'FlowRunner.Builder.setContext() must be called before FlowRunner.Builder.build()');
-        return new FlowRunner(this.context, this.runnerFactoryStore, this.idGenerator, this.behaviours, this._contextService);
-    }
-};
+    FlowRunner.Builder = Builder;
+})(FlowRunner = exports.FlowRunner || (exports.FlowRunner = {}));
 //# sourceMappingURL=FlowRunner.js.map
