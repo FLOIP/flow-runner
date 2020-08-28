@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace,import/export */
 /**
  * Flow Interoperability Project (flowinterop.org)
  * Flow Runner
@@ -114,6 +115,7 @@ export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
  * Main interface into this library.
  * @see README.md for usage details.
  */
+// eslint-disable-next-line import/export
 export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   /** Running context, JSON-serializable entity with enough information to start or resume a Flow. */
   public context: IContext
@@ -711,36 +713,42 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       return
     }
   }
+}
 
+/**
+ * Namespacing must be used, because otherwise, Builder can not be referenced, without resulting in a compiler error,
+ * due to this not being able to resolve the FlowRunner.Builder type, because the Builder is transpiled to an object definition
+ */
+export namespace FlowRunner {
   // noinspection JSUnusedGlobalSymbols
-  public static Builder = class {
+  export class Builder {
     context?: IContext
     runnerFactoryStore: BlockRunnerFactoryStore = createDefaultBlockRunnerStore()
     idGenerator: IIdGenerator = new IdGeneratorUuidV4()
     behaviours: {[key: string]: IBehaviour} = {}
     _contextService: IContextService = ContextService
 
-    setContext(context: IContext): this {
+    setContext(context: IContext): FlowRunner.Builder {
       this.context = context
       return this
     }
 
-    addBlockRunner(add: (store: BlockRunnerFactoryStore) => BlockRunnerFactoryStore): this {
+    addBlockRunner(add: (store: BlockRunnerFactoryStore) => BlockRunnerFactoryStore): FlowRunner.Builder {
       add(this.runnerFactoryStore)
       return this
     }
 
-    setIdGenerator(idGenerator: IIdGenerator): this {
+    setIdGenerator(idGenerator: IIdGenerator): FlowRunner.Builder {
       this.idGenerator = idGenerator
       return this
     }
 
-    addBehaviour(behaviourKey: string, behaviour: IBehaviour): this {
+    addBehaviour(behaviourKey: string, behaviour: IBehaviour): FlowRunner.Builder {
       this.behaviours[behaviourKey] = behaviour
       return this
     }
 
-    addCustomPrompt<T>(constructor: PromptConstructor<T>, promptKey: string): this {
+    addCustomPrompt<T>(constructor: PromptConstructor<T>, promptKey: string): FlowRunner.Builder {
       Prompt.addCustomPrompt(constructor, promptKey)
       return this
     }

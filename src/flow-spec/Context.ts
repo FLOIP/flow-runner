@@ -1,3 +1,4 @@
+/* eslint-disable import/export,@typescript-eslint/no-namespace */
 /**
  * Flow Interoperability Project (flowinterop.org)
  * Flow Runner
@@ -104,9 +105,15 @@ export class Context implements IContext {
   getResource(resourceId: string): IResource {
     return new ResourceResolver(this).resolve(resourceId)
   }
+}
 
+/**
+ * Namespacing must be used, because otherwise, Builder can not be referenced, without resulting in a compiler error,
+ * due to this not being able to resolve the FlowRunner.Builder type, because the Builder is transpiled to an object definition
+ */
+export namespace Context {
   // noinspection JSUnusedGlobalSymbols
-  static readonly Builder = class {
+  export class Builder {
     id?: string
     createdAt: string = createFormattedDate()
     deliveryStatus: DeliveryStatus = DeliveryStatus.QUEUED
@@ -128,102 +135,102 @@ export class Context implements IContext {
     platformMetadata: {[k: string]: unknown} = {}
     logs: {[k: string]: string} = {}
 
-    setId(id: string): this {
+    setId(id: string): Context.Builder {
       this.id = id
       return this
     }
 
-    setCreatedAt(createdAt: string): this {
+    setCreatedAt(createdAt: string): Context.Builder {
       this.createdAt = createdAt
       return this
     }
 
-    setDeliveryStatus(deliveryStatus: DeliveryStatus): this {
+    setDeliveryStatus(deliveryStatus: DeliveryStatus): Context.Builder {
       this.deliveryStatus = deliveryStatus
       return this
     }
 
-    setMode(mode: SupportedMode): this {
+    setMode(mode: SupportedMode): Context.Builder {
       this.mode = mode
       return this
     }
 
-    setLanguageId(languageId: string): this {
+    setLanguageId(languageId: string): Context.Builder {
       this.languageId = languageId
       return this
     }
 
-    setContact(contact: IContact): this {
+    setContact(contact: IContact): Context.Builder {
       this.contact = contact
       return this
     }
 
-    setSessionVars(sessionVars: {[k: string]: unknown}): this {
+    setSessionVars(sessionVars: {[k: string]: unknown}): Context.Builder {
       this.sessionVars = sessionVars
       return this
     }
 
-    setInteractions(interactions: IBlockInteraction[]): this {
+    setInteractions(interactions: IBlockInteraction[]): Context.Builder {
       this.interactions = interactions
       return this
     }
 
-    setNestedFlowBlockInteractionIdStack(nestedFlowBlockInteractionIdStack: string[]): this {
+    setNestedFlowBlockInteractionIdStack(nestedFlowBlockInteractionIdStack: string[]): Context.Builder {
       this.nestedFlowBlockInteractionIdStack = nestedFlowBlockInteractionIdStack
       return this
     }
 
-    setReversibleOperations(reversibleOperations: IReversibleUpdateOperation[]): this {
+    setReversibleOperations(reversibleOperations: IReversibleUpdateOperation[]): Context.Builder {
       this.reversibleOperations = reversibleOperations
       return this
     }
 
-    setFlows(flows: IFlow[]): this {
+    setFlows(flows: IFlow[]): Context.Builder {
       this.flows = flows
       return this
     }
 
-    setFirstFlowId(firstFlowId: string): this {
+    setFirstFlowId(firstFlowId: string): Context.Builder {
       this.firstFlowId = firstFlowId
       return this
     }
 
-    setResources(resources: IResourceDefinition[]): this {
+    setResources(resources: IResourceDefinition[]): Context.Builder {
       this.resources = resources
       return this
     }
 
-    setEntryAt(entryAt: string): this {
+    setEntryAt(entryAt: string): Context.Builder {
       this.entryAt = entryAt
       return this
     }
 
-    setExitAt(exitAt: string): this {
+    setExitAt(exitAt: string): Context.Builder {
       this.exitAt = exitAt
       return this
     }
 
-    setUserId(userId: string): this {
+    setUserId(userId: string): Context.Builder {
       this.userId = userId
       return this
     }
 
-    setOrgId(orgId: string): this {
+    setOrgId(orgId: string): Context.Builder {
       this.orgId = orgId
       return this
     }
 
-    setCursor(cursor: ICursor): this {
+    setCursor(cursor: ICursor): Context.Builder {
       this.cursor = cursor
       return this
     }
 
-    setPlatformMetadata(platformMetadata: {[k: string]: unknown}): this {
+    setPlatformMetadata(platformMetadata: {[k: string]: unknown}): Context.Builder {
       this.platformMetadata = platformMetadata
       return this
     }
 
-    setLogs(logs: {[p: string]: string}): this {
+    setLogs(logs: {[p: string]: string}): Context.Builder {
       this.logs = logs
       return this
     }
