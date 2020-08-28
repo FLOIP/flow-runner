@@ -7,5 +7,4 @@ export interface ILanguage {
     code?: string;
     deletedAt?: string;
 }
-export default ILanguage;
 //# sourceMappingURL=ILanguage.d.ts.map

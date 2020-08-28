@@ -1,20 +1,5 @@
 import { NonBreakingUpdateOperation } from 'sp2';
-import IBlock from '../flow-spec/IBlock';
-import IContext, { IContextService, IContextWithCursor, ICursor, IReversibleUpdateOperation, IRichCursor, IRichCursorInputRequired } from '../flow-spec/IContext';
-import IBlockRunner from './runners/IBlockRunner';
-import IBlockInteraction from '../flow-spec/IBlockInteraction';
-import IBlockExit from '../flow-spec/IBlockExit';
-import IFlowRunner, { IBlockRunnerFactoryStore, TBlockRunnerFactory } from './IFlowRunner';
-import IIdGenerator from './IIdGenerator';
-import { IPromptConfig } from './prompt/IPrompt';
-import MessagePrompt from './prompt/MessagePrompt';
-import NumericPrompt from './prompt/NumericPrompt';
-import OpenPrompt from './prompt/OpenPrompt';
-import SelectOnePrompt from './prompt/SelectOnePrompt';
-import SelectManyPrompt from './prompt/SelectManyPrompt';
-import IBehaviour, { IBehaviourConstructor } from './behaviours/IBehaviour';
-import IMessageBlock from '../model/block/IMessageBlock';
-import { TGenericPrompt } from './prompt/BasePrompt';
+import { IBehaviour, IBehaviourConstructor, IBlock, IBlockExit, IBlockInteraction, IBlockRunner, IBlockRunnerFactoryStore, IContext, IContextService, IContextWithCursor, ICursor, IFlowRunner, IIdGenerator, IMessageBlock, IPromptConfig, IReversibleUpdateOperation, IRichCursor, IRichCursorInputRequired, PromptConstructor, TBlockRunnerFactory, TGenericPrompt } from '..';
 export declare class BlockRunnerFactoryStore extends Map<string, TBlockRunnerFactory> implements IBlockRunnerFactoryStore {
 }
 export interface IFlowNavigator {
@@ -25,9 +10,6 @@ export interface IPromptBuilder {
 }
 export declare const NON_INTERACTIVE_BLOCK_TYPES: string[];
 export declare function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore;
-export declare function createKindPromptMap(): {
-    [x: string]: typeof MessagePrompt | typeof NumericPrompt | typeof OpenPrompt | typeof SelectOnePrompt | typeof SelectManyPrompt;
-};
 export declare class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     context: IContext;
     runnerFactoryStore: IBlockRunnerFactoryStore;
@@ -66,7 +48,23 @@ export declare class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     findNextBlockFrom({ blockId, selectedExitId }: IBlockInteraction, ctx: IContext): IBlock | undefined;
     private createBlockInteractionFor;
     buildPromptFor(block: IBlock, interaction: IBlockInteraction): Promise<TGenericPrompt | undefined>;
-    createPromptFrom(config?: IPromptConfig<any>, interaction?: IBlockInteraction): TGenericPrompt | undefined;
+    createPromptFrom<T>(config?: IPromptConfig<T>, interaction?: IBlockInteraction): TGenericPrompt | undefined;
+    static Builder: {
+        new (): {
+            context?: IContext | undefined;
+            runnerFactoryStore: BlockRunnerFactoryStore;
+            idGenerator: IIdGenerator;
+            behaviours: {
+                [key: string]: IBehaviour;
+            };
+            _contextService: IContextService;
+            setContext(context: IContext): this;
+            addBlockRunner(add: (store: BlockRunnerFactoryStore) => BlockRunnerFactoryStore): this;
+            setIdGenerator(idGenerator: IIdGenerator): this;
+            addBehaviour(behaviourKey: string, behaviour: IBehaviour): this;
+            addCustomPrompt<T>(constructor: PromptConstructor<T>, promptKey: string): this;
+            build(): FlowRunner;
+        };
+    };
 }
-export default FlowRunner;
 //# sourceMappingURL=FlowRunner.d.ts.map

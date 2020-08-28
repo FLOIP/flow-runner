@@ -5,5 +5,4 @@ export declare enum SupportedMode {
     RICH_MESSAGING = "rich_messaging",
     OFFLINE = "offline"
 }
-export default SupportedMode;
 //# sourceMappingURL=SupportedMode.d.ts.map

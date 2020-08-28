@@ -1,6 +1,4 @@
-import IBlock from './IBlock';
-import SupportedMode from './SupportedMode';
-import ILanguage from './ILanguage';
+import { IBlock, ILanguage, SupportedMode } from '..';
 export interface IFlow {
     uuid: string;
     orgId: string;
@@ -15,7 +13,6 @@ export interface IFlow {
     firstBlockId: string;
     exitBlockId?: string;
 }
-export default IFlow;
 export declare function findBlockWith(uuid: string, { blocks }: IFlow): IBlock;
 export interface IFlowService {
     findBlockWith(uuid: string, flow: IFlow): IBlock;

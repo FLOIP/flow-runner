@@ -1,9 +1,4 @@
-import IBlockRunner from './IBlockRunner';
-import IBlockExit from '../../flow-spec/IBlockExit';
-import ISelectOneResponseBlock from '../../model/block/ISelectOneResponseBlock';
-import IContext from '../../flow-spec/IContext';
-import { ISelectManyPromptConfig } from '../prompt/ISelectManyPromptConfig';
-import IBlockInteraction from '../../flow-spec/IBlockInteraction';
+import { IBlockExit, IBlockInteraction, IBlockRunner, IContext, ISelectManyPromptConfig, ISelectOneResponseBlock } from '../..';
 export declare class SelectManyResponseBlockRunner implements IBlockRunner {
     block: ISelectOneResponseBlock;
     context: IContext;
@@ -11,5 +6,4 @@ export declare class SelectManyResponseBlockRunner implements IBlockRunner {
     initialize({ value }: IBlockInteraction): Promise<ISelectManyPromptConfig>;
     run(): Promise<IBlockExit>;
 }
-export default SelectManyResponseBlockRunner;
 //# sourceMappingURL=SelectManyResponseBlockRunner.d.ts.map

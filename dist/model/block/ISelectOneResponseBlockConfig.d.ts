@@ -5,8 +5,8 @@ export interface ISelectOneResponseBlockConfig {
     choicesPrompt?: string;
     choices: StringMapType;
 }
-export default ISelectOneResponseBlockConfig;
 declare type StringMapType = {
     [k: string]: string;
 };
+export {};
 //# sourceMappingURL=ISelectOneResponseBlockConfig.d.ts.map

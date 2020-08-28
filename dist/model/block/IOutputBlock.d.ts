@@ -1,7 +1,5 @@
-import IBlock from '../../flow-spec/IBlock';
-import IOutputBlockConfig from './IOutputBlockConfig';
+import { IBlock, IOutputBlockConfig } from '../..';
 export interface IOutputBlock extends IBlock {
     config: IOutputBlockConfig;
 }
-export default IOutputBlock;
 //# sourceMappingURL=IOutputBlock.d.ts.map

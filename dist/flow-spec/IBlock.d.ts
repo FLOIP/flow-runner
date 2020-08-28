@@ -1,5 +1,4 @@
-import IBlockExit, { IBlockExitTestRequired } from './IBlockExit';
-import IContext from './IContext';
+import { IBlockExit, IBlockExitTestRequired, IContext } from '..';
 export interface IBlock {
     uuid: string;
     name: string;
@@ -9,7 +8,6 @@ export interface IBlock {
     config: object;
     exits: IBlockExit[];
 }
-export default IBlock;
 export interface IBlockWithTestExits extends IBlock {
     exits: IBlockExitTestRequired[];
 }

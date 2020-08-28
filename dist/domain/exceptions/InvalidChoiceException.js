@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.InvalidChoiceException = void 0;
 class InvalidChoiceException extends Error {
     constructor(message, choices) {
         super(message);
@@ -7,5 +8,4 @@ class InvalidChoiceException extends Error {
     }
 }
 exports.InvalidChoiceException = InvalidChoiceException;
-exports.default = InvalidChoiceException;
 //# sourceMappingURL=InvalidChoiceException.js.map

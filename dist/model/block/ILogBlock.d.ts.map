@@ -1,1 +1,1 @@
-{"version":3,"file":"ILogBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/ILogBlock.ts"],"names":[],"mappings":"AAmBA,OAAO,MAAM,MAAM,wBAAwB,CAAA;AAC3C,OAAO,eAAe,MAAM,mBAAmB,CAAA;AAE/C,MAAM,WAAW,SAAU,SAAQ,MAAM;IACvC,MAAM,EAAE,eAAe,CAAC;CACzB;AAED,eAAe,SAAS,CAAA"}
+{"version":3,"file":"ILogBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/ILogBlock.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,MAAM,EAAE,eAAe,EAAC,MAAM,OAAO,CAAA;AAE7C,MAAM,WAAW,SAAU,SAAQ,MAAM;IACvC,MAAM,EAAE,eAAe,CAAA;CACxB"}

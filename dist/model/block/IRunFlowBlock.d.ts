@@ -1,7 +1,5 @@
-import IBlock from '../../flow-spec/IBlock';
-import IRunFlowBlockConfig from './IRunFlowBlockConfig';
+import { IBlock, IRunFlowBlockConfig } from '../..';
 export interface IRunFlowBlock extends IBlock {
     config: IRunFlowBlockConfig;
 }
-export default IRunFlowBlock;
 //# sourceMappingURL=IRunFlowBlock.d.ts.map

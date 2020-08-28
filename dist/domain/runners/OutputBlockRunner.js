@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.OutputBlockRunner = void 0;
 const tslib_1 = require("tslib");
 const __1 = require("../..");
 class OutputBlockRunner {
@@ -20,5 +21,4 @@ class OutputBlockRunner {
     }
 }
 exports.OutputBlockRunner = OutputBlockRunner;
-exports.default = OutputBlockRunner;
 //# sourceMappingURL=OutputBlockRunner.js.map

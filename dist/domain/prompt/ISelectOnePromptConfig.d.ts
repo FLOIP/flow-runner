@@ -1,6 +1,6 @@
-import { IPromptConfig, KnownPrompts } from './IPrompt';
-export interface ISelectOnePromptConfig extends IPromptConfig<IChoice['key'] | null> {
-    kind: KnownPrompts.SelectOne;
+import { IPromptConfig } from '../..';
+export interface ISelectOnePromptConfig extends IPromptConfig<string | null> {
+    kind: string;
     choices: IChoice[];
     emptyChoicesMessage?: string;
 }

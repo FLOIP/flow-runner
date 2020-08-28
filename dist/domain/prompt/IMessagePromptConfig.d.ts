@@ -1,5 +1,5 @@
-import { IPromptConfig, KnownPrompts } from './IPrompt';
+import { IPromptConfig } from '../..';
 export interface IMessagePromptConfig extends IPromptConfig<null> {
-    kind: KnownPrompts.Message;
+    kind: 'Message';
 }
 //# sourceMappingURL=IMessagePromptConfig.d.ts.map

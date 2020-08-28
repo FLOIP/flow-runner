@@ -1,19 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const IFlow_1 = require("./IFlow");
-const IBlock_1 = require("./IBlock");
+exports.ContextService = exports.contextService = exports.isNested = exports.isLastBlockOn = exports.getActiveFlowFrom = exports.getActiveFlowIdFrom = exports.findNestedFlowIdFor = exports.findBlockOnActiveFlowWith = exports.findFlowWith = exports.findInteractionWith = exports.createContextDataObjectFor = void 0;
+const __1 = require("..");
 const lodash_1 = require("lodash");
-const ValidationException_1 = tslib_1.__importDefault(require("../domain/exceptions/ValidationException"));
-const DeliveryStatus_1 = tslib_1.__importDefault(require("./DeliveryStatus"));
-const SupportedMode_1 = tslib_1.__importDefault(require("./SupportedMode"));
-const IdGeneratorUuidV4_1 = tslib_1.__importDefault(require("../domain/IdGeneratorUuidV4"));
-const DateFormat_1 = tslib_1.__importDefault(require("../domain/DateFormat"));
-function createContextDataObjectFor(contact, userId, orgId, flows, languageId, mode = SupportedMode_1.default.OFFLINE, resources = [], idGenerator = new IdGeneratorUuidV4_1.default()) {
+function createContextDataObjectFor(contact, userId, orgId, flows, languageId, mode = __1.SupportedMode.OFFLINE, resources = [], idGenerator = new __1.IdGeneratorUuidV4()) {
     return {
         id: idGenerator.generate(),
-        createdAt: DateFormat_1.default(),
-        deliveryStatus: DeliveryStatus_1.default.QUEUED,
+        createdAt: __1.createFormattedDate(),
+        deliveryStatus: __1.DeliveryStatus.QUEUED,
         userId,
         orgId,
         mode,
@@ -34,7 +28,7 @@ exports.createContextDataObjectFor = createContextDataObjectFor;
 function findInteractionWith(uuid, { interactions }) {
     const interaction = lodash_1.findLast(interactions, { uuid });
     if (interaction == null) {
-        throw new ValidationException_1.default(`Unable to find interaction on context: ${uuid} in [${interactions.map(i => i.uuid)}]`);
+        throw new __1.ValidationException(`Unable to find interaction on context: ${uuid} in [${interactions.map(i => i.uuid)}]`);
     }
     return interaction;
 }
@@ -42,21 +36,21 @@ exports.findInteractionWith = findInteractionWith;
 function findFlowWith(uuid, { flows }) {
     const flow = lodash_1.find(flows, { uuid });
     if (flow == null) {
-        throw new ValidationException_1.default(`Unable to find flow on context: ${uuid} in ${flows.map(f => f.uuid)}`);
+        throw new __1.ValidationException(`Unable to find flow on context: ${uuid} in ${flows.map(f => f.uuid)}`);
     }
     return flow;
 }
 exports.findFlowWith = findFlowWith;
 function findBlockOnActiveFlowWith(uuid, ctx) {
-    return IFlow_1.findBlockWith(uuid, getActiveFlowFrom(ctx));
+    return __1.findBlockWith(uuid, getActiveFlowFrom(ctx));
 }
 exports.findBlockOnActiveFlowWith = findBlockOnActiveFlowWith;
 function findNestedFlowIdFor(interaction, ctx) {
     const flow = findFlowWith(interaction.flowId, ctx);
-    const runFlowBlock = IFlow_1.findBlockWith(interaction.blockId, flow);
+    const runFlowBlock = __1.findBlockWith(interaction.blockId, flow);
     const flowId = runFlowBlock.config.flowId;
     if (flowId == null) {
-        throw new ValidationException_1.default('Unable to find nested flowId on Core\\RunFlow');
+        throw new __1.ValidationException('Unable to find nested flowId on Core\\RunFlow');
     }
     return flowId;
 }
@@ -75,7 +69,7 @@ function getActiveFlowFrom(ctx) {
 }
 exports.getActiveFlowFrom = getActiveFlowFrom;
 function isLastBlockOn(ctx, block) {
-    return !isNested(ctx) && IBlock_1.isLastBlock(block);
+    return !isNested(ctx) && __1.isLastBlock(block);
 }
 exports.isLastBlockOn = isLastBlockOn;
 function isNested({ nestedFlowBlockInteractionIdStack }) {
@@ -83,6 +77,16 @@ function isNested({ nestedFlowBlockInteractionIdStack }) {
 }
 exports.isNested = isNested;
 exports.contextService = {
+    findInteractionWith,
+    findFlowWith,
+    findBlockOnActiveFlowWith,
+    findNestedFlowIdFor,
+    getActiveFlowIdFrom,
+    getActiveFlowFrom,
+    isLastBlockOn,
+    isNested,
+};
+exports.ContextService = {
     findInteractionWith,
     findFlowWith,
     findBlockOnActiveFlowWith,

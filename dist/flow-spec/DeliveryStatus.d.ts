@@ -13,5 +13,4 @@ export declare enum DeliveryStatus {
     FAILED_VOICEMAIL = "FAILED_VOICEMAIL",
     FAILED_ERROR = "FAILED_ERROR"
 }
-export default DeliveryStatus;
 //# sourceMappingURL=DeliveryStatus.d.ts.map

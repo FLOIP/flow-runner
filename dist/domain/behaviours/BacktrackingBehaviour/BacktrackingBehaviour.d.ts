@@ -1,9 +1,4 @@
-import IBehaviour from '../IBehaviour';
-import IBlockInteraction from '../../../flow-spec/IBlockInteraction';
-import IContext, { IRichCursor } from '../../../flow-spec/IContext';
-import { IStack, Key } from './HierarchicalIterStack';
-import { IFlowNavigator, IPromptBuilder } from '../../FlowRunner';
-import IPrompt, { IBasePromptConfig, IPromptConfig } from '../../prompt/IPrompt';
+import { IBehaviour, IBlockInteraction, IContext, IFlowNavigator, IPrompt, IPromptBuilder, IPromptConfig, IRichCursor, IStack, Key } from '../../..';
 export interface IBacktrackingContext {
     cursor: Key;
     interactionStack: IStack;
@@ -17,7 +12,7 @@ declare type BacktrackingIntxStack = IBacktrackingContext['interactionStack'];
 export interface IBackTrackingBehaviour extends IBehaviour {
     rebuildIndex(): void;
     jumpTo(interaction: IBlockInteraction, context: IContext): Promise<IRichCursor>;
-    peek(steps?: number): Promise<IPrompt<IPromptConfig<any> & IBasePromptConfig>>;
+    peek(steps?: number): Promise<IPrompt<IPromptConfig<any>>>;
 }
 export declare class BacktrackingBehaviour implements IBackTrackingBehaviour {
     context: IContext;
@@ -31,11 +26,11 @@ export declare class BacktrackingBehaviour implements IBackTrackingBehaviour {
     _stepOut(keyToBeginningOfStackWithHeadMatchingBlock: Key, interactionStack: BacktrackingIntxStack, interaction: IBlockInteraction, key: BacktrackingCursor): void;
     _stepIn(key: BacktrackingCursor, interactionStack: BacktrackingIntxStack, keyForIntxOfRepeatedBlock: Key, interaction: IBlockInteraction): void;
     jumpTo(interaction: IBlockInteraction, context: IContext): Promise<IRichCursor>;
-    peek(steps?: number): Promise<IPrompt<IPromptConfig<any> & IBasePromptConfig>>;
+    peek(steps?: number): Promise<IPrompt<IPromptConfig<any>>>;
     findIndexOfSuggestionFor({ blockId }: IBlockInteraction, key: Key, stack: IStack): Key | undefined;
     postInteractionCreate(interaction: IBlockInteraction, _context: IContext): IBlockInteraction;
     syncGhostTo(key: Key, keyForSuggestion: Key, ghost: IStack): void;
     postInteractionComplete(interaction: IBlockInteraction, _context: IContext): void;
 }
-export default BacktrackingBehaviour;
+export {};
 //# sourceMappingURL=BacktrackingBehaviour.d.ts.map

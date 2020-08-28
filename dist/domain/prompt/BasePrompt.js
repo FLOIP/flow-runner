@@ -1,10 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BasePrompt = void 0;
 const tslib_1 = require("tslib");
-const PromptValidationException_1 = tslib_1.__importDefault(require("../exceptions/PromptValidationException"));
-const IContext_1 = require("../../flow-spec/IContext");
-const IFlow_1 = require("../../flow-spec/IFlow");
-const ValidationException_1 = require("../../domain/exceptions/ValidationException");
+const __1 = require("../..");
 class BasePrompt {
     constructor(config, interactionId, runner) {
         this.config = config;
@@ -20,7 +18,7 @@ class BasePrompt {
             this.validate(val);
         }
         catch (e) {
-            if (!(e instanceof PromptValidationException_1.default)) {
+            if (!(e instanceof __1.PromptValidationException)) {
                 throw e;
             }
             this.error = e;
@@ -32,13 +30,13 @@ class BasePrompt {
     }
     get block() {
         const ctx = this.runner.context;
-        const intx = IContext_1.findInteractionWith(this.interactionId, ctx);
-        const flow = IContext_1.findFlowWith(intx.flowId, ctx);
+        const intx = __1.findInteractionWith(this.interactionId, ctx);
+        const flow = __1.findFlowWith(intx.flowId, ctx);
         try {
-            return IFlow_1.findBlockWith(intx.blockId, flow);
+            return __1.findBlockWith(intx.blockId, flow);
         }
         catch (e) {
-            if (!(e instanceof ValidationException_1.ValidationException)) {
+            if (!(e instanceof __1.ValidationException)) {
                 throw e;
             }
             return;
@@ -62,5 +60,4 @@ class BasePrompt {
     }
 }
 exports.BasePrompt = BasePrompt;
-exports.default = BasePrompt;
 //# sourceMappingURL=BasePrompt.js.map

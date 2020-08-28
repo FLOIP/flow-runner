@@ -1,7 +1,5 @@
-import IBlock from '../../flow-spec/IBlock';
-import IMessageBlockConfig from './IMessageBlockConfig';
+import { IBlock, IMessageBlockConfig } from '../..';
 export interface IMessageBlock extends IBlock {
     config: IMessageBlockConfig;
 }
-export default IMessageBlock;
 //# sourceMappingURL=IMessageBlock.d.ts.map

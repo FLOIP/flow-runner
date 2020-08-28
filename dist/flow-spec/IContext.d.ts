@@ -1,20 +1,12 @@
 import { NonBreakingUpdateOperation } from 'sp2';
-import IContact from './IContact';
-import IFlow from './IFlow';
-import IBlockInteraction from './IBlockInteraction';
-import IPrompt, { IBasePromptConfig, IPromptConfig } from '../domain/prompt/IPrompt';
-import IBlock from './IBlock';
-import DeliveryStatus from './DeliveryStatus';
-import SupportedMode from './SupportedMode';
-import { IResourceDefinition, IResources } from '..';
-import IIdGenerator from '../domain/IIdGenerator';
+import { DeliveryStatus, IBlock, IBlockInteraction, IContact, IFlow, IIdGenerator, IPrompt, IPromptConfig, IResourceDefinition, IResources, SupportedMode } from '..';
 export interface ICursor {
     interactionId: string;
-    promptConfig?: (IPromptConfig<any> & IBasePromptConfig);
+    promptConfig?: IPromptConfig<unknown>;
 }
 export interface ICursorInputRequired {
     interactionId: string;
-    promptConfig: IPromptConfig<any> & IBasePromptConfig;
+    promptConfig: IPromptConfig<unknown>;
 }
 export interface ICursorNoInputRequired {
     interactionId: string;
@@ -22,11 +14,11 @@ export interface ICursorNoInputRequired {
 }
 export interface IRichCursor {
     interaction: IBlockInteraction;
-    prompt?: IPrompt<IPromptConfig<any> & IBasePromptConfig>;
+    prompt?: IPrompt<IPromptConfig<any>>;
 }
 export interface IRichCursorInputRequired {
     interaction: IBlockInteraction;
-    prompt: IPrompt<IPromptConfig<any> & IBasePromptConfig>;
+    prompt: IPrompt<IPromptConfig<any>>;
 }
 export interface IRichCursorNoInputRequired {
     interaction: IBlockInteraction;
@@ -48,7 +40,9 @@ export interface IContext {
     mode: SupportedMode;
     languageId: string;
     contact: IContact;
-    sessionVars: any;
+    sessionVars: {
+        [k: string]: unknown;
+    };
     interactions: IBlockInteraction[];
     nestedFlowBlockInteractionIdStack: string[];
     reversibleOperations: IReversibleUpdateOperation[];
@@ -56,12 +50,13 @@ export interface IContext {
     flows: IFlow[];
     firstFlowId: string;
     resources: IResources;
-    platformMetadata: object;
+    platformMetadata: {
+        [k: string]: unknown;
+    };
     logs: {
         [k: string]: string;
     };
 }
-export default IContext;
 export interface IContextWithCursor extends IContext {
     cursor: ICursor;
 }
@@ -88,4 +83,5 @@ export interface IContextService {
     isLastBlockOn(ctx: IContext, block: IBlock): boolean;
     isNested(ctx: IContext): boolean;
 }
+export declare const ContextService: IContextService;
 //# sourceMappingURL=IContext.d.ts.map

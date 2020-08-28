@@ -8,5 +8,4 @@ export interface IOpenResponseBlockConfig {
         maxResponseCharacters?: number;
     };
 }
-export default IOpenResponseBlockConfig;
 //# sourceMappingURL=IOpenResponseBlockConfig.d.ts.map

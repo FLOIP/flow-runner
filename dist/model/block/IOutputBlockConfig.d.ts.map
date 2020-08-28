@@ -1,1 +1,1 @@
-{"version":3,"file":"IOutputBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/IOutputBlockConfig.ts"],"names":[],"mappings":"AAmBA,MAAM,WAAW,kBAAkB;IACjC,KAAK,EAAE,MAAM,CAAC;CACf;AAED,eAAe,kBAAkB,CAAA"}
+{"version":3,"file":"IOutputBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/IOutputBlockConfig.ts"],"names":[],"mappings":"AAmBA,MAAM,WAAW,kBAAkB;IACjC,KAAK,EAAE,MAAM,CAAA;CACd"}

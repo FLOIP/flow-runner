@@ -1,23 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const BasePrompt_1 = tslib_1.__importDefault(require("./BasePrompt"));
-const ValidationException_1 = tslib_1.__importDefault(require("../exceptions/ValidationException"));
-class NumericPrompt extends BasePrompt_1.default {
+exports.NumericPrompt = exports.NUMERIC_PROMPT_KEY = void 0;
+const __1 = require("../..");
+exports.NUMERIC_PROMPT_KEY = 'Numeric';
+class NumericPrompt extends __1.BasePrompt {
     validate(val) {
         if (Number.isNaN(val) || val === null) {
             return false;
         }
         const { min, max } = this.config;
         if (min != null && val < min) {
-            throw new ValidationException_1.default('Value provided is less than allowed');
+            throw new __1.ValidationException('Value provided is less than allowed');
         }
         if (max != null && val > max) {
-            throw new ValidationException_1.default('Value provided is greater than allowed');
+            throw new __1.ValidationException('Value provided is greater than allowed');
         }
         return true;
     }
 }
 exports.NumericPrompt = NumericPrompt;
-exports.default = NumericPrompt;
+NumericPrompt.promptKey = 'Numeric';
 //# sourceMappingURL=NumericPrompt.js.map

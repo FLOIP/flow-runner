@@ -1,9 +1,8 @@
-import { IBlockInteractionDetails } from './IBlockInteraction';
+import { IBlockInteractionDetails } from '..';
 export interface IReadBlockInteractionDetails extends IBlockInteractionDetails {
     readError: IReadError;
 }
 export interface IReadError {
     message: string;
 }
-export default IReadBlockInteractionDetails;
 //# sourceMappingURL=IReadBlockInteractionDetails.d.ts.map

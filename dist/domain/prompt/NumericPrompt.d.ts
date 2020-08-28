@@ -1,8 +1,7 @@
-import BasePrompt from './BasePrompt';
-import { INumericPromptConfig } from './INumericPromptConfig';
-import { IBasePromptConfig } from './IPrompt';
-export declare class NumericPrompt extends BasePrompt<INumericPromptConfig & IBasePromptConfig> {
+import { BasePrompt, INumericPromptConfig } from '../..';
+export declare const NUMERIC_PROMPT_KEY = "Numeric";
+export declare class NumericPrompt extends BasePrompt<INumericPromptConfig> {
+    static readonly promptKey = "Numeric";
     validate(val: number): boolean;
 }
-export default NumericPrompt;
 //# sourceMappingURL=NumericPrompt.d.ts.map

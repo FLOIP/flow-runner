@@ -5,14 +5,13 @@ export interface IBlockInteraction {
     entryAt: string;
     exitAt?: string;
     hasResponse: boolean;
-    value?: string | number | object;
+    value?: unknown;
     details: IBlockInteractionDetails;
     selectedExitId?: string;
     type: string;
     originBlockInteractionId?: string;
     originFlowId?: string;
 }
-export default IBlockInteraction;
 export interface IBlockInteractionDetails {
 }
 //# sourceMappingURL=IBlockInteraction.d.ts.map

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createTextResourceVariantWith = exports.SupportedContentType = void 0;
 var SupportedContentType;
 (function (SupportedContentType) {
     SupportedContentType["TEXT"] = "text";

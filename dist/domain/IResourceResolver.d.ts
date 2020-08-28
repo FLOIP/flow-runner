@@ -1,5 +1,4 @@
-import { SupportedMode } from '..';
-import IContext from '../flow-spec/IContext';
+import { IContext, SupportedMode } from '..';
 export declare enum SupportedContentType {
     TEXT = "text",
     AUDIO = "audio",
@@ -34,6 +33,5 @@ export interface IResourceResolver {
     context: IContext;
     resolve(resourceId: string): IResource;
 }
-export default IResourceResolver;
 export declare function createTextResourceVariantWith(value: string, ctx: IContext): IResourceDefinitionContentTypeSpecific;
 //# sourceMappingURL=IResourceResolver.d.ts.map
