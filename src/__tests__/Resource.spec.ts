@@ -33,14 +33,14 @@ describe('Resource', () => {
       {...baseResource, contentType: SupportedContentType.VIDEO},
     ]
 
-    resource = new Resource('some-uuid', values, {
-      contact: {
+    resource = new Resource('some-uuid', values, ({
+      contact: ({
         id: '0',
         name: 'Expressions',
-      } as IContact,
+      } as unknown) as IContact,
       languageId: 'some-language-id',
       mode: SupportedMode.SMS,
-    } as IContext)
+    } as unknown) as IContext)
   })
 
   describe('getAudio', () => {

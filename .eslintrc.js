@@ -106,7 +106,7 @@ module.exports = {
      *************************/
     'one-var': ['error', 'never'],
 
-    // These are off due to https://github.com/typescript-eslint/typescript-eslint/blob/f335c504bcf75623d2d671e2e784b047e5e186b9/docs/getting-started/linting/FAQ.md#eslint-plugin-import
+    // Note, this part may take longer to evaluate than others in this file
     'import/named': 'off',
     'import/namespace': 'off',
     'import/default': 'off',

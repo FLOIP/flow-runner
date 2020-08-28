@@ -18,13 +18,33 @@
  **/
 
 import {IContactProperty} from '..'
+import { createFormattedDate } from '../domain/DateFormat'
 
-export interface IContact {
-  id: IContactProperty | ((...args: string[]) => IContactProperty | undefined) | string | undefined
+export class ContactProperty implements IContactProperty {
+  deletedAt: string | undefined
+  createdAt: string = createFormattedDate()
+  updatedAt: string = createFormattedDate()
+  __value__!: string
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: IContactProperty | ((...args: string[]) => IContactProperty | undefined) | string | undefined
+  constructor() {}
 
-  setProperty: (name: string, value?: string) => IContactProperty
-  getProperty: (name: string) => IContactProperty | undefined
+  get contactPropertyFieldName(): string {
+    return this.contactPropertyFieldName
+  }
+
+  set contactPropertyFieldName(contactPropertyFieldName: string) {
+    this.contactPropertyFieldName = contactPropertyFieldName
+    this.updatedAt = createFormattedDate()
+  }
+
+  get value(): string {
+    return this.__value__
+  }
+
+  set value(value: string) {
+    this.__value__ = value
+    this.updatedAt = createFormattedDate()
+  }
 }
+
+export default ContactProperty

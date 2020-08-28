@@ -17,14 +17,34 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IContactProperty} from '..'
+import {IContact, IContactProperty} from '..'
+import {createFormattedDate} from '../domain/DateFormat'
 
-export interface IContact {
-  id: IContactProperty | ((...args: string[]) => IContactProperty | undefined) | string | undefined
+export class Contact implements IContact {
+  [key: string]: IContactProperty | ((...args: any[]) => IContactProperty | undefined) | string | undefined
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: IContactProperty | ((...args: string[]) => IContactProperty | undefined) | string | undefined
+  id!: string
 
-  setProperty: (name: string, value?: string) => IContactProperty
-  getProperty: (name: string) => IContactProperty | undefined
+  constructor() {}
+
+  public setProperty(name: string, value: any): IContactProperty {
+    const prop: IContactProperty = {
+      __value__: value,
+      contactPropertyFieldName: name,
+      createdAt: createFormattedDate(),
+      updatedAt: createFormattedDate(),
+      deletedAt: undefined,
+    }
+    this[name] = prop
+    return prop
+  }
+
+  public getProperty(name: string): IContactProperty | undefined {
+    if (this[name] == null) {
+      return undefined
+    }
+    return this[name] as IContactProperty
+  }
 }
+
+export default Contact

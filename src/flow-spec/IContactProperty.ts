@@ -17,14 +17,12 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IContactProperty} from '..'
-
-export interface IContact {
-  id: IContactProperty | ((...args: string[]) => IContactProperty | undefined) | string | undefined
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: IContactProperty | ((...args: string[]) => IContactProperty | undefined) | string | undefined
-
-  setProperty: (name: string, value?: string) => IContactProperty
-  getProperty: (name: string) => IContactProperty | undefined
+export interface IContactProperty {
+  contactPropertyFieldName: string
+  createdAt: string
+  updatedAt: string
+  deletedAt: string | undefined
+  __value__: string | undefined
 }
+
+export default IContactProperty
