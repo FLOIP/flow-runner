@@ -1,7 +1,4 @@
-import IBlockRunner from './IBlockRunner';
-import { IBlockExitTestRequired } from '../..';
-import IContext from '../../flow-spec/IContext';
-import ICaseBlock from '../../model/block/ICaseBlock';
+import { IBlockExitTestRequired, IBlockRunner, ICaseBlock, IContext } from '../..';
 export declare class CaseBlockRunner implements IBlockRunner {
     block: ICaseBlock;
     context: IContext;
@@ -9,5 +6,4 @@ export declare class CaseBlockRunner implements IBlockRunner {
     initialize(): Promise<undefined>;
     run(): Promise<IBlockExitTestRequired>;
 }
-export default CaseBlockRunner;
 //# sourceMappingURL=CaseBlockRunner.d.ts.map

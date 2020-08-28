@@ -1,8 +1,5 @@
 /// <reference types="node" />
-import IBlockRunner from './IBlockRunner';
-import IBlockExit from '../../flow-spec/IBlockExit';
-import IContext from '../../flow-spec/IContext';
-import IPrintBlock from '../../model/block/IPrintBlock';
+import { IBlockExit, IBlockRunner, IContext, IPrintBlock } from '../..';
 export declare class PrintBlockRunner implements IBlockRunner {
     block: IPrintBlock;
     context: IContext;
@@ -11,5 +8,4 @@ export declare class PrintBlockRunner implements IBlockRunner {
     initialize(): Promise<undefined>;
     run(): Promise<IBlockExit>;
 }
-export default PrintBlockRunner;
 //# sourceMappingURL=PrintBlockRunner.d.ts.map

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.OpenResponseBlockRunner = void 0;
 const tslib_1 = require("tslib");
 const __1 = require("../..");
 class OpenResponseBlockRunner {
@@ -15,7 +16,7 @@ class OpenResponseBlockRunner {
                 maxResponseCharacters = blockConfig.text.maxResponseCharacters;
             }
             return {
-                kind: __1.KnownPrompts.Open,
+                kind: __1.OPEN_PROMPT_KEY,
                 prompt: blockConfig.prompt,
                 isResponseRequired: true,
                 maxResponseCharacters: maxResponseCharacters,
@@ -30,5 +31,4 @@ class OpenResponseBlockRunner {
     }
 }
 exports.OpenResponseBlockRunner = OpenResponseBlockRunner;
-exports.default = OpenResponseBlockRunner;
 //# sourceMappingURL=OpenResponseBlockRunner.js.map

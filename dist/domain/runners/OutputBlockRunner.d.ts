@@ -1,7 +1,4 @@
-import IBlockRunner from './IBlockRunner';
-import IBlockExit from '../../flow-spec/IBlockExit';
-import IContext, { IRichCursor } from '../../flow-spec/IContext';
-import IOutputBlock from '../../model/block/IOutputBlock';
+import { IBlockExit, IBlockRunner, IContext, IOutputBlock, IRichCursor } from '../..';
 export declare class OutputBlockRunner implements IBlockRunner {
     block: IOutputBlock;
     context: IContext;
@@ -9,5 +6,4 @@ export declare class OutputBlockRunner implements IBlockRunner {
     initialize(): Promise<undefined>;
     run(cursor: IRichCursor): Promise<IBlockExit>;
 }
-export default OutputBlockRunner;
 //# sourceMappingURL=OutputBlockRunner.d.ts.map

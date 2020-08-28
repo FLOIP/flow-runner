@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MessageBlockRunner = void 0;
 const tslib_1 = require("tslib");
 const __1 = require("../..");
 class MessageBlockRunner {
@@ -11,7 +12,7 @@ class MessageBlockRunner {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const { prompt } = this.block.config;
             return {
-                kind: __1.KnownPrompts.Message,
+                kind: __1.MESSAGE_PROMPT_KEY,
                 prompt,
                 isResponseRequired: false,
             };
@@ -24,5 +25,4 @@ class MessageBlockRunner {
     }
 }
 exports.MessageBlockRunner = MessageBlockRunner;
-exports.default = MessageBlockRunner;
 //# sourceMappingURL=MessageBlockRunner.js.map

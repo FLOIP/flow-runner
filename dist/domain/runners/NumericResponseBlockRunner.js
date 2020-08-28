@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NumericResponseBlockRunner = void 0;
 const tslib_1 = require("tslib");
 const __1 = require("../..");
 class NumericResponseBlockRunner {
@@ -9,9 +10,9 @@ class NumericResponseBlockRunner {
     }
     initialize({ value }) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const { prompt, validationMinimum: min, validationMaximum: max, } = this.block.config;
+            const { prompt, validationMinimum: min, validationMaximum: max } = this.block.config;
             return {
-                kind: __1.KnownPrompts.Numeric,
+                kind: __1.NUMERIC_PROMPT_KEY,
                 prompt,
                 isResponseRequired: false,
                 min,
@@ -27,5 +28,4 @@ class NumericResponseBlockRunner {
     }
 }
 exports.NumericResponseBlockRunner = NumericResponseBlockRunner;
-exports.default = NumericResponseBlockRunner;
 //# sourceMappingURL=NumericResponseBlockRunner.js.map

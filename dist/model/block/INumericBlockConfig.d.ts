@@ -7,5 +7,4 @@ export interface INumericBlockConfig {
         maxDigits: number;
     };
 }
-export default INumericBlockConfig;
 //# sourceMappingURL=INumericBlockConfig.d.ts.map

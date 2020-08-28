@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RunFlowBlockRunner = void 0;
 const tslib_1 = require("tslib");
 class RunFlowBlockRunner {
     constructor(block, context) {
@@ -18,5 +19,4 @@ class RunFlowBlockRunner {
     }
 }
 exports.RunFlowBlockRunner = RunFlowBlockRunner;
-exports.default = RunFlowBlockRunner;
 //# sourceMappingURL=RunFlowBlockRunner.js.map

@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const BasePrompt_1 = tslib_1.__importDefault(require("./BasePrompt"));
-class MessagePrompt extends BasePrompt_1.default {
+exports.MessagePrompt = exports.MESSAGE_PROMPT_KEY = void 0;
+const __1 = require("../..");
+exports.MESSAGE_PROMPT_KEY = 'Message';
+class MessagePrompt extends __1.BasePrompt {
     validate() {
         return true;
     }
 }
 exports.MessagePrompt = MessagePrompt;
-exports.default = MessagePrompt;
 //# sourceMappingURL=MessagePrompt.js.map

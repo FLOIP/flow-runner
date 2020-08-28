@@ -1,6 +1,8 @@
+import { IContactProperty } from '..';
 export interface IContact {
-    id: string;
-    [key: string]: string | undefined;
+    id: IContactProperty | ((...args: string[]) => IContactProperty | undefined) | string | undefined;
+    [key: string]: IContactProperty | ((...args: string[]) => IContactProperty | undefined) | string | undefined;
+    setProperty: (name: string, value?: string) => IContactProperty;
+    getProperty: (name: string) => IContactProperty | undefined;
 }
-export default IContact;
 //# sourceMappingURL=IContact.d.ts.map

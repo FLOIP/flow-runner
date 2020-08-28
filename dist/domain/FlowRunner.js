@@ -1,98 +1,57 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FlowRunner = exports.createDefaultBlockRunnerStore = exports.NON_INTERACTIVE_BLOCK_TYPES = exports.BlockRunnerFactoryStore = void 0;
 const tslib_1 = require("tslib");
 const sp2_1 = require("sp2");
 const lodash_1 = require("lodash");
-const IBlock_1 = require("../flow-spec/IBlock");
-const contextService = tslib_1.__importStar(require("../flow-spec/IContext"));
-const IdGeneratorUuidV4_1 = tslib_1.__importDefault(require("./IdGeneratorUuidV4"));
-const ValidationException_1 = tslib_1.__importDefault(require("./exceptions/ValidationException"));
-const IPrompt_1 = require("./prompt/IPrompt");
-const MessagePrompt_1 = tslib_1.__importDefault(require("./prompt/MessagePrompt"));
-const DeliveryStatus_1 = tslib_1.__importDefault(require("../flow-spec/DeliveryStatus"));
-const NumericPrompt_1 = tslib_1.__importDefault(require("./prompt/NumericPrompt"));
-const OpenPrompt_1 = tslib_1.__importDefault(require("./prompt/OpenPrompt"));
-const SelectOnePrompt_1 = tslib_1.__importDefault(require("./prompt/SelectOnePrompt"));
-const SelectManyPrompt_1 = tslib_1.__importDefault(require("./prompt/SelectManyPrompt"));
-const BasicBacktrackingBehaviour_1 = tslib_1.__importDefault(require("./behaviours/BacktrackingBehaviour/BasicBacktrackingBehaviour"));
-const MessageBlockRunner_1 = tslib_1.__importDefault(require("./runners/MessageBlockRunner"));
-const OpenResponseBlockRunner_1 = tslib_1.__importDefault(require("./runners/OpenResponseBlockRunner"));
-const NumericResponseBlockRunner_1 = tslib_1.__importDefault(require("./runners/NumericResponseBlockRunner"));
-const SelectOneResponseBlockRunner_1 = tslib_1.__importDefault(require("./runners/SelectOneResponseBlockRunner"));
-const SelectManyResponseBlockRunner_1 = tslib_1.__importDefault(require("./runners/SelectManyResponseBlockRunner"));
-const CaseBlockRunner_1 = tslib_1.__importDefault(require("./runners/CaseBlockRunner"));
-const ResourceResolver_1 = tslib_1.__importDefault(require("./ResourceResolver"));
-const RunFlowBlockRunner_1 = tslib_1.__importDefault(require("./runners/RunFlowBlockRunner"));
-const PrintBlockRunner_1 = tslib_1.__importDefault(require("./runners/PrintBlockRunner"));
-const LogBlockRunner_1 = tslib_1.__importDefault(require("./runners/LogBlockRunner"));
-const OutputBlockRunner_1 = tslib_1.__importDefault(require("./runners/OutputBlockRunner"));
-const DateFormat_1 = tslib_1.__importDefault(require("./DateFormat"));
+const __1 = require("..");
 class BlockRunnerFactoryStore extends Map {
 }
 exports.BlockRunnerFactoryStore = BlockRunnerFactoryStore;
 const DEFAULT_BEHAVIOUR_TYPES = [
-    BasicBacktrackingBehaviour_1.default,
+    __1.BasicBacktrackingBehaviour,
 ];
-exports.NON_INTERACTIVE_BLOCK_TYPES = [
-    'Core\\Case',
-    'Core\\RunFlow',
-];
+exports.NON_INTERACTIVE_BLOCK_TYPES = ['Core\\Case', 'Core\\RunFlow'];
 function createDefaultBlockRunnerStore() {
     return new BlockRunnerFactoryStore([
-        ['MobilePrimitives\\Message', (block, ctx) => new MessageBlockRunner_1.default(block, ctx)],
-        ['MobilePrimitives\\OpenResponse', (block, ctx) => new OpenResponseBlockRunner_1.default(block, ctx)],
-        [
-            'MobilePrimitives\\NumericResponse',
-            (block, ctx) => new NumericResponseBlockRunner_1.default(block, ctx),
-        ],
-        [
-            'MobilePrimitives\\SelectOneResponse',
-            (block, ctx) => new SelectOneResponseBlockRunner_1.default(block, ctx),
-        ],
-        [
-            'MobilePrimitives\\SelectManyResponse',
-            (block, ctx) => new SelectManyResponseBlockRunner_1.default(block, ctx),
-        ],
-        ['Core\\Case', (block, ctx) => new CaseBlockRunner_1.default(block, ctx)],
-        ['Core\\Output', (block, ctx) => new OutputBlockRunner_1.default(block, ctx)],
-        ['Core\\Log', (block, ctx) => new LogBlockRunner_1.default(block, ctx)],
-        ['ConsoleIO\\Print', (block, ctx) => new PrintBlockRunner_1.default(block, ctx)],
-        ['Core\\RunFlow', (block, ctx) => new RunFlowBlockRunner_1.default(block, ctx)],
+        ['MobilePrimitives\\Message', (block, ctx) => new __1.MessageBlockRunner(block, ctx)],
+        ['MobilePrimitives\\OpenResponse', (block, ctx) => new __1.OpenResponseBlockRunner(block, ctx)],
+        ['MobilePrimitives\\NumericResponse', (block, ctx) => new __1.NumericResponseBlockRunner(block, ctx)],
+        ['MobilePrimitives\\SelectOneResponse', (block, ctx) => new __1.SelectOneResponseBlockRunner(block, ctx)],
+        ['MobilePrimitives\\SelectManyResponse', (block, ctx) => new __1.SelectManyResponseBlockRunner(block, ctx)],
+        ['Core\\Case', (block, ctx) => new __1.CaseBlockRunner(block, ctx)],
+        ['Core\\Output', (block, ctx) => new __1.OutputBlockRunner(block, ctx)],
+        ['Core\\Log', (block, ctx) => new __1.LogBlockRunner(block, ctx)],
+        ['ConsoleIO\\Print', (block, ctx) => new __1.PrintBlockRunner(block, ctx)],
+        ['Core\\RunFlow', (block, ctx) => new __1.RunFlowBlockRunner(block, ctx)],
     ]);
 }
 exports.createDefaultBlockRunnerStore = createDefaultBlockRunnerStore;
-function createKindPromptMap() {
-    return {
-        [IPrompt_1.KnownPrompts.Message.toString()]: MessagePrompt_1.default,
-        [IPrompt_1.KnownPrompts.Numeric.toString()]: NumericPrompt_1.default,
-        [IPrompt_1.KnownPrompts.Open.toString()]: OpenPrompt_1.default,
-        [IPrompt_1.KnownPrompts.SelectOne.toString()]: SelectOnePrompt_1.default,
-        [IPrompt_1.KnownPrompts.SelectMany.toString()]: SelectManyPrompt_1.default,
-    };
-}
-exports.createKindPromptMap = createKindPromptMap;
 class FlowRunner {
-    constructor(context, runnerFactoryStore = createDefaultBlockRunnerStore(), idGenerator = new IdGeneratorUuidV4_1.default, behaviours = {}, _contextService = contextService) {
-        this.context = context;
-        this.runnerFactoryStore = runnerFactoryStore;
-        this.idGenerator = idGenerator;
-        this.behaviours = behaviours;
+    constructor(context, runnerFactoryStore = createDefaultBlockRunnerStore(), idGenerator = new __1.IdGeneratorUuidV4(), behaviours = {}, _contextService = __1.ContextService) {
+        this.runnerFactoryStore = createDefaultBlockRunnerStore();
+        this.idGenerator = new __1.IdGeneratorUuidV4();
+        this.behaviours = {};
+        this._contextService = __1.ContextService;
         this._contextService = _contextService;
+        this.behaviours = behaviours;
+        this.idGenerator = idGenerator;
+        this.runnerFactoryStore = runnerFactoryStore;
+        this.context = context;
         this.initializeBehaviours(DEFAULT_BEHAVIOUR_TYPES);
     }
     initializeBehaviours(behaviourConstructors) {
-        behaviourConstructors.forEach(b => this.behaviours[lodash_1.lowerFirst(lodash_1.trimEnd(b.name, 'Behaviour|Behavior'))]
-            = new b(this.context, this, this));
+        behaviourConstructors.forEach(behaviourConstructor => (this.behaviours[lodash_1.lowerFirst(lodash_1.trimEnd(behaviourConstructor.name, 'Behaviour|Behavior'))] = new behaviourConstructor(this.context, this, this)));
     }
     initialize() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const ctx = this.context;
             const block = this.findNextBlockOnActiveFlowFor(ctx);
             if (block == null) {
-                throw new ValidationException_1.default('Unable to initialize flow without blocks.');
+                throw new __1.ValidationException('Unable to initialize flow without blocks.');
             }
-            ctx.deliveryStatus = DeliveryStatus_1.default.IN_PROGRESS;
-            ctx.entryAt = DateFormat_1.default();
+            ctx.deliveryStatus = __1.DeliveryStatus.IN_PROGRESS;
+            ctx.entryAt = __1.createFormattedDate();
             return this.navigateTo(block, this.context);
         });
     }
@@ -151,15 +110,11 @@ class FlowRunner {
         }
         const blockNameKey = `blockInteractionsByBlockName.${name}`;
         const previous = this.context.sessionVars[blockNameKey];
-        const resource = prompt == null
-            ? undefined
-            : new ResourceResolver_1.default(context).resolve(prompt);
+        const resource = prompt == null ? undefined : new __1.ResourceResolver(context).resolve(prompt);
         const current = {
             __interactionId: uuid,
             time: entryAt,
-            text: resource != null && resource.hasText()
-                ? resource.getText()
-                : '',
+            text: resource != null && resource.hasText() ? resource.getText() : '',
         };
         this.applyReversibleDataOperation({ $set: { [blockNameKey]: current } }, { $set: { [blockNameKey]: previous } });
     }
@@ -210,20 +165,20 @@ class FlowRunner {
             return;
         });
     }
-    complete(ctx, completedAt = new Date) {
+    complete(ctx, completedAt = new Date()) {
         delete ctx.cursor;
-        ctx.deliveryStatus = DeliveryStatus_1.default.FINISHED_COMPLETE;
-        ctx.exitAt = DateFormat_1.default(completedAt);
+        ctx.deliveryStatus = __1.DeliveryStatus.FINISHED_COMPLETE;
+        ctx.exitAt = __1.createFormattedDate(completedAt);
     }
-    completeInteraction(intx, selectedExitId, completedAt = new Date) {
-        intx.exitAt = DateFormat_1.default(completedAt);
+    completeInteraction(intx, selectedExitId, completedAt = new Date()) {
+        intx.exitAt = __1.createFormattedDate(completedAt);
         intx.selectedExitId = selectedExitId;
         return intx;
     }
-    completeActiveNestedFlow(ctx, completedAt = new Date) {
+    completeActiveNestedFlow(ctx, completedAt = new Date()) {
         const { nestedFlowBlockInteractionIdStack } = ctx;
         if (!this._contextService.isNested(ctx)) {
-            throw new ValidationException_1.default('Unable to complete a nested flow when not nested.');
+            throw new __1.ValidationException('Unable to complete a nested flow when not nested.');
         }
         const runFlowIntx = this._contextService.findInteractionWith(lodash_1.last(nestedFlowBlockInteractionIdStack), ctx);
         nestedFlowBlockInteractionIdStack.pop();
@@ -245,40 +200,36 @@ class FlowRunner {
     initializeOneBlock(block, flowId, originFlowId, originBlockInteractionId) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId);
-            Object.values(this.behaviours)
-                .forEach(b => interaction = b.postInteractionCreate(interaction, this.context));
+            Object.values(this.behaviours).forEach(b => (interaction = b.postInteractionCreate(interaction, this.context)));
             return { interaction, prompt: yield this.buildPromptFor(block, interaction) };
         });
     }
     runActiveBlockOn(richCursor, block) {
+        var _a;
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const { prompt, interaction } = richCursor;
             const hasPrompt = prompt != null;
-            if (interaction == null) {
-                throw new ValidationException_1.default('Unable to run with absent cursor interaction');
-            }
-            if (hasPrompt && prompt.config.isSubmitted) {
-                throw new ValidationException_1.default('Unable to run against previously processed prompt');
+            __1.assertNotNull(interaction, () => 'Unable to run with absent cursor interaction', errorMessage => new __1.ValidationException(errorMessage));
+            if (hasPrompt && ((_a = prompt === null || prompt === void 0 ? void 0 : prompt.config) === null || _a === void 0 ? void 0 : _a.isSubmitted)) {
+                throw new __1.ValidationException('Unable to run against previously processed prompt');
             }
             if (prompt != null) {
                 interaction.value = prompt.value;
                 interaction.hasResponse = interaction.value != null;
             }
-            const exit = yield this.createBlockRunnerFor(block, this.context)
-                .run(richCursor);
+            const exit = yield this.createBlockRunnerFor(block, this.context).run(richCursor);
             this.completeInteraction(interaction, exit.uuid);
             if (hasPrompt) {
                 prompt.config.isSubmitted = true;
             }
-            Object.values(this.behaviours)
-                .forEach(b => b.postInteractionComplete(richCursor.interaction, this.context));
+            Object.values(this.behaviours).forEach(b => b.postInteractionComplete(richCursor.interaction, this.context));
             return exit;
         });
     }
     createBlockRunnerFor(block, ctx) {
         const factory = this.runnerFactoryStore.get(block.type);
         if (factory == null) {
-            throw new ValidationException_1.default(`Unable to find factory for block type: ${block.type}`);
+            throw new __1.ValidationException(`Unable to find factory for block type: ${block.type}`);
         }
         return factory(block, ctx);
     }
@@ -287,9 +238,7 @@ class FlowRunner {
             const { interactions, nestedFlowBlockInteractionIdStack } = ctx;
             const flowId = this._contextService.getActiveFlowIdFrom(ctx);
             const originInteractionId = lodash_1.last(nestedFlowBlockInteractionIdStack);
-            const originInteraction = originInteractionId != null
-                ? this._contextService.findInteractionWith(originInteractionId, ctx)
-                : null;
+            const originInteraction = originInteractionId != null ? this._contextService.findInteractionWith(originInteractionId, ctx) : null;
             const richCursor = yield this.initializeOneBlock(block, flowId, originInteraction == null ? undefined : originInteraction.flowId, originInteractionId);
             interactions.push(richCursor.interaction);
             ctx.cursor = this.dehydrateCursor(richCursor);
@@ -299,14 +248,14 @@ class FlowRunner {
     }
     stepInto(runFlowBlock, ctx) {
         if (runFlowBlock.type !== 'Core\\RunFlow') {
-            throw new ValidationException_1.default('Unable to step into a non-Core\\RunFlow block type');
+            throw new __1.ValidationException('Unable to step into a non-Core\\RunFlow block type');
         }
         const runFlowInteraction = lodash_1.last(ctx.interactions);
         if (runFlowInteraction == null) {
-            throw new ValidationException_1.default('Unable to step into Core\\RunFlow that hasn\'t yet been started');
+            throw new __1.ValidationException("Unable to step into Core\\RunFlow that hasn't yet been started");
         }
         if (runFlowBlock.uuid !== runFlowInteraction.blockId) {
-            throw new ValidationException_1.default('Unable to step into Core\\RunFlow block that doesn\'t match last interaction');
+            throw new __1.ValidationException("Unable to step into Core\\RunFlow block that doesn't match last interaction");
         }
         ctx.nestedFlowBlockInteractionIdStack.push(runFlowInteraction.uuid);
         const firstNestedBlock = lodash_1.first(this._contextService.getActiveFlowFrom(ctx).blocks);
@@ -333,10 +282,10 @@ class FlowRunner {
     }
     findNextBlockFrom({ blockId, selectedExitId }, ctx) {
         if (selectedExitId == null) {
-            throw new ValidationException_1.default('Unable to navigate past incomplete interaction; did you forget to call runner.run()?');
+            throw new __1.ValidationException('Unable to navigate past incomplete interaction; did you forget to call runner.run()?');
         }
         const block = this._contextService.findBlockOnActiveFlowWith(blockId, ctx);
-        const { destinationBlock } = IBlock_1.findBlockExitWith(selectedExitId, block);
+        const { destinationBlock } = __1.findBlockExitWith(selectedExitId, block);
         const { blocks } = this._contextService.getActiveFlowFrom(ctx);
         return lodash_1.find(blocks, { uuid: destinationBlock });
     }
@@ -345,7 +294,7 @@ class FlowRunner {
             uuid: this.idGenerator.generate(),
             blockId,
             flowId,
-            entryAt: DateFormat_1.default(),
+            entryAt: __1.createFormattedDate(),
             exitAt: undefined,
             hasResponse: false,
             value: undefined,
@@ -364,13 +313,50 @@ class FlowRunner {
         });
     }
     createPromptFrom(config, interaction) {
+        var _a;
         if (config == null || interaction == null) {
             return;
         }
-        const promptConstructor = createKindPromptMap()[config.kind];
-        return new promptConstructor(config, interaction.uuid, this);
+        const promptConstructor = (_a = __1.Prompt.valueOf(config.kind)) === null || _a === void 0 ? void 0 : _a.promptConstructor;
+        if (promptConstructor != null) {
+            return new promptConstructor(config, interaction.uuid, this);
+        }
+        else {
+            return;
+        }
     }
 }
 exports.FlowRunner = FlowRunner;
-exports.default = FlowRunner;
+FlowRunner.Builder = class {
+    constructor() {
+        this.runnerFactoryStore = createDefaultBlockRunnerStore();
+        this.idGenerator = new __1.IdGeneratorUuidV4();
+        this.behaviours = {};
+        this._contextService = __1.ContextService;
+    }
+    setContext(context) {
+        this.context = context;
+        return this;
+    }
+    addBlockRunner(add) {
+        add(this.runnerFactoryStore);
+        return this;
+    }
+    setIdGenerator(idGenerator) {
+        this.idGenerator = idGenerator;
+        return this;
+    }
+    addBehaviour(behaviourKey, behaviour) {
+        this.behaviours[behaviourKey] = behaviour;
+        return this;
+    }
+    addCustomPrompt(constructor, promptKey) {
+        __1.Prompt.addCustomPrompt(constructor, promptKey);
+        return this;
+    }
+    build() {
+        __1.assertNotNull(this.context, () => 'FlowRunner.Builder.setContext() must be called before FlowRunner.Builder.build()');
+        return new FlowRunner(this.context, this.runnerFactoryStore, this.idGenerator, this.behaviours, this._contextService);
+    }
+};
 //# sourceMappingURL=FlowRunner.js.map

@@ -1,9 +1,4 @@
-import IBlockRunner from './IBlockRunner';
-import IBlockExit from '../../flow-spec/IBlockExit';
-import { INumericPromptConfig } from '../..';
-import INumericResponseBlock from '../../model/block/INumericResponseBlock';
-import IContext from '../../flow-spec/IContext';
-import IBlockInteraction from '../../flow-spec/IBlockInteraction';
+import { IBlockExit, IBlockInteraction, IBlockRunner, IContext, INumericPromptConfig, INumericResponseBlock } from '../..';
 export declare class NumericResponseBlockRunner implements IBlockRunner {
     block: INumericResponseBlock;
     context: IContext;
@@ -11,5 +6,4 @@ export declare class NumericResponseBlockRunner implements IBlockRunner {
     initialize({ value }: IBlockInteraction): Promise<INumericPromptConfig>;
     run(): Promise<IBlockExit>;
 }
-export default NumericResponseBlockRunner;
 //# sourceMappingURL=NumericResponseBlockRunner.d.ts.map

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.convertKeysToCamelCase = exports.EXCLUDED_DATA_HIERARCHIES_BY_KEY = void 0;
 const lodash_1 = require("lodash");
 exports.EXCLUDED_DATA_HIERARCHIES_BY_KEY = ['choices', 'platformMetadata', 'platform_metadata'];
 function convertKeysToCamelCase(x, exclusions = exports.EXCLUDED_DATA_HIERARCHIES_BY_KEY) {
@@ -10,10 +11,9 @@ function convertKeysToCamelCase(x, exclusions = exports.EXCLUDED_DATA_HIERARCHIE
         return x;
     }
     return lodash_1.reduce(x, (memo, value, key) => {
-        memo[lodash_1.includes(exclusions, key) ? key : lodash_1.camelCase(key)] =
-            convertKeysToCamelCase(value, exclusions);
+        memo[lodash_1.includes(exclusions, key) ? key : lodash_1.camelCase(key)] = convertKeysToCamelCase(value, exclusions);
         return memo;
     }, {});
 }
-exports.default = convertKeysToCamelCase;
+exports.convertKeysToCamelCase = convertKeysToCamelCase;
 //# sourceMappingURL=DataObjectPopertyNameCamelCaseConverter.js.map

@@ -1,7 +1,5 @@
-import { IBlockWithTestExits } from '../../flow-spec/IBlock';
-import ISelectOneResponseBlockConfig from './ISelectOneResponseBlockConfig';
+import { IBlockWithTestExits, ISelectOneResponseBlockConfig } from '../..';
 export interface ISelectOneResponseBlock extends IBlockWithTestExits {
     config: ISelectOneResponseBlockConfig;
 }
-export default ISelectOneResponseBlock;
 //# sourceMappingURL=ISelectOneResponseBlock.d.ts.map

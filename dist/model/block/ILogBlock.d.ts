@@ -1,7 +1,5 @@
-import IBlock from '../../flow-spec/IBlock';
-import ILogBlockConfig from './ILogBlockConfig';
+import { IBlock, ILogBlockConfig } from '../..';
 export interface ILogBlock extends IBlock {
     config: ILogBlockConfig;
 }
-export default ILogBlock;
 //# sourceMappingURL=ILogBlock.d.ts.map

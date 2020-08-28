@@ -1,18 +1,15 @@
-import IBehaviour from '../IBehaviour';
-import IBlockInteraction from '../../../flow-spec/IBlockInteraction';
-import IContext, { IRichCursor, IRichCursorInputRequired } from '../../../flow-spec/IContext';
-import { IFlowNavigator, IPromptBuilder } from '../../FlowRunner';
+import { IBehaviour, IBlockInteraction, IContext, IFlowNavigator, IPromptBuilder, IRichCursor, IRichCursorInputRequired } from '../../..';
 export declare enum PeekDirection {
     RIGHT = "RIGHT",
     LEFT = "LEFT"
 }
-export interface IBackTrackingBehaviour extends IBehaviour {
+export interface IBasicBackTrackingBehaviour extends IBehaviour {
     rebuildIndex(): void;
     jumpTo(interaction: IBlockInteraction): Promise<IRichCursor>;
     peek(steps?: number): Promise<IRichCursor>;
     seek(steps?: number): Promise<IRichCursor>;
 }
-export declare class BasicBacktrackingBehaviour implements IBackTrackingBehaviour {
+export declare class BasicBacktrackingBehaviour implements IBasicBackTrackingBehaviour {
     context: IContext;
     navigator: IFlowNavigator;
     promptBuilder: IPromptBuilder;
@@ -25,5 +22,4 @@ export declare class BasicBacktrackingBehaviour implements IBackTrackingBehaviou
     postInteractionCreate(interaction: IBlockInteraction, _context: IContext): IBlockInteraction;
     postInteractionComplete(_interaction: IBlockInteraction, _context: IContext): void;
 }
-export default BasicBacktrackingBehaviour;
 //# sourceMappingURL=BasicBacktrackingBehaviour.d.ts.map

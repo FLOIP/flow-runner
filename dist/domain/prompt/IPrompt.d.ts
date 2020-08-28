@@ -1,7 +1,5 @@
-import PromptValidationException from '../exceptions/PromptValidationException';
-import IFlowRunner from '../IFlowRunner';
-import { IBlock, IRichCursorInputRequired } from '../..';
-export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> & IBasePromptConfig> {
+import { BasePrompt, IBlock, IFlowRunner, IRichCursorInputRequired, PromptValidationException } from '../..';
+export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']>> {
     interactionId: string;
     config: PromptConfigType;
     runner: IFlowRunner;
@@ -12,22 +10,16 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
     validate(val: PromptConfigType['value']): boolean;
     fulfill(val: PromptConfigType['value']): Promise<IRichCursorInputRequired | undefined>;
 }
-export default IPrompt;
-export declare enum KnownPrompts {
-    Message = "Message",
-    Numeric = "Numeric",
-    SelectOne = "SelectOne",
-    SelectMany = "SelectMany",
-    Open = "Open",
-    Read = "Read"
-}
-export interface IPromptConfig<ExpectationType> {
-    kind: keyof typeof KnownPrompts;
+export interface IPromptConfig<T> extends IBasePromptConfig {
+    kind: string;
     isResponseRequired: boolean;
     prompt: string;
-    value?: ExpectationType;
+    value?: T;
 }
 export interface IBasePromptConfig {
-    isSubmitted: boolean;
+    isSubmitted?: boolean;
+}
+export interface PromptConstructor<T> {
+    new (config: T, interactionId: string, runner: IFlowRunner): BasePrompt<any>;
 }
 //# sourceMappingURL=IPrompt.d.ts.map

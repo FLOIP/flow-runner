@@ -1,6 +1,4 @@
-import IBlockInteraction from '../../flow-spec/IBlockInteraction';
-import IContext from '../../flow-spec/IContext';
-import { IFlowNavigator, IPromptBuilder } from '../FlowRunner';
+import { IBlockInteraction, IContext, IFlowNavigator, IPromptBuilder } from '../..';
 export interface IBehaviourConstructor {
     new (context: IContext, navigator: IFlowNavigator, promptBuilder: IPromptBuilder): IBehaviour;
 }
@@ -11,5 +9,4 @@ export interface IBehaviour {
     postInteractionCreate(interaction: IBlockInteraction, context: IContext): IBlockInteraction;
     postInteractionComplete(interaction: IBlockInteraction, context: IContext): void;
 }
-export default IBehaviour;
 //# sourceMappingURL=IBehaviour.d.ts.map

@@ -1,3 +1,2 @@
-export declare function createFormattedDate(d?: Date): string;
-export default createFormattedDate;
+export declare function createFormattedDate(date?: Date): string;
 //# sourceMappingURL=DateFormat.d.ts.map

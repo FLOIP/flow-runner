@@ -1,8 +1,6 @@
-import BasePrompt from './BasePrompt';
-import { IBasePromptConfig } from './IPrompt';
-import { ISelectOnePromptConfig } from './ISelectOnePromptConfig';
-export declare class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig & IBasePromptConfig> {
+import { BasePrompt, ISelectOnePromptConfig } from '../..';
+export declare const SELECT_ONE_PROMPT_KEY = "SelectOne";
+export declare class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig> {
     validate(choiceKey?: string | null): boolean;
 }
-export default SelectOnePrompt;
 //# sourceMappingURL=SelectOnePrompt.d.ts.map

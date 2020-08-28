@@ -1,5 +1,4 @@
-import { IResource, IResourceDefinitionContentTypeSpecific, SupportedContentType } from './IResourceResolver';
-import IContext from '../flow-spec/IContext';
+import { IContext, IResource, IResourceDefinitionContentTypeSpecific, SupportedContentType } from '..';
 export declare class Resource implements IResource {
     uuid: string;
     values: IResourceDefinitionContentTypeSpecific[];

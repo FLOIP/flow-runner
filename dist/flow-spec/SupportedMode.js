@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SupportedMode = void 0;
 var SupportedMode;
 (function (SupportedMode) {
     SupportedMode["SMS"] = "sms";
@@ -8,5 +9,4 @@ var SupportedMode;
     SupportedMode["RICH_MESSAGING"] = "rich_messaging";
     SupportedMode["OFFLINE"] = "offline";
 })(SupportedMode = exports.SupportedMode || (exports.SupportedMode = {}));
-exports.default = SupportedMode;
 //# sourceMappingURL=SupportedMode.js.map

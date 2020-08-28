@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PrintBlockRunner = void 0;
 const tslib_1 = require("tslib");
 const __1 = require("../..");
 class PrintBlockRunner {
@@ -21,5 +22,4 @@ class PrintBlockRunner {
     }
 }
 exports.PrintBlockRunner = PrintBlockRunner;
-exports.default = PrintBlockRunner;
 //# sourceMappingURL=PrintBlockRunner.js.map

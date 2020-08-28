@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DeliveryStatus = void 0;
 var DeliveryStatus;
 (function (DeliveryStatus) {
     DeliveryStatus["QUEUED"] = "QUEUED";
@@ -16,5 +17,4 @@ var DeliveryStatus;
     DeliveryStatus["FAILED_VOICEMAIL"] = "FAILED_VOICEMAIL";
     DeliveryStatus["FAILED_ERROR"] = "FAILED_ERROR";
 })(DeliveryStatus = exports.DeliveryStatus || (exports.DeliveryStatus = {}));
-exports.default = DeliveryStatus;
 //# sourceMappingURL=DeliveryStatus.js.map

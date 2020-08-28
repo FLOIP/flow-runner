@@ -1,6 +1,6 @@
-import { IPromptConfig, KnownPrompts } from './IPrompt';
+import { IPromptConfig } from '../..';
 export interface INumericPromptConfig extends IPromptConfig<number | null> {
-    kind: KnownPrompts.Numeric;
+    kind: string;
     min: number;
     max: number;
 }

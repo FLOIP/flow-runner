@@ -1,8 +1,6 @@
-import BasePrompt from './BasePrompt';
-import { IBasePromptConfig } from './IPrompt';
-import { IOpenPromptConfig } from './IOpenPromptConfig';
-export declare class OpenPrompt extends BasePrompt<IOpenPromptConfig & IBasePromptConfig> {
+import { BasePrompt, IOpenPromptConfig } from '../..';
+export declare const OPEN_PROMPT_KEY = "Open";
+export declare class OpenPrompt extends BasePrompt<IOpenPromptConfig> {
     validate(val: string): boolean;
 }
-export default OpenPrompt;
 //# sourceMappingURL=OpenPrompt.d.ts.map
