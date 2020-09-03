@@ -173,8 +173,10 @@ export function setContactProperty(block: IBlock, context: IContext): void {
   if (isSetContactPropertyConfig(block.config)) {
     const key = block.config.setContactProperty?.propertyKey as string
     const valueExpression = block.config.setContactProperty?.propertyValue as string
-    const value = evaluateToString(valueExpression, createEvalContextFrom(context))
-    context.contact.setProperty(key, value)
+    if (typeof key === 'string' && typeof valueExpression === 'string') {
+      const value = evaluateToString(valueExpression, createEvalContextFrom(context))
+      context.contact.setProperty(key, value)
+    }
   }
 }
 
