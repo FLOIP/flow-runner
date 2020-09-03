@@ -28,4 +28,4 @@ jobs:
 
       - name: PostEslintToGthub
         if: ${{failure()}}
-        run: yarn violation-comments-to-github-command-line -ot $token -ro FLOIP -rn flow-runner -prid $pullRequestId -comment-only-changed-content false -create-comment-with-all-single-file-comments true -create-single-file-comments true -show-debug-info -v "CHECKSTYLE" "." ".*/eslint_report.xml" ESLint
+        run: yarn violation-comments-to-github-command-line -ot $token -ro FLOIP -rn flow-runner -prid $pullRequestId -comment-only-changed-content false -create-comment-with-all-single-file-comments true -create-single-file-comments true -v "CHECKSTYLE" "." ".*/eslint_report.xml" ESLint
