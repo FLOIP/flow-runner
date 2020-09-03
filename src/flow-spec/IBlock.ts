@@ -166,12 +166,15 @@ export function wrapInExprSyntaxWhenAbsent(expr: string): string {
   return startsWith(expr, '@(') ? expr : `@(${expr})`
 }
 
+/**
+ * Set a property on the contact contained in the flow context.
+ */
 export function setContactProperty(block: IBlock, context: IContext): void {
   if (isSetContactPropertyConfig(block.config)) {
     const key = block.config.setContactProperty?.propertyKey as string
     const valueExpression = block.config.setContactProperty?.propertyValue as string
     const value = evaluateToString(valueExpression, createEvalContextFrom(context))
-    context.contact[key] = value
+    context.contact.setProperty(key, value)
   }
 }
 
