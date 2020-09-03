@@ -14,8 +14,9 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: ESLint
-          # You may pin to the exact commit or the version.
-          # uses: getsentry/action-eslint-fix@27453ba6ed4bbf6c4d2425febef0121375caea75
-        uses: getsentry/action-eslint-fix@v1
+      - uses: hallee/eslint-action@1.0.3
+        # GITHUB_TOKEN in forked repositories is read-only
+        # https://help.github.com/en/actions/reference/events-that-trigger-workflows#pull-request-event-pull_request
+        if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }} 
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{secrets.GITHUB_TOKEN}}
