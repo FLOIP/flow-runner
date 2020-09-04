@@ -17,7 +17,16 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlockExit, IBlockInteraction, IBlockRunner, IContext, INumericPromptConfig, INumericResponseBlock, NUMERIC_PROMPT_KEY} from '../..'
+import {
+  IBlockExit,
+  IBlockInteraction,
+  IBlockRunner,
+  IContext,
+  INumericPromptConfig,
+  INumericResponseBlock,
+  NUMERIC_PROMPT_KEY,
+  setContactProperty,
+} from '../..'
 
 /**
  * Block runner for `MobilePrimitives\NumericResponse` - Obtains a numeric response from the contact.
@@ -55,6 +64,7 @@ export class NumericResponseBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExit> {
+    setContactProperty(this.block, this.context)
     // todo: what constitutes an error exit on web/android chanels?
     return this.block.exits[0]
   }

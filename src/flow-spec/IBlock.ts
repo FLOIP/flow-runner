@@ -27,6 +27,7 @@ import {
   ICursor,
   IFlow,
   ValidationException,
+  isSetContactPropertyConfig,
 } from '..'
 import {extend, find, get, has, startsWith} from 'lodash'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
@@ -95,7 +96,10 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext): 
   return new Proxy(target, {
     get(target, prop, _receiver) {
       if (prop in target) {
+        // todo: why are we using ...arguments here?
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
+        // eslint-disable-next-line prefer-rest-params
         return Reflect.get(...arguments)
       }
 
@@ -163,6 +167,20 @@ export function evaluateToString(expr: string, ctx: object): string {
 
 export function wrapInExprSyntaxWhenAbsent(expr: string): string {
   return startsWith(expr, '@(') ? expr : `@(${expr})`
+}
+
+/**
+ * Set a property on the contact contained in the flow context.
+ */
+export function setContactProperty(block: IBlock, context: IContext): void {
+  if (isSetContactPropertyConfig(block.config)) {
+    const key = block.config.setContactProperty?.propertyKey as string
+    const valueExpression = block.config.setContactProperty?.propertyValue as string
+    if (typeof key === 'string' && typeof valueExpression === 'string') {
+      const value = evaluateToString(valueExpression, createEvalContextFrom(context))
+      context.contact.setProperty(key, value)
+    }
+  }
 }
 
 export interface IBlockService {

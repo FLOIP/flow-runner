@@ -10,6 +10,10 @@ import {
   wrapInExprSyntaxWhenAbsent,
 } from '../..'
 import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
+import {setContactProperty, IBlock} from '../../flow-spec/IBlock'
+import {ISetContactPropertyBlockConfig} from '../../model/block/IBlockConfig'
+import Contact from '../../flow-spec/Contact'
+import IContactProperty from '../../flow-spec/IContactProperty'
 
 describe('IBlock', () => {
   let dataset: IDataset
@@ -161,6 +165,26 @@ describe('IBlock', () => {
       it('should leave as is when @() present', async () => {
         expect(wrapInExprSyntaxWhenAbsent('@(true = true)')).toBe('@(true = true)')
       })
+    })
+  })
+
+  describe('setContactProperty()', () => {
+    it('should set contact property', () => {
+      dataset = createDefaultDataset()
+      const context = Object.assign({}, cloneDeep(dataset.contexts[1]))
+      context.contact = new Contact()
+      const block = {
+        config: {
+          setContactProperty: {
+            propertyKey: 'foo',
+            propertyValue: 'bar',
+          } as ISetContactPropertyBlockConfig,
+        },
+      } as IBlock
+      setContactProperty(block, context)
+      const property = context.contact.getProperty('foo')
+      expect(typeof property).toBe('object')
+      expect((property as IContactProperty).__value__).toBe('bar')
     })
   })
 })

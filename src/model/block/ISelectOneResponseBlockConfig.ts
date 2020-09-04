@@ -17,7 +17,9 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-export interface ISelectOneResponseBlockConfig {
+import {ISetContactPropertyBlockConfig} from '../..'
+
+export interface ISelectOneResponseBlockConfig extends ISetContactPropertyBlockConfig {
   prompt: string
   promptAudio: string
   questionPrompt?: string
