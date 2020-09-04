@@ -54,6 +54,7 @@ export * from './flow-spec/IContext';
 export * from './flow-spec/IFlow';
 export * from './flow-spec/ILanguage';
 export * from './flow-spec/SupportedMode';
+export * from './model/block/IBlockConfig';
 export * from './model/block/ICaseBlock';
 export * from './model/block/ICaseBlockConfig';
 export * from './model/block/ILogBlock';

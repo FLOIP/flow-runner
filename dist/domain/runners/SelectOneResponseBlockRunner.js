@@ -27,6 +27,7 @@ class SelectOneResponseBlockRunner {
     run() {
         var _a;
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            __1.setContactProperty(this.block, this.context);
             return (_a = __1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context)) !== null && _a !== void 0 ? _a : lodash_1.last(this.block.exits);
         });
     }

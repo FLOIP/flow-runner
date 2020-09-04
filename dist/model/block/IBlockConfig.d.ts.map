@@ -1,0 +1,1 @@
+{"version":3,"file":"IBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/IBlockConfig.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,8BAA8B;IAC7C,kBAAkB,CAAC,EAAE;QACnB,WAAW,EAAE,MAAM,CAAA;QACnB,aAAa,EAAE,MAAM,CAAA;KACtB,CAAA;CACF;AAED,wBAAgB,0BAA0B,CAAC,GAAG,EAAE,OAAO,GAAG,GAAG,IAAI,8BAA8B,CAS9F"}

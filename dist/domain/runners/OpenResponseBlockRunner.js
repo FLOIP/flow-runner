@@ -26,6 +26,7 @@ class OpenResponseBlockRunner {
     }
     run() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            __1.setContactProperty(this.block, this.context);
             return this.block.exits[0];
         });
     }

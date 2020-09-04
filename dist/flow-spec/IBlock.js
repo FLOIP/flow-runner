@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.wrapInExprSyntaxWhenAbsent = exports.evaluateToString = exports.evaluateToBool = exports.createEvalContextFrom = exports.generateCachedProxyForBlockName = exports.isLastBlock = exports.findDefaultBlockExitOn = exports.findFirstTruthyEvaluatingBlockExitOn = exports.findBlockExitWith = void 0;
+exports.setContactProperty = exports.wrapInExprSyntaxWhenAbsent = exports.evaluateToString = exports.evaluateToBool = exports.createEvalContextFrom = exports.generateCachedProxyForBlockName = exports.isLastBlock = exports.findDefaultBlockExitOn = exports.findFirstTruthyEvaluatingBlockExitOn = exports.findBlockExitWith = void 0;
 const __1 = require("..");
 const lodash_1 = require("lodash");
 const expression_evaluator_1 = require("@floip/expression-evaluator");
@@ -82,4 +82,16 @@ function wrapInExprSyntaxWhenAbsent(expr) {
     return lodash_1.startsWith(expr, '@(') ? expr : `@(${expr})`;
 }
 exports.wrapInExprSyntaxWhenAbsent = wrapInExprSyntaxWhenAbsent;
+function setContactProperty(block, context) {
+    var _a, _b;
+    if (__1.isSetContactPropertyConfig(block.config)) {
+        const key = (_a = block.config.setContactProperty) === null || _a === void 0 ? void 0 : _a.propertyKey;
+        const valueExpression = (_b = block.config.setContactProperty) === null || _b === void 0 ? void 0 : _b.propertyValue;
+        if (typeof key === 'string' && typeof valueExpression === 'string') {
+            const value = evaluateToString(valueExpression, createEvalContextFrom(context));
+            context.contact.setProperty(key, value);
+        }
+    }
+}
+exports.setContactProperty = setContactProperty;
 //# sourceMappingURL=IBlock.js.map

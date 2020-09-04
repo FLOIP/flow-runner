@@ -1,4 +1,5 @@
-export interface INumericBlockConfig {
+import { ISetContactPropertyBlockConfig } from '../..';
+export interface INumericBlockConfig extends ISetContactPropertyBlockConfig {
     prompt: string;
     promptAudio: string;
     validationMinimum: number;

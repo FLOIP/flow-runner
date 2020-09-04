@@ -1,4 +1,5 @@
-export interface IOpenResponseBlockConfig {
+import { ISetContactPropertyBlockConfig } from '../..';
+export interface IOpenResponseBlockConfig extends ISetContactPropertyBlockConfig {
     prompt: string;
     promptAudio: string;
     ivr?: {

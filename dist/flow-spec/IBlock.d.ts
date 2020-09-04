@@ -30,6 +30,7 @@ export declare function createEvalContextFrom(context: IContext): object;
 export declare function evaluateToBool(expr: string, ctx: object): boolean;
 export declare function evaluateToString(expr: string, ctx: object): string;
 export declare function wrapInExprSyntaxWhenAbsent(expr: string): string;
+export declare function setContactProperty(block: IBlock, context: IContext): void;
 export interface IBlockService {
     findBlockExitWith(uuid: string, block: IBlock): IBlockExit;
     findFirstTruthyEvaluatingBlockExitOn(block: IBlockWithTestExits, context: IContext): IBlockExitTestRequired | undefined;

@@ -4,6 +4,8 @@ const tslib_1 = require("tslib");
 const lodash_1 = require("lodash");
 const __1 = require("../..");
 const IDataset_1 = require("../fixtures/IDataset");
+const IBlock_1 = require("../../flow-spec/IBlock");
+const Contact_1 = tslib_1.__importDefault(require("../../flow-spec/Contact"));
 describe('IBlock', () => {
     let dataset;
     let target;
@@ -107,6 +109,25 @@ describe('IBlock', () => {
             it('should leave as is when @() present', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                 expect(__1.wrapInExprSyntaxWhenAbsent('@(true = true)')).toBe('@(true = true)');
             }));
+        });
+    });
+    describe('setContactProperty()', () => {
+        it('should set contact property', () => {
+            dataset = IDataset_1.createDefaultDataset();
+            const context = Object.assign({}, lodash_1.cloneDeep(dataset.contexts[1]));
+            context.contact = new Contact_1.default();
+            const block = {
+                config: {
+                    setContactProperty: {
+                        propertyKey: 'foo',
+                        propertyValue: 'bar',
+                    },
+                },
+            };
+            IBlock_1.setContactProperty(block, context);
+            const property = context.contact.getProperty('foo');
+            expect(typeof property).toBe('object');
+            expect(property.__value__).toBe('bar');
         });
     });
 });

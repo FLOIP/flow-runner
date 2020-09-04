@@ -1,4 +1,5 @@
-export interface ISelectOneResponseBlockConfig {
+import { ISetContactPropertyBlockConfig } from '../..';
+export interface ISelectOneResponseBlockConfig extends ISetContactPropertyBlockConfig {
     prompt: string;
     promptAudio: string;
     questionPrompt?: string;

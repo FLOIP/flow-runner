@@ -58,6 +58,7 @@ tslib_1.__exportStar(require("./flow-spec/IContext"), exports);
 tslib_1.__exportStar(require("./flow-spec/IFlow"), exports);
 tslib_1.__exportStar(require("./flow-spec/ILanguage"), exports);
 tslib_1.__exportStar(require("./flow-spec/SupportedMode"), exports);
+tslib_1.__exportStar(require("./model/block/IBlockConfig"), exports);
 tslib_1.__exportStar(require("./model/block/ICaseBlock"), exports);
 tslib_1.__exportStar(require("./model/block/ICaseBlockConfig"), exports);
 tslib_1.__exportStar(require("./model/block/ILogBlock"), exports);
