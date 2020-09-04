@@ -5,11 +5,13 @@ export interface ISetContactPropertyBlockConfig {
   }
 }
 
-export function isSetContactPropertyConfig(arg: any): arg is ISetContactPropertyBlockConfig {
-  return (
-    typeof arg === 'object' &&
-    typeof arg.setContactProperty === 'object' &&
-    typeof arg.setContactProperty.propertyKey !== 'undefined' &&
-    typeof arg.setContactProperty.propertyValue !== 'undefined'
-  )
+export function isSetContactPropertyConfig(arg: unknown): arg is ISetContactPropertyBlockConfig {
+  if (typeof arg === 'object' && arg !== null) {
+    return (
+      'setContactProperty' in arg &&
+      typeof (arg as ISetContactPropertyBlockConfig).setContactProperty?.propertyKey === 'string' &&
+      typeof (arg as ISetContactPropertyBlockConfig).setContactProperty?.propertyValue === 'string'
+    )
+  }
+  return false
 }

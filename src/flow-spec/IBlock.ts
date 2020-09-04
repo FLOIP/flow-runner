@@ -96,7 +96,10 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext): 
   return new Proxy(target, {
     get(target, prop, _receiver) {
       if (prop in target) {
+        // todo: why are we using ...arguments here?
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
+        // eslint-disable-next-line prefer-rest-params
         return Reflect.get(...arguments)
       }
 
