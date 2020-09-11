@@ -1,1 +1,0 @@
-{"version":3,"file":"IContactProperty.d.ts","sourceRoot":"","sources":["../../src/flow-spec/IContactProperty.ts"],"names":[],"mappings":"AAmBA,MAAM,WAAW,gBAAgB;IAC/B,wBAAwB,EAAE,MAAM,CAAA;IAChC,SAAS,EAAE,MAAM,CAAA;IACjB,SAAS,EAAE,MAAM,CAAA;IACjB,SAAS,EAAE,MAAM,GAAG,SAAS,CAAA;IAC7B,SAAS,EAAE,MAAM,GAAG,SAAS,CAAA;CAC9B;AAED,eAAe,gBAAgB,CAAA"}

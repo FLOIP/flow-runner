@@ -3,17 +3,18 @@ import {
   createFormattedDate,
   findFirstTruthyEvaluatingBlockExitOn,
   generateCachedProxyForBlockName,
+  IBlock,
   IBlockExitTestRequired,
   IBlockWithTestExits,
   IContext,
   IEvalContextBlock,
+  ISetContactPropertyBlockConfig,
+  setContactProperty,
   wrapInExprSyntaxWhenAbsent,
+  IContactProperty,
+  Contact,
 } from '../..'
 import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
-import {setContactProperty, IBlock} from '../../flow-spec/IBlock'
-import {ISetContactPropertyBlockConfig} from '../../model/block/IBlockConfig'
-import Contact from '../../flow-spec/Contact'
-import IContactProperty from '../../flow-spec/IContactProperty'
 
 describe('IBlock', () => {
   let dataset: IDataset
@@ -85,7 +86,6 @@ describe('IBlock', () => {
       it('should return undefined when unable to find property on target', async () => {
         const sampleTarget = {name: 'Bert', age: '40-something'}
         const proxy = generateCachedProxyForBlockName(sampleTarget, {} as IContext)
-        // @ts-ignore
         expect(proxy.unknown).toBeUndefined()
       })
 

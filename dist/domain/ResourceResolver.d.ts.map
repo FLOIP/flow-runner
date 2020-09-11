@@ -1,1 +1,0 @@
-{"version":3,"file":"ResourceResolver.d.ts","sourceRoot":"","sources":["../../src/domain/ResourceResolver.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAgC,QAAQ,EAAE,SAAS,EAAE,iBAAiB,EAAsC,MAAM,IAAI,CAAA;AAS7H,qBAAa,gBAAiB,YAAW,iBAAiB;IACrC,OAAO,EAAE,QAAQ;gBAAjB,OAAO,EAAE,QAAQ;IAEpC,OAAO,CAAC,UAAU,EAAE,MAAM,GAAG,SAAS;CAsBvC"}

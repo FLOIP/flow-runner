@@ -1,1 +1,0 @@
-{"version":3,"file":"IMessagePromptConfig.d.ts","sourceRoot":"","sources":["../../../src/domain/prompt/IMessagePromptConfig.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,aAAa,EAAC,MAAM,OAAO,CAAA;AAKnC,MAAM,WAAW,oBAAqB,SAAQ,aAAa,CAAC,IAAI,CAAC;IAC/D,IAAI,EAAE,SAAS,CAAA;CAChB"}

@@ -1,4 +1,4 @@
-import {isSetContactPropertyConfig} from '../../model/block/IBlockConfig'
+import {isSetContactPropertyConfig} from '../..'
 
 describe('IBlockConfig', () => {
   it('asserts the type of ISetContactPropertyBlockConfig', () => {

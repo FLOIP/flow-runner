@@ -1,1 +1,0 @@
-{"version":3,"file":"IOpenPromptConfig.d.ts","sourceRoot":"","sources":["../../../src/domain/prompt/IOpenPromptConfig.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,aAAa,EAAC,MAAM,OAAO,CAAA;AAKnC,MAAM,WAAW,iBAAkB,SAAQ,aAAa,CAAC,MAAM,GAAG,IAAI,CAAC;IACrE,qBAAqB,CAAC,EAAE,MAAM,CAAA;CAC/B"}
