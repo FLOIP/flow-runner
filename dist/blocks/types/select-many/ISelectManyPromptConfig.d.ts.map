@@ -1,0 +1,1 @@
+{"version":3,"file":"ISelectManyPromptConfig.d.ts","sourceRoot":"","sources":["../../../../src/blocks/types/select-many/ISelectManyPromptConfig.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,OAAO,EAAE,aAAa,EAAC,MAAM,gBAAgB,CAAA;AAKrD,MAAM,WAAW,uBAAwB,SAAQ,aAAa,CAAC,OAAO,CAAC,KAAK,CAAC,EAAE,GAAG,IAAI,CAAC;IACrF,IAAI,EAAE,MAAM,CAAA;IACZ,OAAO,EAAE,OAAO,EAAE,CAAA;CACnB"}

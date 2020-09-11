@@ -1,0 +1,1 @@
+{"version":3,"file":"INumericPromptConfig.d.ts","sourceRoot":"","sources":["../../../../src/blocks/types/numeric-response/INumericPromptConfig.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,aAAa,EAAC,MAAM,UAAU,CAAA;AAKtC,MAAM,WAAW,oBAAqB,SAAQ,aAAa,CAAC,MAAM,GAAG,IAAI,CAAC;IACxE,IAAI,EAAE,MAAM,CAAA;IACZ,GAAG,EAAE,MAAM,CAAA;IACX,GAAG,EAAE,MAAM,CAAA;CACZ"}

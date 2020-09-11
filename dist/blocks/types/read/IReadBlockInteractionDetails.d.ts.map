@@ -1,0 +1,1 @@
+{"version":3,"file":"IReadBlockInteractionDetails.d.ts","sourceRoot":"","sources":["../../../../src/blocks/types/read/IReadBlockInteractionDetails.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,wBAAwB,EAAC,MAAM,gBAAgB,CAAA;AAEvD,MAAM,WAAW,4BAA6B,SAAQ,wBAAwB;IAC5E,SAAS,EAAE,UAAU,CAAA;CACtB;AAED,MAAM,WAAW,UAAU;IACzB,OAAO,EAAE,MAAM,CAAA;CAChB"}

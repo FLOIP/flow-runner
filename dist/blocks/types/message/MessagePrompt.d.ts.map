@@ -1,0 +1,1 @@
+{"version":3,"file":"MessagePrompt.d.ts","sourceRoot":"","sources":["../../../../src/blocks/types/message/MessagePrompt.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,UAAU,EAAE,oBAAoB,EAAC,MAAM,UAAU,CAAA;AAEzD,eAAO,MAAM,kBAAkB,YAAY,CAAA;AAK3C,qBAAa,aAAc,SAAQ,UAAU,CAAC,oBAAoB,CAAC;IACjE,QAAQ,IAAI,OAAO;CAGpB"}

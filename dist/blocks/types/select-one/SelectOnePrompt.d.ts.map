@@ -1,0 +1,1 @@
+{"version":3,"file":"SelectOnePrompt.d.ts","sourceRoot":"","sources":["../../../../src/blocks/types/select-one/SelectOnePrompt.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,UAAU,EAAE,sBAAsB,EAAsB,MAAM,gBAAgB,CAAA;AAEtF,eAAO,MAAM,qBAAqB,cAAc,CAAA;AAMhD,qBAAa,eAAgB,SAAQ,UAAU,CAAC,sBAAsB,CAAC;IACrE,QAAQ,CAAC,SAAS,CAAC,EAAE,MAAM,GAAG,IAAI,GAAG,OAAO;CAS7C"}
