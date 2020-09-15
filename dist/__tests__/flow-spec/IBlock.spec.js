@@ -118,9 +118,9 @@ describe('IBlock', () => {
             context.contact = new Contact_1.default();
             const block = {
                 config: {
-                    setContactProperty: {
-                        propertyKey: 'foo',
-                        propertyValue: 'bar',
+                    set_contact_property: {
+                        property_key: 'foo',
+                        property_value: 'bar',
                     },
                 },
             };

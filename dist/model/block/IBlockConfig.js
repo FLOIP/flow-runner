@@ -4,9 +4,9 @@ exports.isSetContactPropertyConfig = void 0;
 function isSetContactPropertyConfig(arg) {
     var _a, _b;
     if (typeof arg === 'object' && arg !== null) {
-        return ('setContactProperty' in arg &&
-            typeof ((_a = arg.setContactProperty) === null || _a === void 0 ? void 0 : _a.propertyKey) === 'string' &&
-            typeof ((_b = arg.setContactProperty) === null || _b === void 0 ? void 0 : _b.propertyValue) === 'string');
+        return ('set_contact_property' in arg &&
+            typeof ((_a = arg.set_contact_property) === null || _a === void 0 ? void 0 : _a.property_key) === 'string' &&
+            typeof ((_b = arg.set_contact_property) === null || _b === void 0 ? void 0 : _b.property_value) === 'string');
     }
     return false;
 }
