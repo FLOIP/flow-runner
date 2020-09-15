@@ -1,16 +1,16 @@
 export interface ISetContactPropertyBlockConfig {
-  setContactProperty?: {
-    propertyKey: string
-    propertyValue: string
+  set_contact_property?: {
+    property_key: string
+    property_value: string
   }
 }
 
 export function isSetContactPropertyConfig(arg: unknown): arg is ISetContactPropertyBlockConfig {
   if (typeof arg === 'object' && arg !== null) {
     return (
-      'setContactProperty' in arg &&
-      typeof (arg as ISetContactPropertyBlockConfig).setContactProperty?.propertyKey === 'string' &&
-      typeof (arg as ISetContactPropertyBlockConfig).setContactProperty?.propertyValue === 'string'
+      'set_contact_property' in arg &&
+      typeof (arg as ISetContactPropertyBlockConfig).set_contact_property?.property_key === 'string' &&
+      typeof (arg as ISetContactPropertyBlockConfig).set_contact_property?.property_value === 'string'
     )
   }
   return false

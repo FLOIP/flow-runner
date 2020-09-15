@@ -30,6 +30,7 @@ export class Contact implements IContact {
   public setProperty(name: string, value: any): IContactProperty {
     const prop: IContactProperty = {
       __value__: value,
+      value: value,
       contactPropertyFieldName: name,
       createdAt: createFormattedDate(),
       updatedAt: createFormattedDate(),

@@ -3,9 +3,9 @@ import {isSetContactPropertyConfig} from '../../model/block/IBlockConfig'
 describe('IBlockConfig', () => {
   it('asserts the type of ISetContactPropertyBlockConfig', () => {
     const trueCase = {
-      setContactProperty: {
-        propertyKey: 'foo',
-        propertyValue: 'bar',
+      set_contact_property: {
+        property_key: 'foo',
+        property_value: 'bar',
       },
     }
     const falseCase = {}
