@@ -463,12 +463,17 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param originFlowId
    * @param originBlockInteractionId
    */
-  async initializeOneBlock(block: IBlock, flowId: string, originFlowId?: string, originBlockInteractionId?: string): Promise<IRichCursor> {
+  async initializeOneBlock(
+    block: IBlock,
+    flowId: string,
+    originFlowId?: string,
+    originBlockInteractionId?: string,
+  ): Promise<IRichCursor> {
     let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
 
     Object.values(this.behaviours).forEach(b => (interaction = b.postInteractionCreate(interaction, this.context)))
 
-    return {interaction, prompt: await this.buildPromptFor(block, interaction)}
+    return {interaction, prompt: undefined}
   }
 
   /**
@@ -537,6 +542,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     const originInteractionId = last(nestedFlowBlockInteractionIdStack)
     const originInteraction = originInteractionId != null ? this._contextService.findInteractionWith(originInteractionId, ctx) : null
 
+    // inflate interaction + container cursor
     const richCursor = await this.initializeOneBlock(
       block,
       flowId,
@@ -545,7 +551,12 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     )
 
     interactions.push(richCursor.interaction)
+
+    // step cursor forward with context
     ctx.cursor = this.dehydrateCursor(richCursor)
+
+    // inflate prompt references
+    this.initializePromptForBlockOnto(richCursor, block, ctx as IContextWithCursor)
 
     // todo: this could be findFirstExitOnActiveFlowBlockFor to an Expressions Behaviour
     this.cacheInteractionByBlockName(richCursor.interaction, block as IMessageBlock, ctx)
@@ -681,6 +692,11 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       originFlowId,
       originBlockInteractionId,
     }
+  }
+
+  async initializePromptForBlockOnto(richCursor: IRichCursor, block: IBlock, ctx: IContextWithCursor): Promise<void> {
+    richCursor.prompt = await this.buildPromptFor(block, richCursor.interaction)
+    ctx.cursor.promptConfig = richCursor.prompt?.config
   }
 
   /**
