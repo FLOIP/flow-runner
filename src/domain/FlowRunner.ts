@@ -556,7 +556,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     ctx.cursor = this.dehydrateCursor(richCursor)
 
     // inflate prompt references
-    this.initializePromptForBlockOnto(richCursor, block, ctx as IContextWithCursor)
+    await this.initializePromptForBlockOnto(richCursor, block, ctx as IContextWithCursor)
 
     // todo: this could be findFirstExitOnActiveFlowBlockFor to an Expressions Behaviour
     this.cacheInteractionByBlockName(richCursor.interaction, block as IMessageBlock, ctx)
