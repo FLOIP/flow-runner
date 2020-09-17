@@ -536,12 +536,28 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param ctx
    */
   async navigateTo(block: IBlock, ctx: IContext): Promise<IRichCursor> {
-    const {interactions, nestedFlowBlockInteractionIdStack} = ctx
+    const richCursor = await this._inflateInteractionAndContainerCursorFor(block, ctx)
+
+    this._activateCursorOnto(ctx, richCursor)
+
+    await this._inflatePromptForBlockOnto(richCursor, block, ctx as IContextWithCursor)
+
+    // todo: this could be findFirstExitOnActiveFlowBlockFor to an Expressions Behaviour
+    this.cacheInteractionByBlockName(richCursor.interaction, block as IMessageBlock, ctx)
+
+    return richCursor
+  }
+
+  _activateCursorOnto(ctx: IContext, richCursor: IRichCursor): void {
+    ctx.cursor = this.dehydrateCursor(richCursor)
+  }
+
+  private async _inflateInteractionAndContainerCursorFor(block: IBlock, ctx: IContext): Promise<IRichCursor> {
+    const {nestedFlowBlockInteractionIdStack} = ctx
     const flowId = this._contextService.getActiveFlowIdFrom(ctx)
     const originInteractionId = last(nestedFlowBlockInteractionIdStack)
     const originInteraction = originInteractionId != null ? this._contextService.findInteractionWith(originInteractionId, ctx) : null
 
-    // inflate interaction + container cursor
     const richCursor = await this.initializeOneBlock(
       block,
       flowId,
@@ -549,16 +565,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       originInteractionId
     )
 
+    const {interactions} = ctx
     interactions.push(richCursor.interaction)
-
-    // step cursor forward with context
-    ctx.cursor = this.dehydrateCursor(richCursor)
-
-    // inflate prompt references
-    await this.initializePromptForBlockOnto(richCursor, block, ctx as IContextWithCursor)
-
-    // todo: this could be findFirstExitOnActiveFlowBlockFor to an Expressions Behaviour
-    this.cacheInteractionByBlockName(richCursor.interaction, block as IMessageBlock, ctx)
 
     return richCursor
   }
@@ -693,7 +701,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     }
   }
 
-  async initializePromptForBlockOnto(richCursor: IRichCursor, block: IBlock, ctx: IContextWithCursor): Promise<void> {
+  async _inflatePromptForBlockOnto(richCursor: IRichCursor, block: IBlock, ctx: IContextWithCursor): Promise<void> {
     richCursor.prompt = await this.buildPromptFor(block, richCursor.interaction)
     ctx.cursor.promptConfig = richCursor.prompt?.config
   }
