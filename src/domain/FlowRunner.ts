@@ -552,7 +552,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     ctx.cursor = this.dehydrateCursor(richCursor)
   }
 
-  private async _inflateInteractionAndContainerCursorFor(block: IBlock, ctx: IContext): Promise<IRichCursor> {
+  async _inflateInteractionAndContainerCursorFor(block: IBlock, ctx: IContext): Promise<IRichCursor> {
     const {nestedFlowBlockInteractionIdStack} = ctx
     const flowId = this._contextService.getActiveFlowIdFrom(ctx)
     const originInteractionId = last(nestedFlowBlockInteractionIdStack)
