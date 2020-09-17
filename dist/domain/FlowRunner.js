@@ -59,22 +59,23 @@ class FlowRunner {
         return ctx.cursor != null;
     }
     isFirst() {
-        const { cursor, interactions } = this.context;
         if (!this.isInitialized(this.context)) {
             return true;
         }
+        const { interactions } = this.context;
         const firstInteractiveIntx = lodash_1.find(interactions, ({ type }) => !lodash_1.includes(exports.NON_INTERACTIVE_BLOCK_TYPES, type));
         if (firstInteractiveIntx == null) {
             return true;
         }
-        return firstInteractiveIntx.uuid === cursor.interactionId;
+        return firstInteractiveIntx.uuid === this.context.cursor.interactionId;
     }
     isLast() {
-        const { cursor, interactions } = this.context;
+        var _a;
         if (!this.isInitialized(this.context)) {
             return true;
         }
-        return lodash_1.last(interactions).uuid === cursor.interactionId;
+        const { interactions } = this.context;
+        return ((_a = lodash_1.last(interactions)) === null || _a === void 0 ? void 0 : _a.uuid) === this.context.cursor.interactionId;
     }
     run() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -201,26 +202,27 @@ class FlowRunner {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId);
             Object.values(this.behaviours).forEach(b => (interaction = b.postInteractionCreate(interaction, this.context)));
-            return { interaction, prompt: yield this.buildPromptFor(block, interaction) };
+            return { interaction, prompt: undefined };
         });
     }
+    isRichCursorInputRequired(richCursor) {
+        return richCursor.prompt != null;
+    }
     runActiveBlockOn(richCursor, block) {
-        var _a;
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const { prompt, interaction } = richCursor;
-            const hasPrompt = prompt != null;
+            const { interaction } = richCursor;
             __1.assertNotNull(interaction, () => 'Unable to run with absent cursor interaction', errorMessage => new __1.ValidationException(errorMessage));
-            if (hasPrompt && ((_a = prompt === null || prompt === void 0 ? void 0 : prompt.config) === null || _a === void 0 ? void 0 : _a.isSubmitted)) {
+            if (this.isRichCursorInputRequired(richCursor) && richCursor.prompt.config.isSubmitted) {
                 throw new __1.ValidationException('Unable to run against previously processed prompt');
             }
-            if (prompt != null) {
-                interaction.value = prompt.value;
+            if (this.isRichCursorInputRequired(richCursor)) {
+                interaction.value = richCursor.prompt.value;
                 interaction.hasResponse = interaction.value != null;
             }
             const exit = yield this.createBlockRunnerFor(block, this.context).run(richCursor);
             this.completeInteraction(interaction, exit.uuid);
-            if (hasPrompt) {
-                prompt.config.isSubmitted = true;
+            if (this.isRichCursorInputRequired(richCursor)) {
+                richCursor.prompt.config.isSubmitted = true;
             }
             Object.values(this.behaviours).forEach(b => b.postInteractionComplete(richCursor.interaction, this.context));
             return exit;
@@ -235,14 +237,25 @@ class FlowRunner {
     }
     navigateTo(block, ctx) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const { interactions, nestedFlowBlockInteractionIdStack } = ctx;
+            const richCursor = yield this._inflateInteractionAndContainerCursorFor(block, ctx);
+            this._activateCursorOnto(ctx, richCursor);
+            yield this._inflatePromptForBlockOnto(richCursor, block, ctx);
+            this.cacheInteractionByBlockName(richCursor.interaction, block, ctx);
+            return richCursor;
+        });
+    }
+    _activateCursorOnto(ctx, richCursor) {
+        ctx.cursor = this.dehydrateCursor(richCursor);
+    }
+    _inflateInteractionAndContainerCursorFor(block, ctx) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const { nestedFlowBlockInteractionIdStack } = ctx;
             const flowId = this._contextService.getActiveFlowIdFrom(ctx);
             const originInteractionId = lodash_1.last(nestedFlowBlockInteractionIdStack);
             const originInteraction = originInteractionId != null ? this._contextService.findInteractionWith(originInteractionId, ctx) : null;
             const richCursor = yield this.initializeOneBlock(block, flowId, originInteraction == null ? undefined : originInteraction.flowId, originInteractionId);
+            const { interactions } = ctx;
             interactions.push(richCursor.interaction);
-            ctx.cursor = this.dehydrateCursor(richCursor);
-            this.cacheInteractionByBlockName(richCursor.interaction, block, ctx);
             return richCursor;
         });
     }
@@ -304,6 +317,13 @@ class FlowRunner {
             originFlowId,
             originBlockInteractionId,
         };
+    }
+    _inflatePromptForBlockOnto(richCursor, block, ctx) {
+        var _a;
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            richCursor.prompt = yield this.buildPromptFor(block, richCursor.interaction);
+            ctx.cursor.promptConfig = (_a = richCursor.prompt) === null || _a === void 0 ? void 0 : _a.config;
+        });
     }
     buildPromptFor(block, interaction) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
