@@ -187,7 +187,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * This identifies whether or not a run is in progress.
    * @param ctx
    */
-  isInitialized(ctx: IContext): boolean {
+  isInitialized(ctx: IContext): ctx is IContextWithCursor {
     // const {cursor, entryAt, exitAt} = ctx
     // return cursor && entryAt && !exitAt
 
@@ -198,32 +198,30 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * Decipher whether or not cursor points to the first interactive block or not.
    */
   isFirst(): boolean {
-    const {cursor, interactions} = this.context
-
     if (!this.isInitialized(this.context)) {
       return true
     }
 
+    const {interactions} = this.context
     const firstInteractiveIntx = find(interactions, ({type}) => !includes(NON_INTERACTIVE_BLOCK_TYPES, type))
 
     if (firstInteractiveIntx == null) {
       return true
     }
 
-    return firstInteractiveIntx.uuid === cursor!.interactionId
+    return firstInteractiveIntx.uuid === this.context.cursor.interactionId
   }
 
   /**
    * Decipher whether or not cursor points to the last block from interaction history.
    */
   isLast(): boolean {
-    const {cursor, interactions} = this.context
-
     if (!this.isInitialized(this.context)) {
       return true
     }
 
-    return last(interactions)!.uuid === cursor!.interactionId
+    const {interactions} = this.context
+    return last(interactions)?.uuid === this.context.cursor.interactionId
   }
 
   /**
@@ -463,17 +461,20 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param originFlowId
    * @param originBlockInteractionId
    */
-  async initializeOneBlock(
-    block: IBlock,
-    flowId: string,
-    originFlowId?: string,
-    originBlockInteractionId?: string,
-  ): Promise<IRichCursor> {
+  async initializeOneBlock(block: IBlock, flowId: string, originFlowId?: string, originBlockInteractionId?: string): Promise<IRichCursor> {
     let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
 
     Object.values(this.behaviours).forEach(b => (interaction = b.postInteractionCreate(interaction, this.context)))
 
     return {interaction, prompt: undefined}
+  }
+
+  /**
+   * Type guard providing insight into whether or not prompt presence can be relied upon.
+   * @param richCursor
+   */
+  isRichCursorInputRequired(richCursor: IRichCursor): richCursor is IRichCursorInputRequired {
+    return richCursor.prompt != null
   }
 
   /**
@@ -483,21 +484,19 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param block
    */
   async runActiveBlockOn(richCursor: IRichCursor, block: IBlock): Promise<IBlockExit> {
-    const {prompt, interaction} = richCursor
-    const hasPrompt = prompt != null
-
+    const {interaction} = richCursor
     assertNotNull(
       interaction,
       () => 'Unable to run with absent cursor interaction',
       errorMessage => new ValidationException(errorMessage)
     )
 
-    if (hasPrompt && prompt?.config?.isSubmitted) {
+    if (this.isRichCursorInputRequired(richCursor) && richCursor.prompt.config.isSubmitted) {
       throw new ValidationException('Unable to run against previously processed prompt')
     }
 
-    if (prompt != null) {
-      interaction.value = prompt.value
+    if (this.isRichCursorInputRequired(richCursor)) {
+      interaction.value = richCursor.prompt.value
       interaction.hasResponse = interaction.value != null
     }
 
@@ -505,8 +504,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
 
     this.completeInteraction(interaction, exit.uuid)
 
-    if (hasPrompt) {
-      prompt!.config.isSubmitted = true
+    if (this.isRichCursorInputRequired(richCursor)) {
+      richCursor.prompt.config.isSubmitted = true
     }
 
     Object.values(this.behaviours).forEach(b => b.postInteractionComplete(richCursor.interaction, this.context))
