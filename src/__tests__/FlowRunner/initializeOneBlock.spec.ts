@@ -33,7 +33,7 @@ describe('FlowRunner/initializeOneBlock', () => {
 
   it('should return cursor with prompt from runner when prompt provided', async () => {
     // todo: this should use a jest.SpyInstance
-    let expectedPrompt: INumericPromptConfig | null = null
+    let expectedPrompt: INumericPromptConfig | undefined = undefined
 
     const ctx = dataset.contexts[0]
     const flow = ctx.flows[0]
