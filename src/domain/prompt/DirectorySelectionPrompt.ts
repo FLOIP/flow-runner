@@ -17,21 +17,18 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {BasePrompt, IDirectorySelectionPromptConfig, IFlowRunner, ValidationException} from '../..'
+import {BasePrompt, IDirectorySelect, IDirectorySelectionPromptConfig, IFlowRunner, ValidationException} from '../..'
 
 export const DIRECTORY_SELECTION_PROMPT_KEY = 'Viamo\\DirectorySelection'
 
 export class DirectorySelectionPrompt extends BasePrompt<IDirectorySelectionPromptConfig> {
-  constructor(config: IDirectorySelectionPromptConfig, interactionId: string, runner: IFlowRunner) {
-    super(config, interactionId, runner)
-  }
+  validate(selectedRow?: IDirectorySelect[]): boolean {
+    const {choiceRows} = this.config
 
-  validate(choiceKey?: string | null): boolean {
-    const {isResponseRequired, choices} = this.config
-
-    if (isResponseRequired && choices.find(({key}) => key === choiceKey) == null) {
-      throw new ValidationException('Value provided must be in list of choices')
-    }
+    selectedRow?.forEach(selection => {
+      if (choiceRows.find(row => row.includes(selection.name)) === null)
+        throw new ValidationException('Value provided must be in list of choices')
+    })
 
     return true
   }

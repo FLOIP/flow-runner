@@ -17,9 +17,18 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IPromptConfig, IChoice} from '../..'
+import {IPromptConfig} from '../..'
 
-export interface IDirectorySelectionPromptConfig extends IPromptConfig<string | null> {
-  kind: string
-  choices: IChoice[]
+export interface IDirectorySelectionPromptConfig extends IPromptConfig<IDirectorySelect[]> {
+  promptAudio: string
+  primaryField: string
+  secondaryFields: [string]
+  choiceRowFields: [string]
+  choiceRows: [[string]]
+  responseFields: [string]
+}
+
+export interface IDirectorySelect {
+  name: string
+  value: string
 }

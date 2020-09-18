@@ -26,7 +26,6 @@ import {
   IBlockRunner,
   IContext,
   IDirectorySelectionBlock,
-  IDirectorySelectionBlockConfig,
   IDirectorySelectionPromptConfig,
   setContactProperty,
 } from '../..'
@@ -35,7 +34,7 @@ import {last} from 'lodash'
 export class DirectorySelectionBlockRunner implements IBlockRunner {
   constructor(public block: IDirectorySelectionBlock, public context: IContext) {}
 
-  async initialize({value}: IBlockInteraction): Promise<IDirectorySelectionBlockConfig> {
+  async initialize({value}: IBlockInteraction): Promise<IDirectorySelectionPromptConfig> {
     const {prompt, promptAudio, primaryField, secondaryFields, choiceRowFields, choiceRows, responseFields} = this.block.config
 
     return {
@@ -48,7 +47,6 @@ export class DirectorySelectionBlockRunner implements IBlockRunner {
       choiceRows,
       responseFields,
       isResponseRequired: true,
-
       value: value as IDirectorySelectionPromptConfig['value'],
     }
   }
