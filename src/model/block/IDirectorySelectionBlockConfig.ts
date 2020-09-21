@@ -22,8 +22,8 @@ export interface IDirectorySelectionBlockConfig {
   prompt: string
   promptAudio: string
   primaryField: string
-  secondaryFields: [string]
-  choiceRowFields: [string]
-  choiceRows: [[string]]
-  responseFields: [string]
+  secondaryFields: string[]
+  choiceRowFields: string[]
+  choiceRows: string[][]
+  responseFields: string[]
 }

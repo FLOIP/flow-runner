@@ -22,10 +22,10 @@ import {IPromptConfig} from '../..'
 export interface IDirectorySelectionPromptConfig extends IPromptConfig<IDirectorySelect[]> {
   promptAudio: string
   primaryField: string
-  secondaryFields: [string]
-  choiceRowFields: [string]
-  choiceRows: [[string]]
-  responseFields: [string]
+  secondaryFields: string[]
+  choiceRowFields: string[]
+  choiceRows: string[][]
+  responseFields: string[]
 }
 
 export interface IDirectorySelect {
