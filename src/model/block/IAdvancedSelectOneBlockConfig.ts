@@ -17,9 +17,13 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlockWithTestExits, IDirectorySelectionBlockConfig} from '../..'
-import {} from './IDirectorySelectionBlockConfig'
-
-export interface IDirectorySelectionBlock extends IBlockWithTestExits {
-  config: IDirectorySelectionBlockConfig
+export interface IAdvancedSelectOneBlockConfig {
+  kind: string
+  prompt: string
+  promptAudio: string
+  primaryField: string
+  secondaryFields: string[]
+  choiceRowFields: string[]
+  choiceRows: string[][]
+  responseFields: string[]
 }

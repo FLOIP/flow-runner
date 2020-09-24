@@ -17,19 +17,18 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {BasePrompt, IDirectorySelect, IDirectorySelectionPromptConfig, IFlowRunner, ValidationException} from '../..'
+import {IPromptConfig} from '../..'
 
-export const DIRECTORY_SELECTION_PROMPT_KEY = 'Viamo\\DirectorySelection'
+export interface IAdvancedSelectOnePromptConfig extends IPromptConfig<IAdvancedSelectOne[]> {
+  promptAudio: string
+  primaryField: string
+  secondaryFields: string[]
+  choiceRowFields: string[]
+  choiceRows: string[][]
+  responseFields: string[]
+}
 
-export class DirectorySelectionPrompt extends BasePrompt<IDirectorySelectionPromptConfig> {
-  validate(selectedRow?: IDirectorySelect[]): boolean {
-    const {choiceRows} = this.config
-
-    selectedRow?.forEach(selection => {
-      if (choiceRows.find(row => row.includes(selection.name)) === null)
-        throw new ValidationException('Value provided must be in list of choices')
-    })
-
-    return true
-  }
+export interface IAdvancedSelectOne {
+  name: string
+  value: string
 }

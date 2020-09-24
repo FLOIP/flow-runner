@@ -17,13 +17,19 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-export interface IDirectorySelectionBlockConfig {
-  kind: string
-  prompt: string
-  promptAudio: string
-  primaryField: string
-  secondaryFields: string[]
-  choiceRowFields: string[]
-  choiceRows: string[][]
-  responseFields: string[]
+import {BasePrompt, IAdvancedSelectOne, IAdvancedSelectOnePromptConfig, ValidationException} from '../..'
+
+export const ADVANCED_SELECT_ONE_PROMPT_KEY = 'AdvancedSelectOne'
+
+export class AdvancedSelectOnePrompt extends BasePrompt<IAdvancedSelectOnePromptConfig> {
+  validate(selectedRow?: IAdvancedSelectOne[]): boolean {
+    const {choiceRows} = this.config
+
+    selectedRow?.forEach(selection => {
+      if (choiceRows.find(row => row.includes(selection.name)) === null)
+        throw new ValidationException('Value provided must be in list of choices')
+    })
+
+    return true
+  }
 }

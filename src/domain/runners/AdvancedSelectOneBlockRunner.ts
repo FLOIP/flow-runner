@@ -18,27 +18,29 @@
  **/
 
 import {
-  DIRECTORY_SELECTION_PROMPT_KEY,
+  ADVANCED_SELECT_ONE_PROMPT_KEY,
   findFirstTruthyEvaluatingBlockExitOn,
   IBlockExit,
   IBlockExitTestRequired,
   IBlockInteraction,
   IBlockRunner,
   IContext,
-  IDirectorySelectionBlock,
-  IDirectorySelectionPromptConfig,
+  IAdvancedSelectOneBlock,
+  IAdvancedSelectOnePromptConfig,
   setContactProperty,
 } from '../..'
 import {last} from 'lodash'
+import {IRichCursor} from '../../flow-spec/IContext'
+import {IAdvancedSelectOneBlockInteractionDetails} from '../../flow-spec/IAdvanceSelectOneBlockInteractionDetails'
 
-export class DirectorySelectionBlockRunner implements IBlockRunner {
-  constructor(public block: IDirectorySelectionBlock, public context: IContext) {}
+export class AdvancedSelectOneBlockRunner implements IBlockRunner {
+  constructor(public block: IAdvancedSelectOneBlock, public context: IContext) {}
 
-  async initialize({value}: IBlockInteraction): Promise<IDirectorySelectionPromptConfig> {
+  async initialize({value}: IBlockInteraction): Promise<IAdvancedSelectOnePromptConfig> {
     const {prompt, promptAudio, primaryField, secondaryFields, choiceRowFields, choiceRows, responseFields} = this.block.config
 
     return {
-      kind: DIRECTORY_SELECTION_PROMPT_KEY,
+      kind: ADVANCED_SELECT_ONE_PROMPT_KEY,
       prompt,
       promptAudio,
       primaryField,
@@ -47,11 +49,15 @@ export class DirectorySelectionBlockRunner implements IBlockRunner {
       choiceRows,
       responseFields,
       isResponseRequired: true,
-      value: value as IDirectorySelectionPromptConfig['value'],
+      value: value as IAdvancedSelectOnePromptConfig['value'],
     }
   }
 
-  async run(): Promise<IBlockExit> {
+  async run(cursor: IRichCursor): Promise<IBlockExit> {
+    const interactionDetails = cursor.interaction.details as IAdvancedSelectOneBlockInteractionDetails
+
+    interactionDetails.choiceRows = this.block.config.choiceRows
+
     setContactProperty(this.block, this.context)
     return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? (last(this.block.exits) as IBlockExitTestRequired)
   }
