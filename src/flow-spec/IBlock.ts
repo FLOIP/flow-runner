@@ -174,8 +174,8 @@ export function wrapInExprSyntaxWhenAbsent(expr: string): string {
  */
 export function setContactProperty(block: IBlock, context: IContext): void {
   if (isSetContactPropertyConfig(block.config)) {
-    const key = block.config.setContactProperty?.propertyKey as string
-    const valueExpression = block.config.setContactProperty?.propertyValue as string
+    const key = block.config.set_contact_property?.property_key as string
+    const valueExpression = block.config.set_contact_property?.property_value as string
     if (typeof key === 'string' && typeof valueExpression === 'string') {
       const value = evaluateToString(valueExpression, createEvalContextFrom(context))
       context.contact.setProperty(key, value)

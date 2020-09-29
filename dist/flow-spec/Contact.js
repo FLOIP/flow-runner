@@ -7,6 +7,7 @@ class Contact {
     setProperty(name, value) {
         const prop = {
             __value__: value,
+            value: value,
             contactPropertyFieldName: name,
             createdAt: DateFormat_1.createFormattedDate(),
             updatedAt: DateFormat_1.createFormattedDate(),

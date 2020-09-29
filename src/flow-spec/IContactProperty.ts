@@ -23,6 +23,7 @@ export interface IContactProperty {
   updatedAt: string
   deletedAt: string | undefined
   __value__: string | undefined
+  value: string | undefined
 }
 
 export default IContactProperty

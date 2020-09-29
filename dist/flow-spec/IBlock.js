@@ -85,8 +85,8 @@ exports.wrapInExprSyntaxWhenAbsent = wrapInExprSyntaxWhenAbsent;
 function setContactProperty(block, context) {
     var _a, _b;
     if (__1.isSetContactPropertyConfig(block.config)) {
-        const key = (_a = block.config.setContactProperty) === null || _a === void 0 ? void 0 : _a.propertyKey;
-        const valueExpression = (_b = block.config.setContactProperty) === null || _b === void 0 ? void 0 : _b.propertyValue;
+        const key = (_a = block.config.set_contact_property) === null || _a === void 0 ? void 0 : _a.property_key;
+        const valueExpression = (_b = block.config.set_contact_property) === null || _b === void 0 ? void 0 : _b.property_value;
         if (typeof key === 'string' && typeof valueExpression === 'string') {
             const value = evaluateToString(valueExpression, createEvalContextFrom(context));
             context.contact.setProperty(key, value);

@@ -175,9 +175,9 @@ describe('IBlock', () => {
       context.contact = new Contact()
       const block = {
         config: {
-          setContactProperty: {
-            propertyKey: 'foo',
-            propertyValue: 'bar',
+          set_contact_property: {
+            property_key: 'foo',
+            property_value: 'bar',
           } as ISetContactPropertyBlockConfig,
         },
       } as IBlock

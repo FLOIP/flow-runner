@@ -27,7 +27,7 @@ describe('FlowRunner/initializeOneBlock', () => {
         expect(prompt).toBeUndefined();
     }));
     it('should return cursor with prompt from runner when prompt provided', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-        let expectedPrompt = null;
+        let expectedPrompt = undefined;
         const ctx = dataset.contexts[0];
         const flow = ctx.flows[0];
         const block = flow.blocks[0];

@@ -23,7 +23,7 @@ export declare class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     }, _contextService?: IContextService);
     initializeBehaviours(behaviourConstructors: IBehaviourConstructor[]): void;
     initialize(): Promise<IRichCursor | undefined>;
-    isInitialized(ctx: IContext): boolean;
+    isInitialized(ctx: IContext): ctx is IContextWithCursor;
     isFirst(): boolean;
     isLast(): boolean;
     run(): Promise<IRichCursorInputRequired | undefined>;
@@ -38,15 +38,19 @@ export declare class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     dehydrateCursor(richCursor: IRichCursor): ICursor;
     hydrateRichCursorFrom(ctx: IContextWithCursor): IRichCursor;
     initializeOneBlock(block: IBlock, flowId: string, originFlowId?: string, originBlockInteractionId?: string): Promise<IRichCursor>;
+    isRichCursorInputRequired(richCursor: IRichCursor): richCursor is IRichCursorInputRequired;
     runActiveBlockOn(richCursor: IRichCursor, block: IBlock): Promise<IBlockExit>;
     createBlockRunnerFor(block: IBlock, ctx: IContext): IBlockRunner;
     navigateTo(block: IBlock, ctx: IContext): Promise<IRichCursor>;
+    _activateCursorOnto(ctx: IContext, richCursor: IRichCursor): void;
+    _inflateInteractionAndContainerCursorFor(block: IBlock, ctx: IContext): Promise<IRichCursor>;
     stepInto(runFlowBlock: IBlock, ctx: IContext): IBlock | undefined;
     stepOut(ctx: IContext): IBlock | undefined;
     findFirstExitOnActiveFlowBlockFor({ blockId }: IBlockInteraction, ctx: IContext): IBlockExit;
     findNextBlockOnActiveFlowFor(ctx: IContext): IBlock | undefined;
     findNextBlockFrom({ blockId, selectedExitId }: IBlockInteraction, ctx: IContext): IBlock | undefined;
     private createBlockInteractionFor;
+    _inflatePromptForBlockOnto(richCursor: IRichCursor, block: IBlock, ctx: IContextWithCursor): Promise<void>;
     buildPromptFor(block: IBlock, interaction: IBlockInteraction): Promise<TGenericPrompt | undefined>;
     createPromptFrom<T>(config?: IPromptConfig<T>, interaction?: IBlockInteraction): TGenericPrompt | undefined;
 }
