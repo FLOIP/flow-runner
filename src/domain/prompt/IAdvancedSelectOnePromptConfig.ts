@@ -20,12 +20,12 @@
 import {IPromptConfig} from '../..'
 
 export interface IAdvancedSelectOnePromptConfig extends IPromptConfig<IAdvancedSelectOne[]> {
-  promptAudio: string
+  promptAudio?: string
   primaryField: string
   secondaryFields: string[]
   choiceRowFields: string[]
   choiceRows: string[][]
-  responseFields: string[]
+  responseFields?: string[]
 }
 
 export interface IAdvancedSelectOne {
