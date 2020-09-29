@@ -18,7 +18,6 @@
  **/
 
 export interface IAdvancedSelectOneBlockConfig {
-  kind: string
   prompt: string
   promptAudio?: string
   primaryField: string
