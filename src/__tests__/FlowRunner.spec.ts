@@ -134,7 +134,7 @@ describe('FlowRunner', () => {
           flows,
           'en_US',
           SupportedMode.OFFLINE,
-          resources,
+          resources
         )
 
         const runner = new FlowRunner(context)
@@ -160,7 +160,7 @@ describe('FlowRunner', () => {
           flows,
           'en_US',
           SupportedMode.OFFLINE,
-          resources,
+          resources
         )
 
         const runner = new FlowRunner(context)
@@ -187,7 +187,7 @@ describe('FlowRunner', () => {
           flows,
           'en_US',
           SupportedMode.OFFLINE,
-          resources,
+          resources
         )
 
         const runner = new FlowRunner(context)
@@ -223,7 +223,9 @@ describe('FlowRunner', () => {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const context: IContext = require('./fixtures/2020-04-23-run-flow-unable-to-step-out-doubly-nested.context.json')
         const runner = new FlowRunner(context)
-        runner.cacheInteractionByBlockName = noop // until we create a behaviour for expressions
+
+        // todo: we need to remove this once we create a behaviour for expressions
+        runner.cacheInteractionByBlockName = noop
 
         let {prompt}: IRichCursorInputRequired = (await runner.run())!
         expect(prompt).toBeTruthy()

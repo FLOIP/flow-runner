@@ -461,12 +461,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param originFlowId
    * @param originBlockInteractionId
    */
-  async initializeOneBlock(
-    block: IBlock,
-    flowId: string,
-    originFlowId?: string,
-    originBlockInteractionId?: string
-  ): Promise<IRichCursor> {
+  async initializeOneBlock(block: IBlock, flowId: string, originFlowId?: string, originBlockInteractionId?: string): Promise<IRichCursor> {
     let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
 
     // todo: this could be findFirstExitOnActiveFlowBlockFor to an Expressions Behaviour
