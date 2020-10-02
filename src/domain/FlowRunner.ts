@@ -461,8 +461,16 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param originFlowId
    * @param originBlockInteractionId
    */
-  async initializeOneBlock(block: IBlock, flowId: string, originFlowId?: string, originBlockInteractionId?: string): Promise<IRichCursor> {
+  async initializeOneBlock(
+    block: IBlock,
+    flowId: string,
+    originFlowId?: string,
+    originBlockInteractionId?: string
+  ): Promise<IRichCursor> {
     let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
+
+    // todo: this could be findFirstExitOnActiveFlowBlockFor to an Expressions Behaviour
+    this.cacheInteractionByBlockName(interaction, block as IMessageBlock, this.context)
 
     Object.values(this.behaviours).forEach(b => (interaction = b.postInteractionCreate(interaction, this.context)))
 
@@ -541,9 +549,6 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     this._activateCursorOnto(ctx, richCursor)
 
     await this._inflatePromptForBlockOnto(richCursor, block, ctx as IContextWithCursor)
-
-    // todo: this could be findFirstExitOnActiveFlowBlockFor to an Expressions Behaviour
-    this.cacheInteractionByBlockName(richCursor.interaction, block as IMessageBlock, ctx)
 
     return richCursor
   }
