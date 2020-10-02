@@ -5,11 +5,21 @@ const __1 = require("../..");
 exports.ADVANCED_SELECT_ONE_PROMPT_KEY = 'AdvancedSelectOne';
 class AdvancedSelectOnePrompt extends __1.BasePrompt {
     validate(selectedRow) {
-        const { choiceRows } = this.config;
-        selectedRow === null || selectedRow === void 0 ? void 0 : selectedRow.forEach(selection => {
-            if (choiceRows.find(row => row.includes(selection.name)) === null)
-                throw new __1.ValidationException('Value provided must be in list of choices');
-        });
+        const { choiceRows, choiceRowFields, isResponseRequired } = this.config;
+        if (isResponseRequired) {
+            const hasSelectedRow = choiceRows.some(row => selectedRow === null || selectedRow === void 0 ? void 0 : selectedRow.every(selection => {
+                const columnIndex = choiceRowFields.indexOf(selection.name);
+                if (columnIndex < 0) {
+                    throw new __1.ValidationException(`Failed to find a column called: ${selection.name}`);
+                }
+                else {
+                    return selection.value === row[columnIndex];
+                }
+            }));
+            if (!hasSelectedRow) {
+                throw new __1.ValidationException(`Failed to find the given row: ${selectedRow}`);
+            }
+        }
         return true;
     }
 }

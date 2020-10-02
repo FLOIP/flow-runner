@@ -23,12 +23,23 @@ export const ADVANCED_SELECT_ONE_PROMPT_KEY = 'AdvancedSelectOne'
 
 export class AdvancedSelectOnePrompt extends BasePrompt<IAdvancedSelectOnePromptConfig> {
   validate(selectedRow?: IAdvancedSelectOne[]): boolean {
-    const {choiceRows} = this.config
+    const {choiceRows, choiceRowFields, isResponseRequired} = this.config
 
-    selectedRow?.forEach(selection => {
-      if (choiceRows.find(row => row.includes(selection.name)) === null)
-        throw new ValidationException('Value provided must be in list of choices')
-    })
+    if (isResponseRequired) {
+      const hasSelectedRow = choiceRows.some(row =>
+        selectedRow?.every(selection => {
+          const columnIndex = choiceRowFields.indexOf(selection.name)
+          if (columnIndex < 0) {
+            throw new ValidationException(`Failed to find a column called: ${selection.name}`)
+          } else {
+            return selection.value === row[columnIndex]
+          }
+        })
+      )
+      if (!hasSelectedRow) {
+        throw new ValidationException(`Failed to find the given row: ${selectedRow}`)
+      }
+    }
 
     return true
   }

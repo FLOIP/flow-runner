@@ -18,7 +18,6 @@
  **/
 
 import {IBlockWithTestExits, IAdvancedSelectOneBlockConfig} from '../..'
-import {} from './IAdvancedSelectOneBlockConfig'
 
 export interface IAdvancedSelectOneBlock extends IBlockWithTestExits {
   config: IAdvancedSelectOneBlockConfig
