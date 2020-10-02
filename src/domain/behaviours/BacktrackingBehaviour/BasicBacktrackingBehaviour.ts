@@ -72,36 +72,35 @@ export interface IBasicBackTrackingBehaviour extends IBehaviour {
  * modifications will clear the past's future.
  */
 export class BasicBacktrackingBehaviour implements IBasicBackTrackingBehaviour {
-  constructor(public context: IContext, public navigator: IFlowNavigator, public promptBuilder: IPromptBuilder) {
+  jumpContext?: {
+    discardedInteractions: IBlockInteraction[]
+    destinationInteraction: IBlockInteraction
   }
+
+  constructor(public context: IContext, public navigator: IFlowNavigator, public promptBuilder: IPromptBuilder) {}
 
   rebuildIndex(): void {
     // do nothing for now
   }
 
   async seek(steps = 0, context: IContext = this.context): Promise<IRichCursorInputRequired> {
-    const {interaction: prevIntx, prompt: virtualPrompt}: IRichCursorInputRequired = await this.peek(steps, context)
+    const {interaction: prevIntx}: IRichCursorInputRequired = await this.peek(steps, context)
     // then generate a cursor from desired interaction && set cursor on context
-    const cursor: IRichCursorInputRequired = (await this.jumpTo(prevIntx, context)) as IRichCursorInputRequired
-
-    // pre-populate previous value onto prompt for new interaction
-    cursor.prompt.value = virtualPrompt.value
-
-    return cursor
+    return (await this.jumpTo(prevIntx, context)) as IRichCursorInputRequired
   }
 
-  async jumpTo(intx: IBlockInteraction, context: IContext = this.context): Promise<IRichCursor> {
+  async jumpTo(destinationInteraction: IBlockInteraction, context: IContext = this.context): Promise<IRichCursor> {
     // jump context.interactions back in time
     const discarded = context.interactions.splice(
       // truncate intx list to pull us back in time; include provided intx
-      findLastIndex(context.interactions, intx),
-      context.interactions.length,
+      findLastIndex(context.interactions, destinationInteraction),
+      context.interactions.length
     )
 
     // step out of nested flows that we've truncated
     // todo: migrate to also use applyReversibleDataOperation()
     forEachRight(discarded, intx =>
-      intx.uuid === last(context.nestedFlowBlockInteractionIdStack) ? context.nestedFlowBlockInteractionIdStack.pop() : null,
+      intx.uuid === last(context.nestedFlowBlockInteractionIdStack) ? context.nestedFlowBlockInteractionIdStack.pop() : null
     )
 
     // can only reverse from the end, so we only compare the last.
@@ -111,7 +110,13 @@ export class BasicBacktrackingBehaviour implements IBasicBackTrackingBehaviour {
       }
     })
 
-    return this.navigator.navigateTo(findBlockOnActiveFlowWith(intx.blockId, context), context)
+    const destinationBlock = findBlockOnActiveFlowWith(destinationInteraction.blockId, context)
+
+    this.jumpContext = {discardedInteractions: discarded, destinationInteraction}
+    const richCursor = await this.navigator.navigateTo(destinationBlock, context)
+    this.jumpContext = undefined
+
+    return richCursor
   }
 
   _findInteractiveInteractionAt(steps = 0, context: IContext = this.context, direction = PeekDirection.LEFT): IBlockInteraction {
@@ -121,7 +126,7 @@ export class BasicBacktrackingBehaviour implements IBasicBackTrackingBehaviour {
     }[direction]
 
     if (_find == null) {
-      throw new ValidationException(`Unknown \`direction\` provided to findInteractiveInteractionAt() - 
+      throw new ValidationException(`Unknown \`direction\` provided to findInteractiveInteractionAt() -
         ${JSON.stringify(direction)}`)
     }
 
@@ -147,7 +152,7 @@ export class BasicBacktrackingBehaviour implements IBasicBackTrackingBehaviour {
           context: context.id,
           intx,
           block,
-        })}`,
+        })}`
       )
     }
 
@@ -158,7 +163,13 @@ export class BasicBacktrackingBehaviour implements IBasicBackTrackingBehaviour {
   }
 
   postInteractionCreate(interaction: IBlockInteraction, _context: IContext): IBlockInteraction {
-    return interaction
+    if (this.jumpContext == null) {
+      return interaction
+    }
+
+    return Object.assign(interaction, {
+      value: this.jumpContext.destinationInteraction.value,
+    })
   }
 
   postInteractionComplete(_interaction: IBlockInteraction, _context: IContext): void {
