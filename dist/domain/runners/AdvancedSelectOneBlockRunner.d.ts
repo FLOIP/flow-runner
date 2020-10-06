@@ -1,5 +1,4 @@
-import { IBlockExit, IBlockInteraction, IBlockRunner, IContext, IAdvancedSelectOneBlock, IAdvancedSelectOnePromptConfig } from '../..';
-import { IRichCursor } from '../../flow-spec/IContext';
+import { IAdvancedSelectOneBlock, IAdvancedSelectOnePromptConfig, IBlockExit, IBlockInteraction, IBlockRunner, IContext, IRichCursor } from '../..';
 export declare class AdvancedSelectOneBlockRunner implements IBlockRunner {
     block: IAdvancedSelectOneBlock;
     context: IContext;

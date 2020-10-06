@@ -20,18 +20,18 @@
 import {
   ADVANCED_SELECT_ONE_PROMPT_KEY,
   findFirstTruthyEvaluatingBlockExitOn,
+  IAdvancedSelectOneBlock,
+  IAdvancedSelectOneBlockInteractionDetails,
+  IAdvancedSelectOnePromptConfig,
   IBlockExit,
   IBlockExitTestRequired,
   IBlockInteraction,
   IBlockRunner,
   IContext,
-  IAdvancedSelectOneBlock,
-  IAdvancedSelectOnePromptConfig,
+  IRichCursor,
   setContactProperty,
 } from '../..'
 import {last} from 'lodash'
-import {IRichCursor} from '../../flow-spec/IContext'
-import {IAdvancedSelectOneBlockInteractionDetails} from '../../flow-spec/IAdvanceSelectOneBlockInteractionDetails'
 
 export class AdvancedSelectOneBlockRunner implements IBlockRunner {
   constructor(public block: IAdvancedSelectOneBlock, public context: IContext) {}
