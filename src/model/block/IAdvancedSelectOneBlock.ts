@@ -19,6 +19,8 @@
 
 import {IBlockWithTestExits, IAdvancedSelectOneBlockConfig} from '../..'
 
+export const ADVANCED_SELECT_ONE_BLOCK_TYPE = 'Vendor\\io_viamo\\DirectorySelectionBlock'
+
 export interface IAdvancedSelectOneBlock extends IBlockWithTestExits {
   config: IAdvancedSelectOneBlockConfig
 }
