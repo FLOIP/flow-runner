@@ -34,4 +34,5 @@ export interface IResourceResolver {
     resolve(resourceId: string): IResource;
 }
 export declare function createTextResourceVariantWith(value: string, ctx: IContext): IResourceDefinitionContentTypeSpecific;
+export declare function getResource(context: IContext, resourceId: string): IResource;
 //# sourceMappingURL=IResourceResolver.d.ts.map

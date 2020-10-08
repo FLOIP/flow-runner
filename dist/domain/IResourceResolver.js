@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createTextResourceVariantWith = exports.SupportedContentType = void 0;
+exports.getResource = exports.createTextResourceVariantWith = exports.SupportedContentType = void 0;
+const __1 = require("..");
 var SupportedContentType;
 (function (SupportedContentType) {
     SupportedContentType["TEXT"] = "text";
@@ -17,4 +18,8 @@ function createTextResourceVariantWith(value, ctx) {
     };
 }
 exports.createTextResourceVariantWith = createTextResourceVariantWith;
+function getResource(context, resourceId) {
+    return new __1.ResourceResolver(context).resolve(resourceId);
+}
+exports.getResource = getResource;
 //# sourceMappingURL=IResourceResolver.js.map
