@@ -19,6 +19,8 @@
 
 import {IBlockWithTestExits, IAdvancedSelectOneBlockConfig} from '../..'
 
+export const ADVANCED_SELECT_ONE_BLOCK_TYPE = 'MobilePrimitives\\Extended\\AdvancedSelectOne'
+
 export interface IAdvancedSelectOneBlock extends IBlockWithTestExits {
   config: IAdvancedSelectOneBlockConfig
 }
