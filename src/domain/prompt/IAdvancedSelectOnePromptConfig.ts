@@ -42,7 +42,7 @@ export function getConfigWithResourcesForAdvancedSelectOne(
     primaryField: getResource(context, config.primaryField).getText(),
     secondaryFields: config.secondaryFields.map(field => getResource(context, field).getText()),
     choiceRowFields: config.choiceRowFields.map(field => getResource(context, field).getText()),
-    choiceRows: config.choiceRows.map(row => row.map(cell => getResource(context, cell).getText())),
+    choiceRows: getResource(context, config.choiceRows).getCsv(),
     responseFields: config.responseFields?.map(field => getResource(context, field).getText()),
   }
 }
