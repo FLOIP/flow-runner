@@ -14,6 +14,7 @@ tslib_1.__exportStar(require("./domain/exceptions/NotImplementedException"), exp
 tslib_1.__exportStar(require("./domain/exceptions/PromptValidationException"), exports);
 tslib_1.__exportStar(require("./domain/exceptions/ResourceNotFoundException"), exports);
 tslib_1.__exportStar(require("./domain/exceptions/ValidationException"), exports);
+tslib_1.__exportStar(require("./domain/SupportedContentType"), exports);
 tslib_1.__exportStar(require("./domain/FlowRunner"), exports);
 tslib_1.__exportStar(require("./domain/IdGeneratorUuidV4"), exports);
 tslib_1.__exportStar(require("./domain/IFlowRunner"), exports);
@@ -53,7 +54,6 @@ tslib_1.__exportStar(require("./flow-spec/IContactProperty"), exports);
 tslib_1.__exportStar(require("./flow-spec/Context"), exports);
 tslib_1.__exportStar(require("./flow-spec/DataObjectPopertyNameCamelCaseConverter"), exports);
 tslib_1.__exportStar(require("./flow-spec/DeliveryStatus"), exports);
-tslib_1.__exportStar(require("./flow-spec/IAdvanceSelectOneBlockInteractionDetails"), exports);
 tslib_1.__exportStar(require("./flow-spec/IBlock"), exports);
 tslib_1.__exportStar(require("./flow-spec/IBlockExit"), exports);
 tslib_1.__exportStar(require("./flow-spec/IBlockInteraction"), exports);

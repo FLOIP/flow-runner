@@ -21,14 +21,12 @@ import {
   ADVANCED_SELECT_ONE_PROMPT_KEY,
   findFirstTruthyEvaluatingBlockExitOn,
   IAdvancedSelectOneBlock,
-  IAdvancedSelectOneBlockInteractionDetails,
   IAdvancedSelectOnePromptConfig,
   IBlockExit,
   IBlockExitTestRequired,
   IBlockInteraction,
   IBlockRunner,
   IContext,
-  IRichCursor,
   setContactProperty,
 } from '../..'
 import {last} from 'lodash'
@@ -53,11 +51,7 @@ export class AdvancedSelectOneBlockRunner implements IBlockRunner {
     }
   }
 
-  async run(cursor: IRichCursor): Promise<IBlockExit> {
-    const interactionDetails = cursor.interaction.details as IAdvancedSelectOneBlockInteractionDetails
-
-    interactionDetails.choiceRows = this.block.config.choiceRows
-
+  async run(): Promise<IBlockExit> {
     setContactProperty(this.block, this.context)
     return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? (last(this.block.exits) as IBlockExitTestRequired)
   }

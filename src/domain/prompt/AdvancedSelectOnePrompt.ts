@@ -17,13 +17,19 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {BasePrompt, IAdvancedSelectOne, IAdvancedSelectOnePromptConfig, ValidationException} from '../..'
+import {assertNotNull, BasePrompt, IAdvancedSelectOne, IAdvancedSelectOnePromptConfig, ValidationException} from '../..'
 
 export const ADVANCED_SELECT_ONE_PROMPT_KEY = 'AdvancedSelectOne'
 
 export class AdvancedSelectOnePrompt extends BasePrompt<IAdvancedSelectOnePromptConfig> {
-  validate(selectedRow?: IAdvancedSelectOne[]): boolean {
-    const {choiceRows, choiceRowFields, isResponseRequired} = this.config
+  validate(selectedRow?: IAdvancedSelectOne[], choiceRows?: string[][]): boolean {
+    const {choiceRowFields, isResponseRequired} = this.config
+
+    assertNotNull(
+      choiceRows,
+      () => 'choiceRows must be non-null',
+      message => new ValidationException(message)
+    )
 
     if (isResponseRequired) {
       const hasSelectedRow = choiceRows.some(row =>

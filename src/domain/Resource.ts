@@ -71,6 +71,14 @@ export class Resource implements IResource {
     return this._getValueByContentType(SupportedContentType.VIDEO)
   }
 
+  getCsv(): string {
+    return this._getValueByContentType(SupportedContentType.CSV)
+  }
+
+  get(key: string): string {
+    return this._getValueByContentType(key)
+  }
+
   hasAudio(): boolean {
     return this._hasByContentType(SupportedContentType.AUDIO)
   }
@@ -85,5 +93,13 @@ export class Resource implements IResource {
 
   hasVideo(): boolean {
     return this._hasByContentType(SupportedContentType.VIDEO)
+  }
+
+  hasCsv(): boolean {
+    return this._hasByContentType(SupportedContentType.CSV)
+  }
+
+  has(key: string): boolean {
+    return this._hasByContentType(key)
   }
 }
