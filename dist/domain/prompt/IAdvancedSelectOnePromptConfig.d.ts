@@ -1,10 +1,10 @@
-import { IContext, IPromptConfig } from '../..';
+import { IContext, IPromptConfig, IResource } from '../..';
 export interface IAdvancedSelectOnePromptConfig extends IPromptConfig<IAdvancedSelectOne[]> {
     promptAudio?: string;
     primaryField: string;
     secondaryFields: string[];
     choiceRowFields: string[];
-    choiceRows: string;
+    choiceRows: IResource['uuid'];
     responseFields?: string[];
 }
 export interface IAdvancedSelectOne {
