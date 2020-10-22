@@ -39,6 +39,12 @@ class Resource {
     getVideo() {
         return this._getValueByContentType(__1.SupportedContentType.VIDEO);
     }
+    getCsv() {
+        return this._getValueByContentType(__1.SupportedContentType.CSV);
+    }
+    get(key) {
+        return this._getValueByContentType(key);
+    }
     hasAudio() {
         return this._hasByContentType(__1.SupportedContentType.AUDIO);
     }
@@ -50,6 +56,12 @@ class Resource {
     }
     hasVideo() {
         return this._hasByContentType(__1.SupportedContentType.VIDEO);
+    }
+    hasCsv() {
+        return this._hasByContentType(__1.SupportedContentType.CSV);
+    }
+    has(key) {
+        return this._hasByContentType(key);
     }
 }
 exports.Resource = Resource;

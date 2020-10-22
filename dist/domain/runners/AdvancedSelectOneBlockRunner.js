@@ -26,11 +26,9 @@ class AdvancedSelectOneBlockRunner {
             };
         });
     }
-    run(cursor) {
+    run() {
         var _a;
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const interactionDetails = cursor.interaction.details;
-            interactionDetails.choiceRows = this.block.config.choiceRows;
             __1.setContactProperty(this.block, this.context);
             return (_a = __1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context)) !== null && _a !== void 0 ? _a : lodash_1.last(this.block.exits);
         });

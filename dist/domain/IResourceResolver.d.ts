@@ -1,10 +1,4 @@
-import { IContext, SupportedMode } from '..';
-export declare enum SupportedContentType {
-    TEXT = "text",
-    AUDIO = "audio",
-    IMAGE = "image",
-    VIDEO = "video"
-}
+import { IContext, SupportedContentType, SupportedMode } from '..';
 export interface IResourceDefinitionContentTypeSpecific {
     languageId: string;
     contentType: SupportedContentType;
@@ -20,14 +14,18 @@ export interface IResource {
     uuid: string;
     values: IResourceDefinitionContentTypeSpecific[];
     context: IContext;
-    hasText(): boolean;
     getText(): string;
-    hasAudio(): boolean;
+    hasText(): boolean;
     getAudio(): string;
-    hasImage(): boolean;
+    hasAudio(): boolean;
     getImage(): string;
-    hasVideo(): boolean;
+    hasImage(): boolean;
     getVideo(): string;
+    hasVideo(): boolean;
+    getCsv(): string;
+    hasCsv(): boolean;
+    get(key: string): string;
+    has(key: string): boolean;
 }
 export interface IResourceResolver {
     context: IContext;

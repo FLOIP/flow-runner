@@ -1,9 +1,9 @@
-import { IAdvancedSelectOneBlock, IAdvancedSelectOnePromptConfig, IBlockExit, IBlockInteraction, IBlockRunner, IContext, IRichCursor } from '../..';
+import { IAdvancedSelectOneBlock, IAdvancedSelectOnePromptConfig, IBlockExit, IBlockInteraction, IBlockRunner, IContext } from '../..';
 export declare class AdvancedSelectOneBlockRunner implements IBlockRunner {
     block: IAdvancedSelectOneBlock;
     context: IContext;
     constructor(block: IAdvancedSelectOneBlock, context: IContext);
     initialize({ value }: IBlockInteraction): Promise<IAdvancedSelectOnePromptConfig>;
-    run(cursor: IRichCursor): Promise<IBlockExit>;
+    run(): Promise<IBlockExit>;
 }
 //# sourceMappingURL=AdvancedSelectOneBlockRunner.d.ts.map

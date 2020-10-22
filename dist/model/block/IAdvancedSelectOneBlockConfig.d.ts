@@ -4,7 +4,7 @@ export interface IAdvancedSelectOneBlockConfig {
     primaryField: string;
     secondaryFields: string[];
     choiceRowFields: string[];
-    choiceRows: string[][];
+    choiceRows: string;
     responseFields?: string[];
 }
 //# sourceMappingURL=IAdvancedSelectOneBlockConfig.d.ts.map

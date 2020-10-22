@@ -24,7 +24,7 @@ export interface IAdvancedSelectOnePromptConfig extends IPromptConfig<IAdvancedS
   primaryField: string
   secondaryFields: string[]
   choiceRowFields: string[]
-  choiceRows: string[][]
+  choiceRows: string
   responseFields?: string[]
 }
 

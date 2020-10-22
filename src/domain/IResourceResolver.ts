@@ -17,14 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IContext, SupportedMode} from '..'
-
-export enum SupportedContentType {
-  TEXT = 'text',
-  AUDIO = 'audio',
-  IMAGE = 'image',
-  VIDEO = 'video',
-}
+import {IContext, SupportedContentType, SupportedMode} from '..'
 
 export interface IResourceDefinitionContentTypeSpecific {
   // todo: rename to IResourceDefinitionVariant
@@ -48,25 +41,35 @@ export interface IResource {
   values: IResourceDefinitionContentTypeSpecific[]
   context: IContext
 
-  hasText(): boolean
-
   /** @throws ResourceNotFoundException */
   getText(): string
 
-  hasAudio(): boolean
+  hasText(): boolean
 
   /** @throws ResourceNotFoundException */
   getAudio(): string
 
-  hasImage(): boolean
+  hasAudio(): boolean
 
   /** @throws ResourceNotFoundException */
   getImage(): string
 
-  hasVideo(): boolean
+  hasImage(): boolean
 
   /** @throws ResourceNotFoundException */
   getVideo(): string
+
+  hasVideo(): boolean
+
+  /** @throws ResourceNotFoundException */
+  getCsv(): string
+
+  hasCsv(): boolean
+
+  /** @throws ResourceNotFoundException */
+  get(key: string): string
+
+  has(key: string): boolean
 }
 
 export interface IResourceResolver {

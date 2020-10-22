@@ -22,11 +22,11 @@ import {BasePrompt, IAdvancedSelectOne, IAdvancedSelectOnePromptConfig, Validati
 export const ADVANCED_SELECT_ONE_PROMPT_KEY = 'AdvancedSelectOne'
 
 export class AdvancedSelectOnePrompt extends BasePrompt<IAdvancedSelectOnePromptConfig> {
-  validate(selectedRow?: IAdvancedSelectOne[]): boolean {
-    const {choiceRows, choiceRowFields, isResponseRequired} = this.config
+  validate(selectedRow?: IAdvancedSelectOne[], choiceRows?: string[][]): boolean {
+    const {choiceRowFields, isResponseRequired} = this.config
 
     if (isResponseRequired) {
-      const hasSelectedRow = choiceRows.some(row =>
+      const hasSelectedRow = choiceRows?.some(row =>
         selectedRow?.every(selection => {
           const columnIndex = choiceRowFields.indexOf(selection.name)
           if (columnIndex < 0) {
