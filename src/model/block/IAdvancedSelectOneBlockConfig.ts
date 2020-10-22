@@ -1,3 +1,5 @@
+import {IResource} from '../..'
+
 /**
  * Flow Interoperability Project (flowinterop.org)
  * Flow Runner
@@ -23,6 +25,6 @@ export interface IAdvancedSelectOneBlockConfig {
   primaryField: string
   secondaryFields: string[]
   choiceRowFields: string[]
-  choiceRows: string
+  choiceRows: IResource['uuid']
   responseFields?: string[]
 }
