@@ -120,6 +120,7 @@ describe('FlowRunner', () => {
             it('should handle stepping out multiple times', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                 const context = require('./fixtures/2020-04-23-run-flow-unable-to-step-out-doubly-nested.context.json');
                 const runner = new __1.FlowRunner(context);
+                runner.cacheInteractionByBlockName = lodash_1.noop;
                 let { prompt } = (yield runner.run());
                 expect(prompt).toBeTruthy();
                 prompt.value = 'Run Tree B';

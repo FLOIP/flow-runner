@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IPromptConfig} from '../..'
+import {getResource, IContext, IPromptConfig} from '../..'
 
 export interface IAdvancedSelectOnePromptConfig extends IPromptConfig<IAdvancedSelectOne[]> {
   promptAudio?: string
@@ -31,4 +31,18 @@ export interface IAdvancedSelectOnePromptConfig extends IPromptConfig<IAdvancedS
 export interface IAdvancedSelectOne {
   name: string
   value: string
+}
+
+export function getConfigWithResourcesForAdvancedSelectOne(
+  context: IContext,
+  config: IAdvancedSelectOnePromptConfig
+): IAdvancedSelectOnePromptConfig {
+  return {
+    ...config,
+    primaryField: getResource(context, config.primaryField).getText(),
+    secondaryFields: config.secondaryFields.map(field => getResource(context, field).getText()),
+    choiceRowFields: config.choiceRowFields.map(field => getResource(context, field).getText()),
+    choiceRows: config.choiceRows.map(row => row.map(cell => getResource(context, cell).getText())),
+    responseFields: config.responseFields?.map(field => getResource(context, field).getText()),
+  }
 }

@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IContext, SupportedContentType, SupportedMode} from '..'
+import {IContext, SupportedContentType, ResourceResolver, SupportedMode} from '..'
 
 export interface IResourceDefinitionContentTypeSpecific {
   // todo: rename to IResourceDefinitionVariant
@@ -85,4 +85,8 @@ export function createTextResourceVariantWith(value: string, ctx: IContext): IRe
     languageId: ctx.languageId,
     modes: [ctx.mode],
   }
+}
+
+export function getResource(context: IContext, resourceId: string): IResource {
+  return new ResourceResolver(context).resolve(resourceId)
 }

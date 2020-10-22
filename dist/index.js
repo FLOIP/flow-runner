@@ -36,6 +36,7 @@ tslib_1.__exportStar(require("./domain/prompt/SelectManyPrompt"), exports);
 tslib_1.__exportStar(require("./domain/prompt/SelectOnePrompt"), exports);
 tslib_1.__exportStar(require("./domain/Resource"), exports);
 tslib_1.__exportStar(require("./domain/ResourceResolver"), exports);
+tslib_1.__exportStar(require("./domain/runners/AdvancedSelectOneBlockRunner"), exports);
 tslib_1.__exportStar(require("./domain/runners/CaseBlockRunner"), exports);
 tslib_1.__exportStar(require("./domain/runners/IBlockRunner"), exports);
 tslib_1.__exportStar(require("./domain/runners/LogBlockRunner"), exports);

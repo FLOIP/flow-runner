@@ -32,6 +32,7 @@ export * from './domain/prompt/SelectManyPrompt';
 export * from './domain/prompt/SelectOnePrompt';
 export * from './domain/Resource';
 export * from './domain/ResourceResolver';
+export * from './domain/runners/AdvancedSelectOneBlockRunner';
 export * from './domain/runners/CaseBlockRunner';
 export * from './domain/runners/IBlockRunner';
 export * from './domain/runners/LogBlockRunner';

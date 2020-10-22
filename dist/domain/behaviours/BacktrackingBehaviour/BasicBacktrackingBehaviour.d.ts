@@ -13,10 +13,14 @@ export declare class BasicBacktrackingBehaviour implements IBasicBackTrackingBeh
     context: IContext;
     navigator: IFlowNavigator;
     promptBuilder: IPromptBuilder;
+    jumpContext?: {
+        discardedInteractions: IBlockInteraction[];
+        destinationInteraction: IBlockInteraction;
+    };
     constructor(context: IContext, navigator: IFlowNavigator, promptBuilder: IPromptBuilder);
     rebuildIndex(): void;
     seek(steps?: number, context?: IContext): Promise<IRichCursorInputRequired>;
-    jumpTo(intx: IBlockInteraction, context?: IContext): Promise<IRichCursor>;
+    jumpTo(destinationInteraction: IBlockInteraction, context?: IContext): Promise<IRichCursor>;
     _findInteractiveInteractionAt(steps?: number, context?: IContext, direction?: PeekDirection): IBlockInteraction;
     peek(steps?: number, context?: IContext, direction?: PeekDirection): Promise<IRichCursorInputRequired>;
     postInteractionCreate(interaction: IBlockInteraction, _context: IContext): IBlockInteraction;

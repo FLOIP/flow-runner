@@ -19,15 +19,13 @@ class BasicBacktrackingBehaviour {
     }
     seek(steps = 0, context = this.context) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const { interaction: prevIntx, prompt: virtualPrompt } = yield this.peek(steps, context);
-            const cursor = (yield this.jumpTo(prevIntx, context));
-            cursor.prompt.value = virtualPrompt.value;
-            return cursor;
+            const { interaction: prevIntx } = yield this.peek(steps, context);
+            return (yield this.jumpTo(prevIntx, context));
         });
     }
-    jumpTo(intx, context = this.context) {
+    jumpTo(destinationInteraction, context = this.context) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const discarded = context.interactions.splice(lodash_1.findLastIndex(context.interactions, intx), context.interactions.length);
+            const discarded = context.interactions.splice(lodash_1.findLastIndex(context.interactions, destinationInteraction), context.interactions.length);
             lodash_1.forEachRight(discarded, intx => intx.uuid === lodash_1.last(context.nestedFlowBlockInteractionIdStack) ? context.nestedFlowBlockInteractionIdStack.pop() : null);
             lodash_1.forEachRight(discarded, ({ uuid }) => {
                 var _a;
@@ -35,7 +33,11 @@ class BasicBacktrackingBehaviour {
                     __1.FlowRunner.prototype.reverseLastDataOperation(context);
                 }
             });
-            return this.navigator.navigateTo(__1.findBlockOnActiveFlowWith(intx.blockId, context), context);
+            const destinationBlock = __1.findBlockOnActiveFlowWith(destinationInteraction.blockId, context);
+            this.jumpContext = { discardedInteractions: discarded, destinationInteraction };
+            const richCursor = yield this.navigator.navigateTo(destinationBlock, context);
+            this.jumpContext = undefined;
+            return richCursor;
         });
     }
     _findInteractiveInteractionAt(steps = 0, context = this.context, direction = PeekDirection.LEFT) {
@@ -44,7 +46,7 @@ class BasicBacktrackingBehaviour {
             [PeekDirection.LEFT]: lodash_1.findLast,
         }[direction];
         if (_find == null) {
-            throw new __1.ValidationException(`Unknown \`direction\` provided to findInteractiveInteractionAt() - 
+            throw new __1.ValidationException(`Unknown \`direction\` provided to findInteractiveInteractionAt() -
         ${JSON.stringify(direction)}`);
         }
         let _steps = steps + 1;
@@ -73,7 +75,12 @@ class BasicBacktrackingBehaviour {
         });
     }
     postInteractionCreate(interaction, _context) {
-        return interaction;
+        if (this.jumpContext == null) {
+            return interaction;
+        }
+        return Object.assign(interaction, {
+            value: this.jumpContext.destinationInteraction.value,
+        });
     }
     postInteractionComplete(_interaction, _context) {
     }
