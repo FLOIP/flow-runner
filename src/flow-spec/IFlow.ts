@@ -37,6 +37,7 @@ export interface IFlow {
   languages: ILanguage[]
   blocks: IBlock[]
 
+  firstBlockId: string
   exitBlockId?: string
 }
 
