@@ -22,7 +22,7 @@ import {getResource, IContext, IPromptConfig, IResource} from '../..'
 export interface IAdvancedSelectOnePromptConfig extends IPromptConfig<IAdvancedSelectOne[]> {
   promptAudio?: string
   primaryField: string
-  secondaryFields: string[]
+  secondaryFields?: string[]
   choiceRowFields: string[]
   choiceRows: IResource['uuid']
   responseFields?: string[]
@@ -40,7 +40,7 @@ export function getConfigWithResourcesForAdvancedSelectOne(
   return {
     ...config,
     primaryField: getResource(context, config.primaryField).getText(),
-    secondaryFields: config.secondaryFields.map(field => getResource(context, field).getText()),
+    secondaryFields: config?.secondaryFields?.map(field => getResource(context, field).getText()),
     choiceRowFields: config.choiceRowFields.map(field => getResource(context, field).getText()),
     choiceRows: getResource(context, config.choiceRows).getCsv(),
     responseFields: config.responseFields?.map(field => getResource(context, field).getText()),
