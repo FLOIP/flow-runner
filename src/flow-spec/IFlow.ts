@@ -23,7 +23,6 @@ import {find} from 'lodash'
 export interface IFlow {
   // UUID32
   uuid: string
-  orgId: string
   name: string
   label?: string
 

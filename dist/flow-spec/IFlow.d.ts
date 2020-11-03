@@ -1,7 +1,6 @@
 import { IBlock, ILanguage, SupportedMode } from '..';
 export interface IFlow {
     uuid: string;
-    orgId: string;
     name: string;
     label?: string;
     lastModified: string;
