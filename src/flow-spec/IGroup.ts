@@ -19,6 +19,6 @@
 
 export interface IGroup {
   groupKey: string
-  label: string
+  label?: string
   __value__: string
 }
