@@ -129,6 +129,7 @@ describe('FlowRunner', () => {
 
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
+          [],
           'user-1234',
           'org-1234',
           flows,
@@ -155,6 +156,7 @@ describe('FlowRunner', () => {
 
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
+          [],
           'user-1234',
           'org-1234',
           flows,
@@ -182,6 +184,7 @@ describe('FlowRunner', () => {
 
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
+          [],
           'user-1234',
           'org-1234',
           flows,

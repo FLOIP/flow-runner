@@ -20,7 +20,7 @@ describe.skip('FlowRunner integration', () => {
   })
 
   it('should work when simple + single backtrack', async () => {
-    const context = createContextDataObjectFor({id: '1'} as IContact, 'user-1234', 'org-1234', [flow], 'en_US', SupportedMode.OFFLINE)
+    const context = createContextDataObjectFor({id: '1'} as IContact, [], 'user-1234', 'org-1234', [flow], 'en_US', SupportedMode.OFFLINE)
 
     const runner = new FlowRunner(context)
     let {prompt}: IRichCursorInputRequired = (await runner.run())!
