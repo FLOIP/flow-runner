@@ -25,7 +25,7 @@ export type IContactPropertyType = IContactProperty | ContactPropertyResolver | 
 import {IContactProperty, IContactGroup, IGroup} from '..'
 
 export interface IContact {
-  id: string
+  id: IContactPropertyType
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: IContactPropertyType
