@@ -166,7 +166,7 @@ export function createEvalContextFrom(context: IContext): object {
  */
 export function createEvalContactFrom(contact: IContact): IContact {
   const evalContact = cloneDeep(contact)
-  evalContact.groups = evalContact.groups.filter(group => group.deletedAt === null)
+  evalContact.groups = evalContact.groups?.filter(group => group.deletedAt === null) ?? []
 
   return evalContact
 }

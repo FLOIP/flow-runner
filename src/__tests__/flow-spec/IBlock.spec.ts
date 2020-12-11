@@ -5,6 +5,7 @@ import {
   generateCachedProxyForBlockName,
   IBlockExitTestRequired,
   IBlockWithTestExits,
+  IContact,
   IContext,
   IEvalContextBlock,
   wrapInExprSyntaxWhenAbsent,
@@ -19,6 +20,7 @@ import {IContactGroup} from '../../flow-spec/IContactGroup'
 describe('IBlock', () => {
   let dataset: IDataset
   let target: IEvalContextBlock
+  let dummyContext: IContext
 
   beforeEach(() => {
     dataset = createDefaultDataset()
@@ -29,6 +31,7 @@ describe('IBlock', () => {
       value: 'my first value',
       text: 'my text',
     }
+    dummyContext = {contact: {} as IContact} as IContext
   })
 
   describe('findFirstTruthyEvaluatingBlockExitOn', () => {
@@ -43,7 +46,7 @@ describe('IBlock', () => {
             {test: '@(true = false)'},
           ] as IBlockExitTestRequired[],
         } as IBlockWithTestExits,
-        {} as IContext
+        dummyContext
       )
 
       expect(exit).toEqual({test: '@(true = true)'})
@@ -61,7 +64,7 @@ describe('IBlock', () => {
             {test: '@(true = false)'},
           ] as IBlockExitTestRequired[],
         } as IBlockWithTestExits,
-        {} as IContext
+        dummyContext
       )
 
       expect(exit).toEqual({test: '@(true = true)'})
@@ -70,7 +73,7 @@ describe('IBlock', () => {
 
   describe('generateCachedProxyForBlockName', () => {
     it('should return an object resembling the one provided', async () => {
-      const proxy = generateCachedProxyForBlockName(target, {} as IContext)
+      const proxy = generateCachedProxyForBlockName(target, dummyContext)
       expect(proxy).toEqual(target)
     })
 

@@ -1,5 +1,5 @@
 import {Contact} from '../../'
-import {Group} from '../../flow-spec/Group'
+import {ContactGroup, Group} from '../../flow-spec/Group'
 
 describe('Contact', () => {
   const contact = new Contact()
@@ -8,13 +8,18 @@ describe('Contact', () => {
     contact.groups = []
   })
 
-  describe('addGroup', () => {
+  // since we can't do exact object matches between IGroup and IContactGroup,
+  // we can just match the properties that they share
+  const matchGroup = (group: Group): unknown => expect.arrayContaining<Group>([expect.objectContaining(group)])
+
+  describe('group operations', () => {
     it('should add a group', () => {
       const group = new Group('someGroup')
 
       contact.addGroup(group)
 
-      expect(contact.groups).toContainEqual(group)
+      expect(contact.groups).toHaveLength(1)
+      expect(contact.groups).toEqual(matchGroup(group))
     })
 
     it('should add a group atomically', () => {
@@ -25,30 +30,43 @@ describe('Contact', () => {
       contact.addGroup(group)
 
       expect(contact.groups).toHaveLength(1)
+      expect(contact.groups).toEqual(matchGroup(group))
     })
 
     it('should remove a group', () => {
       const group = new Group('someGroup')
       const group2 = new Group('someGroup2')
-      contact.groups = [group, group2]
+      contact.groups = [new ContactGroup(group), new ContactGroup(group2)]
 
       contact.delGroup(group)
 
-      expect(contact.groups).toHaveLength(1)
-      expect(contact.groups).toContainEqual(group2)
+      expect(contact.groups).toHaveLength(2)
+
+      expect(contact.groups[0].deletedAt).not.toBeUndefined()
+      expect(contact.groups[1].deletedAt).toBeUndefined()
+
+      const deletedGroup = contact.groups.find(g => g.deletedAt != null)
+
+      expect(deletedGroup).toMatchObject(group)
     })
 
     it('should remove a group atomically', () => {
       const group = new Group('someGroup')
       const group2 = new Group('someGroup2')
-      contact.groups = [group, group2]
+      contact.groups = [new ContactGroup(group), new ContactGroup(group2)]
 
       contact.delGroup(group)
       contact.delGroup(group)
       contact.delGroup(group)
 
-      expect(contact.groups).toHaveLength(1)
-      expect(contact.groups).toContainEqual(group2)
+      expect(contact.groups).toHaveLength(2)
+
+      expect(contact.groups[0].deletedAt).not.toBeUndefined()
+      expect(contact.groups[1].deletedAt).toBeUndefined()
+
+      const deletedGroup = contact.groups.find(g => g.deletedAt != null)
+
+      expect(deletedGroup).toMatchObject(group)
     })
   })
 })
