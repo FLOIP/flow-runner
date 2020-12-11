@@ -186,7 +186,7 @@ export function setContactProperty(block: IBlock, context: IContext): void {
   }
 }
 
-function setSingleContactProperty(property: SetContactProperty, context: IContext) {
+function setSingleContactProperty(property: SetContactProperty, context: IContext): void {
   const value = evaluateToString(property.property_value, createEvalContextFrom(context))
   context.contact.setProperty(property.property_key, value)
 }
