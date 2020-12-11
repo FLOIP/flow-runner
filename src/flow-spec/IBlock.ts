@@ -28,6 +28,8 @@ import {
   IFlow,
   ValidationException,
   isSetContactPropertyConfig,
+  SetContactProperty,
+  isSetContactProperty,
 } from '..'
 import {extend, find, get, has, startsWith} from 'lodash'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
@@ -174,13 +176,19 @@ export function wrapInExprSyntaxWhenAbsent(expr: string): string {
  */
 export function setContactProperty(block: IBlock, context: IContext): void {
   if (isSetContactPropertyConfig(block.config)) {
-    const key = block.config.set_contact_property?.property_key as string
-    const valueExpression = block.config.set_contact_property?.property_value as string
-    if (typeof key === 'string' && typeof valueExpression === 'string') {
-      const value = evaluateToString(valueExpression, createEvalContextFrom(context))
-      context.contact.setProperty(key, value)
+    const setContactProperty = block.config.set_contact_property
+
+    if (Array.isArray(setContactProperty)) {
+      setContactProperty.forEach(property => setSingleContactProperty(property, context))
+    } else if (isSetContactProperty(setContactProperty)) {
+      setSingleContactProperty(setContactProperty, context)
     }
   }
+}
+
+function setSingleContactProperty(property: SetContactProperty, context: IContext) {
+  const value = evaluateToString(property.property_value, createEvalContextFrom(context))
+  context.contact.setProperty(property.property_key, value)
 }
 
 export interface IBlockService {
