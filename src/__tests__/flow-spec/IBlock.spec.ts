@@ -10,10 +10,11 @@ import {
   wrapInExprSyntaxWhenAbsent,
 } from '../..'
 import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
-import {setContactProperty, IBlock} from '../../flow-spec/IBlock'
+import {setContactProperty, IBlock, createEvalContactFrom} from '../../flow-spec/IBlock'
 import {ISetContactPropertyBlockConfig} from '../../model/block/IBlockConfig'
 import Contact from '../../flow-spec/Contact'
 import IContactProperty from '../../flow-spec/IContactProperty'
+import {IContactGroup} from '../../flow-spec/IContactGroup'
 
 describe('IBlock', () => {
   let dataset: IDataset
@@ -185,6 +186,39 @@ describe('IBlock', () => {
       const property = context.contact.getProperty('foo')
       expect(typeof property).toBe('object')
       expect((property as IContactProperty).__value__).toBe('bar')
+    })
+  })
+
+  describe('createEvalContactFrom', () => {
+    it('should clone the passed contact, deleting marked groups', () => {
+      const groupToDelete = {
+        groupKey: 'two',
+        __value__: 'two',
+        updatedAt: '0000-00-00',
+        deletedAt: '2020-01-01',
+      } as IContactGroup
+
+      const contact = new Contact()
+      contact.groups = [
+        {
+          groupKey: 'one',
+          __value__: 'one',
+          updatedAt: '0000-00-00',
+          deletedAt: undefined,
+        } as IContactGroup,
+        groupToDelete,
+        {
+          groupKey: 'three',
+          __value__: 'three',
+          updatedAt: '0000-00-00',
+          deletedAt: undefined,
+        } as IContactGroup,
+      ]
+
+      const evalContact = createEvalContactFrom(contact)
+
+      expect(contact.groups).toContain(groupToDelete)
+      expect(evalContact.groups).not.toContain(groupToDelete)
     })
   })
 })

@@ -22,3 +22,7 @@ export interface IGroup {
   label?: string
   __value__: string
 }
+
+export function isGroup(thing: unknown): thing is IGroup {
+  return typeof thing === 'object' && thing !== null && 'groupKey' in thing && '__value__' in thing
+}

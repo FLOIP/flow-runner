@@ -1,12 +1,10 @@
-import {Group} from '../../flow-spec/Group'
-import {evaluateToBool} from '../../flow-spec/IBlock'
-import {IBlockExit} from '../../flow-spec/IBlockExit'
-import {IContext, IRichCursor} from '../../flow-spec/IContext'
-import {ISetGroupMembershipBlock} from '../../model/block/ISetGroupMembershipBlock'
-import {IBlockRunner} from './IBlockRunner'
+import {evaluateToBool, IBlockExit, IContext, IRichCursor, ISetGroupMembershipBlock, IBlockRunner, ValidationException} from '../..'
 
 const EXIT_SUCCESS = 0
 
+/**
+ * Adds or removes a group from the contact.
+ */
 export class SetGroupMembershipBlockRunner implements IBlockRunner {
   constructor(public block: ISetGroupMembershipBlock, public context: IContext) {}
 
@@ -19,7 +17,11 @@ export class SetGroupMembershipBlockRunner implements IBlockRunner {
     const {contact, groups} = this.context
     const {groupKey, isMember} = this.block.config
 
-    const group = groups.find(group => group.groupKey === groupKey) ?? new Group(groupKey)
+    const group = groups.find(group => group.groupKey === groupKey)
+
+    if (group == null) {
+      throw new ValidationException(`Cannot add contact to non-existent group ${groupKey}`)
+    }
 
     if (evaluateToBool(isMember, this.context)) {
       contact.addGroup(group)
