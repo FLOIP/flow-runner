@@ -129,6 +129,32 @@ describe('IBlock', () => {
             expect(typeof property).toBe('object');
             expect(property.__value__).toBe('bar');
         });
+        it('should set an array of contact properties', () => {
+            dataset = IDataset_1.createDefaultDataset();
+            const context = Object.assign({}, lodash_1.cloneDeep(dataset.contexts[1]));
+            context.contact = new Contact_1.default();
+            const block = {
+                config: {
+                    set_contact_property: [
+                        {
+                            property_key: 'foo',
+                            property_value: 'bar',
+                        },
+                        {
+                            property_key: 'baz',
+                            property_value: 'qux',
+                        },
+                    ],
+                },
+            };
+            IBlock_1.setContactProperty(block, context);
+            const property1 = context.contact.getProperty('foo');
+            expect(typeof property1).toBe('object');
+            expect(property1.__value__).toBe('bar');
+            const property2 = context.contact.getProperty('baz');
+            expect(typeof property2).toBe('object');
+            expect(property2.__value__).toBe('qux');
+        });
     });
 });
 //# sourceMappingURL=IBlock.spec.js.map
