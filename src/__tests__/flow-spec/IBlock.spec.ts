@@ -190,6 +190,33 @@ describe('IBlock', () => {
       expect(typeof property).toBe('object')
       expect((property as IContactProperty).__value__).toBe('bar')
     })
+
+    it('should set an array of contact properties', () => {
+      dataset = createDefaultDataset()
+      const context = Object.assign({}, cloneDeep(dataset.contexts[1]))
+      context.contact = new Contact()
+      const block = {
+        config: {
+          set_contact_property: [
+            {
+              property_key: 'foo',
+              property_value: 'bar',
+            } as ISetContactPropertyBlockConfig,
+            {
+              property_key: 'baz',
+              property_value: 'qux',
+            } as ISetContactPropertyBlockConfig,
+          ],
+        },
+      } as IBlock
+      setContactProperty(block, context)
+      const property1 = context.contact.getProperty('foo')
+      expect(typeof property1).toBe('object')
+      expect((property1 as IContactProperty).__value__).toBe('bar')
+      const property2 = context.contact.getProperty('baz')
+      expect(typeof property2).toBe('object')
+      expect((property2 as IContactProperty).__value__).toBe('qux')
+    })
   })
 
   describe('createEvalContactFrom', () => {
