@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setContactProperty = exports.wrapInExprSyntaxWhenAbsent = exports.evaluateToString = exports.evaluateToBool = exports.createEvalContextFrom = exports.generateCachedProxyForBlockName = exports.isLastBlock = exports.findDefaultBlockExitOn = exports.findFirstTruthyEvaluatingBlockExitOn = exports.findBlockExitWith = void 0;
+exports.setContactProperty = exports.wrapInExprSyntaxWhenAbsent = exports.evaluateToString = exports.evaluateToBool = exports.createEvalContactFrom = exports.createEvalContextFrom = exports.generateCachedProxyForBlockName = exports.isLastBlock = exports.findDefaultBlockExitOn = exports.findFirstTruthyEvaluatingBlockExitOn = exports.findBlockExitWith = void 0;
 const __1 = require("..");
 const lodash_1 = require("lodash");
 const expression_evaluator_1 = require("@floip/expression-evaluator");
@@ -63,13 +63,20 @@ function createEvalContextFrom(context) {
         prompt = cursor.promptConfig;
     }
     return {
-        contact,
+        contact: createEvalContactFrom(contact),
         channel: { mode },
         flow: generateCachedProxyForBlockName(Object.assign(Object.assign({}, flow), { language }), context),
         block: Object.assign(Object.assign({}, block), { value: prompt != null ? prompt.value : undefined }),
     };
 }
 exports.createEvalContextFrom = createEvalContextFrom;
+function createEvalContactFrom(contact) {
+    var _a, _b;
+    const evalContact = lodash_1.cloneDeep(contact);
+    evalContact.groups = (_b = (_a = evalContact.groups) === null || _a === void 0 ? void 0 : _a.filter(group => group.deletedAt === null)) !== null && _b !== void 0 ? _b : [];
+    return evalContact;
+}
+exports.createEvalContactFrom = createEvalContactFrom;
 function evaluateToBool(expr, ctx) {
     return JSON.parse(evaluateToString(expr, ctx).toLowerCase());
 }

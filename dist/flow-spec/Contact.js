@@ -1,16 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Contact = void 0;
-const DateFormat_1 = require("../domain/DateFormat");
+const __1 = require("..");
 class Contact {
-    constructor() { }
+    constructor() {
+        this.groups = [];
+    }
     setProperty(name, value) {
         const prop = {
             __value__: value,
             value: value,
             contactPropertyFieldName: name,
-            createdAt: DateFormat_1.createFormattedDate(),
-            updatedAt: DateFormat_1.createFormattedDate(),
+            createdAt: __1.createFormattedDate(),
+            updatedAt: __1.createFormattedDate(),
             deletedAt: undefined,
         };
         this[name] = prop;
@@ -21,6 +23,16 @@ class Contact {
             return undefined;
         }
         return this[name];
+    }
+    addGroup(newGroup) {
+        var _a;
+        (_a = this.groups.find(group => group.groupKey === newGroup.groupKey)) !== null && _a !== void 0 ? _a : this.groups.push(new __1.ContactGroup(newGroup));
+    }
+    delGroup(toRemove) {
+        const group = this.groups.find(group => group.groupKey === toRemove.groupKey);
+        if (group) {
+            group.deletedAt = __1.createFormattedDate();
+        }
     }
 }
 exports.Contact = Contact;
