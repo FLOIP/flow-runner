@@ -17,14 +17,49 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IContactProperty, IContactGroup} from '..'
+type ContactPropertyResolver = (...args: string[]) => IContactProperty | undefined
+type ContactGroupResolver = (group: IGroup) => void
+
+export type IContactPropertyType = IContactProperty | ContactPropertyResolver | ContactGroupResolver | string | IContactGroup[] | undefined
+
+import {IContactProperty, IContactGroup, IGroup} from '..'
 
 export interface IContact {
-  id: IContactProperty | ((...args: string[]) => IContactProperty | undefined) | string | IContactGroup[] | undefined
+  id: IContactPropertyType
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: IContactProperty | ((...args: string[]) => IContactProperty | undefined) | string | IContactGroup[] | undefined
+  [key: string]: IContactPropertyType
 
+  groups: IContactGroup[]
+
+  /**
+   * Set a property on this contact.
+   * The value given will become the value of a new IContactProperty on the
+   * contact. That property object should be returned.
+   */
   setProperty: (name: string, value?: string) => IContactProperty
+
+  /**
+   * Get a property previously defined on this contact.
+   * If no such propery exists, this may return undefined, else the
+   * IContactProperty will be returned, which contains a string value.
+   */
   getProperty: (name: string) => IContactProperty | undefined
+
+  /**
+   * Add a group to this contact.
+   * The group should be an an existing group within the flow context.
+   * The value of the group must be copied into an IContactGroup existing under
+   * the `groups` property of the contact.
+   */
+  addGroup: (group: IGroup) => void
+
+  /**
+   * Remove a group from this contact.
+   * The group should be an existing group within the flow context.
+   * If the group exists in the `groups` property of the contact, it will
+   * be removed or marked as removed. If it does not already exist, nothing
+   * happens.
+   */
+  delGroup: (group: IGroup) => void
 }

@@ -28,8 +28,9 @@ import {
   IFlow,
   ValidationException,
   isSetContactPropertyConfig,
+  IContact,
 } from '..'
-import {extend, find, get, has, startsWith} from 'lodash'
+import {cloneDeep, extend, find, get, has, startsWith} from 'lodash'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
 
 export interface IBlock {
@@ -141,7 +142,7 @@ export function createEvalContextFrom(context: IContext): object {
   }
 
   return {
-    contact,
+    contact: createEvalContactFrom(contact),
     channel: {mode},
     flow: generateCachedProxyForBlockName(
       {
@@ -155,6 +156,19 @@ export function createEvalContextFrom(context: IContext): object {
       value: prompt != null ? prompt.value : undefined,
     },
   }
+}
+
+/**
+ * Create a contact for use in evaluation context.
+ * This creates a copy of the passed contact and removes, from the contacts list
+ * of groups, any groups that have been marked as deleted.
+ * @param contact
+ */
+export function createEvalContactFrom(contact: IContact): IContact {
+  const evalContact = cloneDeep(contact)
+  evalContact.groups = evalContact.groups?.filter(group => group.deletedAt === null) ?? []
+
+  return evalContact
 }
 
 export function evaluateToBool(expr: string, ctx: object): boolean {
