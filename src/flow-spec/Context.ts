@@ -33,6 +33,7 @@ import {
   IReversibleUpdateOperation,
   ResourceResolver,
   SupportedMode,
+  IGroup,
 } from '..'
 
 // noinspection DuplicatedCode
@@ -43,6 +44,7 @@ export class Context implements IContext {
   public mode: SupportedMode
   public languageId: string
   public contact: IContact
+  public groups: IGroup[]
   public sessionVars: {[k: string]: unknown}
   public interactions: IBlockInteraction[]
   public nestedFlowBlockInteractionIdStack: string[]
@@ -65,6 +67,7 @@ export class Context implements IContext {
     mode: SupportedMode,
     languageId: string,
     contact: IContact,
+    groups: IGroup[],
     sessionVars: {[k: string]: unknown},
     interactions: IBlockInteraction[],
     nestedFlowBlockInteractionIdStack: string[],
@@ -95,6 +98,7 @@ export class Context implements IContext {
     this.interactions = interactions
     this.sessionVars = sessionVars
     this.contact = contact
+    this.groups = groups
     this.languageId = languageId
     this.mode = mode
     this.deliveryStatus = deliveryStatus
@@ -120,6 +124,7 @@ export namespace Context {
     mode: SupportedMode = SupportedMode.OFFLINE
     languageId?: string
     contact?: IContact
+    groups?: IGroup[]
     sessionVars: {[k: string]: unknown} = {}
     interactions: IBlockInteraction[] = []
     nestedFlowBlockInteractionIdStack: string[] = []
@@ -162,6 +167,11 @@ export namespace Context {
 
     setContact(contact: IContact): Context.Builder {
       this.contact = contact
+      return this
+    }
+
+    setGroups(groups: IGroup[]): Context.Builder {
+      this.groups = groups
       return this
     }
 
@@ -239,6 +249,7 @@ export namespace Context {
       assertNotNull(this.id, () => 'Context.Builder.setId() must be called before build()')
       assertNotNull(this.languageId, () => 'Context.Builder.setLanguageId() must be called before build()')
       assertNotNull(this.contact, () => 'Context.Builder.setContact() must be called before build()')
+      assertNotNull(this.groups, () => 'Context.Builder.setGroups() must be called before build()')
       assertNotNull(this.flows, () => 'Context.Builder.setFlows() must be called before build()')
       assertNotNull(this.firstFlowId, () => 'Context.Builder.setFirstFlowId() must be called before build()')
       assertNotNull(this.resources, () => 'Context.Builder.setResources() must be called before build()')
@@ -250,6 +261,7 @@ export namespace Context {
         this.mode,
         this.languageId,
         this.contact,
+        this.groups,
         this.sessionVars,
         this.interactions,
         this.nestedFlowBlockInteractionIdStack,

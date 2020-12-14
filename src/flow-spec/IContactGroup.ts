@@ -17,37 +17,9 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IContact, IContactProperty, IContactGroup} from '..'
-import {createFormattedDate} from '../domain/DateFormat'
-
-export class Contact implements IContact {
-  [key: string]: IContactProperty | ((...args: any[]) => IContactProperty | undefined) | string | IContactGroup[] | undefined
-
-  id!: string
-
-  groups: IContactGroup[] | undefined
-
-  constructor() {}
-
-  public setProperty(name: string, value: any): IContactProperty {
-    const prop: IContactProperty = {
-      __value__: value,
-      value: value,
-      contactPropertyFieldName: name,
-      createdAt: createFormattedDate(),
-      updatedAt: createFormattedDate(),
-      deletedAt: undefined,
-    }
-    this[name] = prop
-    return prop
-  }
-
-  public getProperty(name: string): IContactProperty | undefined {
-    if (this[name] == null) {
-      return undefined
-    }
-    return this[name] as IContactProperty
-  }
+export interface IContactGroup {
+  id: string
+  name: string
+  deletedAt: string | undefined
+  updatedAt: string
 }
-
-export default Contact
