@@ -17,34 +17,12 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IContactProperty} from '..'
-import {createFormattedDate} from '../domain/DateFormat'
-
-export class ContactProperty implements IContactProperty {
-  deletedAt: string | undefined
-  createdAt: string = createFormattedDate()
-  updatedAt: string = createFormattedDate()
-  __value__!: string
-
-  constructor() {}
-
-  get contactPropertyFieldName(): string {
-    return this.contactPropertyFieldName
-  }
-
-  set contactPropertyFieldName(contactPropertyFieldName: string) {
-    this.contactPropertyFieldName = contactPropertyFieldName
-    this.updatedAt = createFormattedDate()
-  }
-
-  get value(): string {
-    return this.__value__
-  }
-
-  set value(value: string) {
-    this.__value__ = value
-    this.updatedAt = createFormattedDate()
-  }
+export interface IGroup {
+  groupKey: string
+  label?: string
+  __value__: string
 }
 
-export default ContactProperty
+export function isGroup(thing: unknown): thing is IGroup {
+  return typeof thing === 'object' && thing !== null && 'groupKey' in thing && '__value__' in thing
+}
