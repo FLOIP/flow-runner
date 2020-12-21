@@ -19,7 +19,7 @@
 
 import {getResource, IContext, IPromptConfig, IResource} from '../..'
 
-export interface IAdvancedSelectOnePromptConfig extends IPromptConfig<IAdvancedSelectOne[]> {
+export interface IAdvancedSelectOnePromptConfig extends IPromptConfig<IAdvancedSelectOne> {
   promptAudio?: string
   primaryField: string
   secondaryFields: string[]
@@ -29,8 +29,8 @@ export interface IAdvancedSelectOnePromptConfig extends IPromptConfig<IAdvancedS
 }
 
 export interface IAdvancedSelectOne {
-  name: string
-  value: string
+  [key: string]: string
+  __value__: string
 }
 
 export function getConfigWithResourcesForAdvancedSelectOne(
