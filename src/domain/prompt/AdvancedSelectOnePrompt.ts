@@ -31,6 +31,12 @@ export class AdvancedSelectOnePrompt extends BasePrompt<IAdvancedSelectOnePrompt
       message => new ValidationException(message)
     )
 
+    assertNotNull(
+      selectedRow,
+      () => 'selectedRow must be non-null',
+      message => new ValidationException(message)
+    )
+
     // if (isResponseRequired) {
     //   const hasSelectedRow = choiceRows.some(row =>
     //     selectedRow?.every(selection => {
