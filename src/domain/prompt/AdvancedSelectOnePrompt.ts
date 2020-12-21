@@ -22,8 +22,8 @@ import {assertNotNull, BasePrompt, IAdvancedSelectOne, IAdvancedSelectOnePromptC
 export const ADVANCED_SELECT_ONE_PROMPT_KEY = 'AdvancedSelectOne'
 
 export class AdvancedSelectOnePrompt extends BasePrompt<IAdvancedSelectOnePromptConfig> {
-  validate(selectedRow?: IAdvancedSelectOne[], choiceRows?: string[][]): boolean {
-    const {choiceRowFields, isResponseRequired} = this.config
+  validate(selectedRow?: IAdvancedSelectOne, choiceRows?: string[][]): boolean {
+    // const {choiceRowFields, isResponseRequired} = this.config
 
     assertNotNull(
       choiceRows,
@@ -31,21 +31,21 @@ export class AdvancedSelectOnePrompt extends BasePrompt<IAdvancedSelectOnePrompt
       message => new ValidationException(message)
     )
 
-    if (isResponseRequired) {
-      const hasSelectedRow = choiceRows.some(row =>
-        selectedRow?.every(selection => {
-          const columnIndex = choiceRowFields.indexOf(selection.name)
-          if (columnIndex < 0) {
-            throw new ValidationException(`Failed to find a column called: ${selection.name}`)
-          } else {
-            return selection.value === row[columnIndex]
-          }
-        })
-      )
-      if (!hasSelectedRow) {
-        throw new ValidationException(`Failed to find the given row: ${selectedRow}`)
-      }
-    }
+    // if (isResponseRequired) {
+    //   const hasSelectedRow = choiceRows.some(row =>
+    //     selectedRow?.every(selection => {
+    //       const columnIndex = choiceRowFields.indexOf(selection.name)
+    //       if (columnIndex < 0) {
+    //         throw new ValidationException(`Failed to find a column called: ${selection.name}`)
+    //       } else {
+    //         return selection.value === row[columnIndex]
+    //       }
+    //     })
+    //   )
+    //   if (!hasSelectedRow) {
+    //     throw new ValidationException(`Failed to find the given row: ${selectedRow}`)
+    //   }
+    // }
 
     return true
   }
