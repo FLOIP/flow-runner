@@ -10,6 +10,7 @@ import {
   FlowRunner,
   IContact,
   IContext,
+  IGroup,
   IResources,
   IRichCursorInputRequired,
   SelectOnePrompt,
@@ -129,6 +130,7 @@ describe('FlowRunner', () => {
 
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
+          [{groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
           'user-1234',
           'org-1234',
           flows,
@@ -155,6 +157,7 @@ describe('FlowRunner', () => {
 
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
+          [{groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
           'user-1234',
           'org-1234',
           flows,
@@ -182,6 +185,7 @@ describe('FlowRunner', () => {
 
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
+          [{groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
           'user-1234',
           'org-1234',
           flows,

@@ -28,8 +28,11 @@ import {
   IFlow,
   ValidationException,
   isSetContactPropertyConfig,
+  SetContactProperty,
+  isSetContactProperty,
+  IContact,
 } from '..'
-import {extend, find, get, has, startsWith} from 'lodash'
+import {cloneDeep, extend, find, get, has, startsWith} from 'lodash'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
 
 export interface IBlock {
@@ -141,7 +144,7 @@ export function createEvalContextFrom(context: IContext): object {
   }
 
   return {
-    contact,
+    contact: createEvalContactFrom(contact),
     channel: {mode},
     flow: generateCachedProxyForBlockName(
       {
@@ -155,6 +158,19 @@ export function createEvalContextFrom(context: IContext): object {
       value: prompt != null ? prompt.value : undefined,
     },
   }
+}
+
+/**
+ * Create a contact for use in evaluation context.
+ * This creates a copy of the passed contact and removes, from the contacts list
+ * of groups, any groups that have been marked as deleted.
+ * @param contact
+ */
+export function createEvalContactFrom(contact: IContact): IContact {
+  const evalContact = cloneDeep(contact)
+  evalContact.groups = evalContact.groups?.filter(group => group.deletedAt === null) ?? []
+
+  return evalContact
 }
 
 export function evaluateToBool(expr: string, ctx: object): boolean {
@@ -174,13 +190,19 @@ export function wrapInExprSyntaxWhenAbsent(expr: string): string {
  */
 export function setContactProperty(block: IBlock, context: IContext): void {
   if (isSetContactPropertyConfig(block.config)) {
-    const key = block.config.set_contact_property?.property_key as string
-    const valueExpression = block.config.set_contact_property?.property_value as string
-    if (typeof key === 'string' && typeof valueExpression === 'string') {
-      const value = evaluateToString(valueExpression, createEvalContextFrom(context))
-      context.contact.setProperty(key, value)
+    const setContactProperty = block.config.set_contact_property
+
+    if (Array.isArray(setContactProperty)) {
+      setContactProperty.forEach(property => setSingleContactProperty(property, context))
+    } else if (isSetContactProperty(setContactProperty)) {
+      setSingleContactProperty(setContactProperty, context)
     }
   }
+}
+
+function setSingleContactProperty(property: SetContactProperty, context: IContext): void {
+  const value = evaluateToString(property.property_value, createEvalContextFrom(context))
+  context.contact.setProperty(property.property_key, value)
 }
 
 export interface IBlockService {

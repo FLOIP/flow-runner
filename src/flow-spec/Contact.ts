@@ -17,15 +17,18 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IContact, IContactProperty} from '..'
-import {createFormattedDate} from '../domain/DateFormat'
+import {IContact, IContactProperty, IContactPropertyType, createFormattedDate, IContactGroup, IGroup, ContactGroup} from '..'
 
 export class Contact implements IContact {
-  [key: string]: IContactProperty | ((...args: any[]) => IContactProperty | undefined) | string | undefined
+  [key: string]: IContactPropertyType
 
   id!: string
 
-  constructor() {}
+  groups: IContactGroup[]
+
+  constructor() {
+    this.groups = []
+  }
 
   public setProperty(name: string, value: any): IContactProperty {
     const prop: IContactProperty = {
@@ -45,6 +48,17 @@ export class Contact implements IContact {
       return undefined
     }
     return this[name] as IContactProperty
+  }
+
+  public addGroup(newGroup: IGroup): void {
+    this.groups.find(group => group.groupKey === newGroup.groupKey) ?? this.groups.push(new ContactGroup(newGroup))
+  }
+
+  public delGroup(toRemove: IGroup): void {
+    const group = this.groups.find(group => group.groupKey === toRemove.groupKey)
+    if (group) {
+      group.deletedAt = createFormattedDate()
+    }
   }
 }
 

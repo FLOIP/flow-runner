@@ -1,0 +1,1 @@
+{"version":3,"file":"IGroup.d.ts","sourceRoot":"","sources":["../../src/flow-spec/IGroup.ts"],"names":[],"mappings":"AAmBA,MAAM,WAAW,MAAM;IACrB,QAAQ,EAAE,MAAM,CAAA;IAChB,KAAK,CAAC,EAAE,MAAM,CAAA;IACd,SAAS,EAAE,MAAM,CAAA;CAClB;AAED,wBAAgB,OAAO,CAAC,KAAK,EAAE,OAAO,GAAG,KAAK,IAAI,MAAM,CAEvD"}
