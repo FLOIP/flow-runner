@@ -1,10 +1,8 @@
-export interface SetContactProperty {
-    property_key: string;
-    property_value: string;
-}
 export interface ISetContactPropertyBlockConfig {
-    set_contact_property?: SetContactProperty | SetContactProperty[];
+    set_contact_property?: {
+        property_key: string;
+        property_value: string;
+    };
 }
-export declare function isSetContactPropertyConfig(thing: unknown): thing is ISetContactPropertyBlockConfig;
-export declare function isSetContactProperty(thing: unknown): thing is SetContactProperty;
+export declare function isSetContactPropertyConfig(arg: unknown): arg is ISetContactPropertyBlockConfig;
 //# sourceMappingURL=IBlockConfig.d.ts.map

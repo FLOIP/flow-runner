@@ -9,7 +9,6 @@ const Contact_1 = tslib_1.__importDefault(require("../../flow-spec/Contact"));
 describe('IBlock', () => {
     let dataset;
     let target;
-    let dummyContext;
     beforeEach(() => {
         dataset = IDataset_1.createDefaultDataset();
         target = {
@@ -19,7 +18,6 @@ describe('IBlock', () => {
             value: 'my first value',
             text: 'my text',
         };
-        dummyContext = { contact: {} };
     });
     describe('findFirstTruthyEvaluatingBlockExitOn', () => {
         it('should return first truthy exit', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
@@ -31,7 +29,7 @@ describe('IBlock', () => {
                     { test: '@(true = false)' },
                     { test: '@(true = false)' },
                 ],
-            }, dummyContext);
+            }, {});
             expect(exit).toEqual({ test: '@(true = true)' });
         }));
         it('should not return first _non-default_ truthy exit', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
@@ -44,13 +42,13 @@ describe('IBlock', () => {
                     { test: '@(true = false)' },
                     { test: '@(true = false)' },
                 ],
-            }, dummyContext);
+            }, {});
             expect(exit).toEqual({ test: '@(true = true)' });
         }));
     });
     describe('generateCachedProxyForBlockName', () => {
         it('should return an object resembling the one provided', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-            const proxy = __1.generateCachedProxyForBlockName(target, dummyContext);
+            const proxy = __1.generateCachedProxyForBlockName(target, {});
             expect(proxy).toEqual(target);
         }));
         describe('proxy', () => {
@@ -130,61 +128,6 @@ describe('IBlock', () => {
             const property = context.contact.getProperty('foo');
             expect(typeof property).toBe('object');
             expect(property.__value__).toBe('bar');
-        });
-        it('should set an array of contact properties', () => {
-            dataset = IDataset_1.createDefaultDataset();
-            const context = Object.assign({}, lodash_1.cloneDeep(dataset.contexts[1]));
-            context.contact = new Contact_1.default();
-            const block = {
-                config: {
-                    set_contact_property: [
-                        {
-                            property_key: 'foo',
-                            property_value: 'bar',
-                        },
-                        {
-                            property_key: 'baz',
-                            property_value: 'qux',
-                        },
-                    ],
-                },
-            };
-            IBlock_1.setContactProperty(block, context);
-            const property1 = context.contact.getProperty('foo');
-            expect(typeof property1).toBe('object');
-            expect(property1.__value__).toBe('bar');
-            const property2 = context.contact.getProperty('baz');
-            expect(typeof property2).toBe('object');
-            expect(property2.__value__).toBe('qux');
-        });
-    });
-    describe('createEvalContactFrom', () => {
-        it('should clone the passed contact, deleting marked groups', () => {
-            const groupToDelete = {
-                groupKey: 'two',
-                __value__: 'two',
-                updatedAt: '0000-00-00',
-                deletedAt: '2020-01-01',
-            };
-            const contact = new Contact_1.default();
-            contact.groups = [
-                {
-                    groupKey: 'one',
-                    __value__: 'one',
-                    updatedAt: '0000-00-00',
-                    deletedAt: undefined,
-                },
-                groupToDelete,
-                {
-                    groupKey: 'three',
-                    __value__: 'three',
-                    updatedAt: '0000-00-00',
-                    deletedAt: undefined,
-                },
-            ];
-            const evalContact = IBlock_1.createEvalContactFrom(contact);
-            expect(contact.groups).toContain(groupToDelete);
-            expect(evalContact.groups).not.toContain(groupToDelete);
         });
     });
 });

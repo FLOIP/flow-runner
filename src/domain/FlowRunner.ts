@@ -56,7 +56,6 @@ import {
   IRichCursorInputRequired,
   IRunFlowBlock,
   ISelectOneResponseBlock,
-  ISetGroupMembershipBlock,
   LogBlockRunner,
   MessageBlockRunner,
   NumericResponseBlockRunner,
@@ -69,8 +68,6 @@ import {
   RunFlowBlockRunner,
   SelectManyResponseBlockRunner,
   SelectOneResponseBlockRunner,
-  SET_GROUP_MEMBERSHIP_BLOCK_TYPE,
-  SetGroupMembershipBlockRunner,
   TBlockRunnerFactory,
   TGenericPrompt,
   ValidationException,
@@ -111,7 +108,6 @@ export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
     ['Core\\Log', (block, ctx) => new LogBlockRunner(block as ILogBlock, ctx)],
     ['ConsoleIO\\Print', (block, ctx) => new PrintBlockRunner(block as IPrintBlock, ctx)],
     ['Core\\RunFlow', (block, ctx) => new RunFlowBlockRunner(block as IRunFlowBlock, ctx)],
-    [SET_GROUP_MEMBERSHIP_BLOCK_TYPE, (block, ctx) => new SetGroupMembershipBlockRunner(block as ISetGroupMembershipBlock, ctx)],
   ])
 }
 

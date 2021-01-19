@@ -1,4 +1,4 @@
-import { DeliveryStatus, IBlockInteraction, IContact, IContext, ICursor, IFlow, IResource, IResourceDefinition, IResources, IReversibleUpdateOperation, SupportedMode, IGroup } from '..';
+import { DeliveryStatus, IBlockInteraction, IContact, IContext, ICursor, IFlow, IResource, IResourceDefinition, IResources, IReversibleUpdateOperation, SupportedMode } from '..';
 export declare class Context implements IContext {
     id: string;
     createdAt: string;
@@ -6,7 +6,6 @@ export declare class Context implements IContext {
     mode: SupportedMode;
     languageId: string;
     contact: IContact;
-    groups: IGroup[];
     sessionVars: {
         [k: string]: unknown;
     };
@@ -27,7 +26,7 @@ export declare class Context implements IContext {
     logs: {
         [k: string]: string;
     };
-    constructor(id: string, createdAt: string, deliveryStatus: DeliveryStatus, mode: SupportedMode, languageId: string, contact: IContact, groups: IGroup[], sessionVars: {
+    constructor(id: string, createdAt: string, deliveryStatus: DeliveryStatus, mode: SupportedMode, languageId: string, contact: IContact, sessionVars: {
         [k: string]: unknown;
     }, interactions: IBlockInteraction[], nestedFlowBlockInteractionIdStack: string[], reversibleOperations: IReversibleUpdateOperation[], flows: IFlow[], firstFlowId: string, resources: IResources, entryAt?: string, exitAt?: string, userId?: string, orgId?: string, cursor?: ICursor, platformMetadata?: {
         [k: string]: unknown;
@@ -44,7 +43,6 @@ export declare namespace Context {
         mode: SupportedMode;
         languageId?: string;
         contact?: IContact;
-        groups?: IGroup[];
         sessionVars: {
             [k: string]: unknown;
         };
@@ -71,7 +69,6 @@ export declare namespace Context {
         setMode(mode: SupportedMode): Context.Builder;
         setLanguageId(languageId: string): Context.Builder;
         setContact(contact: IContact): Context.Builder;
-        setGroups(groups: IGroup[]): Context.Builder;
         setSessionVars(sessionVars: {
             [k: string]: unknown;
         }): Context.Builder;
