@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {BasePrompt, IBlock, IFlowRunner, IRichCursorInputRequired, PromptValidationException} from '../..'
+import {BasePrompt, IBlock, IFlowRunner, IRichCursorInputRequired} from '../..'
 
 /**
  * Primary interface for interacting with an {@link IContact}; typically not immplemented fully, it is recommended that
@@ -30,8 +30,6 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
 
   block?: IBlock
   value: PromptConfigType['value']
-  /** Eror populated when {@link IPrompt.value} assignment raises  */
-  error: PromptValidationException | null
 
   /** State populated when {@link IPrompt.value} is assigned */
   isValid(): boolean

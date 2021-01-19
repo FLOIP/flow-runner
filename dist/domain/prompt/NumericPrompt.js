@@ -5,7 +5,7 @@ const __1 = require("../..");
 exports.NUMERIC_PROMPT_KEY = 'Numeric';
 class NumericPrompt extends __1.BasePrompt {
     validate(val) {
-        if (Number.isNaN(val) || val === null) {
+        if (Number.isNaN(val) || val == null) {
             return false;
         }
         const { min, max } = this.config;

@@ -8,6 +8,9 @@ exports.INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK = 'All selections must be val
 exports.SELECT_MANY_PROMPT_KEY = 'SelectMany';
 class SelectManyPrompt extends __1.BasePrompt {
     validate(selections) {
+        if (selections == null) {
+            return false;
+        }
         const { isResponseRequired, choices } = this.config;
         if (!isResponseRequired) {
             return true;

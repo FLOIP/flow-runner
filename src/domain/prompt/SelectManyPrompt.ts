@@ -29,7 +29,11 @@ export const SELECT_MANY_PROMPT_KEY = 'SelectMany'
  * least one, from an {@link IContact}.
  */
 export class SelectManyPrompt extends BasePrompt<ISelectManyPromptConfig> {
-  validate(selections: IChoice['key'][]): boolean {
+  validate(selections: ISelectManyPromptConfig['value']): boolean {
+    if (selections == null) {
+      return false
+    }
+
     const {isResponseRequired, choices} = this.config
 
     if (!isResponseRequired) {

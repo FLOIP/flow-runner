@@ -26,7 +26,11 @@ export const OPEN_PROMPT_KEY = 'Open'
  * from an {@link IContact}.
  */
 export class OpenPrompt extends BasePrompt<IOpenPromptConfig> {
-  validate(val: string): boolean {
+  validate(val: IOpenPromptConfig['value']): boolean {
+    if (val == null) {
+      return false
+    }
+
     const {maxResponseCharacters: maxLength} = this.config
 
     if (maxLength != null && val.length > maxLength) {

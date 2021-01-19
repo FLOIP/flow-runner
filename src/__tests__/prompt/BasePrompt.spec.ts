@@ -28,7 +28,7 @@ describe('BasePrompt', () => {
         const runner = new FlowRunner(ctx)
         const prompt = new MessagePrompt(config as IMessagePromptConfig, 'abc-123', runner)
 
-        expect(prompt.error).toBeNull()
+        expect(prompt.isValid()).toBe(true)
       })
     })
   })

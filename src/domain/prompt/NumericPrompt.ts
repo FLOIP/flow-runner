@@ -28,8 +28,8 @@ export const NUMERIC_PROMPT_KEY = 'Numeric'
 export class NumericPrompt extends BasePrompt<INumericPromptConfig> {
   static readonly promptKey = 'Numeric'
 
-  validate(val: number): boolean {
-    if (Number.isNaN(val) || val === null) {
+  validate(val: INumericPromptConfig['value']): boolean {
+    if (Number.isNaN(val) || val == null) {
       return false
     }
 

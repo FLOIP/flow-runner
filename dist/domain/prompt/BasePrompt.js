@@ -8,7 +8,6 @@ class BasePrompt {
         this.config = config;
         this.interactionId = interactionId;
         this.runner = runner;
-        this.error = null;
     }
     get value() {
         return this.config.value;
@@ -16,13 +15,11 @@ class BasePrompt {
     set value(val) {
         try {
             this.validate(val);
-            this.error = null;
         }
         catch (e) {
             if (!(e instanceof __1.PromptValidationException)) {
                 throw e;
             }
-            this.error = e;
         }
         this.config.value = val;
     }

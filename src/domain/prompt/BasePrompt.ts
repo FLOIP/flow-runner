@@ -36,8 +36,6 @@ export type TGenericPrompt = IPrompt<IPromptConfig<any>>
  * implementations.
  */
 export abstract class BasePrompt<T extends IPromptConfig<T['value']>> implements IPrompt<T> {
-  error: PromptValidationException | null = null
-
   constructor(public config: T, public interactionId: string, public runner: IFlowRunner) {
     // todo: add canPerformEarlyExit() behaviour
   }
@@ -49,24 +47,18 @@ export abstract class BasePrompt<T extends IPromptConfig<T['value']>> implements
   }
 
   /**
-   * Set local {@link IPromptConfig.value}. This action is guarded by {@link validate}, where the result of
-   * {@link validate} is applied to {@link isValid}. Any exceptions raised by {@link validate} are applied to
-   * {@link error} property.
+   * Set local {@link IPromptConfig.value}. This action is guarded by {@link validate}.
    *
    * It's important to note that {@link value} property will be set (proxied onto local {@link IPromptConfig.value})
    * regardless of any {@link PromptValidationException}s raised. */
   set value(val: T['value']) {
     try {
       this.validate(val)
-      this.error = null
     } catch (e) {
       if (!(e instanceof PromptValidationException)) {
         throw e
       }
-
-      this.error = e
     }
-
     this.config.value = val
   }
 
