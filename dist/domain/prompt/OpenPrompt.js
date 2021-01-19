@@ -7,7 +7,7 @@ class OpenPrompt extends __1.BasePrompt {
     validate(val) {
         const { maxResponseCharacters: maxLength } = this.config;
         if (maxLength != null && val.length > maxLength) {
-            throw new __1.ValidationException('Too many characters on value provided');
+            throw new __1.PromptValidationException('Too many characters on value provided');
         }
         return true;
     }

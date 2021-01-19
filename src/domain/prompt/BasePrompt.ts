@@ -58,6 +58,7 @@ export abstract class BasePrompt<T extends IPromptConfig<T['value']>> implements
   set value(val: T['value']) {
     try {
       this.validate(val)
+      this.error = null
     } catch (e) {
       if (!(e instanceof PromptValidationException)) {
         throw e

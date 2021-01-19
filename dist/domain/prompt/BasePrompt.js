@@ -16,6 +16,7 @@ class BasePrompt {
     set value(val) {
         try {
             this.validate(val);
+            this.error = null;
         }
         catch (e) {
             if (!(e instanceof __1.PromptValidationException)) {

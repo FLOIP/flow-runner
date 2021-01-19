@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {BasePrompt, INumericPromptConfig, ValidationException} from '../..'
+import {BasePrompt, INumericPromptConfig, PromptValidationException} from '../..'
 
 export const NUMERIC_PROMPT_KEY = 'Numeric'
 
@@ -36,11 +36,11 @@ export class NumericPrompt extends BasePrompt<INumericPromptConfig> {
     const {min, max} = this.config
 
     if (min != null && val < min) {
-      throw new ValidationException('Value provided is less than allowed')
+      throw new PromptValidationException('Value provided is less than allowed')
     }
 
     if (max != null && val > max) {
-      throw new ValidationException('Value provided is greater than allowed')
+      throw new PromptValidationException('Value provided is greater than allowed')
     }
 
     return true

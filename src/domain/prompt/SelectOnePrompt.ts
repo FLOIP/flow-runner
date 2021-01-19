@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {BasePrompt, ISelectOnePromptConfig, ValidationException} from '../..'
+import {BasePrompt, ISelectOnePromptConfig, PromptValidationException} from '../..'
 
 export const SELECT_ONE_PROMPT_KEY = 'SelectOne'
 
@@ -30,7 +30,7 @@ export class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig> {
     const {isResponseRequired, choices} = this.config
 
     if (isResponseRequired && choices.find(({key}) => key === choiceKey) == null) {
-      throw new ValidationException('Value provided must be in list of choices')
+      throw new PromptValidationException('Value provided must be in list of choices')
     }
 
     return true

@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {BasePrompt, IChoice, InvalidChoiceException, ISelectManyPromptConfig, ValidationException} from '../..'
+import {BasePrompt, IChoice, InvalidChoiceException, ISelectManyPromptConfig, PromptValidationException} from '../..'
 import {difference, map} from 'lodash'
 
 export const INVALID_AT_LEAST_ONE_SELECTION_REQUIRED = 'At least one selection is required, but none provided'
@@ -36,8 +36,8 @@ export class SelectManyPrompt extends BasePrompt<ISelectManyPromptConfig> {
       return true
     }
 
-    if (selections.length === 0) {
-      throw new ValidationException(INVALID_AT_LEAST_ONE_SELECTION_REQUIRED)
+    if (choices.length !== 0 && selections.length === 0) {
+      throw new PromptValidationException(INVALID_AT_LEAST_ONE_SELECTION_REQUIRED)
     }
 
     const invalidChoices = difference(selections, map(choices, 'key'))

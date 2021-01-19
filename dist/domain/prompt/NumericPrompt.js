@@ -10,10 +10,10 @@ class NumericPrompt extends __1.BasePrompt {
         }
         const { min, max } = this.config;
         if (min != null && val < min) {
-            throw new __1.ValidationException('Value provided is less than allowed');
+            throw new __1.PromptValidationException('Value provided is less than allowed');
         }
         if (max != null && val > max) {
-            throw new __1.ValidationException('Value provided is greater than allowed');
+            throw new __1.PromptValidationException('Value provided is greater than allowed');
         }
         return true;
     }

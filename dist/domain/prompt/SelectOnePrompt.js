@@ -7,7 +7,7 @@ class SelectOnePrompt extends __1.BasePrompt {
     validate(choiceKey) {
         const { isResponseRequired, choices } = this.config;
         if (isResponseRequired && choices.find(({ key }) => key === choiceKey) == null) {
-            throw new __1.ValidationException('Value provided must be in list of choices');
+            throw new __1.PromptValidationException('Value provided must be in list of choices');
         }
         return true;
     }
