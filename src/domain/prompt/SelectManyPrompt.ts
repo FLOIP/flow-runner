@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {BasePrompt, IChoice, InvalidChoiceException, ISelectManyPromptConfig, PromptValidationException} from '../..'
+import {BasePrompt, ISelectManyPromptConfig, PromptValidationException} from '../..'
 import {difference, map} from 'lodash'
 
 export const INVALID_AT_LEAST_ONE_SELECTION_REQUIRED = 'At least one selection is required, but none provided'
@@ -29,15 +29,15 @@ export const SELECT_MANY_PROMPT_KEY = 'SelectMany'
  * least one, from an {@link IContact}.
  */
 export class SelectManyPrompt extends BasePrompt<ISelectManyPromptConfig> {
-  validate(selections: ISelectManyPromptConfig['value']): boolean {
+  validateOrThrow(selections: ISelectManyPromptConfig['value']): void {
     if (selections == null) {
-      return false
+      throw new PromptValidationException('Value provided is null or undefined')
     }
 
     const {isResponseRequired, choices} = this.config
 
     if (!isResponseRequired) {
-      return true
+      return
     }
 
     if (choices.length !== 0 && selections.length === 0) {
@@ -46,9 +46,9 @@ export class SelectManyPrompt extends BasePrompt<ISelectManyPromptConfig> {
 
     const invalidChoices = difference(selections, map(choices, 'key'))
     if (invalidChoices.length !== 0) {
-      throw new InvalidChoiceException<IChoice['key']>(INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK, invalidChoices)
+      throw new PromptValidationException(INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK)
     }
 
-    return true
+    return
   }
 }

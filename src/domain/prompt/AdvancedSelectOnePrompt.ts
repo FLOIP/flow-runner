@@ -22,8 +22,14 @@ import {assertNotNull, BasePrompt, IAdvancedSelectOne, IAdvancedSelectOnePromptC
 export const ADVANCED_SELECT_ONE_PROMPT_KEY = 'AdvancedSelectOne'
 
 export class AdvancedSelectOnePrompt extends BasePrompt<IAdvancedSelectOnePromptConfig> {
-  validate(selectedRow?: IAdvancedSelectOne[], choiceRows?: string[][]): boolean {
+  validateOrThrow(selectedRow?: IAdvancedSelectOne[], choiceRows?: string[][]): void {
     const {choiceRowFields, isResponseRequired} = this.config
+
+    assertNotNull(
+      selectedRow,
+      () => 'Value provided is null or undefined',
+      message => new PromptValidationException(message)
+    )
 
     assertNotNull(
       choiceRows,
@@ -47,6 +53,6 @@ export class AdvancedSelectOnePrompt extends BasePrompt<IAdvancedSelectOnePrompt
       }
     }
 
-    return true
+    return
   }
 }

@@ -26,9 +26,9 @@ export const OPEN_PROMPT_KEY = 'Open'
  * from an {@link IContact}.
  */
 export class OpenPrompt extends BasePrompt<IOpenPromptConfig> {
-  validate(val: IOpenPromptConfig['value']): boolean {
+  validateOrThrow(val: IOpenPromptConfig['value']): void {
     if (val == null) {
-      return false
+      throw new PromptValidationException('Value provided is null, undefined, or not a number')
     }
 
     const {maxResponseCharacters: maxLength} = this.config
@@ -39,6 +39,6 @@ export class OpenPrompt extends BasePrompt<IOpenPromptConfig> {
       throw new PromptValidationException('Too many characters on value provided')
     }
 
-    return true
+    return
   }
 }

@@ -19,7 +19,7 @@ describe('SelectManyPrompt', () => {
         describe('when a response isRequired', () => {
             it('should raise when some selections are invalid', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                 const selections = ['choice-A', 'choice-B', 'key-not-in-prompt-config', 'choice-C'];
-                verifyValidationThrows(prompt.validate.bind(prompt, selections), __1.InvalidChoiceException, __1.INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK, ['key-not-in-prompt-config']);
+                verifyValidationThrows(prompt.validateOrThrow.bind(prompt, selections), __1.PromptValidationException, __1.INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK);
             }));
             it('should raise when all selections are invalid', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                 const selections = [
@@ -28,11 +28,11 @@ describe('SelectManyPrompt', () => {
                     'key-not-in-prompt-config-C',
                     'key-not-in-prompt-config-D',
                 ];
-                verifyValidationThrows(prompt.validate.bind(prompt, selections), __1.InvalidChoiceException, __1.INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK, selections);
+                verifyValidationThrows(prompt.validateOrThrow.bind(prompt, selections), __1.PromptValidationException, __1.INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK);
             }));
             it('should raise when no selections are provided', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                 const selections = [];
-                verifyValidationThrows(prompt.validate.bind(prompt, selections), __1.ValidationException, __1.INVALID_AT_LEAST_ONE_SELECTION_REQUIRED);
+                verifyValidationThrows(prompt.validateOrThrow.bind(prompt, selections), __1.PromptValidationException, __1.INVALID_AT_LEAST_ONE_SELECTION_REQUIRED);
             }));
         });
         it('should return true when all selections are valid', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
@@ -46,7 +46,7 @@ describe('SelectManyPrompt', () => {
         }));
     });
 });
-const verifyValidationThrows = (invoker, ErrorType, msg, choices) => {
+const verifyValidationThrows = (invoker, ErrorType, msg) => {
     try {
         invoker();
         expect(true).toBeFalsy();
@@ -54,7 +54,6 @@ const verifyValidationThrows = (invoker, ErrorType, msg, choices) => {
     catch (e) {
         expect(e).toBeInstanceOf(ErrorType);
         expect(e.message).toEqual(msg);
-        expect(e.choices).toEqual(choices);
     }
 };
 //# sourceMappingURL=SelectManyPrompt.spec.js.map

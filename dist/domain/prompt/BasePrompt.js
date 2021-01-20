@@ -13,14 +13,6 @@ class BasePrompt {
         return this.config.value;
     }
     set value(val) {
-        try {
-            this.validate(val);
-        }
-        catch (e) {
-            if (!(e instanceof __1.PromptValidationException)) {
-                throw e;
-            }
-        }
         this.config.value = val;
     }
     get isEmpty() {
@@ -42,15 +34,18 @@ class BasePrompt {
     }
     fulfill(val) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            if (val !== undefined) {
-                this.value = val;
-            }
+            this.value = val;
+            this.validateOrThrow(val);
             return this.runner.run();
         });
     }
     isValid() {
+        return this.validate(this.config.value);
+    }
+    validate(val) {
         try {
-            return this.validate(this.config.value);
+            this.validateOrThrow(val);
+            return true;
         }
         catch (e) {
             return false;

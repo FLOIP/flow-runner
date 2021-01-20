@@ -4,11 +4,10 @@ import {
   IContextInputRequired,
   INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK,
   INVALID_AT_LEAST_ONE_SELECTION_REQUIRED,
-  InvalidChoiceException,
   IPromptConfig,
   ISelectManyPromptConfig,
+  PromptValidationException,
   SelectManyPrompt,
-  ValidationException,
 } from '../..'
 import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
 
@@ -34,10 +33,9 @@ describe('SelectManyPrompt', () => {
         const selections = ['choice-A', 'choice-B', 'key-not-in-prompt-config', 'choice-C']
 
         verifyValidationThrows(
-          prompt.validate.bind(prompt, selections),
-          InvalidChoiceException,
-          INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK,
-          ['key-not-in-prompt-config']
+          prompt.validateOrThrow.bind(prompt, selections),
+          PromptValidationException,
+          INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK
         )
       })
 
@@ -50,16 +48,19 @@ describe('SelectManyPrompt', () => {
         ]
 
         verifyValidationThrows(
-          prompt.validate.bind(prompt, selections),
-          InvalidChoiceException,
-          INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK,
-          selections
+          prompt.validateOrThrow.bind(prompt, selections),
+          PromptValidationException,
+          INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK
         )
       })
 
       it('should raise when no selections are provided', async () => {
         const selections: IChoice['key'][] = []
-        verifyValidationThrows(prompt.validate.bind(prompt, selections), ValidationException, INVALID_AT_LEAST_ONE_SELECTION_REQUIRED)
+        verifyValidationThrows(
+          prompt.validateOrThrow.bind(prompt, selections),
+          PromptValidationException,
+          INVALID_AT_LEAST_ONE_SELECTION_REQUIRED
+        )
       })
     })
 
@@ -77,7 +78,7 @@ describe('SelectManyPrompt', () => {
   })
 })
 
-const verifyValidationThrows = /*<E extends Error>*/ (invoker: Function, ErrorType: Function, msg: string, choices?: IChoice['key'][]) => {
+const verifyValidationThrows = /*<E extends Error>*/ (invoker: Function, ErrorType: Function, msg: string) => {
   try {
     invoker()
 
@@ -87,6 +88,5 @@ const verifyValidationThrows = /*<E extends Error>*/ (invoker: Function, ErrorTy
   } catch (e) {
     expect(e).toBeInstanceOf(ErrorType)
     expect(e.message).toEqual(msg)
-    expect(e.choices).toEqual(choices)
   }
 }

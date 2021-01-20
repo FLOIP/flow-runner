@@ -34,6 +34,9 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
   /** State populated when {@link IPrompt.value} is assigned */
   isValid(): boolean
 
+  /** @see {@link BasePrompt.validateOrThrow} */
+  validateOrThrow(val: PromptConfigType['value']): void
+
   /** @see {@link BasePrompt.validate} */
   validate(val: PromptConfigType['value']): boolean
 
@@ -58,5 +61,5 @@ export interface IBasePromptConfig {
 }
 
 export interface PromptConstructor<T> {
-  new(config: T, interactionId: string, runner: IFlowRunner): BasePrompt<any>
+  new (config: T, interactionId: string, runner: IFlowRunner): BasePrompt<any>
 }

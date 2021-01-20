@@ -11,6 +11,7 @@ export declare abstract class BasePrompt<T extends IPromptConfig<T['value']>> im
     get block(): IBlock | undefined;
     fulfill(val: T['value'] | undefined): Promise<IRichCursorInputRequired | undefined>;
     isValid(): boolean;
-    abstract validate(val?: T['value']): boolean;
+    abstract validateOrThrow(val?: T['value']): void;
+    validate(val?: T['value']): boolean;
 }
 //# sourceMappingURL=BasePrompt.d.ts.map

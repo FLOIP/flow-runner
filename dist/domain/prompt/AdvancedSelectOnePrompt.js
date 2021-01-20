@@ -4,8 +4,9 @@ exports.AdvancedSelectOnePrompt = exports.ADVANCED_SELECT_ONE_PROMPT_KEY = void 
 const __1 = require("../..");
 exports.ADVANCED_SELECT_ONE_PROMPT_KEY = 'AdvancedSelectOne';
 class AdvancedSelectOnePrompt extends __1.BasePrompt {
-    validate(selectedRow, choiceRows) {
+    validateOrThrow(selectedRow, choiceRows) {
         const { choiceRowFields, isResponseRequired } = this.config;
+        __1.assertNotNull(selectedRow, () => 'Value provided is null or undefined', message => new __1.PromptValidationException(message));
         __1.assertNotNull(choiceRows, () => 'choiceRows must be non-null', message => new __1.PromptValidationException(message));
         if (isResponseRequired) {
             const hasSelectedRow = choiceRows.some(row => selectedRow === null || selectedRow === void 0 ? void 0 : selectedRow.every(selection => {
@@ -21,7 +22,7 @@ class AdvancedSelectOnePrompt extends __1.BasePrompt {
                 throw new __1.PromptValidationException(`Failed to find the given row: ${selectedRow}`);
             }
         }
-        return true;
+        return;
     }
 }
 exports.AdvancedSelectOnePrompt = AdvancedSelectOnePrompt;

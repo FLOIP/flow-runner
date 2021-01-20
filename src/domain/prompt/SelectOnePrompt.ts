@@ -26,9 +26,9 @@ export const SELECT_ONE_PROMPT_KEY = 'SelectOne'
  * {@link IContact}.
  */
 export class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig> {
-  validate(choiceKey: ISelectOnePromptConfig['value']): boolean {
+  validateOrThrow(choiceKey: ISelectOnePromptConfig['value']): void {
     if (choiceKey == null) {
-      return false
+      throw new PromptValidationException('Value provided is null or undefined')
     }
 
     const {isResponseRequired, choices} = this.config
@@ -37,6 +37,6 @@ export class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig> {
       throw new PromptValidationException('Value provided must be in list of choices')
     }
 
-    return true
+    return
   }
 }

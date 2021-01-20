@@ -6,6 +6,7 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
     block?: IBlock;
     value: PromptConfigType['value'];
     isValid(): boolean;
+    validateOrThrow(val: PromptConfigType['value']): void;
     validate(val: PromptConfigType['value']): boolean;
     fulfill(val: PromptConfigType['value']): Promise<IRichCursorInputRequired | undefined>;
 }

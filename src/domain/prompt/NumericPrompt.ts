@@ -26,11 +26,9 @@ export const NUMERIC_PROMPT_KEY = 'Numeric'
  * {@link IContact}.
  */
 export class NumericPrompt extends BasePrompt<INumericPromptConfig> {
-  static readonly promptKey = 'Numeric'
-
-  validate(val: INumericPromptConfig['value']): boolean {
+  validateOrThrow(val: INumericPromptConfig['value']): void {
     if (Number.isNaN(val) || val == null) {
-      return false
+      throw new PromptValidationException('Value provided is null, undefined, or not a number')
     }
 
     const {min, max} = this.config
@@ -43,6 +41,6 @@ export class NumericPrompt extends BasePrompt<INumericPromptConfig> {
       throw new PromptValidationException('Value provided is greater than allowed')
     }
 
-    return true
+    return
   }
 }
