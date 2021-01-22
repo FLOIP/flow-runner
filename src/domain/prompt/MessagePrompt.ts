@@ -25,7 +25,7 @@ export const MESSAGE_PROMPT_KEY = 'Message'
  * Concrete implementation of {@link BasePrompt} to present a message to an {@link IContact}.
  */
 export class MessagePrompt extends BasePrompt<IMessagePromptConfig> {
-  validateOrThrow(): void {
+  validate(): void {
     return
   }
 }

@@ -85,7 +85,7 @@ const {prompt}: IRichCursorInputRequired = prompt.fulfill('Jenso Ubla')!
 
 The prompt's requirements are preconfigured in the corresponding block before the run is begun. An example of configuration that could take place are min/max constraints when requiring numeric input.
 
-Note that at the lowest level, the `validateOrThrow(input)` method is called when attempting to set a value on the prompt instance. What this means is that we'll see `PromptValidationException` s bubbled at all levels:
+Note that at the lowest level, the `validate(input)` method is called when attempting to set a value on the prompt instance. What this means is that we'll see `PromptValidationException` s bubbled at all levels:
 
 ```typescript
 > prompt.fulfill(200)
@@ -98,7 +98,7 @@ Error: Value provided is greater than allowed
 ```
 
 ```typescript
-> prompt.validateOrThrow(200)
+> prompt.validate(200)
 
 Error: Value provided is greater than allowed
 

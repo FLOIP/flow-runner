@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {BasePrompt, IBlock, IFlowRunner, IRichCursorInputRequired} from '../..'
+import {BasePrompt, IBlock, IFlowRunner, IRichCursorInputRequired, PromptValidationException} from '../..'
 
 /**
  * Primary interface for interacting with an {@link IContact}; typically not immplemented fully, it is recommended that
@@ -30,15 +30,14 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
 
   block?: IBlock
   value: PromptConfigType['value']
+  /** Eror populated when {@link IPrompt.value} assignment raises  */
+  error: PromptValidationException | null
 
-  /** State populated when {@link IPrompt.value} is assigned */
+  /** @see {@link BasePrompt.isValid} */
   isValid(): boolean
 
-  /** @see {@link BasePrompt.validateOrThrow} */
-  validateOrThrow(val: PromptConfigType['value']): void
-
   /** @see {@link BasePrompt.validate} */
-  validate(val: PromptConfigType['value']): boolean
+  validate(val: PromptConfigType['value']): void
 
   /** @see {@link BasePrompt.fulfill} */
   fulfill(val: PromptConfigType['value']): Promise<IRichCursorInputRequired | undefined>

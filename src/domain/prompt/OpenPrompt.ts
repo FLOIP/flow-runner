@@ -26,9 +26,9 @@ export const OPEN_PROMPT_KEY = 'Open'
  * from an {@link IContact}.
  */
 export class OpenPrompt extends BasePrompt<IOpenPromptConfig> {
-  validateOrThrow(val: IOpenPromptConfig['value']): void {
+  validate(val: IOpenPromptConfig['value']): void {
     if (val == null) {
-      throw new PromptValidationException('Value provided is null, undefined, or not a number')
+      throw new PromptValidationException('Value provided is null or undefined')
     }
 
     const {maxResponseCharacters: maxLength} = this.config

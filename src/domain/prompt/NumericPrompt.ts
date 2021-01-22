@@ -18,6 +18,7 @@
  **/
 
 import {BasePrompt, INumericPromptConfig, PromptValidationException} from '../..'
+import {isFinite} from 'lodash'
 
 export const NUMERIC_PROMPT_KEY = 'Numeric'
 
@@ -26,9 +27,9 @@ export const NUMERIC_PROMPT_KEY = 'Numeric'
  * {@link IContact}.
  */
 export class NumericPrompt extends BasePrompt<INumericPromptConfig> {
-  validateOrThrow(val: INumericPromptConfig['value']): void {
-    if (Number.isNaN(val) || val == null) {
-      throw new PromptValidationException('Value provided is null, undefined, or not a number')
+  validate(val: INumericPromptConfig['value']): void {
+    if (val == null || !isFinite(val)) {
+      throw new PromptValidationException('Value provided is not a number')
     }
 
     const {min, max} = this.config

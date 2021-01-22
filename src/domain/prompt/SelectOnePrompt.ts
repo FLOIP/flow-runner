@@ -26,7 +26,7 @@ export const SELECT_ONE_PROMPT_KEY = 'SelectOne'
  * {@link IContact}.
  */
 export class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig> {
-  validateOrThrow(choiceKey: ISelectOnePromptConfig['value']): void {
+  validate(choiceKey: ISelectOnePromptConfig['value']): void {
     if (choiceKey == null) {
       throw new PromptValidationException('Value provided is null or undefined')
     }

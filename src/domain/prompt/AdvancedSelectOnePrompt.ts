@@ -22,7 +22,7 @@ import {assertNotNull, BasePrompt, IAdvancedSelectOne, IAdvancedSelectOnePromptC
 export const ADVANCED_SELECT_ONE_PROMPT_KEY = 'AdvancedSelectOne'
 
 export class AdvancedSelectOnePrompt extends BasePrompt<IAdvancedSelectOnePromptConfig> {
-  validateOrThrow(selectedRow?: IAdvancedSelectOne[], choiceRows?: string[][]): void {
+  validate(selectedRow?: IAdvancedSelectOne[], choiceRows?: string[][]): void {
     const {choiceRowFields, isResponseRequired} = this.config
 
     assertNotNull(

@@ -4,10 +4,11 @@ import {
   IContextInputRequired,
   INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK,
   INVALID_AT_LEAST_ONE_SELECTION_REQUIRED,
+  InvalidChoiceException,
   IPromptConfig,
   ISelectManyPromptConfig,
-  PromptValidationException,
   SelectManyPrompt,
+  PromptValidationException,
 } from '../..'
 import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
 
@@ -33,9 +34,10 @@ describe('SelectManyPrompt', () => {
         const selections = ['choice-A', 'choice-B', 'key-not-in-prompt-config', 'choice-C']
 
         verifyValidationThrows(
-          prompt.validateOrThrow.bind(prompt, selections),
-          PromptValidationException,
-          INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK
+          prompt.validate.bind(prompt, selections),
+          InvalidChoiceException,
+          INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK,
+          ['key-not-in-prompt-config']
         )
       })
 
@@ -48,37 +50,34 @@ describe('SelectManyPrompt', () => {
         ]
 
         verifyValidationThrows(
-          prompt.validateOrThrow.bind(prompt, selections),
-          PromptValidationException,
-          INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK
+          prompt.validate.bind(prompt, selections),
+          InvalidChoiceException,
+          INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK,
+          selections
         )
       })
 
       it('should raise when no selections are provided', async () => {
         const selections: IChoice['key'][] = []
-        verifyValidationThrows(
-          prompt.validateOrThrow.bind(prompt, selections),
-          PromptValidationException,
-          INVALID_AT_LEAST_ONE_SELECTION_REQUIRED
-        )
+        verifyValidationThrows(prompt.validate.bind(prompt, selections), PromptValidationException, INVALID_AT_LEAST_ONE_SELECTION_REQUIRED)
       })
     })
 
     it('should return true when all selections are valid', async () => {
       const selections = ['choice-A', 'choice-D']
-      expect(prompt.validate(selections)).toBe(true)
+      expect(() => prompt.validate(selections)).not.toThrow()
     })
 
     it('should raise when some selections are invalid when isRequired is false', async () => {
       prompt.config.isResponseRequired = false
 
       const selections = ['choice-A', 'choice-B', 'key-not-in-prompt-config', 'choice-C']
-      expect(prompt.validate(selections)).toBe(true)
+      expect(() => prompt.validate(selections)).not.toThrow()
     })
   })
 })
 
-const verifyValidationThrows = /*<E extends Error>*/ (invoker: Function, ErrorType: Function, msg: string) => {
+const verifyValidationThrows = /*<E extends Error>*/ (invoker: Function, ErrorType: Function, msg: string, choices?: IChoice['key'][]) => {
   try {
     invoker()
 
@@ -88,5 +87,6 @@ const verifyValidationThrows = /*<E extends Error>*/ (invoker: Function, ErrorTy
   } catch (e) {
     expect(e).toBeInstanceOf(ErrorType)
     expect(e.message).toEqual(msg)
+    expect(e.choices).toEqual(choices)
   }
 }

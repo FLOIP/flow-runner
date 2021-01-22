@@ -25,6 +25,7 @@ import {
   IPrompt,
   IPromptConfig,
   IRichCursorInputRequired,
+  PromptValidationException,
   ValidationException,
 } from '../..'
 
@@ -35,6 +36,8 @@ export type TGenericPrompt = IPrompt<IPromptConfig<any>>
  * implementations.
  */
 export abstract class BasePrompt<T extends IPromptConfig<T['value']>> implements IPrompt<T> {
+  error: PromptValidationException | null = null
+
   constructor(public config: T, public interactionId: string, public runner: IFlowRunner) {
     // todo: add canPerformEarlyExit() behaviour
   }
@@ -45,8 +48,24 @@ export abstract class BasePrompt<T extends IPromptConfig<T['value']>> implements
     return this.config.value
   }
 
-  /** Set local {@link IPromptConfig.value} */
+  /**
+   * Set local {@link IPromptConfig.value}. This action is guarded by {@link validate}.
+   * Any exceptions raised by {@link validate} are applied to {@link error} property.
+   *
+   * It's important to note that {@link value} property will be set (proxied onto local {@link IPromptConfig.value})
+   * regardless of any {@link PromptValidationException}s raised. */
   set value(val: T['value']) {
+    this.error = null
+    try {
+      this.validate(val)
+    } catch (e) {
+      if (!(e instanceof PromptValidationException)) {
+        throw e
+      }
+
+      this.error = e
+    }
+
     this.config.value = val
   }
 
@@ -72,14 +91,21 @@ export abstract class BasePrompt<T extends IPromptConfig<T['value']>> implements
   }
 
   async fulfill(val: T['value'] | undefined): Promise<IRichCursorInputRequired | undefined> {
-    this.value = val
-    this.validateOrThrow(val)
+    // allow prompt.fulfill() for continuation
+    if (val !== undefined) {
+      this.value = val
+    }
 
     return this.runner.run()
   }
 
   public isValid(): boolean {
-    return this.validate(this.config.value)
+    try {
+      this.validate(this.config.value)
+      return true
+    } catch (e) {
+      return false
+    }
   }
 
   /**
@@ -87,14 +113,5 @@ export abstract class BasePrompt<T extends IPromptConfig<T['value']>> implements
    * @param val
    * @throws PromptValidationException
    */
-  abstract validateOrThrow(val?: T['value']): void
-
-  validate(val?: T['value']): boolean {
-    try {
-      this.validateOrThrow(val)
-      return true
-    } catch (e) {
-      return false
-    }
-  }
+  abstract validate(val?: T['value']): void
 }
