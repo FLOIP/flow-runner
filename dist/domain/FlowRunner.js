@@ -95,13 +95,7 @@ class FlowRunner {
             return true;
         }
         const { prompt } = this.hydrateRichCursorFrom(ctx);
-        try {
-            prompt.validate(prompt.value);
-            return false;
-        }
-        catch (e) {
-            return true;
-        }
+        return !prompt.isValid();
     }
     cacheInteractionByBlockName({ uuid, entryAt }, { name, config: { prompt } }, context = this.context) {
         if (!('blockInteractionsByBlockName' in this.context.sessionVars)) {

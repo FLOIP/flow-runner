@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {BasePrompt, IOpenPromptConfig, ValidationException} from '../..'
+import {BasePrompt, IOpenPromptConfig, PromptValidationException} from '../..'
 
 export const OPEN_PROMPT_KEY = 'Open'
 
@@ -26,15 +26,19 @@ export const OPEN_PROMPT_KEY = 'Open'
  * from an {@link IContact}.
  */
 export class OpenPrompt extends BasePrompt<IOpenPromptConfig> {
-  validate(val: string): boolean {
+  validate(val: IOpenPromptConfig['value']): void {
+    if (val == null) {
+      throw new PromptValidationException('Value provided is null or undefined')
+    }
+
     const {maxResponseCharacters: maxLength} = this.config
 
     if (maxLength != null && val.length > maxLength) {
       // todo: add ability to provide validation codes to ValidationException for use as comparator in consumers
       // todo: need a method to define resources frontend needs from backend
-      throw new ValidationException('Too many characters on value provided')
+      throw new PromptValidationException('Too many characters on value provided')
     }
 
-    return true
+    return
   }
 }

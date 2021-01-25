@@ -8,7 +8,7 @@ import {
   IPromptConfig,
   ISelectManyPromptConfig,
   SelectManyPrompt,
-  ValidationException,
+  PromptValidationException,
 } from '../..'
 import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
 
@@ -59,20 +59,20 @@ describe('SelectManyPrompt', () => {
 
       it('should raise when no selections are provided', async () => {
         const selections: IChoice['key'][] = []
-        verifyValidationThrows(prompt.validate.bind(prompt, selections), ValidationException, INVALID_AT_LEAST_ONE_SELECTION_REQUIRED)
+        verifyValidationThrows(prompt.validate.bind(prompt, selections), PromptValidationException, INVALID_AT_LEAST_ONE_SELECTION_REQUIRED)
       })
     })
 
     it('should return true when all selections are valid', async () => {
       const selections = ['choice-A', 'choice-D']
-      expect(prompt.validate(selections)).toBe(true)
+      expect(() => prompt.validate(selections)).not.toThrow()
     })
 
     it('should raise when some selections are invalid when isRequired is false', async () => {
       prompt.config.isResponseRequired = false
 
       const selections = ['choice-A', 'choice-B', 'key-not-in-prompt-config', 'choice-C']
-      expect(prompt.validate(selections)).toBe(true)
+      expect(() => prompt.validate(selections)).not.toThrow()
     })
   })
 })

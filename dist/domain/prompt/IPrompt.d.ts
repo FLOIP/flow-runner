@@ -7,7 +7,7 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
     value: PromptConfigType['value'];
     error: PromptValidationException | null;
     isValid(): boolean;
-    validate(val: PromptConfigType['value']): boolean;
+    validate(val: PromptConfigType['value']): void;
     fulfill(val: PromptConfigType['value']): Promise<IRichCursorInputRequired | undefined>;
 }
 export interface IPromptConfig<T> extends IBasePromptConfig {

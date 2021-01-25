@@ -32,17 +32,17 @@ describe('SelectManyPrompt', () => {
             }));
             it('should raise when no selections are provided', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                 const selections = [];
-                verifyValidationThrows(prompt.validate.bind(prompt, selections), __1.ValidationException, __1.INVALID_AT_LEAST_ONE_SELECTION_REQUIRED);
+                verifyValidationThrows(prompt.validate.bind(prompt, selections), __1.PromptValidationException, __1.INVALID_AT_LEAST_ONE_SELECTION_REQUIRED);
             }));
         });
         it('should return true when all selections are valid', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
             const selections = ['choice-A', 'choice-D'];
-            expect(prompt.validate(selections)).toBe(true);
+            expect(() => prompt.validate(selections)).not.toThrow();
         }));
         it('should raise when some selections are invalid when isRequired is false', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
             prompt.config.isResponseRequired = false;
             const selections = ['choice-A', 'choice-B', 'key-not-in-prompt-config', 'choice-C'];
-            expect(prompt.validate(selections)).toBe(true);
+            expect(() => prompt.validate(selections)).not.toThrow();
         }));
     });
 });

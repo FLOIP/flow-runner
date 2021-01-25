@@ -49,13 +49,13 @@ export abstract class BasePrompt<T extends IPromptConfig<T['value']>> implements
   }
 
   /**
-   * Set local {@link IPromptConfig.value}. This action is guarded by {@link validate}, where the result of
-   * {@link validate} is applied to {@link isValid}. Any exceptions raised by {@link validate} are applied to
-   * {@link error} property.
+   * Set local {@link IPromptConfig.value}. This action is guarded by {@link validate}.
+   * Any exceptions raised by {@link validate} are applied to {@link error} property.
    *
    * It's important to note that {@link value} property will be set (proxied onto local {@link IPromptConfig.value})
    * regardless of any {@link PromptValidationException}s raised. */
   set value(val: T['value']) {
+    this.error = null
     try {
       this.validate(val)
     } catch (e) {
@@ -91,7 +91,8 @@ export abstract class BasePrompt<T extends IPromptConfig<T['value']>> implements
   }
 
   async fulfill(val: T['value'] | undefined): Promise<IRichCursorInputRequired | undefined> {
-    // allow prompt.fulfill() for continuation
+    // We need to exempt setting this.value when prompt.fulfill() is called without any arguments,
+    // because it would reset our state to "uninitialized" due to val being undefined
     if (val !== undefined) {
       this.value = val
     }
@@ -101,7 +102,8 @@ export abstract class BasePrompt<T extends IPromptConfig<T['value']>> implements
 
   public isValid(): boolean {
     try {
-      return this.validate(this.config.value)
+      this.validate(this.config.value)
+      return true
     } catch (e) {
       return false
     }
@@ -110,6 +112,7 @@ export abstract class BasePrompt<T extends IPromptConfig<T['value']>> implements
   /**
    * Template method to be implemented by concrete {@link IPrompt} implementations.
    * @param val
+   * @throws PromptValidationException
    */
-  abstract validate(val?: T['value']): boolean
+  abstract validate(val?: T['value']): void
 }

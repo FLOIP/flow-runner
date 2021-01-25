@@ -17,7 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {BasePrompt, INumericPromptConfig, ValidationException} from '../..'
+import {BasePrompt, INumericPromptConfig, PromptValidationException} from '../..'
+import {isFinite} from 'lodash'
 
 export const NUMERIC_PROMPT_KEY = 'Numeric'
 
@@ -26,23 +27,21 @@ export const NUMERIC_PROMPT_KEY = 'Numeric'
  * {@link IContact}.
  */
 export class NumericPrompt extends BasePrompt<INumericPromptConfig> {
-  static readonly promptKey = 'Numeric'
-
-  validate(val: number): boolean {
-    if (Number.isNaN(val) || val === null) {
-      return false
+  validate(val: INumericPromptConfig['value']): void {
+    if (val == null || !isFinite(val)) {
+      throw new PromptValidationException('Value provided is not a number')
     }
 
     const {min, max} = this.config
 
     if (min != null && val < min) {
-      throw new ValidationException('Value provided is less than allowed')
+      throw new PromptValidationException('Value provided is less than allowed')
     }
 
     if (max != null && val > max) {
-      throw new ValidationException('Value provided is greater than allowed')
+      throw new PromptValidationException('Value provided is greater than allowed')
     }
 
-    return true
+    return
   }
 }

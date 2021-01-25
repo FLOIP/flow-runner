@@ -1,4 +1,5 @@
-export declare class InvalidChoiceException<ChoiceType> extends Error {
+import { PromptValidationException } from './PromptValidationException';
+export declare class InvalidChoiceException<ChoiceType> extends PromptValidationException {
     choices?: ChoiceType[] | undefined;
     constructor(message?: string, choices?: ChoiceType[] | undefined);
 }

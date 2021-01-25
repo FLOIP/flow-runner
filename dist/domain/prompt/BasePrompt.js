@@ -14,6 +14,7 @@ class BasePrompt {
         return this.config.value;
     }
     set value(val) {
+        this.error = null;
         try {
             this.validate(val);
         }
@@ -52,7 +53,8 @@ class BasePrompt {
     }
     isValid() {
         try {
-            return this.validate(this.config.value);
+            this.validate(this.config.value);
+            return true;
         }
         catch (e) {
             return false;

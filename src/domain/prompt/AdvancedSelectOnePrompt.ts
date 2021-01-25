@@ -17,18 +17,24 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {assertNotNull, BasePrompt, IAdvancedSelectOne, IAdvancedSelectOnePromptConfig, ValidationException} from '../..'
+import {assertNotNull, BasePrompt, IAdvancedSelectOne, IAdvancedSelectOnePromptConfig, PromptValidationException} from '../..'
 
 export const ADVANCED_SELECT_ONE_PROMPT_KEY = 'AdvancedSelectOne'
 
 export class AdvancedSelectOnePrompt extends BasePrompt<IAdvancedSelectOnePromptConfig> {
-  validate(selectedRow?: IAdvancedSelectOne[], choiceRows?: string[][]): boolean {
+  validate(selectedRow?: IAdvancedSelectOne[], choiceRows?: string[][]): void {
     const {choiceRowFields, isResponseRequired} = this.config
+
+    assertNotNull(
+      selectedRow,
+      () => 'Value provided is null or undefined',
+      message => new PromptValidationException(message)
+    )
 
     assertNotNull(
       choiceRows,
       () => 'choiceRows must be non-null',
-      message => new ValidationException(message)
+      message => new PromptValidationException(message)
     )
 
     if (isResponseRequired) {
@@ -36,17 +42,17 @@ export class AdvancedSelectOnePrompt extends BasePrompt<IAdvancedSelectOnePrompt
         selectedRow?.every(selection => {
           const columnIndex = choiceRowFields.indexOf(selection.name)
           if (columnIndex < 0) {
-            throw new ValidationException(`Failed to find a column called: ${selection.name}`)
+            throw new PromptValidationException(`Failed to find a column called: ${selection.name}`)
           } else {
             return selection.value === row[columnIndex]
           }
         })
       )
       if (!hasSelectedRow) {
-        throw new ValidationException(`Failed to find the given row: ${selectedRow}`)
+        throw new PromptValidationException(`Failed to find the given row: ${selectedRow}`)
       }
     }
 
-    return true
+    return
   }
 }

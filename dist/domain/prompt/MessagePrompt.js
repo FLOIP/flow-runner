@@ -5,7 +5,7 @@ const __1 = require("../..");
 exports.MESSAGE_PROMPT_KEY = 'Message';
 class MessagePrompt extends __1.BasePrompt {
     validate() {
-        return true;
+        return;
     }
 }
 exports.MessagePrompt = MessagePrompt;

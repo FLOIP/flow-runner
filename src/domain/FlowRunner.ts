@@ -255,12 +255,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
 
     const {prompt}: IRichCursorInputRequired = this.hydrateRichCursorFrom(ctx as IContextInputRequired) as IRichCursorInputRequired
 
-    try {
-      prompt.validate(prompt.value)
-      return false
-    } catch (e) {
-      return true
-    }
+    return !prompt.isValid()
   }
 
   // todo: this could be findFirstExitOnActiveFlowBlockFor to an Expressions Behaviour

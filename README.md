@@ -2,10 +2,10 @@
 
 ## What are Flows?
 
-Flows are a modern paradign for describing the logic of digital information systems that interact with individuals,  
-often for the purpose of (a) collecting data or (b) providing information through interactive requests. 
-Some common examples of this are in mobile services using voice-based or SMS-based conversations over basic mobile 
-phones. Flows follow the "flowchart" paradigm, consisting of actions (nodes) and connections between actions, which can 
+Flows are a modern paradign for describing the logic of digital information systems that interact with individuals,
+often for the purpose of (a) collecting data or (b) providing information through interactive requests.
+Some common examples of this are in mobile services using voice-based or SMS-based conversations over basic mobile
+phones. Flows follow the "flowchart" paradigm, consisting of actions (nodes) and connections between actions, which can
 incorporate decision-making logic.
 
 More details and definitions of components within this ecosystem at: https://floip.gitbooks.io/flow-specification/content/
@@ -16,9 +16,9 @@ Flow Runner is a concrete implementation of the Flow Interoperability specificat
 
 ## Usage example 1: Basic
 
-To begin and set up, we first need to create a context to run a flow with. We have exposed a helper method with sane defaults to support this called `createContextDataObjectFor(contact)`. 
+To begin and set up, we first need to create a context to run a flow with. We have exposed a helper method with sane defaults to support this called `createContextDataObjectFor(contact)`.
 
-Context is the single piece of truth to the state of the current run, which must adhere to the IContext interface (source found at: src/flow-spec/IContext.ts). We've designed this tool in such a way that we can pause execution between any interactive interaction and resume exactly where we'd left off. The context object is all we need, and it's 100% JSON-serializable. 
+Context is the single piece of truth to the state of the current run, which must adhere to the IContext interface (source found at: src/flow-spec/IContext.ts). We've designed this tool in such a way that we can pause execution between any interactive interaction and resume exactly where we'd left off. The context object is all we need, and it's 100% JSON-serializable.
 
 Contact is any concrete implementation of the exposed interface `IContact`, which only requires three props as follows:
 
@@ -33,7 +33,7 @@ interface IContact {
 
 Next, we create a runner instance by providing the newly generated context data object as the first parameter.
 
-And lastly, invoke `run()`. 
+And lastly, invoke `run()`.
 
 ```typescript
 const context: IContext = createContextDataObjectFor(
@@ -59,7 +59,7 @@ We can inspect how the run went through a few different artifacts:
 
 ## Usage example 2: Interactive blocks with Prompts
 
-Some Flows contain Blocks that require interaction with the Contact (via the host application) during their execution in order to fulfill their role within the Flow. This is accomplished through an interface exposed as IPrompt (src/domain/prompt/IPrompt.ts). 
+Some Flows contain Blocks that require interaction with the Contact (via the host application) during their execution in order to fulfill their role within the Flow. This is accomplished through an interface exposed as IPrompt (src/domain/prompt/IPrompt.ts).
 
 When running a flow, the runner will sprint full speed ahead until reaching a block requiring interaction, at which point the runner will pause, return a cursor (containing an IPrompt), and wait until further action is taken.
 
@@ -83,22 +83,12 @@ const {prompt}: IRichCursorInputRequired = prompt.fulfill('Jenso Ubla')!
 
 ---
 
-The prompt's requirements are preconfigured in the corresponding block before the run is begun. An example of configuration that could take place are min/max constraints when requiring numeric input. 
+The prompt's requirements are preconfigured in the corresponding block before the run is begun. An example of configuration that could take place are min/max constraints when requiring numeric input.
 
 Note that at the lowest level, the `validate(input)` method is called when attempting to set a value on the prompt instance. What this means is that we'll see `PromptValidationException` s bubbled at all levels:
 
 ```typescript
 > prompt.fulfill(200)
-
-Error: Value provided is greater than allowed
-
-    at NumericPrompt.validate (src/domain/prompt/NumericPrompt.ts:20:13)
-    at NumericPrompt.set value [as value] (src/domain/prompt/BasePrompt.ts:46:27)
-    at NumericPrompt.fulfill (src/domain/prompt/BasePrompt.ts:63:15)
-```
-
-```typescript
-> prompt.value = 200
 
 Error: Value provided is greater than allowed
 
@@ -157,7 +147,7 @@ interface ICursor {
 }
 ```
 
-Sometimes we need a bit more data to pass around and some functional behaviour to work with. This is where  the concept of hydration/dehydration comes in. With an `ICursor`'s corresponding `IContext`, we can swap between our primitive and rich cursor formats. 
+Sometimes we need a bit more data to pass around and some functional behaviour to work with. This is where  the concept of hydration/dehydration comes in. With an `ICursor`'s corresponding `IContext`, we can swap between our primitive and rich cursor formats.
 
 ```
 const richCursor: IRichCursor = runner.hydrateRichCursorFrom(context)
@@ -251,7 +241,7 @@ It should be noted here, that after satisfying a prompt, and taking action on ru
 
 ## Usage example 4: Customization of block runners
 
-Sometimes we need to perform some additional customization of our `IBlockRunner` collection before beginning the Flow run. 
+Sometimes we need to perform some additional customization of our `IBlockRunner` collection before beginning the Flow run.
 
 > Please be very wary of modifying this configuration amidst a partially completed flow run, this has the potential for reducing the predictability and consistency of resulting run data.
 
@@ -273,7 +263,7 @@ const runnerFactoryStore: IBlockRunnerFactoryStore = createDefaultBlockRunnerSto
 const messageBlockRunnerFactory: TBlockRunnerFactory = runnerFactoryStore.get('MobilePrimitives\\Message')
 
 // ... and new block runners can be added
-runnerFactoryStore.set('MobilePrimitives\\Message', (block, ctx) => 
+runnerFactoryStore.set('MobilePrimitives\\Message', (block, ctx) =>
   new MessageBlockRunner(block as IMessageBlock, ctx))
 
 const runner: IFlowRunner = new FlowRunner(context, runnerFactoryStore)
@@ -353,7 +343,7 @@ class NumericResponseBlockRunner implements IBlockRunner {
 
 ## Usage example 5: Customization of FlowRunner via `IBehaviour`
 
-`IBehaviour`s are our first pass at solving for extensibility within the FlowRunner itself. 
+`IBehaviour`s are our first pass at solving for extensibility within the FlowRunner itself.
 
 ```typescript
 interface IBehaviour {
@@ -386,4 +376,4 @@ runner.behaviours.basicBacktracking = new BasicBacktrackingBehaviour(context)
 A couple examples of how we've found behaviours useful are:
 
 - traversing back through interaction history
-- improving performance through caching values 
+- improving performance through caching values
