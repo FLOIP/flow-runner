@@ -4,9 +4,9 @@ exports.OpenPrompt = exports.OPEN_PROMPT_KEY = void 0;
 const __1 = require("../..");
 exports.OPEN_PROMPT_KEY = 'Open';
 class OpenPrompt extends __1.BasePrompt {
-    validateOrThrow(val) {
+    validate(val) {
         if (val == null) {
-            throw new __1.PromptValidationException('Value provided is null, undefined, or not a number');
+            throw new __1.PromptValidationException('Value provided is null or undefined');
         }
         const { maxResponseCharacters: maxLength } = this.config;
         if (maxLength != null && val.length > maxLength) {

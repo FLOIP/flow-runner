@@ -4,7 +4,7 @@ exports.SelectOnePrompt = exports.SELECT_ONE_PROMPT_KEY = void 0;
 const __1 = require("../..");
 exports.SELECT_ONE_PROMPT_KEY = 'SelectOne';
 class SelectOnePrompt extends __1.BasePrompt {
-    validateOrThrow(choiceKey) {
+    validate(choiceKey) {
         if (choiceKey == null) {
             throw new __1.PromptValidationException('Value provided is null or undefined');
         }

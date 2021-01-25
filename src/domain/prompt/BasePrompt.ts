@@ -91,7 +91,8 @@ export abstract class BasePrompt<T extends IPromptConfig<T['value']>> implements
   }
 
   async fulfill(val: T['value'] | undefined): Promise<IRichCursorInputRequired | undefined> {
-    // allow prompt.fulfill() for continuation
+    // We need to exempt setting this.value when prompt.fulfill() is called without any arguments,
+    // because it would reset our state to "uninitialized" due to val being undefined
     if (val !== undefined) {
       this.value = val
     }

@@ -30,7 +30,7 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
 
   block?: IBlock
   value: PromptConfigType['value']
-  /** Eror populated when {@link IPrompt.value} assignment raises  */
+  /** Error populated when {@link IPrompt.value} assignment raises  */
   error: PromptValidationException | null
 
   /** @see {@link BasePrompt.isValid} */

@@ -7,7 +7,7 @@ exports.INVALID_AT_LEAST_ONE_SELECTION_REQUIRED = 'At least one selection is req
 exports.INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK = 'All selections must be valid choices on block';
 exports.SELECT_MANY_PROMPT_KEY = 'SelectMany';
 class SelectManyPrompt extends __1.BasePrompt {
-    validateOrThrow(selections) {
+    validate(selections) {
         if (selections == null) {
             throw new __1.PromptValidationException('Value provided is null or undefined');
         }
@@ -20,7 +20,7 @@ class SelectManyPrompt extends __1.BasePrompt {
         }
         const invalidChoices = lodash_1.difference(selections, lodash_1.map(choices, 'key'));
         if (invalidChoices.length !== 0) {
-            throw new __1.PromptValidationException(exports.INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK);
+            throw new __1.InvalidChoiceException(exports.INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK, invalidChoices);
         }
         return;
     }

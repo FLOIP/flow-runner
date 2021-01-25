@@ -8,11 +8,22 @@ class BasePrompt {
         this.config = config;
         this.interactionId = interactionId;
         this.runner = runner;
+        this.error = null;
     }
     get value() {
         return this.config.value;
     }
     set value(val) {
+        this.error = null;
+        try {
+            this.validate(val);
+        }
+        catch (e) {
+            if (!(e instanceof __1.PromptValidationException)) {
+                throw e;
+            }
+            this.error = e;
+        }
         this.config.value = val;
     }
     get isEmpty() {
@@ -34,17 +45,15 @@ class BasePrompt {
     }
     fulfill(val) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            this.value = val;
-            this.validateOrThrow(val);
+            if (val !== undefined) {
+                this.value = val;
+            }
             return this.runner.run();
         });
     }
     isValid() {
-        return this.validate(this.config.value);
-    }
-    validate(val) {
         try {
-            this.validateOrThrow(val);
+            this.validate(this.config.value);
             return true;
         }
         catch (e) {

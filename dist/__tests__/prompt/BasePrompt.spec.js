@@ -18,7 +18,7 @@ describe('BasePrompt', () => {
                 const ctx = dataset.contexts[1];
                 const runner = new __1.FlowRunner(ctx);
                 const prompt = new __1.MessagePrompt(config, 'abc-123', runner);
-                expect(prompt.isValid()).toBe(true);
+                expect(prompt.error).toBeNull();
             }));
         });
     });
