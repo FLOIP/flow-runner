@@ -4,7 +4,7 @@
   "deliveryStatus": "QUEUED",
   "userId": "5b8c87d6-de90-4bc4-8668-4f0400003262",
   "orgId": "1099281639566999552",
-  "mode": "offline",
+  "mode": "OFFLINE",
   "languageId": "207292",
   "contact": {
     "id": "1100133902552451464",
@@ -844,13 +844,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4617-8457-f21423d64d32",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Run Tree A",
           "hasBeenFetched": true,
@@ -870,13 +870,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4614-86f9-ff8af1988762",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Run Tree B",
           "hasBeenFetched": true,
@@ -896,13 +896,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-461a-86ce-3e4db4c6d800",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Run Tree C",
           "hasBeenFetched": true,
@@ -922,13 +922,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c29e2b64981",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Run Tree A",
           "hasBeenFetched": true,
@@ -948,13 +948,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c29e2b64982",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Run Tree B",
           "hasBeenFetched": true,
@@ -974,13 +974,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c29e2b64983",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Run Tree C",
           "hasBeenFetched": true,
@@ -1000,9 +1000,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c29-906111c56c93",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "",
           "hasBeenFetched": true,
@@ -1022,13 +1022,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c29fd56b901",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1048,13 +1048,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c29075f7981",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1074,13 +1074,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c292578e901",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1100,13 +1100,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c2250093001",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1126,9 +1126,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c22-90610ea01260",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Tree A",
           "hasBeenFetched": true,
@@ -1148,13 +1148,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c225b71d701",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1174,9 +1174,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c22-90610eb6e3ae",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Tree A numeric",
           "hasBeenFetched": true,
@@ -1196,13 +1196,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c225cd97a01",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1222,9 +1222,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c22-90610eb9b2f4",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Tree A open",
           "hasBeenFetched": true,
@@ -1244,13 +1244,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c2a876fd181",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1270,9 +1270,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c2a-90610f0edfa3",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Tree B",
           "hasBeenFetched": true,
@@ -1292,13 +1292,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4611-806e-3c5258f39885",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "One",
           "hasBeenFetched": true,
@@ -1318,13 +1318,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4619-8d5a-1f8f010e2800",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Two",
           "hasBeenFetched": true,
@@ -1344,13 +1344,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8f07-5fc8c2a627a7",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Three",
           "hasBeenFetched": true,
@@ -1370,13 +1370,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c2a90e46381",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1396,9 +1396,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c2a-90610f21c8c7",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Tree A MCQ",
           "hasBeenFetched": true,
@@ -1418,13 +1418,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c2a6026bf01",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1444,13 +1444,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c24b6e9b501",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1470,9 +1470,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c24-90610f6dd36a",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Tree B1",
           "hasBeenFetched": true,
@@ -1492,13 +1492,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c24c4308881",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1518,9 +1518,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c24-90610f886111",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Tree B1 numeric Question",
           "hasBeenFetched": true,
@@ -1540,13 +1540,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c25e75c3381",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1566,9 +1566,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c25-90610fceb867",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Tree C",
           "hasBeenFetched": true,
@@ -1588,13 +1588,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c25fca47e01",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1614,13 +1614,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4617-8c54-7af699bb76c4",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "One",
           "hasBeenFetched": true,
@@ -1640,13 +1640,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4612-858d-4186fbfa5f33",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Two",
           "hasBeenFetched": true,
@@ -1666,13 +1666,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4617-8c72-225e40a654d3",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Three",
           "hasBeenFetched": true,
@@ -1692,9 +1692,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c25-90610ff948fc",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Tree C MCQ",
           "hasBeenFetched": true,
@@ -1714,13 +1714,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c2504137001",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1740,13 +1740,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c26e75c3381",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1766,9 +1766,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c26-90610fceb867",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Tree C1",
           "hasBeenFetched": true,
@@ -1788,13 +1788,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c2604137001",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1814,13 +1814,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c264c67b901",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1840,9 +1840,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c26-90611098cf72",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Tree C",
           "hasBeenFetched": true,
@@ -1862,13 +1862,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c27e75c3381",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1888,9 +1888,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c27-90610fceb867",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Tree C2",
           "hasBeenFetched": true,
@@ -1910,13 +1910,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c2704137001",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1936,13 +1936,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c274c67b901",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -1962,9 +1962,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c27-90611098cf72",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Tree C2",
           "hasBeenFetched": true,
@@ -1984,13 +1984,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c28a023ef81",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -2010,9 +2010,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c28-9061114047df",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Subtree",
           "hasBeenFetched": true,
@@ -2032,13 +2032,13 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "29841127-3247-4610-8000-4c28a875e401",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -2058,9 +2058,9 @@
           "orgId": "1099281639566999552",
           "resourceUuid": "95bd9e4a-9300-4004-9c28-90611150ebc8",
           "languageId": "207292",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Open Subtree",
           "hasBeenFetched": true,

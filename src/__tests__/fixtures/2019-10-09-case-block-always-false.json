@@ -452,13 +452,13 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "True"
         }
@@ -469,13 +469,13 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "False"
         }
@@ -486,13 +486,13 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Why Not Option 3?"
         }
@@ -503,13 +503,13 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Unchoosable (Seriously this breaks the tree)"
         }
@@ -520,13 +520,13 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "True"
         }
@@ -537,13 +537,13 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "False"
         }
@@ -554,13 +554,13 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Why Not Option 3?"
         }
@@ -571,13 +571,13 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Unchoosable (Seriously this breaks the tree)"
         }
@@ -588,9 +588,9 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Choose one"
         }
@@ -601,13 +601,13 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1"
         }
@@ -618,9 +618,9 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "You Selected True"
         }
@@ -631,13 +631,13 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "TRUE"
         }
@@ -648,13 +648,13 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "FALSE"
         }
@@ -665,13 +665,13 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "TRUE"
         }
@@ -682,13 +682,13 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "FALSE"
         }
@@ -699,13 +699,13 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1"
         }
@@ -716,9 +716,9 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "You selected False"
         }
@@ -729,13 +729,13 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1"
         }
@@ -746,9 +746,9 @@
       "values": [
         {
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "You can't have it both ways"
         }

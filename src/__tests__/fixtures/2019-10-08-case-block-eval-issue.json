@@ -3,7 +3,7 @@
   "createdAt": "2019-10-07T15:55:01.804Z",
   "deliveryStatus": "3",
   "userId": "15",
-  "mode": "offline",
+  "mode": "OFFLINE",
   "languageId": "22",
   "contact": {
     "id": "0"
@@ -208,13 +208,13 @@
               "uuid": "29841127-3247-4612-84dd-877400000000;22;text;ivr;sms;ussd;rich_messaging;offline",
               "resourceUuid": "29841127-3247-4612-84dd-877400000000",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "ivr",
-                "sms",
-                "ussd",
-                "rich_messaging",
-                "offline"
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
               ],
               "value": "True",
               "fileName": null,
@@ -229,13 +229,13 @@
               "uuid": "29841127-3247-4612-84dd-a24000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
               "resourceUuid": "29841127-3247-4612-84dd-a24000000000",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "ivr",
-                "sms",
-                "ussd",
-                "rich_messaging",
-                "offline"
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
               ],
               "value": "False",
               "fileName": null,
@@ -250,13 +250,13 @@
               "uuid": "29841127-3247-4612-84dd-bb8000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
               "resourceUuid": "29841127-3247-4612-84dd-bb8000000000",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "ivr",
-                "sms",
-                "ussd",
-                "rich_messaging",
-                "offline"
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
               ],
               "value": "Why Not Option 3?",
               "fileName": null,
@@ -271,13 +271,13 @@
               "uuid": "29841127-3247-4612-84dd-d7c000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
               "resourceUuid": "29841127-3247-4612-84dd-d7c000000000",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "ivr",
-                "sms",
-                "ussd",
-                "rich_messaging",
-                "offline"
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
               ],
               "value": "Unchoosable (Seriously this breaks the tree)",
               "fileName": null,
@@ -292,13 +292,13 @@
               "uuid": "29841127-3247-4610-8037-c915c54a60ed;22;text;ivr;sms;ussd;rich_messaging;offline",
               "resourceUuid": "29841127-3247-4610-8037-c915c54a60ed",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "ivr",
-                "sms",
-                "ussd",
-                "rich_messaging",
-                "offline"
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
               ],
               "value": "True",
               "fileName": null,
@@ -313,13 +313,13 @@
               "uuid": "29841127-3247-4610-8037-c915c54a60ee;22;text;ivr;sms;ussd;rich_messaging;offline",
               "resourceUuid": "29841127-3247-4610-8037-c915c54a60ee",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "ivr",
-                "sms",
-                "ussd",
-                "rich_messaging",
-                "offline"
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
               ],
               "value": "False",
               "fileName": null,
@@ -334,13 +334,13 @@
               "uuid": "29841127-3247-4610-8037-c915c54a60ef;22;text;ivr;sms;ussd;rich_messaging;offline",
               "resourceUuid": "29841127-3247-4610-8037-c915c54a60ef",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "ivr",
-                "sms",
-                "ussd",
-                "rich_messaging",
-                "offline"
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
               ],
               "value": "Why Not Option 3?",
               "fileName": null,
@@ -355,13 +355,13 @@
               "uuid": "29841127-3247-4610-8037-c915c54a60f0;22;text;ivr;sms;ussd;rich_messaging;offline",
               "resourceUuid": "29841127-3247-4610-8037-c915c54a60f0",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "ivr",
-                "sms",
-                "ussd",
-                "rich_messaging",
-                "offline"
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
               ],
               "value": "Unchoosable (Seriously this breaks the tree)",
               "fileName": null,
@@ -376,9 +376,9 @@
               "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573;22;text;offline",
               "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "offline"
+                "OFFLINE"
               ],
               "value": "Choose one",
               "fileName": null,
@@ -393,13 +393,13 @@
               "uuid": "29841127-3247-4610-8037-c915cf227e89;22;text;ivr;sms;ussd;rich_messaging;offline",
               "resourceUuid": "29841127-3247-4610-8037-c915cf227e89",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "ivr",
-                "sms",
-                "ussd",
-                "rich_messaging",
-                "offline"
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
               ],
               "value": "1",
               "fileName": null,
@@ -414,9 +414,9 @@
               "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2;22;text;offline",
               "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "offline"
+                "OFFLINE"
               ],
               "value": "You Selected True",
               "fileName": null,
@@ -431,13 +431,13 @@
               "uuid": "29841127-3247-4610-8037-c915d45b7379;22;text;ivr;sms;ussd;rich_messaging;offline",
               "resourceUuid": "29841127-3247-4610-8037-c915d45b7379",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "ivr",
-                "sms",
-                "ussd",
-                "rich_messaging",
-                "offline"
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
               ],
               "value": "TRUE",
               "fileName": null,
@@ -452,13 +452,13 @@
               "uuid": "29841127-3247-4610-8037-c915d45b737a;22;text;ivr;sms;ussd;rich_messaging;offline",
               "resourceUuid": "29841127-3247-4610-8037-c915d45b737a",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "ivr",
-                "sms",
-                "ussd",
-                "rich_messaging",
-                "offline"
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
               ],
               "value": "FALSE",
               "fileName": null,
@@ -473,13 +473,13 @@
               "uuid": "29841127-3247-4610-8037-c915e5c24381;22;text;ivr;sms;ussd;rich_messaging;offline",
               "resourceUuid": "29841127-3247-4610-8037-c915e5c24381",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "ivr",
-                "sms",
-                "ussd",
-                "rich_messaging",
-                "offline"
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
               ],
               "value": "TRUE",
               "fileName": null,
@@ -494,13 +494,13 @@
               "uuid": "29841127-3247-4610-8037-c915e5c24382;22;text;ivr;sms;ussd;rich_messaging;offline",
               "resourceUuid": "29841127-3247-4610-8037-c915e5c24382",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "ivr",
-                "sms",
-                "ussd",
-                "rich_messaging",
-                "offline"
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
               ],
               "value": "FALSE",
               "fileName": null,
@@ -515,13 +515,13 @@
               "uuid": "29841127-3247-4610-8037-c915ecd5efc9;22;text;ivr;sms;ussd;rich_messaging;offline",
               "resourceUuid": "29841127-3247-4610-8037-c915ecd5efc9",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "ivr",
-                "sms",
-                "ussd",
-                "rich_messaging",
-                "offline"
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
               ],
               "value": "1",
               "fileName": null,
@@ -536,9 +536,9 @@
               "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2;22;text;offline",
               "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "offline"
+                "OFFLINE"
               ],
               "value": "You selected False",
               "fileName": null,
@@ -553,13 +553,13 @@
               "uuid": "29841127-3247-4610-8037-c915ed3c1dfd;22;text;ivr;sms;ussd;rich_messaging;offline",
               "resourceUuid": "29841127-3247-4610-8037-c915ed3c1dfd",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "ivr",
-                "sms",
-                "ussd",
-                "rich_messaging",
-                "offline"
+                "IVR",
+                "SMS",
+                "USSD",
+                "RICH_MESSAGING",
+                "OFFLINE"
               ],
               "value": "1",
               "fileName": null,
@@ -574,9 +574,9 @@
               "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757;22;text;offline",
               "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
               "languageId": "22",
-              "contentType": "text",
+              "contentType": "TEXT",
               "modes": [
-                "offline"
+                "OFFLINE"
               ],
               "value": "You can't have it both ways",
               "fileName": null,
@@ -599,13 +599,13 @@
           "uuid": "29841127-3247-4612-84dd-877400000000;22;text;ivr;sms;ussd;rich_messaging;offline",
           "resourceUuid": "29841127-3247-4612-84dd-877400000000",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "True",
           "fileName": null,
@@ -620,13 +620,13 @@
           "uuid": "29841127-3247-4612-84dd-a24000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
           "resourceUuid": "29841127-3247-4612-84dd-a24000000000",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "False",
           "fileName": null,
@@ -641,13 +641,13 @@
           "uuid": "29841127-3247-4612-84dd-bb8000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
           "resourceUuid": "29841127-3247-4612-84dd-bb8000000000",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Why Not Option 3?",
           "fileName": null,
@@ -662,13 +662,13 @@
           "uuid": "29841127-3247-4612-84dd-d7c000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
           "resourceUuid": "29841127-3247-4612-84dd-d7c000000000",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Unchoosable (Seriously this breaks the tree)",
           "fileName": null,
@@ -683,13 +683,13 @@
           "uuid": "29841127-3247-4610-8037-c915c54a60ed;22;text;ivr;sms;ussd;rich_messaging;offline",
           "resourceUuid": "29841127-3247-4610-8037-c915c54a60ed",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "True",
           "fileName": null,
@@ -704,13 +704,13 @@
           "uuid": "29841127-3247-4610-8037-c915c54a60ee;22;text;ivr;sms;ussd;rich_messaging;offline",
           "resourceUuid": "29841127-3247-4610-8037-c915c54a60ee",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "False",
           "fileName": null,
@@ -725,13 +725,13 @@
           "uuid": "29841127-3247-4610-8037-c915c54a60ef;22;text;ivr;sms;ussd;rich_messaging;offline",
           "resourceUuid": "29841127-3247-4610-8037-c915c54a60ef",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Why Not Option 3?",
           "fileName": null,
@@ -746,13 +746,13 @@
           "uuid": "29841127-3247-4610-8037-c915c54a60f0;22;text;ivr;sms;ussd;rich_messaging;offline",
           "resourceUuid": "29841127-3247-4610-8037-c915c54a60f0",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "Unchoosable (Seriously this breaks the tree)",
           "fileName": null,
@@ -767,9 +767,9 @@
           "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573;22;text;offline",
           "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Choose one",
           "fileName": null,
@@ -784,13 +784,13 @@
           "uuid": "29841127-3247-4610-8037-c915cf227e89;22;text;ivr;sms;ussd;rich_messaging;offline",
           "resourceUuid": "29841127-3247-4610-8037-c915cf227e89",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "fileName": null,
@@ -805,9 +805,9 @@
           "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2;22;text;offline",
           "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "You Selected True",
           "fileName": null,
@@ -822,13 +822,13 @@
           "uuid": "29841127-3247-4610-8037-c915d45b7379;22;text;ivr;sms;ussd;rich_messaging;offline",
           "resourceUuid": "29841127-3247-4610-8037-c915d45b7379",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "TRUE",
           "fileName": null,
@@ -843,13 +843,13 @@
           "uuid": "29841127-3247-4610-8037-c915d45b737a;22;text;ivr;sms;ussd;rich_messaging;offline",
           "resourceUuid": "29841127-3247-4610-8037-c915d45b737a",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "FALSE",
           "fileName": null,
@@ -864,13 +864,13 @@
           "uuid": "29841127-3247-4610-8037-c915e5c24381;22;text;ivr;sms;ussd;rich_messaging;offline",
           "resourceUuid": "29841127-3247-4610-8037-c915e5c24381",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "TRUE",
           "fileName": null,
@@ -885,13 +885,13 @@
           "uuid": "29841127-3247-4610-8037-c915e5c24382;22;text;ivr;sms;ussd;rich_messaging;offline",
           "resourceUuid": "29841127-3247-4610-8037-c915e5c24382",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "FALSE",
           "fileName": null,
@@ -906,13 +906,13 @@
           "uuid": "29841127-3247-4610-8037-c915ecd5efc9;22;text;ivr;sms;ussd;rich_messaging;offline",
           "resourceUuid": "29841127-3247-4610-8037-c915ecd5efc9",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "fileName": null,
@@ -927,9 +927,9 @@
           "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2;22;text;offline",
           "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "You selected False",
           "fileName": null,
@@ -944,13 +944,13 @@
           "uuid": "29841127-3247-4610-8037-c915ed3c1dfd;22;text;ivr;sms;ussd;rich_messaging;offline",
           "resourceUuid": "29841127-3247-4610-8037-c915ed3c1dfd",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "fileName": null,
@@ -965,9 +965,9 @@
           "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757;22;text;offline",
           "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
           "languageId": "22",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "You can't have it both ways",
           "fileName": null,

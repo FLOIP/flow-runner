@@ -42,10 +42,10 @@ describe('BacktrackingBehaviour', () => {
       describe('when block has been repeated since start of an iteration', () => {
         it('should step in (aka perform an iteration rollup)', async () => {
           const interactions = [
-            {blockId: '0', uuid: 'abc-0'},
-            {blockId: '1', uuid: 'abc-1'},
-            {blockId: '2', uuid: 'abc-2'},
-            {blockId: '3', uuid: 'abc-3'},
+            {block_id: '0', uuid: 'abc-0'},
+            {block_id: '1', uuid: 'abc-1'},
+            {block_id: '2', uuid: 'abc-2'},
+            {block_id: '3', uuid: 'abc-3'},
           ]
 
           const interactionStack = createStack([...interactions])

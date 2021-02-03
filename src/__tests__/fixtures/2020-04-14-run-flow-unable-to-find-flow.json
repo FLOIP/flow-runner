@@ -4,7 +4,7 @@
   "deliveryStatus": "QUEUED",
   "userId": "5b8c87d6-de90-4bc4-8668-4f0400003c8c",
   "orgId": "789541742083833856",
-  "mode": "offline",
+  "mode": "OFFLINE",
   "languageId": "207148",
   "contact": {
     "id": "1096863251708310064",
@@ -298,13 +298,13 @@
           "orgId": "789541742083833856",
           "resourceUuid": "29841127-3247-4610-8000-cead04896081",
           "languageId": "207148",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -324,9 +324,9 @@
           "orgId": "789541742083833856",
           "resourceUuid": "95bd9e4a-9300-400c-9ead-9051820912c1",
           "languageId": "207148",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Start flow[0]",
           "hasBeenFetched": true,
@@ -346,13 +346,13 @@
           "orgId": "789541742083833856",
           "resourceUuid": "29841127-3247-4610-8000-cead0e508281",
           "languageId": "207148",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -372,9 +372,9 @@
           "orgId": "789541742083833856",
           "resourceUuid": "95bd9e4a-9300-400c-9ead-9051821ca105",
           "languageId": "207148",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "End flow[0]",
           "hasBeenFetched": true,
@@ -394,13 +394,13 @@
           "orgId": "789541742083833856",
           "resourceUuid": "29841127-3247-4610-8000-cead1cc8af81",
           "languageId": "207148",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -420,13 +420,13 @@
           "orgId": "789541742083833856",
           "resourceUuid": "29841127-3247-4610-8000-ceae357e4e81",
           "languageId": "207148",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -446,9 +446,9 @@
           "orgId": "789541742083833856",
           "resourceUuid": "95bd9e4a-9300-400c-9eae-9051826afc9d",
           "languageId": "207148",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Start flow[1]",
           "hasBeenFetched": true,
@@ -468,13 +468,13 @@
           "orgId": "789541742083833856",
           "resourceUuid": "29841127-3247-4610-8000-ceae36781501",
           "languageId": "207148",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -494,9 +494,9 @@
           "orgId": "789541742083833856",
           "resourceUuid": "95bd9e4a-9300-400c-9eae-9051826cf02a",
           "languageId": "207148",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "End flow[1]",
           "hasBeenFetched": true,
@@ -516,13 +516,13 @@
           "orgId": "789541742083833856",
           "resourceUuid": "29841127-3247-4610-8000-ceae53692981",
           "languageId": "207148",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -542,13 +542,13 @@
           "orgId": "789541742083833856",
           "resourceUuid": "29841127-3247-4610-8000-ceaf66a46e01",
           "languageId": "207148",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -568,9 +568,9 @@
           "orgId": "789541742083833856",
           "resourceUuid": "95bd9e4a-9300-400c-9eaf-905182cd48dc",
           "languageId": "207148",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "Start flow[2]",
           "hasBeenFetched": true,
@@ -590,13 +590,13 @@
           "orgId": "789541742083833856",
           "resourceUuid": "29841127-3247-4610-8000-ceaf6ceee381",
           "languageId": "207148",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "ivr",
-            "sms",
-            "ussd",
-            "rich_messaging",
-            "offline"
+            "IVR",
+            "SMS",
+            "USSD",
+            "RICH_MESSAGING",
+            "OFFLINE"
           ],
           "value": "1",
           "hasBeenFetched": true,
@@ -616,9 +616,9 @@
           "orgId": "789541742083833856",
           "resourceUuid": "95bd9e4a-9300-400c-9eaf-905182d9ddc7",
           "languageId": "207148",
-          "contentType": "text",
+          "contentType": "TEXT",
           "modes": [
-            "offline"
+            "OFFLINE"
           ],
           "value": "End flow[2]",
           "hasBeenFetched": true,
