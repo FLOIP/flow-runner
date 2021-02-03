@@ -129,7 +129,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     const keyForIntxOfRepeatedBlock = shallowIndexOfRightFrom(
       key,
       interactionStack,
-      intx => (intx as IBlockInteraction).blockId === interaction.blockId
+      intx => (intx as IBlockInteraction).block_id === interaction.block_id
     )
     if (keyForIntxOfRepeatedBlock != null) {
       // [Step In] Found a new stack to step into
@@ -141,7 +141,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     const keyToBeginningOfStackWithHeadMatchingBlock = findHeadRightFrom(
       key,
       interactionStack,
-      intx => (intx as IBlockInteraction).blockId === interaction.blockId
+      intx => (intx as IBlockInteraction).block_id === interaction.block_id
     )
     if (keyToBeginningOfStackWithHeadMatchingBlock != null) {
       // [Step Out] Found an stack to continue on from
@@ -244,7 +244,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     // todo: This navigateTo() is going to append an interaction onto context.interactions --> verify that context.interactions.splice() accounts for that
     // todo: this should provide a sourceId="" in meta so that we can tie these together
 
-    return this.navigator.navigateTo(findBlockOnActiveFlowWith(interaction.blockId, this.context), this.context)
+    return this.navigator.navigateTo(findBlockOnActiveFlowWith(interaction.block_id, this.context), this.context)
   }
 
   async peek(steps = 1): Promise<IPrompt<IPromptConfig<any>>> {
@@ -255,7 +255,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
       throw new ValidationException(`Unable to backtrack to an interaction that far back ${JSON.stringify({steps})}`)
     }
 
-    const block = findBlockWith(intx.blockId, findFlowWith(intx.flowId, this.context))
+    const block = findBlockWith(intx.block_id, findFlowWith(intx.flow_id, this.context))
 
     const prompt = await this.promptBuilder.buildPromptFor(block, intx)
     if (prompt == null) {
@@ -271,8 +271,8 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     return Object.assign(prompt, {value: intx.value})
   }
 
-  findIndexOfSuggestionFor({blockId}: IBlockInteraction, key: Key, stack: IStack): Key | undefined {
-    const keyForSuggestion = deepIndexOfFrom(key, stack, intx => (intx as IBlockInteraction).blockId === blockId)
+  findIndexOfSuggestionFor({block_id}: IBlockInteraction, key: Key, stack: IStack): Key | undefined {
+    const keyForSuggestion = deepIndexOfFrom(key, stack, intx => (intx as IBlockInteraction).block_id === block_id)
 
     if (keyForSuggestion != null) {
       return keyForSuggestion
@@ -286,7 +286,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     }
 
     const keyForNextIteration = moveStackIndexTo(createStackKey(0, 0), cloneDeep(key)) // todo: use cloneKeyAndMoveTo()
-    return deepIndexOfFrom(keyForNextIteration, stack, intx => (intx as IBlockInteraction).blockId === blockId)
+    return deepIndexOfFrom(keyForNextIteration, stack, intx => (intx as IBlockInteraction).block_id === block_id)
   }
 
   postInteractionCreate(interaction: IBlockInteraction, _context: IContext): IBlockInteraction {

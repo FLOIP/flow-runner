@@ -77,10 +77,10 @@ export abstract class BasePrompt<T extends IPromptConfig<T['value']>> implements
   get block(): IBlock | undefined {
     const ctx = this.runner.context
     const intx = findInteractionWith(this.interactionId, ctx)
-    const flow = findFlowWith(intx.flowId, ctx)
+    const flow = findFlowWith(intx.flow_id, ctx)
 
     try {
-      return findBlockWith(intx.blockId, flow)
+      return findBlockWith(intx.block_id, flow)
     } catch (e) {
       if (!(e instanceof ValidationException)) {
         throw e

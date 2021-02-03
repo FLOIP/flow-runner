@@ -139,7 +139,7 @@ export function createEvalContextFrom(context: IContext): object {
   if (cursor != null) {
     // because evalContext.block references the current block we're working on
     flow = getActiveFlowFrom(context)
-    block = findBlockWith(findInteractionWith(cursor.interactionId, context).blockId, flow)
+    block = findBlockWith(findInteractionWith(cursor.interactionId, context).block_id, flow)
     prompt = cursor.promptConfig
   }
 
@@ -168,7 +168,7 @@ export function createEvalContextFrom(context: IContext): object {
  */
 export function createEvalContactFrom(contact: IContact): IContact {
   const evalContact = cloneDeep(contact)
-  evalContact.groups = evalContact.groups?.filter(group => group.deletedAt === null) ?? []
+  evalContact.groups = evalContact.groups?.filter(group => group.deleted_at === null) ?? []
 
   return evalContact
 }

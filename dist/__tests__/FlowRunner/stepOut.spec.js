@@ -52,9 +52,9 @@ describe('FlowRunner/stepOut', () => {
             const activeIntx = lodash_1.last(ctx.interactions);
             const runner = new __1.FlowRunner(ctx);
             expect(ctx.nested_flow_block_interaction_id_stack.length).toBeGreaterThan(0);
-            delete activeIntx.selectedExitId;
+            delete activeIntx.selected_exit_id;
             runner.stepOut(ctx);
-            expect(activeIntx.selectedExitId).toBeUndefined();
+            expect(activeIntx.selected_exit_id).toBeUndefined();
         }));
         it("should tie run flow block's intx associated with provided run flow block to its first exit", () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
             const originFlowId = 'flow-123';
@@ -65,14 +65,14 @@ describe('FlowRunner/stepOut', () => {
             };
             const runFlowBlockIntx = {
                 uuid: originBlockInteractionId,
-                blockId: 'block-123',
+                block_id: 'block-123',
             };
             const interactions = [
                 { uuid: 'intx-123' },
                 { uuid: 'intx-234' },
                 runFlowBlockIntx,
-                { uuid: 'intx-456', originFlowId, originBlockInteractionId },
-                { uuid: 'intx-567', originFlowId, originBlockInteractionId },
+                { uuid: 'intx-456', origin_flow_id: originFlowId, origin_block_interaction_id: originBlockInteractionId },
+                { uuid: 'intx-567', origin_flow_id: originFlowId, origin_block_interaction_id: originBlockInteractionId },
             ];
             const runner = new __1.FlowRunner({});
             runner._contextService = Object.assign({}, __1.ContextService, {
@@ -91,7 +91,7 @@ describe('FlowRunner/stepOut', () => {
                 first_flow_id: originFlowId,
                 nested_flow_block_interaction_id_stack: [originBlockInteractionId],
             });
-            expect(runFlowBlockIntx.selectedExitId).toBe(runFlowBlock.exits[0].uuid);
+            expect(runFlowBlockIntx.selected_exit_id).toBe(runFlowBlock.exits[0].uuid);
         }));
         describe('connecting block', () => {
             it('should return block last RunFlow was connected to in original flow', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {

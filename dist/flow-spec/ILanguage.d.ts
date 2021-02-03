@@ -2,9 +2,9 @@ export interface ILanguage {
     id: string;
     name: string;
     abbreviation: string;
-    orgId: string;
-    rightToLeft: boolean;
+    org_id: string;
+    right_to_left: boolean;
     code?: string;
-    deletedAt?: string;
+    deleted_at?: string;
 }
 //# sourceMappingURL=ILanguage.d.ts.map

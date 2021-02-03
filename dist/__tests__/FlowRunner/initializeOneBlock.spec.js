@@ -72,8 +72,8 @@ describe('FlowRunner/initializeOneBlock', () => {
             ],
         ]));
         const { interaction } = yield runner.initializeOneBlock(block, flow.uuid, undefined, undefined);
-        expect(interaction).toEqual(expect.objectContaining({ blockId: block.uuid }));
-        expect(interaction).toEqual(expect.objectContaining({ flowId: flow.uuid }));
+        expect(interaction).toEqual(expect.objectContaining({ block_id: block.uuid }));
+        expect(interaction).toEqual(expect.objectContaining({ flow_id: flow.uuid }));
     }));
 });
 //# sourceMappingURL=initializeOneBlock.spec.js.map

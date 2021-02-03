@@ -61,7 +61,7 @@ describe('BasePrompt', () => {
             const runner = new __1.FlowRunner(ctx);
             const firstInteractionId = '09894745-38ba-456f-aab4-720b7d09d5b3';
             const prompt = new __1.MessagePrompt(config, firstInteractionId, runner);
-            __1.findInteractionWith(firstInteractionId, ctx).blockId = 'some-absent-block';
+            __1.findInteractionWith(firstInteractionId, ctx).block_id = 'some-absent-block';
             expect(prompt.block).toBeUndefined();
         });
     });

@@ -130,7 +130,7 @@ describe('FlowRunner', () => {
 
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
-          [{groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
+          [{group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
           'user-1234',
           'org-1234',
           flows,
@@ -157,7 +157,7 @@ describe('FlowRunner', () => {
 
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
-          [{groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
+          [{group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
           'user-1234',
           'org-1234',
           flows,
@@ -185,7 +185,7 @@ describe('FlowRunner', () => {
 
         const context = createContextDataObjectFor(
           {id: '1'} as IContact,
-          [{groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
+          [{group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
           'user-1234',
           'org-1234',
           flows,
@@ -259,7 +259,7 @@ describe('FlowRunner', () => {
         expect(context.delivery_status).toBe(DeliveryStatus.FINISHED_COMPLETE)
         expect(context.exit_at).toBeTruthy()
 
-        expect(every(context.interactions, i => i.exitAt)).toBeTruthy()
+        expect(every(context.interactions, i => i.exit_at)).toBeTruthy()
       })
     })
   })

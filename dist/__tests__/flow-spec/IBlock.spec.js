@@ -161,25 +161,25 @@ describe('IBlock', () => {
     describe('createEvalContactFrom', () => {
         it('should clone the passed contact, deleting marked groups', () => {
             const groupToDelete = {
-                groupKey: 'two',
+                group_key: 'two',
                 __value__: 'two',
-                updatedAt: '0000-00-00',
-                deletedAt: '2020-01-01',
+                updated_at: '0000-00-00',
+                deleted_at: '2020-01-01',
             };
             const contact = new Contact_1.default();
             contact.groups = [
                 {
-                    groupKey: 'one',
+                    group_key: 'one',
                     __value__: 'one',
-                    updatedAt: '0000-00-00',
-                    deletedAt: undefined,
+                    updated_at: '0000-00-00',
+                    deleted_at: undefined,
                 },
                 groupToDelete,
                 {
-                    groupKey: 'three',
+                    group_key: 'three',
                     __value__: 'three',
-                    updatedAt: '0000-00-00',
-                    deletedAt: undefined,
+                    updated_at: '0000-00-00',
+                    deleted_at: undefined,
                 },
             ];
             const evalContact = IBlock_1.createEvalContactFrom(contact);

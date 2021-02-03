@@ -266,7 +266,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   // todo: this could be findFirstExitOnActiveFlowBlockFor to an Expressions Behaviour
   //       ie. cacheInteractionByBlockName, applyReversibleDataOperation and reverseLastDataOperation
   cacheInteractionByBlockName(
-    {uuid, entryAt}: IBlockInteraction,
+    {uuid, entry_at}: IBlockInteraction,
     {name, config: {prompt}}: IMessageBlock,
     context: IContext = this.context
   ): void {
@@ -285,7 +285,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
 
     const current = {
       __interactionId: uuid,
-      time: entryAt,
+      time: entry_at,
       text: resource != null && resource.hasText() ? resource.getText() : '',
     }
 
@@ -335,7 +335,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    */
   async runUntilInputRequiredFrom(ctx: IContextWithCursor): Promise<IRichCursorInputRequired | undefined> {
     let richCursor: IRichCursor = this.hydrateRichCursorFrom(ctx)
-    let block: IBlock | undefined = this._contextService.findBlockOnActiveFlowWith(richCursor.interaction.blockId, ctx)
+    let block: IBlock | undefined = this._contextService.findBlockOnActiveFlowWith(richCursor.interaction.block_id, ctx)
 
     do {
       if (this.isInputRequiredFor(ctx)) {
@@ -399,8 +399,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param completedAt
    */
   completeInteraction(intx: IBlockInteraction, selectedExitId: IBlockExit['uuid'], completedAt: Date = new Date()): IBlockInteraction {
-    intx.exitAt = createFormattedDate(completedAt)
-    intx.selectedExitId = selectedExitId
+    intx.exit_at = createFormattedDate(completedAt)
+    intx.selected_exit_id = selectedExitId
 
     return intx
   }
@@ -501,7 +501,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
 
     if (this.isRichCursorInputRequired(richCursor)) {
       interaction.value = richCursor.prompt.value
-      interaction.hasResponse = interaction.value != null
+      interaction.has_response = interaction.value != null
     }
 
     const exit = await this.createBlockRunnerFor(block, this.context).run(richCursor)
@@ -565,7 +565,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     const richCursor = await this.initializeOneBlock(
       block,
       flowId,
-      originInteraction == null ? undefined : originInteraction.flowId,
+      originInteraction == null ? undefined : originInteraction.flow_id,
       originInteractionId
     )
 
@@ -594,7 +594,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       throw new ValidationException("Unable to step into Core\\RunFlow that hasn't yet been started")
     }
 
-    if (runFlowBlock.uuid !== runFlowInteraction.blockId) {
+    if (runFlowBlock.uuid !== runFlowInteraction.block_id) {
       throw new ValidationException("Unable to step into Core\\RunFlow block that doesn't match last interaction")
     }
 
@@ -624,8 +624,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     return this.findNextBlockFrom(this.completeActiveNestedFlow(ctx), ctx)
   }
 
-  findFirstExitOnActiveFlowBlockFor({blockId}: IBlockInteraction, ctx: IContext): IBlockExit {
-    const {exits} = this._contextService.findBlockOnActiveFlowWith(blockId, ctx)
+  findFirstExitOnActiveFlowBlockFor({block_id}: IBlockInteraction, ctx: IContext): IBlockExit {
+    const {exits} = this._contextService.findBlockOnActiveFlowWith(block_id, ctx)
     return first(exits) as IBlockExit
   }
 
@@ -654,14 +654,14 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param selectedExitId
    * @param ctx
    */
-  findNextBlockFrom({blockId, selectedExitId}: IBlockInteraction, ctx: IContext): IBlock | undefined {
-    if (selectedExitId == null) {
+  findNextBlockFrom({block_id, selected_exit_id}: IBlockInteraction, ctx: IContext): IBlock | undefined {
+    if (selected_exit_id == null) {
       // todo: maybe tighten check on this, like: prompt.isFulfilled() === false || !called block.run()
       throw new ValidationException('Unable to navigate past incomplete interaction; did you forget to call runner.run()?')
     }
 
-    const block = this._contextService.findBlockOnActiveFlowWith(blockId, ctx)
-    const {destination_block} = findBlockExitWith(selectedExitId, block)
+    const block = this._contextService.findBlockOnActiveFlowWith(block_id, ctx)
+    const {destination_block} = findBlockExitWith(selected_exit_id, block)
     const {blocks} = this._contextService.getActiveFlowFrom(ctx)
 
     return find(blocks, {uuid: destination_block})
@@ -689,19 +689,19 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   ): IBlockInteraction {
     return {
       uuid: this.idGenerator.generate(),
-      blockId,
-      flowId,
-      entryAt: createFormattedDate(),
-      exitAt: undefined,
-      hasResponse: false,
+      block_id: blockId,
+      flow_id: flowId,
+      entry_at: createFormattedDate(),
+      exit_at: undefined,
+      has_response: false,
       value: undefined,
-      selectedExitId: undefined,
+      selected_exit_id: undefined,
       details: {},
       type,
 
       // Nested flows behaviour:
-      originFlowId,
-      originBlockInteractionId,
+      origin_flow_id: originFlowId,
+      origin_block_interaction_id: originBlockInteractionId,
     }
   }
 

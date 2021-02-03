@@ -190,8 +190,8 @@ export function findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock {
 }
 
 export function findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext): string {
-  const flow = findFlowWith(interaction.flowId, ctx)
-  const runFlowBlock = findBlockWith(interaction.blockId, flow)
+  const flow = findFlowWith(interaction.flow_id, ctx)
+  const runFlowBlock = findBlockWith(interaction.block_id, flow)
   const flowId = (runFlowBlock.config as IRunFlowBlockConfig).flow_id
 
   if (flowId == null) {

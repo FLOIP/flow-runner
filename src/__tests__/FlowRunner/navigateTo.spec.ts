@@ -126,7 +126,7 @@ describe('FlowRunner/navigateTo', () => {
 
       expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(0)
       await runner.navigateTo(block, ctx)
-      expect(ctx.interactions[0].blockId).toBe(block.uuid)
+      expect(ctx.interactions[0].block_id).toBe(block.uuid)
     })
 
     describe('flowId', () => {
@@ -142,7 +142,7 @@ describe('FlowRunner/navigateTo', () => {
         expect(ctx.first_flow_id).toBeTruthy()
 
         await runner.navigateTo(block, ctx)
-        expect(ctx.interactions[0].flowId).toBe(ctx.first_flow_id)
+        expect(ctx.interactions[0].flow_id).toBe(ctx.first_flow_id)
       })
 
       it('should be from nested flow when nested once', async () => {
@@ -162,11 +162,11 @@ describe('FlowRunner/navigateTo', () => {
         jest.spyOn(runner, 'cacheInteractionByBlockName').mockImplementation(() => {})
 
         expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(1)
-        expect(findInteractionWith(last(ctx.nested_flow_block_interaction_id_stack) as string, ctx).flowId).toBe(ctx.flows[0].uuid)
+        expect(findInteractionWith(last(ctx.nested_flow_block_interaction_id_stack) as string, ctx).flow_id).toBe(ctx.flows[0].uuid)
 
         await runner.navigateTo(block, ctx)
 
-        expect(ctx.interactions[1].flowId).toBe(ctx.flows[1].uuid)
+        expect(ctx.interactions[1].flow_id).toBe(ctx.flows[1].uuid)
       })
 
       it.todo('should be from deepest nested flow when deeply nested')
@@ -186,7 +186,7 @@ describe('FlowRunner/navigateTo', () => {
 
         await runner.navigateTo(block, ctx)
 
-        expect(ctx.interactions[0].originFlowId).toBeUndefined()
+        expect(ctx.interactions[0].origin_flow_id).toBeUndefined()
       })
 
       it('should be from root flow when nested once', async () => {
@@ -202,11 +202,11 @@ describe('FlowRunner/navigateTo', () => {
         jest.spyOn(runner, 'cacheInteractionByBlockName').mockImplementation(() => {})
 
         expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(1)
-        expect(findInteractionWith(last(ctx.nested_flow_block_interaction_id_stack) as string, ctx).flowId).toBe(ctx.flows[0].uuid)
+        expect(findInteractionWith(last(ctx.nested_flow_block_interaction_id_stack) as string, ctx).flow_id).toBe(ctx.flows[0].uuid)
 
         await runner.navigateTo(block, ctx)
 
-        expect(ctx.interactions[1].originFlowId).toBe(ctx.flows[0].uuid)
+        expect(ctx.interactions[1].origin_flow_id).toBe(ctx.flows[0].uuid)
       })
 
       it.todo('should be from deepest nested flow when deeply nested')
@@ -226,7 +226,7 @@ describe('FlowRunner/navigateTo', () => {
 
         await runner.navigateTo(block, ctx)
 
-        expect(ctx.interactions[0].originBlockInteractionId).toBeUndefined()
+        expect(ctx.interactions[0].origin_block_interaction_id).toBeUndefined()
       })
 
       it("should be from root flow's interaction when nested once", async () => {
@@ -242,11 +242,11 @@ describe('FlowRunner/navigateTo', () => {
         jest.spyOn(runner, 'cacheInteractionByBlockName').mockImplementation(() => {})
 
         expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(1)
-        expect(findInteractionWith(last(ctx.nested_flow_block_interaction_id_stack) as string, ctx).flowId).toBe(ctx.flows[0].uuid)
+        expect(findInteractionWith(last(ctx.nested_flow_block_interaction_id_stack) as string, ctx).flow_id).toBe(ctx.flows[0].uuid)
 
         await runner.navigateTo(block, ctx)
 
-        expect(ctx.interactions[1].originBlockInteractionId).toBe(ctx.interactions[0].uuid)
+        expect(ctx.interactions[1].origin_block_interaction_id).toBe(ctx.interactions[0].uuid)
       })
 
       it.todo("should be from deepest nested flow's interaction when deeply nested")

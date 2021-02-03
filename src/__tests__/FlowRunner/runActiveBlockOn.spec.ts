@@ -32,10 +32,10 @@ describe('FlowRunner/runActiveBlockOn', () => {
     const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]]))
     const richCursor = runner.hydrateRichCursorFrom(ctx)
 
-    delete richCursor.interaction.selectedExitId // set as incomplete interaction state
+    delete richCursor.interaction.selected_exit_id // set as incomplete interaction state
 
     await runner.runActiveBlockOn(richCursor, block)
-    expect(richCursor.interaction.selectedExitId).toBe(expectedExit.uuid)
+    expect(richCursor.interaction.selected_exit_id).toBe(expectedExit.uuid)
   })
 
   it('should complete interaction with selected exit', async () => {
@@ -101,9 +101,9 @@ describe('FlowRunner/runActiveBlockOn', () => {
         )
         const richCursor = runner.hydrateRichCursorFrom(ctx)
 
-        expect(richCursor.interaction.hasResponse).toBeFalsy()
+        expect(richCursor.interaction.has_response).toBeFalsy()
         await runner.runActiveBlockOn(richCursor, block)
-        expect(richCursor.interaction.hasResponse).toBeTruthy()
+        expect(richCursor.interaction.has_response).toBeTruthy()
       })
     })
 
@@ -117,9 +117,9 @@ describe('FlowRunner/runActiveBlockOn', () => {
         )
         const richCursor = runner.hydrateRichCursorFrom(ctx)
 
-        expect(richCursor.interaction.hasResponse).toBeFalsy()
+        expect(richCursor.interaction.has_response).toBeFalsy()
         await runner.runActiveBlockOn(richCursor, block)
-        expect(richCursor.interaction.hasResponse).toBeFalsy()
+        expect(richCursor.interaction.has_response).toBeFalsy()
       })
     })
   })

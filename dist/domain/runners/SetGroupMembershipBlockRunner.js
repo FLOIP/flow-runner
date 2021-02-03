@@ -19,7 +19,7 @@ class SetGroupMembershipBlockRunner {
             const { exits } = this.block;
             const { contact, groups } = this.context;
             const { group_key, is_member } = this.block.config;
-            const group = groups.find(group => group.groupKey === group_key);
+            const group = groups.find(group => group.group_key === group_key);
             if (group == null) {
                 throw new __1.ValidationException(`Cannot add contact to non-existent group ${group_key}`);
             }

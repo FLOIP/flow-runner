@@ -71,11 +71,11 @@ describe('FlowRunner/stepOut', () => {
       expect(ctx.nested_flow_block_interaction_id_stack.length).toBeGreaterThan(0)
 
       // pre-condition for "not-yet-stepped-out" state
-      delete activeIntx.selectedExitId
+      delete activeIntx.selected_exit_id
       runner.stepOut(ctx)
 
       // todo: incorrect; needs to be a concrete exit with a null destinationBlock --- @bzabos: I believe this is resolved as of latest nestedFlow refactor.
-      expect(activeIntx.selectedExitId).toBeUndefined()
+      expect(activeIntx.selected_exit_id).toBeUndefined()
     })
 
     it("should tie run flow block's intx associated with provided run flow block to its first exit", async () => {
@@ -90,7 +90,7 @@ describe('FlowRunner/stepOut', () => {
       } as IBlock
       const runFlowBlockIntx: IBlockInteraction = {
         uuid: originBlockInteractionId,
-        blockId: 'block-123',
+        block_id: 'block-123',
       } as IBlockInteraction
       const interactions: IBlockInteraction[] = [
         // intx-a
@@ -100,9 +100,9 @@ describe('FlowRunner/stepOut', () => {
         // run-flow-intx
         runFlowBlockIntx,
         // nested-flow-intx-a
-        {uuid: 'intx-456', originFlowId, originBlockInteractionId},
+        {uuid: 'intx-456', origin_flow_id: originFlowId, origin_block_interaction_id: originBlockInteractionId},
         // nested-flow-intx-b
-        {uuid: 'intx-567', originFlowId, originBlockInteractionId},
+        {uuid: 'intx-567', origin_flow_id: originFlowId, origin_block_interaction_id: originBlockInteractionId},
         // << (step out)
       ] as IBlockInteraction[]
 
@@ -125,7 +125,7 @@ describe('FlowRunner/stepOut', () => {
         nested_flow_block_interaction_id_stack: [originBlockInteractionId],
       } as IContext)
 
-      expect(runFlowBlockIntx.selectedExitId).toBe(runFlowBlock.exits[0].uuid)
+      expect(runFlowBlockIntx.selected_exit_id).toBe(runFlowBlock.exits[0].uuid)
     })
 
     describe('connecting block', () => {

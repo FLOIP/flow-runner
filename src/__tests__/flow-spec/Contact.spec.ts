@@ -42,10 +42,10 @@ describe('Contact', () => {
 
       expect(contact.groups).toHaveLength(2)
 
-      expect(contact.groups[0].deletedAt).not.toBeUndefined()
-      expect(contact.groups[1].deletedAt).toBeUndefined()
+      expect(contact.groups[0].deleted_at).not.toBeUndefined()
+      expect(contact.groups[1].deleted_at).toBeUndefined()
 
-      const deletedGroup = contact.groups.find(g => g.deletedAt != null)
+      const deletedGroup = contact.groups.find(g => g.deleted_at != null)
 
       expect(deletedGroup).toMatchObject(group)
     })
@@ -61,10 +61,10 @@ describe('Contact', () => {
 
       expect(contact.groups).toHaveLength(2)
 
-      expect(contact.groups[0].deletedAt).not.toBeUndefined()
-      expect(contact.groups[1].deletedAt).toBeUndefined()
+      expect(contact.groups[0].deleted_at).not.toBeUndefined()
+      expect(contact.groups[1].deleted_at).toBeUndefined()
 
-      const deletedGroup = contact.groups.find(g => g.deletedAt != null)
+      const deletedGroup = contact.groups.find(g => g.deleted_at != null)
 
       expect(deletedGroup).toMatchObject(group)
     })

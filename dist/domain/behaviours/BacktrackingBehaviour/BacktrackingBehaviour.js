@@ -37,12 +37,12 @@ class BacktrackingBehaviour {
         this.context.interactions.forEach(intx => this.insertInteractionUsing(key, intx, stack));
     }
     insertInteractionUsing(key, interaction, interactionStack) {
-        const keyForIntxOfRepeatedBlock = __1.shallowIndexOfRightFrom(key, interactionStack, intx => intx.blockId === interaction.blockId);
+        const keyForIntxOfRepeatedBlock = __1.shallowIndexOfRightFrom(key, interactionStack, intx => intx.block_id === interaction.block_id);
         if (keyForIntxOfRepeatedBlock != null) {
             this._stepIn(key, interactionStack, keyForIntxOfRepeatedBlock, interaction);
             return;
         }
-        const keyToBeginningOfStackWithHeadMatchingBlock = __1.findHeadRightFrom(key, interactionStack, intx => intx.blockId === interaction.blockId);
+        const keyToBeginningOfStackWithHeadMatchingBlock = __1.findHeadRightFrom(key, interactionStack, intx => intx.block_id === interaction.block_id);
         if (keyToBeginningOfStackWithHeadMatchingBlock != null) {
             this._stepOut(keyToBeginningOfStackWithHeadMatchingBlock, interactionStack, interaction, key);
             return;
@@ -80,7 +80,7 @@ class BacktrackingBehaviour {
             const keyToTruncateFrom = __1.cloneKeyAndMoveTo(__1.createStackKey(deepestStackKeyForIntx[__1.STACK_KEY_ITERATION_NUMBER], deepestStackKeyForIntx[__1.STACK_KEY_ITERATION_INDEX] - 1), keyForLastOccurrenceOfInteraction, backtracking.interactionStack);
             __1.deepTruncateIterationsFrom(keyToTruncateFrom, backtracking.interactionStack);
             backtracking.cursor = keyToTruncateFrom;
-            return this.navigator.navigateTo(__1.findBlockOnActiveFlowWith(interaction.blockId, this.context), this.context);
+            return this.navigator.navigateTo(__1.findBlockOnActiveFlowWith(interaction.block_id, this.context), this.context);
         });
     }
     peek(steps = 1) {
@@ -90,7 +90,7 @@ class BacktrackingBehaviour {
             if (intx == null || _steps > 0) {
                 throw new __1.ValidationException(`Unable to backtrack to an interaction that far back ${JSON.stringify({ steps })}`);
             }
-            const block = __1.findBlockWith(intx.blockId, __1.findFlowWith(intx.flowId, this.context));
+            const block = __1.findBlockWith(intx.block_id, __1.findFlowWith(intx.flow_id, this.context));
             const prompt = yield this.promptBuilder.buildPromptFor(block, intx);
             if (prompt == null) {
                 throw new __1.ValidationException(`Unable to build a prompt for ${JSON.stringify({
@@ -102,8 +102,8 @@ class BacktrackingBehaviour {
             return Object.assign(prompt, { value: intx.value });
         });
     }
-    findIndexOfSuggestionFor({ blockId }, key, stack) {
-        const keyForSuggestion = __1.deepIndexOfFrom(key, stack, intx => intx.blockId === blockId);
+    findIndexOfSuggestionFor({ block_id }, key, stack) {
+        const keyForSuggestion = __1.deepIndexOfFrom(key, stack, intx => intx.block_id === block_id);
         if (keyForSuggestion != null) {
             return keyForSuggestion;
         }
@@ -113,7 +113,7 @@ class BacktrackingBehaviour {
             return;
         }
         const keyForNextIteration = __1.moveStackIndexTo(__1.createStackKey(0, 0), lodash_1.cloneDeep(key));
-        return __1.deepIndexOfFrom(keyForNextIteration, stack, intx => intx.blockId === blockId);
+        return __1.deepIndexOfFrom(keyForNextIteration, stack, intx => intx.block_id === block_id);
     }
     postInteractionCreate(interaction, _context) {
         const { backtracking: { cursor: key, ghostInteractionStacks, }, } = this.context.platform_metadata;

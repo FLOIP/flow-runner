@@ -49,9 +49,9 @@ describe('FlowRunner/stepInto', () => {
         const block = ctx.flows[0].blocks[0];
         const runFlowBlockIntx = ctx.interactions[0];
         const runner = new __1.FlowRunner(ctx);
-        delete runFlowBlockIntx.selectedExitId;
+        delete runFlowBlockIntx.selected_exit_id;
         runner.stepInto(block, ctx);
-        expect(runFlowBlockIntx.selectedExitId).toBeUndefined();
+        expect(runFlowBlockIntx.selected_exit_id).toBeUndefined();
     }));
 });
 //# sourceMappingURL=stepInto.spec.js.map

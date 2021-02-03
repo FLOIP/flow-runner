@@ -59,7 +59,7 @@ function createEvalContextFrom(context) {
     let prompt;
     if (cursor != null) {
         flow = __1.getActiveFlowFrom(context);
-        block = __1.findBlockWith(__1.findInteractionWith(cursor.interactionId, context).blockId, flow);
+        block = __1.findBlockWith(__1.findInteractionWith(cursor.interactionId, context).block_id, flow);
         prompt = cursor.promptConfig;
     }
     return {
@@ -73,7 +73,7 @@ exports.createEvalContextFrom = createEvalContextFrom;
 function createEvalContactFrom(contact) {
     var _a, _b;
     const evalContact = lodash_1.cloneDeep(contact);
-    evalContact.groups = (_b = (_a = evalContact.groups) === null || _a === void 0 ? void 0 : _a.filter(group => group.deletedAt === null)) !== null && _b !== void 0 ? _b : [];
+    evalContact.groups = (_b = (_a = evalContact.groups) === null || _a === void 0 ? void 0 : _a.filter(group => group.deleted_at === null)) !== null && _b !== void 0 ? _b : [];
     return evalContact;
 }
 exports.createEvalContactFrom = createEvalContactFrom;

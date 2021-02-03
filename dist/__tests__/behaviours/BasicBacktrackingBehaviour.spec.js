@@ -17,10 +17,10 @@ describe('BasicBacktrackingBehaviour', () => {
                 interactions: [
                     { uuid: 'intx-123' },
                     { uuid: 'intx-234' },
-                    { uuid: 'intx-345', flowId: 'flow-123', blockId: 'block-123', value: 'value #345' },
+                    { uuid: 'intx-345', flow_id: 'flow-123', block_id: 'block-123', value: 'value #345' },
                     { uuid: 'intx-456' },
                     { uuid: 'intx-567' },
-                    { uuid: 'intx-678', flowId: 'flow-123', blockId: 'block-123', value: 'value #678' },
+                    { uuid: 'intx-678', flow_id: 'flow-123', block_id: 'block-123', value: 'value #678' },
                 ],
                 flows: [{ uuid: 'flow-123', blocks: [{ uuid: 'block-123' }] }],
             };

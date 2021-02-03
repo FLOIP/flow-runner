@@ -6,7 +6,7 @@ describe('ResourceResolver', () => {
     let resolver;
     let ctx;
     beforeEach(() => {
-        ctx = __1.createContextDataObjectFor({ id: 'contact-123', name: 'Bert' }, [{ groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup' }], 'user-123', 'org-123', [{ uuid: 'flow-123' }], 'eng', __1.SupportedMode.OFFLINE);
+        ctx = __1.createContextDataObjectFor({ id: 'contact-123', name: 'Bert' }, [{ group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup' }], 'user-123', 'org-123', [{ uuid: 'flow-123' }], 'eng', __1.SupportedMode.OFFLINE);
         resolver = new __1.ResourceResolver(ctx);
     });
     describe('resolve', () => {

@@ -88,7 +88,7 @@ describe('FlowRunner/initializeOneBlock', () => {
     )
 
     const {interaction} = await runner.initializeOneBlock(block, flow.uuid, undefined, undefined)
-    expect(interaction).toEqual(expect.objectContaining({blockId: block.uuid} as Partial<IBlockInteraction>))
-    expect(interaction).toEqual(expect.objectContaining({flowId: flow.uuid} as Partial<IBlockInteraction>))
+    expect(interaction).toEqual(expect.objectContaining({block_id: block.uuid} as Partial<IBlockInteraction>))
+    expect(interaction).toEqual(expect.objectContaining({flow_id: flow.uuid} as Partial<IBlockInteraction>))
   })
 })

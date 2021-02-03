@@ -27,7 +27,7 @@ export declare class BacktrackingBehaviour implements IBackTrackingBehaviour {
     _stepIn(key: BacktrackingCursor, interactionStack: BacktrackingIntxStack, keyForIntxOfRepeatedBlock: Key, interaction: IBlockInteraction): void;
     jumpTo(interaction: IBlockInteraction, context: IContext): Promise<IRichCursor>;
     peek(steps?: number): Promise<IPrompt<IPromptConfig<any>>>;
-    findIndexOfSuggestionFor({ blockId }: IBlockInteraction, key: Key, stack: IStack): Key | undefined;
+    findIndexOfSuggestionFor({ block_id }: IBlockInteraction, key: Key, stack: IStack): Key | undefined;
     postInteractionCreate(interaction: IBlockInteraction, _context: IContext): IBlockInteraction;
     syncGhostTo(key: Key, keyForSuggestion: Key, ghost: IStack): void;
     postInteractionComplete(interaction: IBlockInteraction, _context: IContext): void;

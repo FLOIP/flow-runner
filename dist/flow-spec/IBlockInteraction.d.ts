@@ -1,16 +1,16 @@
 export interface IBlockInteraction {
     uuid: string;
-    blockId: string;
-    flowId: string;
-    entryAt: string;
-    exitAt?: string;
-    hasResponse: boolean;
+    block_id: string;
+    flow_id: string;
+    entry_at: string;
+    exit_at?: string;
+    has_response: boolean;
     value?: unknown;
     details: IBlockInteractionDetails;
-    selectedExitId?: string;
+    selected_exit_id?: string;
     type: string;
-    originBlockInteractionId?: string;
-    originFlowId?: string;
+    origin_block_interaction_id?: string;
+    origin_flow_id?: string;
 }
 export interface IBlockInteractionDetails {
 }

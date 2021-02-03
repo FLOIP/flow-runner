@@ -33,7 +33,7 @@ class BasicBacktrackingBehaviour {
                     __1.FlowRunner.prototype.reverseLastDataOperation(context);
                 }
             });
-            const destinationBlock = __1.findBlockOnActiveFlowWith(destinationInteraction.blockId, context);
+            const destinationBlock = __1.findBlockOnActiveFlowWith(destinationInteraction.block_id, context);
             this.jumpContext = { discardedInteractions: discarded, destinationInteraction };
             const richCursor = yield this.navigator.navigateTo(destinationBlock, context);
             this.jumpContext = undefined;
@@ -59,7 +59,7 @@ class BasicBacktrackingBehaviour {
     peek(steps = 0, context = this.context, direction = PeekDirection.LEFT) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const intx = this._findInteractiveInteractionAt(steps, context, direction);
-            const block = __1.findBlockWith(intx.blockId, __1.findFlowWith(intx.flowId, context));
+            const block = __1.findBlockWith(intx.block_id, __1.findFlowWith(intx.flow_id, context));
             const prompt = yield this.promptBuilder.buildPromptFor(block, intx);
             if (prompt == null) {
                 throw new __1.ValidationException(`Unable to build a prompt for ${JSON.stringify({

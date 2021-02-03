@@ -59,8 +59,8 @@ describe('FlowRunner/stepInto', () => {
     const runFlowBlockIntx = ctx.interactions[0]
     const runner = new FlowRunner(ctx)
 
-    delete runFlowBlockIntx.selectedExitId // setup for known incomplete + un-exited interaction state
+    delete runFlowBlockIntx.selected_exit_id // setup for known incomplete + un-exited interaction state
     runner.stepInto(block, ctx)
-    expect(runFlowBlockIntx.selectedExitId).toBeUndefined()
+    expect(runFlowBlockIntx.selected_exit_id).toBeUndefined()
   })
 })

@@ -28,7 +28,7 @@ export declare class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     isLast(): boolean;
     run(): Promise<IRichCursorInputRequired | undefined>;
     isInputRequiredFor(ctx: IContext): boolean;
-    cacheInteractionByBlockName({ uuid, entryAt }: IBlockInteraction, { name, config: { prompt } }: IMessageBlock, context?: IContext): void;
+    cacheInteractionByBlockName({ uuid, entry_at }: IBlockInteraction, { name, config: { prompt } }: IMessageBlock, context?: IContext): void;
     applyReversibleDataOperation(forward: NonBreakingUpdateOperation, reverse: NonBreakingUpdateOperation, context?: IContext): void;
     reverseLastDataOperation(context?: IContext): IReversibleUpdateOperation | undefined;
     runUntilInputRequiredFrom(ctx: IContextWithCursor): Promise<IRichCursorInputRequired | undefined>;
@@ -46,9 +46,9 @@ export declare class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptB
     _inflateInteractionAndContainerCursorFor(block: IBlock, ctx: IContext): Promise<IRichCursor>;
     stepInto(runFlowBlock: IBlock, ctx: IContext): IBlock | undefined;
     stepOut(ctx: IContext): IBlock | undefined;
-    findFirstExitOnActiveFlowBlockFor({ blockId }: IBlockInteraction, ctx: IContext): IBlockExit;
+    findFirstExitOnActiveFlowBlockFor({ block_id }: IBlockInteraction, ctx: IContext): IBlockExit;
     findNextBlockOnActiveFlowFor(ctx: IContext): IBlock | undefined;
-    findNextBlockFrom({ blockId, selectedExitId }: IBlockInteraction, ctx: IContext): IBlock | undefined;
+    findNextBlockFrom({ block_id, selected_exit_id }: IBlockInteraction, ctx: IContext): IBlock | undefined;
     private createBlockInteractionFor;
     _inflatePromptForBlockOnto(richCursor: IRichCursor, block: IBlock, ctx: IContextWithCursor): Promise<void>;
     buildPromptFor(block: IBlock, interaction: IBlockInteraction): Promise<TGenericPrompt | undefined>;

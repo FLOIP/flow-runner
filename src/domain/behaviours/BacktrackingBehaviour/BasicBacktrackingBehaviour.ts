@@ -110,7 +110,7 @@ export class BasicBacktrackingBehaviour implements IBasicBackTrackingBehaviour {
       }
     })
 
-    const destinationBlock = findBlockOnActiveFlowWith(destinationInteraction.blockId, context)
+    const destinationBlock = findBlockOnActiveFlowWith(destinationInteraction.block_id, context)
 
     this.jumpContext = {discardedInteractions: discarded, destinationInteraction}
     const richCursor = await this.navigator.navigateTo(destinationBlock, context)
@@ -143,7 +143,7 @@ export class BasicBacktrackingBehaviour implements IBasicBackTrackingBehaviour {
 
   async peek(steps = 0, context: IContext = this.context, direction = PeekDirection.LEFT): Promise<IRichCursorInputRequired> {
     const intx = this._findInteractiveInteractionAt(steps, context, direction)
-    const block = findBlockWith(intx.blockId, findFlowWith(intx.flowId, context))
+    const block = findBlockWith(intx.block_id, findFlowWith(intx.flow_id, context))
 
     const prompt = await this.promptBuilder.buildPromptFor(block, intx)
     if (prompt == null) {

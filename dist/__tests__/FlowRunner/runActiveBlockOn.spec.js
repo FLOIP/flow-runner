@@ -27,9 +27,9 @@ describe('FlowRunner/runActiveBlockOn', () => {
         const expectedExit = block.exits[0];
         const runner = new __1.FlowRunner(ctx, new __1.BlockRunnerFactoryStore([['MobilePrimitives\\Message', BlockRunner_1.createStaticFirstExitBlockRunnerFor]]));
         const richCursor = runner.hydrateRichCursorFrom(ctx);
-        delete richCursor.interaction.selectedExitId;
+        delete richCursor.interaction.selected_exit_id;
         yield runner.runActiveBlockOn(richCursor, block);
-        expect(richCursor.interaction.selectedExitId).toBe(expectedExit.uuid);
+        expect(richCursor.interaction.selected_exit_id).toBe(expectedExit.uuid);
     }));
     it('should complete interaction with selected exit', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         const ctx = dataset.contexts[1];
@@ -81,9 +81,9 @@ describe('FlowRunner/runActiveBlockOn', () => {
                     ['MobilePrimitives\\OpenResponse', (block, ctx) => new __1.OpenResponseBlockRunner(block, ctx)],
                 ]));
                 const richCursor = runner.hydrateRichCursorFrom(ctx);
-                expect(richCursor.interaction.hasResponse).toBeFalsy();
+                expect(richCursor.interaction.has_response).toBeFalsy();
                 yield runner.runActiveBlockOn(richCursor, block);
-                expect(richCursor.interaction.hasResponse).toBeTruthy();
+                expect(richCursor.interaction.has_response).toBeTruthy();
             }));
         });
         describe('when prompt has null value', () => {
@@ -92,9 +92,9 @@ describe('FlowRunner/runActiveBlockOn', () => {
                 const block = ctx.flows[1].blocks[0];
                 const runner = new __1.FlowRunner(ctx, new __1.BlockRunnerFactoryStore([['MobilePrimitives\\Message', BlockRunner_1.createStaticFirstExitBlockRunnerFor]]));
                 const richCursor = runner.hydrateRichCursorFrom(ctx);
-                expect(richCursor.interaction.hasResponse).toBeFalsy();
+                expect(richCursor.interaction.has_response).toBeFalsy();
                 yield runner.runActiveBlockOn(richCursor, block);
-                expect(richCursor.interaction.hasResponse).toBeFalsy();
+                expect(richCursor.interaction.has_response).toBeFalsy();
             }));
         });
     });
