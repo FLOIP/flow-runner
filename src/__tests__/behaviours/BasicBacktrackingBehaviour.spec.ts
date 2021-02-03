@@ -17,7 +17,7 @@ describe('BasicBacktrackingBehaviour', () => {
 
   beforeEach(() => {
     backtracking = new BasicBacktrackingBehaviour(
-      {platform_metadata: {}} as IContext,
+      {vendor_metadata: {}} as IContext,
       {navigateTo: async (_b, _c) => ({interaction: {} as IBlockInteraction, prompt: undefined})},
       {
         buildPromptFor: async (_b: IBlock, _i: IBlockInteraction): Promise<IPrompt<IPromptConfig<any>> | undefined> => undefined,

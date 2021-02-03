@@ -197,7 +197,7 @@
       },
       "lastModified": "2019-10-04 21:05:25.000000+00:00",
       "name": "Case Block",
-      "platformMetadata": {},
+      "vendorMetadata": {},
       "supportedModes": {},
       "uuid": "5b8c87d6-de90-4bc4-8668-4f040000006b",
       "resources": [
@@ -1005,5 +1005,5 @@
       "isSubmitted": true
     }
   },
-  "platformMetadata": {}
+  "vendorMetadata": {}
 }

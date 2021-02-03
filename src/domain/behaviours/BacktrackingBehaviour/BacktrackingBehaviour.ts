@@ -93,7 +93,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
   }
 
   initializeBacktrackingContext() {
-    const meta: IContextBacktrackingPlatformMetadata = (this.context.platform_metadata as unknown) as IContextBacktrackingPlatformMetadata
+    const meta: IContextBacktrackingPlatformMetadata = (this.context.vendor_metadata as unknown) as IContextBacktrackingPlatformMetadata
 
     if (meta.backtracking == null) {
       meta.backtracking = {
@@ -111,12 +111,12 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
   }
 
   hasIndex() {
-    const meta: IContextBacktrackingPlatformMetadata = (this.context.platform_metadata as unknown) as IContextBacktrackingPlatformMetadata
+    const meta: IContextBacktrackingPlatformMetadata = (this.context.vendor_metadata as unknown) as IContextBacktrackingPlatformMetadata
     return meta.backtracking.interactionStack != null && meta.backtracking.cursor != null
   }
 
   rebuildIndex() {
-    const {backtracking} = (this.context.platform_metadata as unknown) as IContextBacktrackingPlatformMetadata
+    const {backtracking} = (this.context.vendor_metadata as unknown) as IContextBacktrackingPlatformMetadata
 
     const key = (backtracking.cursor = createKey())
     const stack = (backtracking.interactionStack = createStack())
@@ -194,7 +194,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
   }
 
   async jumpTo(interaction: IBlockInteraction, context: IContext): Promise<IRichCursor> {
-    const {backtracking} = (this.context.platform_metadata as unknown) as IContextBacktrackingPlatformMetadata
+    const {backtracking} = (this.context.vendor_metadata as unknown) as IContextBacktrackingPlatformMetadata
 
     // find a key for provided past interaction
     const keyForLastOccurrenceOfInteraction = deepIndexOfFrom(
@@ -296,7 +296,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
         // interactionStack,
         ghostInteractionStacks,
       },
-    } = (this.context.platform_metadata as unknown) as IContextBacktrackingPlatformMetadata
+    } = (this.context.vendor_metadata as unknown) as IContextBacktrackingPlatformMetadata
 
     if (ghostInteractionStacks.length === 0) {
       // can't suggest when we don't have ghost interactions from the past
@@ -390,7 +390,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
   postInteractionComplete(interaction: IBlockInteraction, _context: IContext): void {
     const {
       backtracking: {cursor: key, interactionStack, ghostInteractionStacks},
-    } = (this.context.platform_metadata as unknown) as IContextBacktrackingPlatformMetadata
+    } = (this.context.vendor_metadata as unknown) as IContextBacktrackingPlatformMetadata
 
     this.insertInteractionUsing(key, interaction, interactionStack)
 

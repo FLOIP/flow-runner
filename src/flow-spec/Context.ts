@@ -57,7 +57,7 @@ export class Context implements IContext {
   public user_id?: string
   public org_id?: string
   public cursor?: ICursor
-  public platform_metadata: {[k: string]: unknown} = {}
+  public vendor_metadata: {[k: string]: unknown} = {}
   public logs: {[k: string]: string} = {}
 
   constructor(
@@ -80,11 +80,11 @@ export class Context implements IContext {
     userId?: string,
     orgId?: string,
     cursor?: ICursor,
-    platformMetadata: {[k: string]: unknown} = {},
+    vendorMetadata: {[k: string]: unknown} = {},
     logs: {[k: string]: string} = {}
   ) {
     this.logs = logs
-    this.platform_metadata = platformMetadata
+    this.vendor_metadata = vendorMetadata
     this.cursor = cursor
     this.org_id = orgId
     this.user_id = userId
@@ -137,7 +137,7 @@ export namespace Context {
     userId?: string
     orgId?: string
     cursor?: ICursor
-    platformMetadata: {[k: string]: unknown} = {}
+    vendorMetadata: {[k: string]: unknown} = {}
     logs: {[k: string]: string} = {}
 
     setId(id: string): Context.Builder {
@@ -235,8 +235,8 @@ export namespace Context {
       return this
     }
 
-    setPlatformMetadata(platformMetadata: {[k: string]: unknown}): Context.Builder {
-      this.platformMetadata = platformMetadata
+    setPlatformMetadata(vendorMetadata: {[k: string]: unknown}): Context.Builder {
+      this.vendorMetadata = vendorMetadata
       return this
     }
 
@@ -274,7 +274,7 @@ export namespace Context {
         this.userId,
         this.orgId,
         this.cursor,
-        this.platformMetadata,
+        this.vendorMetadata,
         this.logs
       )
     }

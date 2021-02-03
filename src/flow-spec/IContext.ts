@@ -116,7 +116,7 @@ export interface IContext {
   flows: IFlow[]
   first_flow_id: string
   resources: IResources
-  platform_metadata: {[k: string]: unknown}
+  vendor_metadata: {[k: string]: unknown}
 
   logs: {[k: string]: string}
 }
@@ -161,7 +161,7 @@ export function createContextDataObjectFor(
     first_flow_id: flows[0].uuid,
 
     resources,
-    platform_metadata: {},
+    vendor_metadata: {},
 
     logs: {},
   }

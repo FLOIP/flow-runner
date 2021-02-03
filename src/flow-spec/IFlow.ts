@@ -29,7 +29,7 @@ export interface IFlow {
   // UTC like: 2016-12-25 13:42:05.234598
   last_modified: string
   interaction_timeout: number
-  platform_metadata: object
+  vendor_metadata: object
 
   supported_modes: SupportedMode[]
 

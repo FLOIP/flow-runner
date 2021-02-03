@@ -95,7 +95,7 @@
           "uuid": "95bd9e4a-9300-400c-9ead-90518239915f"
         }
       ],
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "org_id": "789541742083833856",
           "tree_id": "52909"
@@ -192,7 +192,7 @@
           "uuid": "95bd9e4a-9300-400c-9eae-905182a6d253"
         }
       ],
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "org_id": "789541742083833856",
           "tree_id": "52910"
@@ -267,7 +267,7 @@
           "uuid": "95bd9e4a-9300-400c-9eaf-905182d9ddc7"
         }
       ],
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "org_id": "789541742083833856",
           "tree_id": "52911"
@@ -629,6 +629,6 @@
       "flowId": "95f4a989-1674-41cf-8940-90d8b1998392"
     }
   ],
-  "platformMetadata": {},
+  "vendorMetadata": {},
   "logs": {}
 }

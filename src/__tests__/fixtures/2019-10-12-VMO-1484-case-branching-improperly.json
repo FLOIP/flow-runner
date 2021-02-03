@@ -3,7 +3,7 @@
   "specification_version": "1.0.0-rc.1",
   "name": "Test Decision Branch Block",
   "description": "",
-  "platform_metadata": {
+  "vendor_metadata": {
     "io_viamo": {
       "tree_ids": [
         44897
@@ -27,7 +27,7 @@
         "code": null,
         "deletedAt": null
       }],
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "orgId": "969652746196090880",
           "treeId": "44897"
@@ -45,7 +45,7 @@
             },
             "prompt": "95bd9e4a-9300-400a-9f61-8ede02e10e03"
           },
-          "platformMetadata": {
+          "vendorMetadata": {
             "io_viamo": {
               "type": "MultipleChoiceQuestionBlock",
               "customData": {
@@ -110,7 +110,7 @@
           "label": "If \"Dogs/Cats\" is \"Dogs\".",
           "semanticLabel": "",
           "config": [],
-          "platformMetadata": {
+          "vendorMetadata": {
             "io_viamo": {
               "type": "DecisionBranchBlock",
               "customData": {
@@ -181,7 +181,7 @@
           "config": {
             "prompt": "95bd9e4a-9300-400a-9f61-8ede0325225f"
           },
-          "platformMetadata": {
+          "vendorMetadata": {
             "io_viamo": {
               "type": "MessageBlock",
               "customData": {
@@ -234,7 +234,7 @@
           "config": {
             "prompt": "95bd9e4a-9300-400a-9f61-8ede034f93d8"
           },
-          "platformMetadata": {
+          "vendorMetadata": {
             "io_viamo": {
               "type": "MessageBlock",
               "customData": {

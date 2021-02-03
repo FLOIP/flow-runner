@@ -53,7 +53,7 @@ _defaults:
         deletedAt:
     lastModified: "2020-10-10T00:00:00.000Z"
     name: My first flow
-    platformMetadata: {}
+    vendorMetadata: {}
     supportedModes: [text]
 
   - &defaults/context
@@ -64,7 +64,7 @@ _defaults:
       deliveryStatus: "3"
     sessionVars: {}
     nestedFlowBlockInteractionIdStack: []
-    platformMetadata: {}
+    vendorMetadata: {}
 
   - &defaults/res
     values:

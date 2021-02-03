@@ -25,7 +25,7 @@ describe('BacktrackingBehaviour', () => {
 
   beforeEach(() => {
     backtracking = new BacktrackingBehaviour(
-      {platform_metadata: {}} as IContext,
+      {vendor_metadata: {}} as IContext,
       {navigateTo: async (_b, _c) => ({interaction: {} as IBlockInteraction, prompt: undefined})},
       {
         buildPromptFor: async (_b: IBlock, _i: IBlockInteraction): Promise<IPrompt<IPromptConfig<any>> | undefined> => undefined,
@@ -302,7 +302,7 @@ describe('BacktrackingBehaviour', () => {
       backtracking.context.flows = [{uuid: 'flow/abc-123', blocks: [{uuid: 'block/abc-234'}]} as IFlow]
       backtracking.context.nested_flow_block_interaction_id_stack = []
 
-      meta = ((backtracking.context.platform_metadata as unknown) as IContextBacktrackingPlatformMetadata).backtracking
+      meta = ((backtracking.context.vendor_metadata as unknown) as IContextBacktrackingPlatformMetadata).backtracking
       meta.interactionStack = createStack(cloneDeep(interactions))
     })
 
@@ -371,7 +371,7 @@ describe('BacktrackingBehaviour', () => {
         backtracking.context.first_flow_id = 'flow-123'
         backtracking.context.nested_flow_block_interaction_id_stack = ['intx-234-1', 'intx-789-1']
 
-        meta = ((backtracking.context.platform_metadata as unknown) as IContextBacktrackingPlatformMetadata).backtracking
+        meta = ((backtracking.context.vendor_metadata as unknown) as IContextBacktrackingPlatformMetadata).backtracking
         meta.interactionStack = createStack(cloneDeep(interactions))
       })
 

@@ -142,7 +142,7 @@
           "uuid": "95bd9e4a-9300-4004-9c29-9061124af1d2"
         }
       ],
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "org_id": "1099281639566999552",
           "tree_id": "19497"
@@ -247,7 +247,7 @@
           "uuid": "95bd9e4a-9300-4004-9c22-90610eb9b2f4"
         }
       ],
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "org_id": "1099281639566999552",
           "tree_id": "19490"
@@ -349,7 +349,7 @@
           "uuid": "95bd9e4a-9300-4004-9c2a-906116c04d7e"
         }
       ],
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "org_id": "1099281639566999552",
           "tree_id": "19498"
@@ -429,7 +429,7 @@
           "uuid": "95bd9e4a-9300-4004-9c24-90610f886111"
         }
       ],
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "org_id": "1099281639566999552",
           "tree_id": "19492"
@@ -531,7 +531,7 @@
           "uuid": "95bd9e4a-9300-4004-9c25-9061100826e0"
         }
       ],
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "org_id": "1099281639566999552",
           "tree_id": "19493"
@@ -633,7 +633,7 @@
           "uuid": "95bd9e4a-9300-4004-9c26-90611098cf72"
         }
       ],
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "org_id": "1099281639566999552",
           "tree_id": "19494"
@@ -735,7 +735,7 @@
           "uuid": "95bd9e4a-9300-4004-9c27-90611098cf72"
         }
       ],
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "org_id": "1099281639566999552",
           "tree_id": "19495"
@@ -813,7 +813,7 @@
           "uuid": "95bd9e4a-9300-4004-9c28-90611150ebc8"
         }
       ],
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "org_id": "1099281639566999552",
           "tree_id": "19496"
@@ -2071,6 +2071,6 @@
       "flowId": "5245256f-9720-4b30-94d2-b87f8880e4aa"
     }
   ],
-  "platformMetadata": {},
+  "vendorMetadata": {},
   "logs": {}
 }

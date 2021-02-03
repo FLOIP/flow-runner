@@ -8,7 +8,7 @@
   "languages": [
     "22"
   ],
-  "platformMetadata": {
+  "vendorMetadata": {
     "io_viamo": {
       "orgId": "1008107874829627392",
       "treeId": "113"
@@ -29,7 +29,7 @@
         },
         "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573"
       },
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "type": "MultipleChoiceQuestionBlock",
           "customData": {
@@ -130,7 +130,7 @@
       "config": {
         "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2"
       },
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "type": "MessageBlock",
           "customData": {
@@ -183,7 +183,7 @@
       "label": "If any of the following are true...",
       "semanticLabel": "",
       "config": [],
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "type": "DecisionBranchBlock",
           "customData": {
@@ -262,7 +262,7 @@
       "label": "If all of the following are true...",
       "semanticLabel": "",
       "config": [],
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "type": "DecisionBranchBlock",
           "customData": {
@@ -343,7 +343,7 @@
       "config": {
         "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2"
       },
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "type": "MessageBlock",
           "customData": {
@@ -398,7 +398,7 @@
       "config": {
         "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757"
       },
-      "platformMetadata": {
+      "vendorMetadata": {
         "io_viamo": {
           "type": "MessageBlock",
           "customData": {
