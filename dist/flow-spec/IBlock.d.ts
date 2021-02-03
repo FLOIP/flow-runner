@@ -3,7 +3,7 @@ export interface IBlock {
     uuid: string;
     name: string;
     label?: string;
-    semanticLabel?: string;
+    semantic_label?: string;
     type: string;
     config: object;
     exits: IBlockExit[];

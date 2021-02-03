@@ -256,8 +256,8 @@ describe('FlowRunner', () => {
         prompt.value = 50
         const cursor = await runner.run()
         expect(cursor).toBeUndefined()
-        expect(context.deliveryStatus).toBe(DeliveryStatus.FINISHED_COMPLETE)
-        expect(context.exitAt).toBeTruthy()
+        expect(context.delivery_status).toBe(DeliveryStatus.FINISHED_COMPLETE)
+        expect(context.exit_at).toBeTruthy()
 
         expect(every(context.interactions, i => i.exitAt)).toBeTruthy()
       })

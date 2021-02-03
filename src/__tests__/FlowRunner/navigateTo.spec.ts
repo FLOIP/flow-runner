@@ -124,7 +124,7 @@ describe('FlowRunner/navigateTo', () => {
       const block = ctx.flows[0].blocks[0]
       const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]]))
 
-      expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(0)
+      expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(0)
       await runner.navigateTo(block, ctx)
       expect(ctx.interactions[0].blockId).toBe(block.uuid)
     })
@@ -138,11 +138,11 @@ describe('FlowRunner/navigateTo', () => {
           new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]])
         )
 
-        expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(0)
-        expect(ctx.firstFlowId).toBeTruthy()
+        expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(0)
+        expect(ctx.first_flow_id).toBeTruthy()
 
         await runner.navigateTo(block, ctx)
-        expect(ctx.interactions[0].flowId).toBe(ctx.firstFlowId)
+        expect(ctx.interactions[0].flowId).toBe(ctx.first_flow_id)
       })
 
       it('should be from nested flow when nested once', async () => {
@@ -161,8 +161,8 @@ describe('FlowRunner/navigateTo', () => {
         // todo: remove this once it's been pushed out to isolated behaviour
         jest.spyOn(runner, 'cacheInteractionByBlockName').mockImplementation(() => {})
 
-        expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(1)
-        expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) as string, ctx).flowId).toBe(ctx.flows[0].uuid)
+        expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(1)
+        expect(findInteractionWith(last(ctx.nested_flow_block_interaction_id_stack) as string, ctx).flowId).toBe(ctx.flows[0].uuid)
 
         await runner.navigateTo(block, ctx)
 
@@ -181,7 +181,7 @@ describe('FlowRunner/navigateTo', () => {
           new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]])
         )
 
-        expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(0)
+        expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(0)
         expect(ctx.interactions).toHaveLength(0)
 
         await runner.navigateTo(block, ctx)
@@ -201,8 +201,8 @@ describe('FlowRunner/navigateTo', () => {
         // todo: remove this once it's been pushed out to isolated behaviour
         jest.spyOn(runner, 'cacheInteractionByBlockName').mockImplementation(() => {})
 
-        expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(1)
-        expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) as string, ctx).flowId).toBe(ctx.flows[0].uuid)
+        expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(1)
+        expect(findInteractionWith(last(ctx.nested_flow_block_interaction_id_stack) as string, ctx).flowId).toBe(ctx.flows[0].uuid)
 
         await runner.navigateTo(block, ctx)
 
@@ -221,7 +221,7 @@ describe('FlowRunner/navigateTo', () => {
           new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]])
         )
 
-        expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(0)
+        expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(0)
         expect(ctx.interactions).toHaveLength(0)
 
         await runner.navigateTo(block, ctx)
@@ -241,8 +241,8 @@ describe('FlowRunner/navigateTo', () => {
         // todo: remove this once it's been pushed out to isolated behaviour
         jest.spyOn(runner, 'cacheInteractionByBlockName').mockImplementation(() => {})
 
-        expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(1)
-        expect(findInteractionWith(last(ctx.nestedFlowBlockInteractionIdStack) as string, ctx).flowId).toBe(ctx.flows[0].uuid)
+        expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(1)
+        expect(findInteractionWith(last(ctx.nested_flow_block_interaction_id_stack) as string, ctx).flowId).toBe(ctx.flows[0].uuid)
 
         await runner.navigateTo(block, ctx)
 

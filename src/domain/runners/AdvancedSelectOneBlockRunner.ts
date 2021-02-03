@@ -35,17 +35,17 @@ export class AdvancedSelectOneBlockRunner implements IBlockRunner {
   constructor(public block: IAdvancedSelectOneBlock, public context: IContext) {}
 
   async initialize({value}: IBlockInteraction): Promise<IAdvancedSelectOnePromptConfig> {
-    const {prompt, promptAudio, primaryField, secondaryFields, choiceRowFields, choiceRows, responseFields} = this.block.config
+    const {prompt, prompt_audio, primary_field, secondary_fields, choice_row_fields, choice_rows, response_fields} = this.block.config
 
     return {
       kind: ADVANCED_SELECT_ONE_PROMPT_KEY,
       prompt,
-      promptAudio,
-      primaryField,
-      secondaryFields,
-      choiceRowFields,
-      choiceRows,
-      responseFields,
+      promptAudio: prompt_audio,
+      primaryField: primary_field,
+      secondaryFields: secondary_fields,
+      choiceRowFields: choice_row_fields,
+      choiceRows: choice_rows,
+      responseFields: response_fields,
       isResponseRequired: true,
       value: value as IAdvancedSelectOnePromptConfig['value'],
     }

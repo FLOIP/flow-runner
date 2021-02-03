@@ -6,7 +6,7 @@ const __1 = require("../..");
 describe('BacktrackingBehaviour', () => {
     let backtracking;
     beforeEach(() => {
-        backtracking = new __1.BacktrackingBehaviour({ platformMetadata: {} }, { navigateTo: (_b, _c) => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return ({ interaction: {}, prompt: undefined }); }) }, {
+        backtracking = new __1.BacktrackingBehaviour({ platform_metadata: {} }, { navigateTo: (_b, _c) => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return ({ interaction: {}, prompt: undefined }); }) }, {
             buildPromptFor: (_b, _i) => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return undefined; }),
         });
     });
@@ -212,10 +212,10 @@ describe('BacktrackingBehaviour', () => {
         beforeEach(() => {
             interactions = [{ uuid: 'abc-123' }, { uuid: 'abc-234', blockId: 'block/abc-234' }, { uuid: 'abc-345' }];
             backtracking.context.interactions = lodash_1.cloneDeep(interactions);
-            backtracking.context.firstFlowId = 'flow/abc-123';
+            backtracking.context.first_flow_id = 'flow/abc-123';
             backtracking.context.flows = [{ uuid: 'flow/abc-123', blocks: [{ uuid: 'block/abc-234' }] }];
-            backtracking.context.nestedFlowBlockInteractionIdStack = [];
-            meta = backtracking.context.platformMetadata.backtracking;
+            backtracking.context.nested_flow_block_interaction_id_stack = [];
+            meta = backtracking.context.platform_metadata.backtracking;
             meta.interactionStack = __1.createStack(lodash_1.cloneDeep(interactions));
         });
         it('should initialize ghost stack as a clone of current stack', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
@@ -258,14 +258,14 @@ describe('BacktrackingBehaviour', () => {
                         uuid: 'flow-123',
                         blocks: [
                             { uuid: 'block-123' },
-                            { uuid: 'block-234', config: { flowId: 'flow-234' } },
+                            { uuid: 'block-234', config: { flow_id: 'flow-234' } },
                             { uuid: 'block-345' },
                             { uuid: 'block-456' },
                         ],
                     },
                     {
                         uuid: 'flow-234',
-                        blocks: [{ uuid: 'block-567' }, { uuid: 'block-678' }, { uuid: 'block-789', config: { flowId: 'flow-345' } }],
+                        blocks: [{ uuid: 'block-567' }, { uuid: 'block-678' }, { uuid: 'block-789', config: { flow_id: 'flow-345' } }],
                     },
                     {
                         uuid: 'flow-345',
@@ -273,25 +273,25 @@ describe('BacktrackingBehaviour', () => {
                     },
                 ];
                 backtracking.context.interactions = lodash_1.cloneDeep(interactions);
-                backtracking.context.firstFlowId = 'flow-123';
-                backtracking.context.nestedFlowBlockInteractionIdStack = ['intx-234-1', 'intx-789-1'];
-                meta = backtracking.context.platformMetadata.backtracking;
+                backtracking.context.first_flow_id = 'flow-123';
+                backtracking.context.nested_flow_block_interaction_id_stack = ['intx-234-1', 'intx-789-1'];
+                meta = backtracking.context.platform_metadata.backtracking;
                 meta.interactionStack = __1.createStack(lodash_1.cloneDeep(interactions));
             });
             it('leave nesting at the same place if not jumping past a nesting', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-                expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual(['intx-234-1', 'intx-789-1']);
+                expect(backtracking.context.nested_flow_block_interaction_id_stack).toEqual(['intx-234-1', 'intx-789-1']);
                 backtracking.jumpTo({ uuid: 'intx-901-1', blockId: 'block-901' }, backtracking.context);
-                expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual(['intx-234-1', 'intx-789-1']);
+                expect(backtracking.context.nested_flow_block_interaction_id_stack).toEqual(['intx-234-1', 'intx-789-1']);
             }));
             it('should handle peeling off one level of nesting when jumping past one run-flow block interaction', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-                expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual(['intx-234-1', 'intx-789-1']);
+                expect(backtracking.context.nested_flow_block_interaction_id_stack).toEqual(['intx-234-1', 'intx-789-1']);
                 backtracking.jumpTo({ uuid: 'intx-567-1', blockId: 'block-567' }, backtracking.context);
-                expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual(['intx-234-1']);
+                expect(backtracking.context.nested_flow_block_interaction_id_stack).toEqual(['intx-234-1']);
             }));
             it('should handle peeling off all nesting when jumping to interaction at top level', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-                expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual(['intx-234-1', 'intx-789-1']);
+                expect(backtracking.context.nested_flow_block_interaction_id_stack).toEqual(['intx-234-1', 'intx-789-1']);
                 backtracking.jumpTo({ uuid: 'intx-234-1', blockId: 'block-234' }, backtracking.context);
-                expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual([]);
+                expect(backtracking.context.nested_flow_block_interaction_id_stack).toEqual([]);
             }));
         });
     });
@@ -335,8 +335,8 @@ describe('BacktrackingBehaviour', () => {
             });
         });
         describe.skip('when key for suggestion is nested multiple times deeper + on non-first iteration + iterations exist afterwards', () => {
-            it(`should remove iterations before iteration having key for suggestion 
-            + hoist iteration having key for suggestion to match key 
+            it(`should remove iterations before iteration having key for suggestion
+            + hoist iteration having key for suggestion to match key
             + remove items in between key + key for suggestion
             + leave subsequent iterations intact
             + leave trailing items intact

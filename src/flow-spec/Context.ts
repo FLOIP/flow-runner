@@ -39,25 +39,25 @@ import {
 // noinspection DuplicatedCode
 export class Context implements IContext {
   public id: string
-  public createdAt: string
-  public deliveryStatus: DeliveryStatus
+  public created_at: string
+  public delivery_status: DeliveryStatus
   public mode: SupportedMode
-  public languageId: string
+  public language_id: string
   public contact: IContact
   public groups: IGroup[]
-  public sessionVars: {[k: string]: unknown}
+  public session_vars: {[k: string]: unknown}
   public interactions: IBlockInteraction[]
-  public nestedFlowBlockInteractionIdStack: string[]
-  public reversibleOperations: IReversibleUpdateOperation[]
+  public nested_flow_block_interaction_id_stack: string[]
+  public reversible_operations: IReversibleUpdateOperation[]
   public flows: IFlow[]
-  public firstFlowId: string
+  public first_flow_id: string
   public resources: IResources
-  public entryAt?: string
-  public exitAt?: string
-  public userId?: string
-  public orgId?: string
+  public entry_at?: string
+  public exit_at?: string
+  public user_id?: string
+  public org_id?: string
   public cursor?: ICursor
-  public platformMetadata: {[k: string]: unknown} = {}
+  public platform_metadata: {[k: string]: unknown} = {}
   public logs: {[k: string]: string} = {}
 
   constructor(
@@ -84,25 +84,25 @@ export class Context implements IContext {
     logs: {[k: string]: string} = {}
   ) {
     this.logs = logs
-    this.platformMetadata = platformMetadata
+    this.platform_metadata = platformMetadata
     this.cursor = cursor
-    this.orgId = orgId
-    this.userId = userId
-    this.exitAt = exitAt
-    this.entryAt = entryAt
+    this.org_id = orgId
+    this.user_id = userId
+    this.exit_at = exitAt
+    this.entry_at = entryAt
     this.resources = resources
-    this.firstFlowId = firstFlowId
+    this.first_flow_id = firstFlowId
     this.flows = flows
-    this.reversibleOperations = reversibleOperations
-    this.nestedFlowBlockInteractionIdStack = nestedFlowBlockInteractionIdStack
+    this.reversible_operations = reversibleOperations
+    this.nested_flow_block_interaction_id_stack = nestedFlowBlockInteractionIdStack
     this.interactions = interactions
-    this.sessionVars = sessionVars
+    this.session_vars = sessionVars
     this.contact = contact
     this.groups = groups
-    this.languageId = languageId
+    this.language_id = languageId
     this.mode = mode
-    this.deliveryStatus = deliveryStatus
-    this.createdAt = createdAt
+    this.delivery_status = deliveryStatus
+    this.created_at = createdAt
     this.id = id
   }
 

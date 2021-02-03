@@ -1,27 +1,27 @@
 import { DeliveryStatus, IBlockInteraction, IContact, IContext, ICursor, IFlow, IResource, IResourceDefinition, IResources, IReversibleUpdateOperation, SupportedMode, IGroup } from '..';
 export declare class Context implements IContext {
     id: string;
-    createdAt: string;
-    deliveryStatus: DeliveryStatus;
+    created_at: string;
+    delivery_status: DeliveryStatus;
     mode: SupportedMode;
-    languageId: string;
+    language_id: string;
     contact: IContact;
     groups: IGroup[];
-    sessionVars: {
+    session_vars: {
         [k: string]: unknown;
     };
     interactions: IBlockInteraction[];
-    nestedFlowBlockInteractionIdStack: string[];
-    reversibleOperations: IReversibleUpdateOperation[];
+    nested_flow_block_interaction_id_stack: string[];
+    reversible_operations: IReversibleUpdateOperation[];
     flows: IFlow[];
-    firstFlowId: string;
+    first_flow_id: string;
     resources: IResources;
-    entryAt?: string;
-    exitAt?: string;
-    userId?: string;
-    orgId?: string;
+    entry_at?: string;
+    exit_at?: string;
+    user_id?: string;
+    org_id?: string;
     cursor?: ICursor;
-    platformMetadata: {
+    platform_metadata: {
         [k: string]: unknown;
     };
     logs: {

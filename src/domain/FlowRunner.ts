@@ -179,8 +179,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       throw new ValidationException('Unable to initialize flow without blocks.')
     }
 
-    ctx.deliveryStatus = DeliveryStatus.IN_PROGRESS
-    ctx.entryAt = createFormattedDate()
+    ctx.delivery_status = DeliveryStatus.IN_PROGRESS
+    ctx.entry_at = createFormattedDate()
 
     // kick-start by navigating to first block
     return this.navigateTo(block, this.context)
@@ -270,17 +270,17 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     {name, config: {prompt}}: IMessageBlock,
     context: IContext = this.context
   ): void {
-    if (!('blockInteractionsByBlockName' in this.context.sessionVars)) {
-      context.sessionVars.blockInteractionsByBlockName = {}
+    if (!('blockInteractionsByBlockName' in this.context.session_vars)) {
+      context.session_vars.blockInteractionsByBlockName = {}
     }
 
-    if (context.reversibleOperations == null) {
-      context.reversibleOperations = []
+    if (context.reversible_operations == null) {
+      context.reversible_operations = []
     }
 
     // create a cache of `{[block.name]: {...}}` for subsequent lookups
     const blockNameKey = `blockInteractionsByBlockName.${name}`
-    const previous = this.context.sessionVars[blockNameKey]
+    const previous = this.context.session_vars[blockNameKey]
     const resource = prompt == null ? undefined : new ResourceResolver(context).resolve(prompt)
 
     const current = {
@@ -304,8 +304,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     reverse: NonBreakingUpdateOperation,
     context: IContext = this.context
   ): void {
-    context.sessionVars = update(context.sessionVars, forward)
-    context.reversibleOperations.push({
+    context.session_vars = update(context.session_vars, forward)
+    context.reversible_operations.push({
       interactionId: last(context.interactions)?.uuid,
       forward,
       reverse,
@@ -317,13 +317,13 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param context
    */
   reverseLastDataOperation(context: IContext = this.context): IReversibleUpdateOperation | undefined {
-    if (context.reversibleOperations.length === 0) {
+    if (context.reversible_operations.length === 0) {
       return
     }
 
-    const lastOperation = last(context.reversibleOperations) as IReversibleUpdateOperation
-    context.sessionVars = update(context.sessionVars, lastOperation.reverse)
-    return context.reversibleOperations.pop()
+    const lastOperation = last(context.reversible_operations) as IReversibleUpdateOperation
+    context.session_vars = update(context.session_vars, lastOperation.reverse)
+    return context.reversible_operations.pop()
   }
 
   /**
@@ -388,8 +388,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    */
   complete(ctx: IContext, completedAt: Date = new Date()): void {
     delete ctx.cursor
-    ctx.deliveryStatus = DeliveryStatus.FINISHED_COMPLETE
-    ctx.exitAt = createFormattedDate(completedAt)
+    ctx.delivery_status = DeliveryStatus.FINISHED_COMPLETE
+    ctx.exit_at = createFormattedDate(completedAt)
   }
 
   /**
@@ -413,16 +413,16 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param completedAt
    */
   completeActiveNestedFlow(ctx: IContext, completedAt: Date = new Date()): IBlockInteraction {
-    const {nestedFlowBlockInteractionIdStack} = ctx
+    const {nested_flow_block_interaction_id_stack} = ctx
 
     if (!this._contextService.isNested(ctx)) {
       throw new ValidationException('Unable to complete a nested flow when not nested.')
     }
 
-    const runFlowIntx = this._contextService.findInteractionWith(last(nestedFlowBlockInteractionIdStack) as string, ctx)
+    const runFlowIntx = this._contextService.findInteractionWith(last(nested_flow_block_interaction_id_stack) as string, ctx)
 
     // once we are in a valid state and able to find our corresponding interaction, let's update active nested flow
-    nestedFlowBlockInteractionIdStack.pop()
+    nested_flow_block_interaction_id_stack.pop()
 
     // since we've un-nested one level, we may seek using freshly active flow
     const exit: IBlockExit = this.findFirstExitOnActiveFlowBlockFor(runFlowIntx, ctx)
@@ -557,9 +557,9 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   }
 
   async _inflateInteractionAndContainerCursorFor(block: IBlock, ctx: IContext): Promise<IRichCursor> {
-    const {nestedFlowBlockInteractionIdStack} = ctx
+    const {nested_flow_block_interaction_id_stack} = ctx
     const flowId = this._contextService.getActiveFlowIdFrom(ctx)
-    const originInteractionId = last(nestedFlowBlockInteractionIdStack)
+    const originInteractionId = last(nested_flow_block_interaction_id_stack)
     const originInteraction = originInteractionId != null ? this._contextService.findInteractionWith(originInteractionId, ctx) : null
 
     const richCursor = await this.initializeOneBlock(
@@ -598,7 +598,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       throw new ValidationException("Unable to step into Core\\RunFlow block that doesn't match last interaction")
     }
 
-    ctx.nestedFlowBlockInteractionIdStack.push(runFlowInteraction.uuid)
+    ctx.nested_flow_block_interaction_id_stack.push(runFlowInteraction.uuid)
 
     const firstNestedBlock = first(this._contextService.getActiveFlowFrom(ctx).blocks)
     // todo: use IFlow.firstBlockId
@@ -661,10 +661,10 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     }
 
     const block = this._contextService.findBlockOnActiveFlowWith(blockId, ctx)
-    const {destinationBlock} = findBlockExitWith(selectedExitId, block)
+    const {destination_block} = findBlockExitWith(selectedExitId, block)
     const {blocks} = this._contextService.getActiveFlowFrom(ctx)
 
-    return find(blocks, {uuid: destinationBlock})
+    return find(blocks, {uuid: destination_block})
   }
 
   /**

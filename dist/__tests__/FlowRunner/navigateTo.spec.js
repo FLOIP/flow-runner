@@ -93,7 +93,7 @@ describe('FlowRunner/navigateTo', () => {
             const ctx = dataset.contexts[0];
             const block = ctx.flows[0].blocks[0];
             const runner = new __1.FlowRunner(ctx, new __1.BlockRunnerFactoryStore([['MobilePrimitives\\Message', BlockRunner_1.createStaticFirstExitBlockRunnerFor]]));
-            expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(0);
+            expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(0);
             yield runner.navigateTo(block, ctx);
             expect(ctx.interactions[0].blockId).toBe(block.uuid);
         }));
@@ -102,18 +102,18 @@ describe('FlowRunner/navigateTo', () => {
                 const ctx = dataset.contexts[0];
                 const block = ctx.flows[0].blocks[0];
                 const runner = new __1.FlowRunner(ctx, new __1.BlockRunnerFactoryStore([['MobilePrimitives\\Message', BlockRunner_1.createStaticFirstExitBlockRunnerFor]]));
-                expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(0);
-                expect(ctx.firstFlowId).toBeTruthy();
+                expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(0);
+                expect(ctx.first_flow_id).toBeTruthy();
                 yield runner.navigateTo(block, ctx);
-                expect(ctx.interactions[0].flowId).toBe(ctx.firstFlowId);
+                expect(ctx.interactions[0].flowId).toBe(ctx.first_flow_id);
             }));
             it('should be from nested flow when nested once', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                 const ctx = dataset.contexts[2];
                 const block = ctx.flows[1].blocks[0];
                 const runner = new __1.FlowRunner(ctx, new __1.BlockRunnerFactoryStore([['MobilePrimitives\\Message', BlockRunner_1.createStaticFirstExitBlockRunnerFor]]));
                 jest.spyOn(runner, 'cacheInteractionByBlockName').mockImplementation(() => { });
-                expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(1);
-                expect(__1.findInteractionWith(lodash_1.last(ctx.nestedFlowBlockInteractionIdStack), ctx).flowId).toBe(ctx.flows[0].uuid);
+                expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(1);
+                expect(__1.findInteractionWith(lodash_1.last(ctx.nested_flow_block_interaction_id_stack), ctx).flowId).toBe(ctx.flows[0].uuid);
                 yield runner.navigateTo(block, ctx);
                 expect(ctx.interactions[1].flowId).toBe(ctx.flows[1].uuid);
             }));
@@ -124,7 +124,7 @@ describe('FlowRunner/navigateTo', () => {
                 const ctx = dataset.contexts[0];
                 const block = ctx.flows[0].blocks[0];
                 const runner = new __1.FlowRunner(ctx, new __1.BlockRunnerFactoryStore([['MobilePrimitives\\Message', BlockRunner_1.createStaticFirstExitBlockRunnerFor]]));
-                expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(0);
+                expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(0);
                 expect(ctx.interactions).toHaveLength(0);
                 yield runner.navigateTo(block, ctx);
                 expect(ctx.interactions[0].originFlowId).toBeUndefined();
@@ -134,8 +134,8 @@ describe('FlowRunner/navigateTo', () => {
                 const block = ctx.flows[1].blocks[0];
                 const runner = new __1.FlowRunner(ctx, new __1.BlockRunnerFactoryStore([['MobilePrimitives\\Message', BlockRunner_1.createStaticFirstExitBlockRunnerFor]]));
                 jest.spyOn(runner, 'cacheInteractionByBlockName').mockImplementation(() => { });
-                expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(1);
-                expect(__1.findInteractionWith(lodash_1.last(ctx.nestedFlowBlockInteractionIdStack), ctx).flowId).toBe(ctx.flows[0].uuid);
+                expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(1);
+                expect(__1.findInteractionWith(lodash_1.last(ctx.nested_flow_block_interaction_id_stack), ctx).flowId).toBe(ctx.flows[0].uuid);
                 yield runner.navigateTo(block, ctx);
                 expect(ctx.interactions[1].originFlowId).toBe(ctx.flows[0].uuid);
             }));
@@ -146,7 +146,7 @@ describe('FlowRunner/navigateTo', () => {
                 const ctx = dataset.contexts[0];
                 const block = ctx.flows[0].blocks[0];
                 const runner = new __1.FlowRunner(ctx, new __1.BlockRunnerFactoryStore([['MobilePrimitives\\Message', BlockRunner_1.createStaticFirstExitBlockRunnerFor]]));
-                expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(0);
+                expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(0);
                 expect(ctx.interactions).toHaveLength(0);
                 yield runner.navigateTo(block, ctx);
                 expect(ctx.interactions[0].originBlockInteractionId).toBeUndefined();
@@ -156,8 +156,8 @@ describe('FlowRunner/navigateTo', () => {
                 const block = ctx.flows[1].blocks[0];
                 const runner = new __1.FlowRunner(ctx, new __1.BlockRunnerFactoryStore([['MobilePrimitives\\Message', BlockRunner_1.createStaticFirstExitBlockRunnerFor]]));
                 jest.spyOn(runner, 'cacheInteractionByBlockName').mockImplementation(() => { });
-                expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(1);
-                expect(__1.findInteractionWith(lodash_1.last(ctx.nestedFlowBlockInteractionIdStack), ctx).flowId).toBe(ctx.flows[0].uuid);
+                expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(1);
+                expect(__1.findInteractionWith(lodash_1.last(ctx.nested_flow_block_interaction_id_stack), ctx).flowId).toBe(ctx.flows[0].uuid);
                 yield runner.navigateTo(block, ctx);
                 expect(ctx.interactions[1].originBlockInteractionId).toBe(ctx.interactions[0].uuid);
             }));

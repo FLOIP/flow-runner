@@ -4,28 +4,28 @@ exports.Context = void 0;
 const __1 = require("..");
 class Context {
     constructor(id, createdAt, deliveryStatus, mode, languageId, contact, groups, sessionVars, interactions, nestedFlowBlockInteractionIdStack, reversibleOperations, flows, firstFlowId, resources, entryAt, exitAt, userId, orgId, cursor, platformMetadata = {}, logs = {}) {
-        this.platformMetadata = {};
+        this.platform_metadata = {};
         this.logs = {};
         this.logs = logs;
-        this.platformMetadata = platformMetadata;
+        this.platform_metadata = platformMetadata;
         this.cursor = cursor;
-        this.orgId = orgId;
-        this.userId = userId;
-        this.exitAt = exitAt;
-        this.entryAt = entryAt;
+        this.org_id = orgId;
+        this.user_id = userId;
+        this.exit_at = exitAt;
+        this.entry_at = entryAt;
         this.resources = resources;
-        this.firstFlowId = firstFlowId;
+        this.first_flow_id = firstFlowId;
         this.flows = flows;
-        this.reversibleOperations = reversibleOperations;
-        this.nestedFlowBlockInteractionIdStack = nestedFlowBlockInteractionIdStack;
+        this.reversible_operations = reversibleOperations;
+        this.nested_flow_block_interaction_id_stack = nestedFlowBlockInteractionIdStack;
         this.interactions = interactions;
-        this.sessionVars = sessionVars;
+        this.session_vars = sessionVars;
         this.contact = contact;
         this.groups = groups;
-        this.languageId = languageId;
+        this.language_id = languageId;
         this.mode = mode;
-        this.deliveryStatus = deliveryStatus;
-        this.createdAt = createdAt;
+        this.delivery_status = deliveryStatus;
+        this.created_at = createdAt;
         this.id = id;
     }
     getResource(resourceId) {

@@ -25,7 +25,7 @@ describe('BacktrackingBehaviour', () => {
 
   beforeEach(() => {
     backtracking = new BacktrackingBehaviour(
-      {platformMetadata: {}} as IContext,
+      {platform_metadata: {}} as IContext,
       {navigateTo: async (_b, _c) => ({interaction: {} as IBlockInteraction, prompt: undefined})},
       {
         buildPromptFor: async (_b: IBlock, _i: IBlockInteraction): Promise<IPrompt<IPromptConfig<any>> | undefined> => undefined,
@@ -298,11 +298,11 @@ describe('BacktrackingBehaviour', () => {
       interactions = [{uuid: 'abc-123'}, {uuid: 'abc-234', blockId: 'block/abc-234'}, {uuid: 'abc-345'}] as IBlockInteraction[]
 
       backtracking.context.interactions = cloneDeep(interactions)
-      backtracking.context.firstFlowId = 'flow/abc-123'
+      backtracking.context.first_flow_id = 'flow/abc-123'
       backtracking.context.flows = [{uuid: 'flow/abc-123', blocks: [{uuid: 'block/abc-234'}]} as IFlow]
-      backtracking.context.nestedFlowBlockInteractionIdStack = []
+      backtracking.context.nested_flow_block_interaction_id_stack = []
 
-      meta = ((backtracking.context.platformMetadata as unknown) as IContextBacktrackingPlatformMetadata).backtracking
+      meta = ((backtracking.context.platform_metadata as unknown) as IContextBacktrackingPlatformMetadata).backtracking
       meta.interactionStack = createStack(cloneDeep(interactions))
     })
 
@@ -352,14 +352,14 @@ describe('BacktrackingBehaviour', () => {
             uuid: 'flow-123',
             blocks: [
               {uuid: 'block-123'},
-              {uuid: 'block-234', config: {flowId: 'flow-234'} as IRunFlowBlockConfig},
+              {uuid: 'block-234', config: {flow_id: 'flow-234'} as IRunFlowBlockConfig},
               {uuid: 'block-345'},
               {uuid: 'block-456'},
             ],
           },
           {
             uuid: 'flow-234',
-            blocks: [{uuid: 'block-567'}, {uuid: 'block-678'}, {uuid: 'block-789', config: {flowId: 'flow-345'} as IRunFlowBlockConfig}],
+            blocks: [{uuid: 'block-567'}, {uuid: 'block-678'}, {uuid: 'block-789', config: {flow_id: 'flow-345'} as IRunFlowBlockConfig}],
           },
           {
             uuid: 'flow-345',
@@ -368,29 +368,29 @@ describe('BacktrackingBehaviour', () => {
         ] as IFlow[]
 
         backtracking.context.interactions = cloneDeep(interactions)
-        backtracking.context.firstFlowId = 'flow-123'
-        backtracking.context.nestedFlowBlockInteractionIdStack = ['intx-234-1', 'intx-789-1']
+        backtracking.context.first_flow_id = 'flow-123'
+        backtracking.context.nested_flow_block_interaction_id_stack = ['intx-234-1', 'intx-789-1']
 
-        meta = ((backtracking.context.platformMetadata as unknown) as IContextBacktrackingPlatformMetadata).backtracking
+        meta = ((backtracking.context.platform_metadata as unknown) as IContextBacktrackingPlatformMetadata).backtracking
         meta.interactionStack = createStack(cloneDeep(interactions))
       })
 
       it('leave nesting at the same place if not jumping past a nesting', async () => {
-        expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual(['intx-234-1', 'intx-789-1'])
+        expect(backtracking.context.nested_flow_block_interaction_id_stack).toEqual(['intx-234-1', 'intx-789-1'])
         backtracking.jumpTo({uuid: 'intx-901-1', blockId: 'block-901'} as IBlockInteraction, backtracking.context)
-        expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual(['intx-234-1', 'intx-789-1'])
+        expect(backtracking.context.nested_flow_block_interaction_id_stack).toEqual(['intx-234-1', 'intx-789-1'])
       })
 
       it('should handle peeling off one level of nesting when jumping past one run-flow block interaction', async () => {
-        expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual(['intx-234-1', 'intx-789-1'])
+        expect(backtracking.context.nested_flow_block_interaction_id_stack).toEqual(['intx-234-1', 'intx-789-1'])
         backtracking.jumpTo({uuid: 'intx-567-1', blockId: 'block-567'} as IBlockInteraction, backtracking.context)
-        expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual(['intx-234-1'])
+        expect(backtracking.context.nested_flow_block_interaction_id_stack).toEqual(['intx-234-1'])
       })
 
       it('should handle peeling off all nesting when jumping to interaction at top level', async () => {
-        expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual(['intx-234-1', 'intx-789-1'])
+        expect(backtracking.context.nested_flow_block_interaction_id_stack).toEqual(['intx-234-1', 'intx-789-1'])
         backtracking.jumpTo({uuid: 'intx-234-1', blockId: 'block-234'} as IBlockInteraction, backtracking.context)
-        expect(backtracking.context.nestedFlowBlockInteractionIdStack).toEqual([])
+        expect(backtracking.context.nested_flow_block_interaction_id_stack).toEqual([])
       })
     })
   })
@@ -479,8 +479,8 @@ describe('BacktrackingBehaviour', () => {
       //              ]
 
       // Currently, we end up with `[[8, 4]]` lying immediately between 4 + last stack, rather than inside of last stack
-      it(`should remove iterations before iteration having key for suggestion 
-            + hoist iteration having key for suggestion to match key 
+      it(`should remove iterations before iteration having key for suggestion
+            + hoist iteration having key for suggestion to match key
             + remove items in between key + key for suggestion
             + leave subsequent iterations intact
             + leave trailing items intact

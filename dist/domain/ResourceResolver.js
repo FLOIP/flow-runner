@@ -12,7 +12,7 @@ class ResourceResolver {
         this.context = context;
     }
     resolve(resourceId) {
-        const { mode, languageId } = this.context;
+        const { mode, language_id } = this.context;
         if (!isUUID(resourceId)) {
             return new __1.Resource(resourceId, [__1.createTextResourceVariantWith(resourceId, this.context)], this.context);
         }
@@ -20,10 +20,10 @@ class ResourceResolver {
         if (resource == null) {
             throw new __1.ResourceNotFoundException(`No resource matching ${JSON.stringify(resourceId)} for ${JSON.stringify({
                 mode,
-                languageId,
+                language_id,
             })}`);
         }
-        const values = resource.values.filter(def => def.languageId === languageId && lodash_1.intersection(def.modes, [mode]).length > 0);
+        const values = resource.values.filter(def => def.languageId === language_id && lodash_1.intersection(def.modes, [mode]).length > 0);
         return new __1.Resource(resourceId, values, this.context);
     }
 }

@@ -12,7 +12,7 @@ class BacktrackingBehaviour {
         this.initializeBacktrackingContext();
     }
     initializeBacktrackingContext() {
-        const meta = this.context.platformMetadata;
+        const meta = this.context.platform_metadata;
         if (meta.backtracking == null) {
             meta.backtracking = {
                 cursor: __1.createKey(),
@@ -27,11 +27,11 @@ class BacktrackingBehaviour {
         }
     }
     hasIndex() {
-        const meta = this.context.platformMetadata;
+        const meta = this.context.platform_metadata;
         return meta.backtracking.interactionStack != null && meta.backtracking.cursor != null;
     }
     rebuildIndex() {
-        const { backtracking } = this.context.platformMetadata;
+        const { backtracking } = this.context.platform_metadata;
         const key = (backtracking.cursor = __1.createKey());
         const stack = (backtracking.interactionStack = __1.createStack());
         this.context.interactions.forEach(intx => this.insertInteractionUsing(key, intx, stack));
@@ -68,14 +68,14 @@ class BacktrackingBehaviour {
     }
     jumpTo(interaction, context) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const { backtracking } = this.context.platformMetadata;
+            const { backtracking } = this.context.platform_metadata;
             const keyForLastOccurrenceOfInteraction = __1.deepIndexOfFrom(__1.createKey(), backtracking.interactionStack, ({ uuid }) => uuid === interaction.uuid);
             if (keyForLastOccurrenceOfInteraction == null) {
                 throw new __1.ValidationException('Unable to find destination interaction in backtracking stack for jumpTo()');
             }
             backtracking.ghostInteractionStacks.push(lodash_1.cloneDeep(backtracking.interactionStack));
             const discarded = context.interactions.splice(lodash_1.findLastIndex(context.interactions, interaction), context.interactions.length);
-            lodash_1.forEachRight(discarded, intx => intx.uuid === lodash_1.last(context.nestedFlowBlockInteractionIdStack) ? context.nestedFlowBlockInteractionIdStack.pop() : null);
+            lodash_1.forEachRight(discarded, intx => intx.uuid === lodash_1.last(context.nested_flow_block_interaction_id_stack) ? context.nested_flow_block_interaction_id_stack.pop() : null);
             const deepestStackKeyForIntx = lodash_1.last(keyForLastOccurrenceOfInteraction);
             const keyToTruncateFrom = __1.cloneKeyAndMoveTo(__1.createStackKey(deepestStackKeyForIntx[__1.STACK_KEY_ITERATION_NUMBER], deepestStackKeyForIntx[__1.STACK_KEY_ITERATION_INDEX] - 1), keyForLastOccurrenceOfInteraction, backtracking.interactionStack);
             __1.deepTruncateIterationsFrom(keyToTruncateFrom, backtracking.interactionStack);
@@ -116,7 +116,7 @@ class BacktrackingBehaviour {
         return __1.deepIndexOfFrom(keyForNextIteration, stack, intx => intx.blockId === blockId);
     }
     postInteractionCreate(interaction, _context) {
-        const { backtracking: { cursor: key, ghostInteractionStacks, }, } = this.context.platformMetadata;
+        const { backtracking: { cursor: key, ghostInteractionStacks, }, } = this.context.platform_metadata;
         if (ghostInteractionStacks.length === 0) {
             return interaction;
         }
@@ -168,7 +168,7 @@ class BacktrackingBehaviour {
         }
     }
     postInteractionComplete(interaction, _context) {
-        const { backtracking: { cursor: key, interactionStack, ghostInteractionStacks }, } = this.context.platformMetadata;
+        const { backtracking: { cursor: key, interactionStack, ghostInteractionStacks }, } = this.context.platform_metadata;
         this.insertInteractionUsing(key, interaction, interactionStack);
         if (ghostInteractionStacks.length === 0) {
             return;

@@ -42,10 +42,10 @@ describe('FlowRunner/stepInto', () => {
     const runFlowBlockIntx = ctx.interactions[0]
     const runner = new FlowRunner(ctx)
 
-    ctx.nestedFlowBlockInteractionIdStack = [] // setup for known nested flow state
+    ctx.nested_flow_block_interaction_id_stack = [] // setup for known nested flow state
     runner.stepInto(block, ctx)
-    expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(1)
-    expect(ctx.nestedFlowBlockInteractionIdStack[0]).toBe(runFlowBlockIntx.uuid)
+    expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(1)
+    expect(ctx.nested_flow_block_interaction_id_stack[0]).toBe(runFlowBlockIntx.uuid)
   })
 
   describe('returned block', () => {

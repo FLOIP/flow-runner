@@ -35,10 +35,10 @@ describe('FlowRunner/stepInto', () => {
         const block = ctx.flows[0].blocks[0];
         const runFlowBlockIntx = ctx.interactions[0];
         const runner = new __1.FlowRunner(ctx);
-        ctx.nestedFlowBlockInteractionIdStack = [];
+        ctx.nested_flow_block_interaction_id_stack = [];
         runner.stepInto(block, ctx);
-        expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(1);
-        expect(ctx.nestedFlowBlockInteractionIdStack[0]).toBe(runFlowBlockIntx.uuid);
+        expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(1);
+        expect(ctx.nested_flow_block_interaction_id_stack[0]).toBe(runFlowBlockIntx.uuid);
     }));
     describe('returned block', () => {
         it.todo('should return null when first block absent on freshly nested flow');

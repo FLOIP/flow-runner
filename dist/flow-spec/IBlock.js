@@ -30,7 +30,7 @@ function findDefaultBlockExitOn(block) {
 }
 exports.findDefaultBlockExitOn = findDefaultBlockExitOn;
 function isLastBlock({ exits }) {
-    return exits.every(e => e.destinationBlock == null);
+    return exits.every(e => e.destination_block == null);
 }
 exports.isLastBlock = isLastBlock;
 function generateCachedProxyForBlockName(target, ctx) {
@@ -53,7 +53,7 @@ function generateCachedProxyForBlockName(target, ctx) {
 }
 exports.generateCachedProxyForBlockName = generateCachedProxyForBlockName;
 function createEvalContextFrom(context) {
-    const { contact, cursor, mode, languageId: language } = context;
+    const { contact, cursor, mode, language_id: language } = context;
     let flow;
     let block;
     let prompt;

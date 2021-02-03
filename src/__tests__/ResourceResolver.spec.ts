@@ -42,7 +42,7 @@ describe('ResourceResolver', () => {
         const value = 'hello world!'
         const expectedResourceContentTypeSpecific: IResourceDefinitionContentTypeSpecific = {
           modes: [ctx.mode],
-          languageId: ctx.languageId,
+          languageId: ctx.language_id,
           value,
           contentType: SupportedContentType.TEXT,
         }
@@ -118,7 +118,7 @@ describe('ResourceResolver', () => {
 
           Object.assign(resolver.context, {
             mode,
-            languageId,
+            language_id: languageId,
             resources: [
               {
                 uuid: 'known000-0000-0000-0000-resource0123',

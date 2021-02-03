@@ -51,8 +51,8 @@ class FlowRunner {
             if (block == null) {
                 throw new __1.ValidationException('Unable to initialize flow without blocks.');
             }
-            ctx.deliveryStatus = __1.DeliveryStatus.IN_PROGRESS;
-            ctx.entryAt = __1.createFormattedDate();
+            ctx.delivery_status = __1.DeliveryStatus.IN_PROGRESS;
+            ctx.entry_at = __1.createFormattedDate();
             return this.navigateTo(block, this.context);
         });
     }
@@ -104,14 +104,14 @@ class FlowRunner {
         }
     }
     cacheInteractionByBlockName({ uuid, entryAt }, { name, config: { prompt } }, context = this.context) {
-        if (!('blockInteractionsByBlockName' in this.context.sessionVars)) {
-            context.sessionVars.blockInteractionsByBlockName = {};
+        if (!('blockInteractionsByBlockName' in this.context.session_vars)) {
+            context.session_vars.blockInteractionsByBlockName = {};
         }
-        if (context.reversibleOperations == null) {
-            context.reversibleOperations = [];
+        if (context.reversible_operations == null) {
+            context.reversible_operations = [];
         }
         const blockNameKey = `blockInteractionsByBlockName.${name}`;
-        const previous = this.context.sessionVars[blockNameKey];
+        const previous = this.context.session_vars[blockNameKey];
         const resource = prompt == null ? undefined : new __1.ResourceResolver(context).resolve(prompt);
         const current = {
             __interactionId: uuid,
@@ -122,20 +122,20 @@ class FlowRunner {
     }
     applyReversibleDataOperation(forward, reverse, context = this.context) {
         var _a;
-        context.sessionVars = sp2_1.update(context.sessionVars, forward);
-        context.reversibleOperations.push({
+        context.session_vars = sp2_1.update(context.session_vars, forward);
+        context.reversible_operations.push({
             interactionId: (_a = lodash_1.last(context.interactions)) === null || _a === void 0 ? void 0 : _a.uuid,
             forward,
             reverse,
         });
     }
     reverseLastDataOperation(context = this.context) {
-        if (context.reversibleOperations.length === 0) {
+        if (context.reversible_operations.length === 0) {
             return;
         }
-        const lastOperation = lodash_1.last(context.reversibleOperations);
-        context.sessionVars = sp2_1.update(context.sessionVars, lastOperation.reverse);
-        return context.reversibleOperations.pop();
+        const lastOperation = lodash_1.last(context.reversible_operations);
+        context.session_vars = sp2_1.update(context.session_vars, lastOperation.reverse);
+        return context.reversible_operations.pop();
     }
     runUntilInputRequiredFrom(ctx) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -169,8 +169,8 @@ class FlowRunner {
     }
     complete(ctx, completedAt = new Date()) {
         delete ctx.cursor;
-        ctx.deliveryStatus = __1.DeliveryStatus.FINISHED_COMPLETE;
-        ctx.exitAt = __1.createFormattedDate(completedAt);
+        ctx.delivery_status = __1.DeliveryStatus.FINISHED_COMPLETE;
+        ctx.exit_at = __1.createFormattedDate(completedAt);
     }
     completeInteraction(intx, selectedExitId, completedAt = new Date()) {
         intx.exitAt = __1.createFormattedDate(completedAt);
@@ -178,12 +178,12 @@ class FlowRunner {
         return intx;
     }
     completeActiveNestedFlow(ctx, completedAt = new Date()) {
-        const { nestedFlowBlockInteractionIdStack } = ctx;
+        const { nested_flow_block_interaction_id_stack } = ctx;
         if (!this._contextService.isNested(ctx)) {
             throw new __1.ValidationException('Unable to complete a nested flow when not nested.');
         }
-        const runFlowIntx = this._contextService.findInteractionWith(lodash_1.last(nestedFlowBlockInteractionIdStack), ctx);
-        nestedFlowBlockInteractionIdStack.pop();
+        const runFlowIntx = this._contextService.findInteractionWith(lodash_1.last(nested_flow_block_interaction_id_stack), ctx);
+        nested_flow_block_interaction_id_stack.pop();
         const exit = this.findFirstExitOnActiveFlowBlockFor(runFlowIntx, ctx);
         return this.completeInteraction(runFlowIntx, exit.uuid, completedAt);
     }
@@ -250,9 +250,9 @@ class FlowRunner {
     }
     _inflateInteractionAndContainerCursorFor(block, ctx) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const { nestedFlowBlockInteractionIdStack } = ctx;
+            const { nested_flow_block_interaction_id_stack } = ctx;
             const flowId = this._contextService.getActiveFlowIdFrom(ctx);
-            const originInteractionId = lodash_1.last(nestedFlowBlockInteractionIdStack);
+            const originInteractionId = lodash_1.last(nested_flow_block_interaction_id_stack);
             const originInteraction = originInteractionId != null ? this._contextService.findInteractionWith(originInteractionId, ctx) : null;
             const richCursor = yield this.initializeOneBlock(block, flowId, originInteraction == null ? undefined : originInteraction.flowId, originInteractionId);
             const { interactions } = ctx;
@@ -271,7 +271,7 @@ class FlowRunner {
         if (runFlowBlock.uuid !== runFlowInteraction.blockId) {
             throw new __1.ValidationException("Unable to step into Core\\RunFlow block that doesn't match last interaction");
         }
-        ctx.nestedFlowBlockInteractionIdStack.push(runFlowInteraction.uuid);
+        ctx.nested_flow_block_interaction_id_stack.push(runFlowInteraction.uuid);
         const firstNestedBlock = lodash_1.first(this._contextService.getActiveFlowFrom(ctx).blocks);
         if (firstNestedBlock == null) {
             return;
@@ -299,9 +299,9 @@ class FlowRunner {
             throw new __1.ValidationException('Unable to navigate past incomplete interaction; did you forget to call runner.run()?');
         }
         const block = this._contextService.findBlockOnActiveFlowWith(blockId, ctx);
-        const { destinationBlock } = __1.findBlockExitWith(selectedExitId, block);
+        const { destination_block } = __1.findBlockExitWith(selectedExitId, block);
         const { blocks } = this._contextService.getActiveFlowFrom(ctx);
-        return lodash_1.find(blocks, { uuid: destinationBlock });
+        return lodash_1.find(blocks, { uuid: destination_block });
     }
     createBlockInteractionFor({ uuid: blockId, type }, flowId, originFlowId, originBlockInteractionId) {
         return {

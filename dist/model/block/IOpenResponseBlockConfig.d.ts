@@ -1,12 +1,12 @@
 import { ISetContactPropertyBlockConfig } from '../..';
 export interface IOpenResponseBlockConfig extends ISetContactPropertyBlockConfig {
     prompt: string;
-    promptAudio: string;
+    prompt_audio: string;
     ivr?: {
-        maxDurationSeconds: number;
+        max_duration_seconds: number;
     };
     text?: {
-        maxResponseCharacters?: number;
+        max_response_characters?: number;
     };
 }
 //# sourceMappingURL=IOpenResponseBlockConfig.d.ts.map

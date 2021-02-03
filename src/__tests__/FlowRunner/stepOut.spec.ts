@@ -14,7 +14,7 @@ describe('FlowRunner/stepOut', () => {
       const ctx = dataset.contexts[0]
       const runner = new FlowRunner(ctx)
 
-      expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(0)
+      expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(0)
       expect(FlowRunner.prototype.stepOut.bind(runner, ctx)).toThrow('Unable to complete a nested flow when not nested.')
     })
 
@@ -23,7 +23,7 @@ describe('FlowRunner/stepOut', () => {
       const lastIntx = cloneDeep(last(ctx.interactions))
       const runner = new FlowRunner(ctx)
 
-      expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(0)
+      expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(0)
 
       try {
         runner.stepOut(ctx)
@@ -39,7 +39,7 @@ describe('FlowRunner/stepOut', () => {
     it("should raise when attempting to unnest and unable to find interaction we're nested under", () => {
       const runner = new FlowRunner({} as IContext)
       const ctx = {
-        nestedFlowBlockInteractionIdStack: ['non-existant-interactionId'],
+        nested_flow_block_interaction_id_stack: ['non-existant-interactionId'],
         interactions: [] as IBlockInteraction[],
       } as IContext
 
@@ -50,12 +50,12 @@ describe('FlowRunner/stepOut', () => {
 
     it('should unnest (aka: pop last interaction off nested flow interaction stack)', async () => {
       const ctx = dataset.contexts[2]
-      const snapshottedNFBIStack = cloneDeep(ctx.nestedFlowBlockInteractionIdStack)
+      const snapshottedNFBIStack = cloneDeep(ctx.nested_flow_block_interaction_id_stack)
       const runner = new FlowRunner(ctx)
 
-      expect(ctx.nestedFlowBlockInteractionIdStack.length).toBeGreaterThan(0)
+      expect(ctx.nested_flow_block_interaction_id_stack.length).toBeGreaterThan(0)
       runner.stepOut(ctx)
-      expect(ctx.nestedFlowBlockInteractionIdStack).toEqual(snapshottedNFBIStack.slice(0, -1))
+      expect(ctx.nested_flow_block_interaction_id_stack).toEqual(snapshottedNFBIStack.slice(0, -1))
     })
 
     it("should leave active interaction's selected exit as null to indicate we've finished executing the flow", async () => {
@@ -68,7 +68,7 @@ describe('FlowRunner/stepOut', () => {
       const activeIntx = last(ctx.interactions) as IBlockInteraction
       const runner = new FlowRunner(ctx)
 
-      expect(ctx.nestedFlowBlockInteractionIdStack.length).toBeGreaterThan(0)
+      expect(ctx.nested_flow_block_interaction_id_stack.length).toBeGreaterThan(0)
 
       // pre-condition for "not-yet-stepped-out" state
       delete activeIntx.selectedExitId
@@ -86,7 +86,7 @@ describe('FlowRunner/stepOut', () => {
       const originBlockInteractionId = 'intx-345'
       const runFlowBlock = {
         uuid: 'block-123',
-        exits: [{uuid: 'exit-123', destinationBlock: 'block-234'} as IBlockExit],
+        exits: [{uuid: 'exit-123', destination_block: 'block-234'} as IBlockExit],
       } as IBlock
       const runFlowBlockIntx: IBlockInteraction = {
         uuid: originBlockInteractionId,
@@ -121,8 +121,8 @@ describe('FlowRunner/stepOut', () => {
           },
         ],
         interactions,
-        firstFlowId: originFlowId,
-        nestedFlowBlockInteractionIdStack: [originBlockInteractionId],
+        first_flow_id: originFlowId,
+        nested_flow_block_interaction_id_stack: [originBlockInteractionId],
       } as IContext)
 
       expect(runFlowBlockIntx.selectedExitId).toBe(runFlowBlock.exits[0].uuid)
@@ -135,8 +135,8 @@ describe('FlowRunner/stepOut', () => {
         const runFlowDestinationBlock = ctx.flows[0].blocks[1]
         const runner = new FlowRunner(ctx)
 
-        expect(ctx.nestedFlowBlockInteractionIdStack.length).toBeGreaterThan(0)
-        expect(lastRunFlowBlock.exits[0].destinationBlock).toBe(runFlowDestinationBlock.uuid)
+        expect(ctx.nested_flow_block_interaction_id_stack.length).toBeGreaterThan(0)
+        expect(lastRunFlowBlock.exits[0].destination_block).toBe(runFlowDestinationBlock.uuid)
         const nextBlock = runner.stepOut(ctx)
         expect(nextBlock).toBe(runFlowDestinationBlock)
       })
@@ -146,10 +146,10 @@ describe('FlowRunner/stepOut', () => {
         const lastRunFlowBlock = ctx.flows[0].blocks[0]
         const runner = new FlowRunner(ctx)
 
-        delete lastRunFlowBlock.exits[0].destinationBlock
+        delete lastRunFlowBlock.exits[0].destination_block
 
-        expect(ctx.nestedFlowBlockInteractionIdStack.length).toBeGreaterThan(0)
-        expect(lastRunFlowBlock.exits[0].destinationBlock).toBeUndefined()
+        expect(ctx.nested_flow_block_interaction_id_stack.length).toBeGreaterThan(0)
+        expect(lastRunFlowBlock.exits[0].destination_block).toBeUndefined()
         const nextBlock = runner.stepOut(ctx)
         expect(nextBlock).toBeUndefined()
       })

@@ -39,7 +39,7 @@ export interface IBlock {
   uuid: string
   name: string
   label?: string
-  semanticLabel?: string
+  semantic_label?: string
   type: string
   config: object
   exits: IBlockExit[]
@@ -81,7 +81,7 @@ export function findDefaultBlockExitOn(block: IBlock): IBlockExit {
 }
 
 export function isLastBlock({exits}: IBlock): boolean {
-  return exits.every(e => e.destinationBlock == null)
+  return exits.every(e => e.destination_block == null)
 }
 
 export interface IEvalContextBlock {
@@ -131,7 +131,7 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext): 
 
 // todo: push eval stuff into `Expression.evaluate()` abstraction for evalContext + result handling 👇
 export function createEvalContextFrom(context: IContext): object {
-  const {contact, cursor, mode, languageId: language} = context
+  const {contact, cursor, mode, language_id: language} = context
   let flow: IFlow | undefined
   let block: IBlock | undefined
   let prompt: ICursor['promptConfig']

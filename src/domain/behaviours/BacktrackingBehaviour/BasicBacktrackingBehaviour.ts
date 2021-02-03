@@ -100,12 +100,12 @@ export class BasicBacktrackingBehaviour implements IBasicBackTrackingBehaviour {
     // step out of nested flows that we've truncated
     // todo: migrate to also use applyReversibleDataOperation()
     forEachRight(discarded, intx =>
-      intx.uuid === last(context.nestedFlowBlockInteractionIdStack) ? context.nestedFlowBlockInteractionIdStack.pop() : null
+      intx.uuid === last(context.nested_flow_block_interaction_id_stack) ? context.nested_flow_block_interaction_id_stack.pop() : null
     )
 
     // can only reverse from the end, so we only compare the last.
     forEachRight(discarded, ({uuid}) => {
-      while (last(context.reversibleOperations)?.interactionId === uuid) {
+      while (last(context.reversible_operations)?.interactionId === uuid) {
         FlowRunner.prototype.reverseLastDataOperation(context)
       }
     })

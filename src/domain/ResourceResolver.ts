@@ -30,7 +30,7 @@ export class ResourceResolver implements IResourceResolver {
   constructor(public context: IContext) {}
 
   resolve(resourceId: string): IResource {
-    const {mode, languageId} = this.context
+    const {mode, language_id} = this.context
 
     if (!isUUID(resourceId)) {
       return new Resource(resourceId, [createTextResourceVariantWith(resourceId, this.context)], this.context)
@@ -42,12 +42,12 @@ export class ResourceResolver implements IResourceResolver {
       throw new ResourceNotFoundException(
         `No resource matching ${JSON.stringify(resourceId)} for ${JSON.stringify({
           mode,
-          languageId,
+          language_id,
         })}`
       )
     }
 
-    const values = resource.values.filter(def => def.languageId === languageId && intersection(def.modes, [mode]).length > 0)
+    const values = resource.values.filter(def => def.languageId === language_id && intersection(def.modes, [mode]).length > 0)
 
     return new Resource(resourceId, values, this.context)
   }

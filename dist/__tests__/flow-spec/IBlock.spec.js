@@ -68,7 +68,7 @@ describe('IBlock', () => {
             it('should perform search over interactions for block whose name matches prop name when prop absent from target', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                 const ctx = dataset.contexts[1];
                 const name = '1570221906056_83';
-                lodash_1.set(ctx.sessionVars, `blockInteractionsByBlockName.${name}`, {
+                lodash_1.set(ctx.session_vars, `blockInteractionsByBlockName.${name}`, {
                     __interactionId: '09894745-38ba-456f-aab4-720b7d09d5b3',
                     time: '2023-10-10T23:23:23.023Z',
                     text: 'some text',

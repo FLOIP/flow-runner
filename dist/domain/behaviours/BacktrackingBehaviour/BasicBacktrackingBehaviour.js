@@ -26,10 +26,10 @@ class BasicBacktrackingBehaviour {
     jumpTo(destinationInteraction, context = this.context) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const discarded = context.interactions.splice(lodash_1.findLastIndex(context.interactions, destinationInteraction), context.interactions.length);
-            lodash_1.forEachRight(discarded, intx => intx.uuid === lodash_1.last(context.nestedFlowBlockInteractionIdStack) ? context.nestedFlowBlockInteractionIdStack.pop() : null);
+            lodash_1.forEachRight(discarded, intx => intx.uuid === lodash_1.last(context.nested_flow_block_interaction_id_stack) ? context.nested_flow_block_interaction_id_stack.pop() : null);
             lodash_1.forEachRight(discarded, ({ uuid }) => {
                 var _a;
-                while (((_a = lodash_1.last(context.reversibleOperations)) === null || _a === void 0 ? void 0 : _a.interactionId) === uuid) {
+                while (((_a = lodash_1.last(context.reversible_operations)) === null || _a === void 0 ? void 0 : _a.interactionId) === uuid) {
                     __1.FlowRunner.prototype.reverseLastDataOperation(context);
                 }
             });

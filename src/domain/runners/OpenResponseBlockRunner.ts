@@ -52,7 +52,7 @@ export class OpenResponseBlockRunner implements IBlockRunner {
 
     let maxResponseCharacters
     if (blockConfig.text != null) {
-      maxResponseCharacters = blockConfig.text.maxResponseCharacters
+      maxResponseCharacters = blockConfig.text.max_response_characters
     }
 
     return {

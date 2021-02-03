@@ -15,15 +15,15 @@ export class SetGroupMembershipBlockRunner implements IBlockRunner {
   async run(_cursor: IRichCursor): Promise<IBlockExit> {
     const {exits} = this.block
     const {contact, groups} = this.context
-    const {groupKey, isMember} = this.block.config
+    const {group_key, is_member} = this.block.config
 
-    const group = groups.find(group => group.groupKey === groupKey)
+    const group = groups.find(group => group.groupKey === group_key)
 
     if (group == null) {
-      throw new ValidationException(`Cannot add contact to non-existent group ${groupKey}`)
+      throw new ValidationException(`Cannot add contact to non-existent group ${group_key}`)
     }
 
-    if (evaluateToBool(isMember, this.context)) {
+    if (evaluateToBool(is_member, this.context)) {
       contact.addGroup(group)
     } else {
       contact.delGroup(group)

@@ -138,8 +138,8 @@ describe('FlowRunner', () => {
                 prompt.value = 50;
                 const cursor = yield runner.run();
                 expect(cursor).toBeUndefined();
-                expect(context.deliveryStatus).toBe(__1.DeliveryStatus.FINISHED_COMPLETE);
-                expect(context.exitAt).toBeTruthy();
+                expect(context.delivery_status).toBe(__1.DeliveryStatus.FINISHED_COMPLETE);
+                expect(context.exit_at).toBeTruthy();
                 expect(lodash_1.every(context.interactions, i => i.exitAt)).toBeTruthy();
             }));
         });
