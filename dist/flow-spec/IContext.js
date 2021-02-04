@@ -51,7 +51,7 @@ function findNestedFlowIdFor(interaction, ctx) {
     const runFlowBlock = __1.findBlockWith(interaction.block_id, flow);
     const flowId = runFlowBlock.config.flow_id;
     if (flowId == null) {
-        throw new __1.ValidationException('Unable to find nested flowId on Core.Runflow');
+        throw new __1.ValidationException('Unable to find nested flowId on Core.RunFlow');
     }
     return flowId;
 }

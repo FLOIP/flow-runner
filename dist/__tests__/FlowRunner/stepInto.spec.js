@@ -13,7 +13,7 @@ describe('FlowRunner/stepInto', () => {
         const block = ctx.flows[0].blocks[0];
         const runner = new __1.FlowRunner(ctx);
         expect(__1.FlowRunner.prototype.stepInto.bind(runner, block, ctx)).toThrow(__1.ValidationException);
-        expect(__1.FlowRunner.prototype.stepInto.bind(runner, block, ctx)).toThrow('non-Core.Runflow');
+        expect(__1.FlowRunner.prototype.stepInto.bind(runner, block, ctx)).toThrow('non-Core.RunFlow');
     }));
     it("should raise when last interaction doesn't match provided block_id (aka only allow step ins during active interaction)", () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         const ctx = dataset.contexts[2];

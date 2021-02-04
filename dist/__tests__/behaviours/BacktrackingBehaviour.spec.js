@@ -243,10 +243,10 @@ describe('BacktrackingBehaviour', () => {
             beforeEach(() => {
                 interactions = [
                     { uuid: 'intx-123-1' },
-                    { uuid: 'intx-234-1', type: 'Core.Runflow', block_id: 'block-234', flow_id: 'flow-123' },
+                    { uuid: 'intx-234-1', type: 'Core.RunFlow', block_id: 'block-234', flow_id: 'flow-123' },
                     { uuid: 'intx-567-1', block_id: 'block-567', flow_id: '234' },
                     { uuid: 'intx-678-1' },
-                    { uuid: 'intx-789-1', type: 'Core.Runflow', block_id: 'block-789', flow_id: 'flow-234' },
+                    { uuid: 'intx-789-1', type: 'Core.RunFlow', block_id: 'block-789', flow_id: 'flow-234' },
                     { uuid: 'intx-890-1' },
                     { uuid: 'intx-901-1', block_id: 'block-901', flow_id: 'flow-345' },
                     { uuid: 'intx-012-1' },

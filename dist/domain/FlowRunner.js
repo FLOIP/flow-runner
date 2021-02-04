@@ -11,7 +11,7 @@ exports.BlockRunnerFactoryStore = BlockRunnerFactoryStore;
 const DEFAULT_BEHAVIOUR_TYPES = [
     __1.BasicBacktrackingBehaviour,
 ];
-exports.NON_INTERACTIVE_BLOCK_TYPES = ['Core.Case', 'Core.Runflow'];
+exports.NON_INTERACTIVE_BLOCK_TYPES = ['Core.Case', 'Core.RunFlow'];
 function createDefaultBlockRunnerStore() {
     return new BlockRunnerFactoryStore([
         ['MobilePrimitives.Message', (block, ctx) => new __1.MessageBlockRunner(block, ctx)],
@@ -23,7 +23,7 @@ function createDefaultBlockRunnerStore() {
         ['Core.Output', (block, ctx) => new __1.OutputBlockRunner(block, ctx)],
         ['Core.Log', (block, ctx) => new __1.LogBlockRunner(block, ctx)],
         ['ConsoleIO.Print', (block, ctx) => new __1.PrintBlockRunner(block, ctx)],
-        ['Core.Runflow', (block, ctx) => new __1.RunFlowBlockRunner(block, ctx)],
+        ['Core.RunFlow', (block, ctx) => new __1.RunFlowBlockRunner(block, ctx)],
         [__1.SET_GROUP_MEMBERSHIP_BLOCK_TYPE, (block, ctx) => new __1.SetGroupMembershipBlockRunner(block, ctx)],
     ]);
 }
@@ -154,7 +154,7 @@ class FlowRunner {
                 if (block == null) {
                     continue;
                 }
-                if (block.type === 'Core.Runflow') {
+                if (block.type === 'Core.RunFlow') {
                     richCursor = yield this.navigateTo(block, ctx);
                     block = this.stepInto(block, ctx);
                 }
@@ -261,15 +261,15 @@ class FlowRunner {
         });
     }
     stepInto(runFlowBlock, ctx) {
-        if (runFlowBlock.type !== 'Core.Runflow') {
-            throw new __1.ValidationException('Unable to step into a non-Core.Runflow block type');
+        if (runFlowBlock.type !== 'Core.RunFlow') {
+            throw new __1.ValidationException('Unable to step into a non-Core.RunFlow block type');
         }
         const runFlowInteraction = lodash_1.last(ctx.interactions);
         if (runFlowInteraction == null) {
-            throw new __1.ValidationException("Unable to step into Core.Runflow that hasn't yet been started");
+            throw new __1.ValidationException("Unable to step into Core.RunFlow that hasn't yet been started");
         }
         if (runFlowBlock.uuid !== runFlowInteraction.block_id) {
-            throw new __1.ValidationException("Unable to step into Core.Runflow block that doesn't match last interaction");
+            throw new __1.ValidationException("Unable to step into Core.RunFlow block that doesn't match last interaction");
         }
         ctx.nested_flow_block_interaction_id_stack.push(runFlowInteraction.uuid);
         const firstNestedBlock = lodash_1.first(this._contextService.getActiveFlowFrom(ctx).blocks);
