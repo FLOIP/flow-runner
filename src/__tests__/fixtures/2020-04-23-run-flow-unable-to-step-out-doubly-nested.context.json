@@ -94,7 +94,7 @@
           "label": "",
           "name": "1587465878685_30",
           "semantic_label": "",
-          "type": "Core.Runflow",
+          "type": "Core.RunFlow",
           "uuid": "95bd9e4a-9300-4004-9c29-906111faad72"
         },
         {
@@ -116,7 +116,7 @@
           "label": "",
           "name": "1587465891837_31",
           "semantic_label": "",
-          "type": "Core.Runflow",
+          "type": "Core.RunFlow",
           "uuid": "95bd9e4a-9300-4004-9c29-9061120ebef3"
         },
         {
@@ -138,7 +138,7 @@
           "label": "",
           "name": "1587465931289_14",
           "semantic_label": "",
-          "type": "Core.Runflow",
+          "type": "Core.RunFlow",
           "uuid": "95bd9e4a-9300-4004-9c29-9061124af1d2"
         }
       ],
@@ -345,7 +345,7 @@
           "label": "",
           "name": "1587466679289_58",
           "semantic_label": "",
-          "type": "Core.Runflow",
+          "type": "Core.RunFlow",
           "uuid": "95bd9e4a-9300-4004-9c2a-906116c04d7e"
         }
       ],
@@ -527,7 +527,7 @@
           "label": "",
           "name": "1587465551971_52",
           "semantic_label": "",
-          "type": "Core.Runflow",
+          "type": "Core.RunFlow",
           "uuid": "95bd9e4a-9300-4004-9c25-9061100826e0"
         }
       ],
@@ -602,7 +602,7 @@
           "label": "",
           "name": "1587465551971_52",
           "semantic_label": "",
-          "type": "Core.Runflow",
+          "type": "Core.RunFlow",
           "uuid": "95bd9e4a-9300-4004-9c26-9061100826e0"
         },
         {
@@ -704,7 +704,7 @@
           "label": "",
           "name": "1587465551971_52",
           "semantic_label": "",
-          "type": "Core.Runflow",
+          "type": "Core.RunFlow",
           "uuid": "95bd9e4a-9300-4004-9c27-9061100826e0"
         },
         {

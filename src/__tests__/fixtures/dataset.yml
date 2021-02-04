@@ -77,7 +77,7 @@ _defaults:
 # @note Some Id references are hand-rolled identifiers.
 #       Pls ensure that refactoring has "search in comments" enabled.
 #       - `block_exit.destination_block`
-#       - `block<Core.Runflow>.config.flow_id`
+#       - `block<Core.RunFlow>.config.flow_id`
 #
 #       > It is an error for an alias node to use an anchor that does not previously occur in the document.
 #       > - https://yaml.org/spec/1.2/spec.html#id2786196
@@ -296,7 +296,7 @@ contexts:
       - *res/cb1b04a3-6447-4e33-a449-a6e3107e7531
       - *res/164f04f7-3daf-420b-9a5b-0d3b16144ec5
 
-  # multi-flow, single-interaction, cursor on Core.Runflow block with no exit
+  # multi-flow, single-interaction, cursor on Core.RunFlow block with no exit
   - <<: *defaults/context
     flows:
       - *flow/(RunFlow|Message)/028a055c-e988-4050-81a2-e11934bdbcad

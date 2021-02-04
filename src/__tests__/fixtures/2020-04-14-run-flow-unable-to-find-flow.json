@@ -91,7 +91,7 @@
           "label": "",
           "name": "1586797515615_67",
           "semantic_label": "",
-          "type": "Core.Runflow",
+          "type": "Core.RunFlow",
           "uuid": "95bd9e4a-9300-400c-9ead-90518239915f"
         }
       ],
@@ -188,7 +188,7 @@
           "label": "",
           "name": "1586797587216_19",
           "semantic_label": "",
-          "type": "Core.Runflow",
+          "type": "Core.RunFlow",
           "uuid": "95bd9e4a-9300-400c-9eae-905182a6d253"
         }
       ],

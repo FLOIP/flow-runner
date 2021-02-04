@@ -94,7 +94,7 @@ const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
 /**
  * Block types that do not request additional input from an `IContact`
  */
-export const NON_INTERACTIVE_BLOCK_TYPES = ['Core.Case', 'Core.Runflow']
+export const NON_INTERACTIVE_BLOCK_TYPES = ['Core.Case', 'Core.RunFlow']
 
 /**
  * A map of `IBlock.type` to an `TBlockRunnerFactory` function.
@@ -110,7 +110,7 @@ export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
     ['Core.Output', (block, ctx) => new OutputBlockRunner(block as IOutputBlock, ctx)],
     ['Core.Log', (block, ctx) => new LogBlockRunner(block as ILogBlock, ctx)],
     ['ConsoleIO.Print', (block, ctx) => new PrintBlockRunner(block as IPrintBlock, ctx)],
-    ['Core.Runflow', (block, ctx) => new RunFlowBlockRunner(block as IRunFlowBlock, ctx)],
+    ['Core.RunFlow', (block, ctx) => new RunFlowBlockRunner(block as IRunFlowBlock, ctx)],
     [SET_GROUP_MEMBERSHIP_BLOCK_TYPE, (block, ctx) => new SetGroupMembershipBlockRunner(block as ISetGroupMembershipBlock, ctx)],
   ])
 }
@@ -357,7 +357,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
         continue
       }
 
-      if (block.type === 'Core.Runflow') {
+      if (block.type === 'Core.RunFlow') {
         richCursor = await this.navigateTo(block, ctx)
         block = this.stepInto(block, ctx)
       }
@@ -585,17 +585,17 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * todo: would it be possible for stepping into and out of be handled by the RunFlow itself?
    *       Eg. these are esentially RunFlowRunner's .start() + .resume() equivalents */
   stepInto(runFlowBlock: IBlock, ctx: IContext): IBlock | undefined {
-    if (runFlowBlock.type !== 'Core.Runflow') {
-      throw new ValidationException('Unable to step into a non-Core.Runflow block type')
+    if (runFlowBlock.type !== 'Core.RunFlow') {
+      throw new ValidationException('Unable to step into a non-Core.RunFlow block type')
     }
 
     const runFlowInteraction = last(ctx.interactions)
     if (runFlowInteraction == null) {
-      throw new ValidationException("Unable to step into Core.Runflow that hasn't yet been started")
+      throw new ValidationException("Unable to step into Core.RunFlow that hasn't yet been started")
     }
 
     if (runFlowBlock.uuid !== runFlowInteraction.block_id) {
-      throw new ValidationException("Unable to step into Core.Runflow block that doesn't match last interaction")
+      throw new ValidationException("Unable to step into Core.RunFlow block that doesn't match last interaction")
     }
 
     ctx.nested_flow_block_interaction_id_stack.push(runFlowInteraction.uuid)
