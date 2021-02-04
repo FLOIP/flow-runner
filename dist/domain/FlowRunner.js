@@ -11,19 +11,19 @@ exports.BlockRunnerFactoryStore = BlockRunnerFactoryStore;
 const DEFAULT_BEHAVIOUR_TYPES = [
     __1.BasicBacktrackingBehaviour,
 ];
-exports.NON_INTERACTIVE_BLOCK_TYPES = ['Core\\Case', 'Core\\RunFlow'];
+exports.NON_INTERACTIVE_BLOCK_TYPES = ['Core.Case', 'Core.Runflow'];
 function createDefaultBlockRunnerStore() {
     return new BlockRunnerFactoryStore([
-        ['MobilePrimitives\\Message', (block, ctx) => new __1.MessageBlockRunner(block, ctx)],
-        ['MobilePrimitives\\OpenResponse', (block, ctx) => new __1.OpenResponseBlockRunner(block, ctx)],
-        ['MobilePrimitives\\NumericResponse', (block, ctx) => new __1.NumericResponseBlockRunner(block, ctx)],
-        ['MobilePrimitives\\SelectOneResponse', (block, ctx) => new __1.SelectOneResponseBlockRunner(block, ctx)],
-        ['MobilePrimitives\\SelectManyResponse', (block, ctx) => new __1.SelectManyResponseBlockRunner(block, ctx)],
-        ['Core\\Case', (block, ctx) => new __1.CaseBlockRunner(block, ctx)],
-        ['Core\\Output', (block, ctx) => new __1.OutputBlockRunner(block, ctx)],
-        ['Core\\Log', (block, ctx) => new __1.LogBlockRunner(block, ctx)],
-        ['ConsoleIO\\Print', (block, ctx) => new __1.PrintBlockRunner(block, ctx)],
-        ['Core\\RunFlow', (block, ctx) => new __1.RunFlowBlockRunner(block, ctx)],
+        ['MobilePrimitives.Message', (block, ctx) => new __1.MessageBlockRunner(block, ctx)],
+        ['MobilePrimitives.OpenResponse', (block, ctx) => new __1.OpenResponseBlockRunner(block, ctx)],
+        ['MobilePrimitives.NumericResponse', (block, ctx) => new __1.NumericResponseBlockRunner(block, ctx)],
+        ['MobilePrimitives.SelectOneResponse', (block, ctx) => new __1.SelectOneResponseBlockRunner(block, ctx)],
+        ['MobilePrimitives.SelectManyResponse', (block, ctx) => new __1.SelectManyResponseBlockRunner(block, ctx)],
+        ['Core.Case', (block, ctx) => new __1.CaseBlockRunner(block, ctx)],
+        ['Core.Output', (block, ctx) => new __1.OutputBlockRunner(block, ctx)],
+        ['Core.Log', (block, ctx) => new __1.LogBlockRunner(block, ctx)],
+        ['ConsoleIO.Print', (block, ctx) => new __1.PrintBlockRunner(block, ctx)],
+        ['Core.Runflow', (block, ctx) => new __1.RunFlowBlockRunner(block, ctx)],
         [__1.SET_GROUP_MEMBERSHIP_BLOCK_TYPE, (block, ctx) => new __1.SetGroupMembershipBlockRunner(block, ctx)],
     ]);
 }
@@ -104,13 +104,13 @@ class FlowRunner {
         }
     }
     cacheInteractionByBlockName({ uuid, entry_at }, { name, config: { prompt } }, context = this.context) {
-        if (!('blockInteractionsByBlockName' in this.context.session_vars)) {
-            context.session_vars.blockInteractionsByBlockName = {};
+        if (!('block_interactions_by_block_name' in this.context.session_vars)) {
+            context.session_vars.block_interactions_by_block_name = {};
         }
         if (context.reversible_operations == null) {
             context.reversible_operations = [];
         }
-        const blockNameKey = `blockInteractionsByBlockName.${name}`;
+        const blockNameKey = `block_interactions_by_block_name.${name}`;
         const previous = this.context.session_vars[blockNameKey];
         const resource = prompt == null ? undefined : new __1.ResourceResolver(context).resolve(prompt);
         const current = {
@@ -154,7 +154,7 @@ class FlowRunner {
                 if (block == null) {
                     continue;
                 }
-                if (block.type === 'Core\\RunFlow') {
+                if (block.type === 'Core.Runflow') {
                     richCursor = yield this.navigateTo(block, ctx);
                     block = this.stepInto(block, ctx);
                 }
@@ -261,15 +261,15 @@ class FlowRunner {
         });
     }
     stepInto(runFlowBlock, ctx) {
-        if (runFlowBlock.type !== 'Core\\RunFlow') {
-            throw new __1.ValidationException('Unable to step into a non-Core\\RunFlow block type');
+        if (runFlowBlock.type !== 'Core.Runflow') {
+            throw new __1.ValidationException('Unable to step into a non-Core.Runflow block type');
         }
         const runFlowInteraction = lodash_1.last(ctx.interactions);
         if (runFlowInteraction == null) {
-            throw new __1.ValidationException("Unable to step into Core\\RunFlow that hasn't yet been started");
+            throw new __1.ValidationException("Unable to step into Core.Runflow that hasn't yet been started");
         }
         if (runFlowBlock.uuid !== runFlowInteraction.block_id) {
-            throw new __1.ValidationException("Unable to step into Core\\RunFlow block that doesn't match last interaction");
+            throw new __1.ValidationException("Unable to step into Core.Runflow block that doesn't match last interaction");
         }
         ctx.nested_flow_block_interaction_id_stack.push(runFlowInteraction.uuid);
         const firstNestedBlock = lodash_1.first(this._contextService.getActiveFlowFrom(ctx).blocks);
@@ -303,10 +303,10 @@ class FlowRunner {
         const { blocks } = this._contextService.getActiveFlowFrom(ctx);
         return lodash_1.find(blocks, { uuid: destination_block });
     }
-    createBlockInteractionFor({ uuid: blockId, type }, flowId, originFlowId, originBlockInteractionId) {
+    createBlockInteractionFor({ uuid: block_id, type }, flowId, originFlowId, originBlockInteractionId) {
         return {
             uuid: this.idGenerator.generate(),
-            block_id: blockId,
+            block_id: block_id,
             flow_id: flowId,
             entry_at: __1.createFormattedDate(),
             exit_at: undefined,

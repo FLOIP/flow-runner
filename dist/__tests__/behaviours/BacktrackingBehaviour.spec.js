@@ -6,7 +6,7 @@ const __1 = require("../..");
 describe('BacktrackingBehaviour', () => {
     let backtracking;
     beforeEach(() => {
-        backtracking = new __1.BacktrackingBehaviour({ platform_metadata: {} }, { navigateTo: (_b, _c) => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return ({ interaction: {}, prompt: undefined }); }) }, {
+        backtracking = new __1.BacktrackingBehaviour({ vendor_metadata: {} }, { navigateTo: (_b, _c) => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return ({ interaction: {}, prompt: undefined }); }) }, {
             buildPromptFor: (_b, _i) => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return undefined; }),
         });
     });
@@ -18,10 +18,10 @@ describe('BacktrackingBehaviour', () => {
             describe('when block has been repeated since start of an iteration', () => {
                 it('should step in (aka perform an iteration rollup)', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                     const interactions = [
-                        { blockId: '0', uuid: 'abc-0' },
-                        { blockId: '1', uuid: 'abc-1' },
-                        { blockId: '2', uuid: 'abc-2' },
-                        { blockId: '3', uuid: 'abc-3' },
+                        { block_id: '0', uuid: 'abc-0' },
+                        { block_id: '1', uuid: 'abc-1' },
+                        { block_id: '2', uuid: 'abc-2' },
+                        { block_id: '3', uuid: 'abc-3' },
                     ];
                     const interactionStack = __1.createStack([...interactions]);
                     const cursor = __1.createKey(3);
@@ -37,10 +37,10 @@ describe('BacktrackingBehaviour', () => {
             describe('when block is at start of iteration', () => {
                 it('should roll up entire iteration into a stack', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                     const interactions = [
-                        { blockId: '0', uuid: 'abc-0' },
-                        { blockId: '1', uuid: 'abc-1' },
-                        { blockId: '2', uuid: 'abc-2' },
-                        { blockId: '3', uuid: 'abc-3' },
+                        { block_id: '0', uuid: 'abc-0' },
+                        { block_id: '1', uuid: 'abc-1' },
+                        { block_id: '2', uuid: 'abc-2' },
+                        { block_id: '3', uuid: 'abc-3' },
                     ];
                     const interactionStack = __1.createStack([...interactions]);
                     const cursor = __1.createKey(3);
@@ -67,10 +67,10 @@ describe('BacktrackingBehaviour', () => {
                 describe('when on root stack', () => {
                     it('should insert at current position', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                         const interactions = [
-                            { blockId: '0', uuid: 'abc-0' },
-                            { blockId: '1', uuid: 'abc-1' },
-                            { blockId: '2', uuid: 'abc-2' },
-                            { blockId: '3', uuid: 'abc-3' },
+                            { block_id: '0', uuid: 'abc-0' },
+                            { block_id: '1', uuid: 'abc-1' },
+                            { block_id: '2', uuid: 'abc-2' },
+                            { block_id: '3', uuid: 'abc-3' },
                         ];
                         const interactionStack = __1.createStack([...interactions]);
                         const cursor = __1.createKey(3);
@@ -84,21 +84,21 @@ describe('BacktrackingBehaviour', () => {
                     it('should insert at current position', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                         const sourceInteractions = __1.createStackFrom([
                             [
-                                { blockId: '1', uuid: 'abc-1' },
+                                { block_id: '1', uuid: 'abc-1' },
                                 __1.createStackFrom([
                                     [
-                                        { blockId: '2', uuid: 'abc-2' },
-                                        { blockId: '3', uuid: 'abc-3' },
-                                        { blockId: '4', uuid: 'abc-4' },
+                                        { block_id: '2', uuid: 'abc-2' },
+                                        { block_id: '3', uuid: 'abc-3' },
+                                        { block_id: '4', uuid: 'abc-4' },
                                     ],
                                     [
-                                        { blockId: '2', uuid: 'abc-5' },
+                                        { block_id: '2', uuid: 'abc-5' },
                                         __1.createStackFrom([
-                                            [{ blockId: '3', uuid: 'abc-6' }, { blockId: '4', uuid: 'abc-7' }],
+                                            [{ block_id: '3', uuid: 'abc-6' }, { block_id: '4', uuid: 'abc-7' }],
                                             [
-                                                { blockId: '3', uuid: 'abc-8' },
-                                                { blockId: '4', uuid: 'abc-9' },
-                                                { blockId: '5', uuid: 'abc-10' },
+                                                { block_id: '3', uuid: 'abc-8' },
+                                                { block_id: '4', uuid: 'abc-9' },
+                                                { block_id: '5', uuid: 'abc-10' },
                                             ],
                                         ]),
                                     ],
@@ -124,21 +124,21 @@ describe('BacktrackingBehaviour', () => {
                 it('should step out when head found one level up', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                     const sourceInteractions = __1.createStackFrom([
                         [
-                            { blockId: '1', uuid: 'abc-1' },
+                            { block_id: '1', uuid: 'abc-1' },
                             __1.createStackFrom([
                                 [
-                                    { blockId: '2', uuid: 'abc-2' },
-                                    { blockId: '3', uuid: 'abc-3' },
-                                    { blockId: '4', uuid: 'abc-4' },
+                                    { block_id: '2', uuid: 'abc-2' },
+                                    { block_id: '3', uuid: 'abc-3' },
+                                    { block_id: '4', uuid: 'abc-4' },
                                 ],
                                 [
-                                    { blockId: '2', uuid: 'abc-5' },
+                                    { block_id: '2', uuid: 'abc-5' },
                                     __1.createStackFrom([
-                                        [{ blockId: '3', uuid: 'abc-6' }, { blockId: '4', uuid: 'abc-7' }],
+                                        [{ block_id: '3', uuid: 'abc-6' }, { block_id: '4', uuid: 'abc-7' }],
                                         [
-                                            { blockId: '3', uuid: 'abc-8' },
-                                            { blockId: '4', uuid: 'abc-9' },
-                                            { blockId: '5', uuid: 'abc-10' },
+                                            { block_id: '3', uuid: 'abc-8' },
+                                            { block_id: '4', uuid: 'abc-9' },
+                                            { block_id: '5', uuid: 'abc-10' },
                                         ],
                                     ]),
                                 ],
@@ -161,21 +161,21 @@ describe('BacktrackingBehaviour', () => {
                 it('should step out multiple times when head found multiple levels up', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                     const sourceInteractions = __1.createStackFrom([
                         [
-                            { blockId: '1', uuid: 'abc-1' },
+                            { block_id: '1', uuid: 'abc-1' },
                             __1.createStackFrom([
                                 [
-                                    { blockId: '2', uuid: 'abc-2' },
-                                    { blockId: '3', uuid: 'abc-3' },
-                                    { blockId: '4', uuid: 'abc-4' },
+                                    { block_id: '2', uuid: 'abc-2' },
+                                    { block_id: '3', uuid: 'abc-3' },
+                                    { block_id: '4', uuid: 'abc-4' },
                                 ],
                                 [
-                                    { blockId: '2', uuid: 'abc-5' },
+                                    { block_id: '2', uuid: 'abc-5' },
                                     __1.createStackFrom([
-                                        [{ blockId: '3', uuid: 'abc-6' }, { blockId: '4', uuid: 'abc-7' }],
+                                        [{ block_id: '3', uuid: 'abc-6' }, { block_id: '4', uuid: 'abc-7' }],
                                         [
-                                            { blockId: '3', uuid: 'abc-8' },
-                                            { blockId: '4', uuid: 'abc-9' },
-                                            { blockId: '5', uuid: 'abc-10' },
+                                            { block_id: '3', uuid: 'abc-8' },
+                                            { block_id: '4', uuid: 'abc-9' },
+                                            { block_id: '5', uuid: 'abc-10' },
                                         ],
                                     ]),
                                 ],
@@ -215,7 +215,7 @@ describe('BacktrackingBehaviour', () => {
             backtracking.context.first_flow_id = 'flow/abc-123';
             backtracking.context.flows = [{ uuid: 'flow/abc-123', blocks: [{ uuid: 'block/abc-234' }] }];
             backtracking.context.nested_flow_block_interaction_id_stack = [];
-            meta = backtracking.context.platform_metadata.backtracking;
+            meta = backtracking.context.vendor_metadata.backtracking;
             meta.interactionStack = __1.createStack(lodash_1.cloneDeep(interactions));
         });
         it('should initialize ghost stack as a clone of current stack', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
@@ -243,10 +243,10 @@ describe('BacktrackingBehaviour', () => {
             beforeEach(() => {
                 interactions = [
                     { uuid: 'intx-123-1' },
-                    { uuid: 'intx-234-1', type: 'Core\\RunFlow', block_id: 'block-234', flow_id: 'flow-123' },
+                    { uuid: 'intx-234-1', type: 'Core.Runflow', block_id: 'block-234', flow_id: 'flow-123' },
                     { uuid: 'intx-567-1', block_id: 'block-567', flow_id: '234' },
                     { uuid: 'intx-678-1' },
-                    { uuid: 'intx-789-1', type: 'Core\\RunFlow', block_id: 'block-789', flow_id: 'flow-234' },
+                    { uuid: 'intx-789-1', type: 'Core.Runflow', block_id: 'block-789', flow_id: 'flow-234' },
                     { uuid: 'intx-890-1' },
                     { uuid: 'intx-901-1', block_id: 'block-901', flow_id: 'flow-345' },
                     { uuid: 'intx-012-1' },
@@ -275,7 +275,7 @@ describe('BacktrackingBehaviour', () => {
                 backtracking.context.interactions = lodash_1.cloneDeep(interactions);
                 backtracking.context.first_flow_id = 'flow-123';
                 backtracking.context.nested_flow_block_interaction_id_stack = ['intx-234-1', 'intx-789-1'];
-                meta = backtracking.context.platform_metadata.backtracking;
+                meta = backtracking.context.vendor_metadata.backtracking;
                 meta.interactionStack = __1.createStack(lodash_1.cloneDeep(interactions));
             });
             it('leave nesting at the same place if not jumping past a nesting', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {

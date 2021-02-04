@@ -13,18 +13,18 @@ export class ContactGroup extends Group implements IContactGroup {
   deleted_at?: string | undefined
 
   constructor(group: IGroup)
-  constructor(groupKey: string, label: string, updatedAt: string, deletedAt?: string)
-  constructor(groupKey: string, updatedAt: string, deletedAt?: string)
-  constructor(groupKeyOrGroup: string | IGroup, label?: string, updatedAt?: string, deletedAt?: string) {
+  constructor(group_key: string, label: string, updated_at: string, deleted_at?: string)
+  constructor(group_key: string, updated_at: string, deleted_at?: string)
+  constructor(groupKeyOrGroup: string | IGroup, label?: string, updated_at?: string, deleted_at?: string) {
     if (isGroup(groupKeyOrGroup)) {
       super(groupKeyOrGroup.group_key, groupKeyOrGroup.label)
       this.updated_at = createFormattedDate()
     } else {
       super(groupKeyOrGroup, label)
     }
-    this.updated_at = updatedAt ?? createFormattedDate()
-    if (deletedAt != null) {
-      this.deleted_at = deletedAt
+    this.updated_at = updated_at ?? createFormattedDate()
+    if (deleted_at != null) {
+      this.deleted_at = deleted_at
     }
   }
 }

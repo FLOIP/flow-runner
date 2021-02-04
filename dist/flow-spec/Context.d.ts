@@ -21,15 +21,15 @@ export declare class Context implements IContext {
     user_id?: string;
     org_id?: string;
     cursor?: ICursor;
-    platform_metadata: {
+    vendor_metadata: {
         [k: string]: unknown;
     };
     logs: {
         [k: string]: string;
     };
-    constructor(id: string, createdAt: string, deliveryStatus: DeliveryStatus, mode: SupportedMode, languageId: string, contact: IContact, groups: IGroup[], sessionVars: {
+    constructor(id: string, created_at: string, delivery_status: DeliveryStatus, mode: SupportedMode, language_id: string, contact: IContact, groups: IGroup[], session_vars: {
         [k: string]: unknown;
-    }, interactions: IBlockInteraction[], nestedFlowBlockInteractionIdStack: string[], reversibleOperations: IReversibleUpdateOperation[], flows: IFlow[], firstFlowId: string, resources: IResources, entryAt?: string, exitAt?: string, userId?: string, orgId?: string, cursor?: ICursor, platformMetadata?: {
+    }, interactions: IBlockInteraction[], nested_flow_block_interaction_id_stack: string[], reversible_operations: IReversibleUpdateOperation[], flows: IFlow[], first_flow_id: string, resources: IResources, entry_at?: string, exit_at?: string, user_id?: string, org_id?: string, cursor?: ICursor, vendor_metadata?: {
         [k: string]: unknown;
     }, logs?: {
         [k: string]: string;
@@ -39,54 +39,54 @@ export declare class Context implements IContext {
 export declare namespace Context {
     class Builder {
         id?: string;
-        createdAt: string;
-        deliveryStatus: DeliveryStatus;
+        created_at: string;
+        delivery_status: DeliveryStatus;
         mode: SupportedMode;
-        languageId?: string;
+        language_id?: string;
         contact?: IContact;
         groups?: IGroup[];
-        sessionVars: {
+        session_vars: {
             [k: string]: unknown;
         };
         interactions: IBlockInteraction[];
-        nestedFlowBlockInteractionIdStack: string[];
-        reversibleOperations: IReversibleUpdateOperation[];
+        nested_flow_block_interaction_id_stack: string[];
+        reversible_operations: IReversibleUpdateOperation[];
         flows?: IFlow[];
-        firstFlowId?: string;
+        first_flow_id?: string;
         resources?: IResourceDefinition[];
-        entryAt?: string;
-        exitAt?: string;
-        userId?: string;
-        orgId?: string;
+        entry_at?: string;
+        exit_at?: string;
+        user_id?: string;
+        org_id?: string;
         cursor?: ICursor;
-        platformMetadata: {
+        vendor_metadata: {
             [k: string]: unknown;
         };
         logs: {
             [k: string]: string;
         };
         setId(id: string): Context.Builder;
-        setCreatedAt(createdAt: string): Context.Builder;
-        setDeliveryStatus(deliveryStatus: DeliveryStatus): Context.Builder;
+        setCreatedAt(created_at: string): Context.Builder;
+        setDeliveryStatus(delivery_status: DeliveryStatus): Context.Builder;
         setMode(mode: SupportedMode): Context.Builder;
-        setLanguageId(languageId: string): Context.Builder;
+        setLanguageId(language_id: string): Context.Builder;
         setContact(contact: IContact): Context.Builder;
         setGroups(groups: IGroup[]): Context.Builder;
-        setSessionVars(sessionVars: {
+        setSessionVars(session_vars: {
             [k: string]: unknown;
         }): Context.Builder;
         setInteractions(interactions: IBlockInteraction[]): Context.Builder;
-        setNestedFlowBlockInteractionIdStack(nestedFlowBlockInteractionIdStack: string[]): Context.Builder;
-        setReversibleOperations(reversibleOperations: IReversibleUpdateOperation[]): Context.Builder;
+        setNestedFlowBlockInteractionIdStack(nested_flow_block_interaction_id_stack: string[]): Context.Builder;
+        setReversibleOperations(reversible_operations: IReversibleUpdateOperation[]): Context.Builder;
         setFlows(flows: IFlow[]): Context.Builder;
-        setFirstFlowId(firstFlowId: string): Context.Builder;
+        setFirstFlowId(first_flow_id: string): Context.Builder;
         setResources(resources: IResourceDefinition[]): Context.Builder;
-        setEntryAt(entryAt: string): Context.Builder;
-        setExitAt(exitAt: string): Context.Builder;
-        setUserId(userId: string): Context.Builder;
-        setOrgId(orgId: string): Context.Builder;
+        setEntryAt(entry_at: string): Context.Builder;
+        setExitAt(exit_at: string): Context.Builder;
+        setUserId(user_id: string): Context.Builder;
+        setOrgId(org_id: string): Context.Builder;
         setCursor(cursor: ICursor): Context.Builder;
-        setPlatformMetadata(platformMetadata: {
+        setPlatformMetadata(vendor_metadata: {
             [k: string]: unknown;
         }): Context.Builder;
         setLogs(logs: {

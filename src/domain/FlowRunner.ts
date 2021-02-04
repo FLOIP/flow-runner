@@ -94,23 +94,23 @@ const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
 /**
  * Block types that do not request additional input from an `IContact`
  */
-export const NON_INTERACTIVE_BLOCK_TYPES = ['Core\\Case', 'Core\\RunFlow']
+export const NON_INTERACTIVE_BLOCK_TYPES = ['Core.Case', 'Core.Runflow']
 
 /**
  * A map of `IBlock.type` to an `TBlockRunnerFactory` function.
  */
 export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
   return new BlockRunnerFactoryStore([
-    ['MobilePrimitives\\Message', (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
-    ['MobilePrimitives\\OpenResponse', (block, ctx) => new OpenResponseBlockRunner(block as IOpenResponseBlock, ctx)],
-    ['MobilePrimitives\\NumericResponse', (block, ctx) => new NumericResponseBlockRunner(block as INumericResponseBlock, ctx)],
-    ['MobilePrimitives\\SelectOneResponse', (block, ctx) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
-    ['MobilePrimitives\\SelectManyResponse', (block, ctx) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
-    ['Core\\Case', (block, ctx) => new CaseBlockRunner(block as ICaseBlock, ctx)],
-    ['Core\\Output', (block, ctx) => new OutputBlockRunner(block as IOutputBlock, ctx)],
-    ['Core\\Log', (block, ctx) => new LogBlockRunner(block as ILogBlock, ctx)],
-    ['ConsoleIO\\Print', (block, ctx) => new PrintBlockRunner(block as IPrintBlock, ctx)],
-    ['Core\\RunFlow', (block, ctx) => new RunFlowBlockRunner(block as IRunFlowBlock, ctx)],
+    ['MobilePrimitives.Message', (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
+    ['MobilePrimitives.OpenResponse', (block, ctx) => new OpenResponseBlockRunner(block as IOpenResponseBlock, ctx)],
+    ['MobilePrimitives.NumericResponse', (block, ctx) => new NumericResponseBlockRunner(block as INumericResponseBlock, ctx)],
+    ['MobilePrimitives.SelectOneResponse', (block, ctx) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
+    ['MobilePrimitives.SelectManyResponse', (block, ctx) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
+    ['Core.Case', (block, ctx) => new CaseBlockRunner(block as ICaseBlock, ctx)],
+    ['Core.Output', (block, ctx) => new OutputBlockRunner(block as IOutputBlock, ctx)],
+    ['Core.Log', (block, ctx) => new LogBlockRunner(block as ILogBlock, ctx)],
+    ['ConsoleIO.Print', (block, ctx) => new PrintBlockRunner(block as IPrintBlock, ctx)],
+    ['Core.Runflow', (block, ctx) => new RunFlowBlockRunner(block as IRunFlowBlock, ctx)],
     [SET_GROUP_MEMBERSHIP_BLOCK_TYPE, (block, ctx) => new SetGroupMembershipBlockRunner(block as ISetGroupMembershipBlock, ctx)],
   ])
 }
@@ -270,8 +270,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     {name, config: {prompt}}: IMessageBlock,
     context: IContext = this.context
   ): void {
-    if (!('blockInteractionsByBlockName' in this.context.session_vars)) {
-      context.session_vars.blockInteractionsByBlockName = {}
+    if (!('block_interactions_by_block_name' in this.context.session_vars)) {
+      context.session_vars.block_interactions_by_block_name = {}
     }
 
     if (context.reversible_operations == null) {
@@ -279,7 +279,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     }
 
     // create a cache of `{[block.name]: {...}}` for subsequent lookups
-    const blockNameKey = `blockInteractionsByBlockName.${name}`
+    const blockNameKey = `block_interactions_by_block_name.${name}`
     const previous = this.context.session_vars[blockNameKey]
     const resource = prompt == null ? undefined : new ResourceResolver(context).resolve(prompt)
 
@@ -293,7 +293,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   }
 
   /**
-   * Apply a mutation to `sessionVars` and operations in both directions.
+   * Apply a mutation to `session_vars` and operations in both directions.
    * These vars are made available in content Expressions.
    * @param forward
    * @param reverse
@@ -313,7 +313,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   }
 
   /**
-   * Pop last mutation to `sessionVars` and apply its reversal operation.
+   * Pop last mutation to `session_vars` and apply its reversal operation.
    * @param context
    */
   reverseLastDataOperation(context: IContext = this.context): IReversibleUpdateOperation | undefined {
@@ -357,7 +357,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
         continue
       }
 
-      if (block.type === 'Core\\RunFlow') {
+      if (block.type === 'Core.Runflow') {
         richCursor = await this.navigateTo(block, ctx)
         block = this.stepInto(block, ctx)
       }
@@ -585,17 +585,17 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * todo: would it be possible for stepping into and out of be handled by the RunFlow itself?
    *       Eg. these are esentially RunFlowRunner's .start() + .resume() equivalents */
   stepInto(runFlowBlock: IBlock, ctx: IContext): IBlock | undefined {
-    if (runFlowBlock.type !== 'Core\\RunFlow') {
-      throw new ValidationException('Unable to step into a non-Core\\RunFlow block type')
+    if (runFlowBlock.type !== 'Core.Runflow') {
+      throw new ValidationException('Unable to step into a non-Core.Runflow block type')
     }
 
     const runFlowInteraction = last(ctx.interactions)
     if (runFlowInteraction == null) {
-      throw new ValidationException("Unable to step into Core\\RunFlow that hasn't yet been started")
+      throw new ValidationException("Unable to step into Core.Runflow that hasn't yet been started")
     }
 
     if (runFlowBlock.uuid !== runFlowInteraction.block_id) {
-      throw new ValidationException("Unable to step into Core\\RunFlow block that doesn't match last interaction")
+      throw new ValidationException("Unable to step into Core.Runflow block that doesn't match last interaction")
     }
 
     ctx.nested_flow_block_interaction_id_stack.push(runFlowInteraction.uuid)
@@ -650,7 +650,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   /**
    * Find next block leveraging destinationBlock on current interaction's `selectedExit`.
    * Raises when `selectedExitId` absent.
-   * @param blockId
+   * @param block_id
    * @param selectedExitId
    * @param ctx
    */
@@ -672,24 +672,24 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * - UUID via `IIdGenerator.generate()`
    * - entryAt via current timestamp
    * - flowId (provisioned)
-   * - blockId via block.uuid
+   * - block_id via block.uuid
    * - type via block.type provisioned
    * - hasResponse as `false`
-   * @param blockId
+   * @param block_id
    * @param type
    * @param flowId
    * @param originFlowId
    * @param originBlockInteractionId
    */
   private createBlockInteractionFor(
-    {uuid: blockId, type}: IBlock,
+    {uuid: block_id, type}: IBlock,
     flowId: string,
     originFlowId: string | undefined,
     originBlockInteractionId: string | undefined
   ): IBlockInteraction {
     return {
       uuid: this.idGenerator.generate(),
-      block_id: blockId,
+      block_id: block_id,
       flow_id: flowId,
       entry_at: createFormattedDate(),
       exit_at: undefined,

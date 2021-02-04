@@ -62,47 +62,47 @@ export class Context implements IContext {
 
   constructor(
     id: string,
-    createdAt: string,
-    deliveryStatus: DeliveryStatus,
+    created_at: string,
+    delivery_status: DeliveryStatus,
     mode: SupportedMode,
-    languageId: string,
+    language_id: string,
     contact: IContact,
     groups: IGroup[],
-    sessionVars: {[k: string]: unknown},
+    session_vars: {[k: string]: unknown},
     interactions: IBlockInteraction[],
-    nestedFlowBlockInteractionIdStack: string[],
-    reversibleOperations: IReversibleUpdateOperation[],
+    nested_flow_block_interaction_id_stack: string[],
+    reversible_operations: IReversibleUpdateOperation[],
     flows: IFlow[],
-    firstFlowId: string,
+    first_flow_id: string,
     resources: IResources,
-    entryAt?: string,
-    exitAt?: string,
-    userId?: string,
-    orgId?: string,
+    entry_at?: string,
+    exit_at?: string,
+    user_id?: string,
+    org_id?: string,
     cursor?: ICursor,
-    vendorMetadata: {[k: string]: unknown} = {},
+    vendor_metadata: {[k: string]: unknown} = {},
     logs: {[k: string]: string} = {}
   ) {
     this.logs = logs
-    this.vendor_metadata = vendorMetadata
+    this.vendor_metadata = vendor_metadata
     this.cursor = cursor
-    this.org_id = orgId
-    this.user_id = userId
-    this.exit_at = exitAt
-    this.entry_at = entryAt
+    this.org_id = org_id
+    this.user_id = user_id
+    this.exit_at = exit_at
+    this.entry_at = entry_at
     this.resources = resources
-    this.first_flow_id = firstFlowId
+    this.first_flow_id = first_flow_id
     this.flows = flows
-    this.reversible_operations = reversibleOperations
-    this.nested_flow_block_interaction_id_stack = nestedFlowBlockInteractionIdStack
+    this.reversible_operations = reversible_operations
+    this.nested_flow_block_interaction_id_stack = nested_flow_block_interaction_id_stack
     this.interactions = interactions
-    this.session_vars = sessionVars
+    this.session_vars = session_vars
     this.contact = contact
     this.groups = groups
-    this.language_id = languageId
+    this.language_id = language_id
     this.mode = mode
-    this.delivery_status = deliveryStatus
-    this.created_at = createdAt
+    this.delivery_status = delivery_status
+    this.created_at = created_at
     this.id = id
   }
 
@@ -119,25 +119,25 @@ export namespace Context {
   // noinspection JSUnusedGlobalSymbols
   export class Builder {
     id?: string
-    createdAt: string = createFormattedDate()
-    deliveryStatus: DeliveryStatus = DeliveryStatus.QUEUED
+    created_at: string = createFormattedDate()
+    delivery_status: DeliveryStatus = DeliveryStatus.QUEUED
     mode: SupportedMode = SupportedMode.OFFLINE
-    languageId?: string
+    language_id?: string
     contact?: IContact
     groups?: IGroup[]
-    sessionVars: {[k: string]: unknown} = {}
+    session_vars: {[k: string]: unknown} = {}
     interactions: IBlockInteraction[] = []
-    nestedFlowBlockInteractionIdStack: string[] = []
-    reversibleOperations: IReversibleUpdateOperation[] = []
+    nested_flow_block_interaction_id_stack: string[] = []
+    reversible_operations: IReversibleUpdateOperation[] = []
     flows?: IFlow[]
-    firstFlowId?: string
+    first_flow_id?: string
     resources?: IResourceDefinition[]
-    entryAt?: string
-    exitAt?: string
-    userId?: string
-    orgId?: string
+    entry_at?: string
+    exit_at?: string
+    user_id?: string
+    org_id?: string
     cursor?: ICursor
-    vendorMetadata: {[k: string]: unknown} = {}
+    vendor_metadata: {[k: string]: unknown} = {}
     logs: {[k: string]: string} = {}
 
     setId(id: string): Context.Builder {
@@ -145,13 +145,13 @@ export namespace Context {
       return this
     }
 
-    setCreatedAt(createdAt: string): Context.Builder {
-      this.createdAt = createdAt
+    setCreatedAt(created_at: string): Context.Builder {
+      this.created_at = created_at
       return this
     }
 
-    setDeliveryStatus(deliveryStatus: DeliveryStatus): Context.Builder {
-      this.deliveryStatus = deliveryStatus
+    setDeliveryStatus(delivery_status: DeliveryStatus): Context.Builder {
+      this.delivery_status = delivery_status
       return this
     }
 
@@ -160,8 +160,8 @@ export namespace Context {
       return this
     }
 
-    setLanguageId(languageId: string): Context.Builder {
-      this.languageId = languageId
+    setLanguageId(language_id: string): Context.Builder {
+      this.language_id = language_id
       return this
     }
 
@@ -175,8 +175,8 @@ export namespace Context {
       return this
     }
 
-    setSessionVars(sessionVars: {[k: string]: unknown}): Context.Builder {
-      this.sessionVars = sessionVars
+    setSessionVars(session_vars: {[k: string]: unknown}): Context.Builder {
+      this.session_vars = session_vars
       return this
     }
 
@@ -185,13 +185,13 @@ export namespace Context {
       return this
     }
 
-    setNestedFlowBlockInteractionIdStack(nestedFlowBlockInteractionIdStack: string[]): Context.Builder {
-      this.nestedFlowBlockInteractionIdStack = nestedFlowBlockInteractionIdStack
+    setNestedFlowBlockInteractionIdStack(nested_flow_block_interaction_id_stack: string[]): Context.Builder {
+      this.nested_flow_block_interaction_id_stack = nested_flow_block_interaction_id_stack
       return this
     }
 
-    setReversibleOperations(reversibleOperations: IReversibleUpdateOperation[]): Context.Builder {
-      this.reversibleOperations = reversibleOperations
+    setReversibleOperations(reversible_operations: IReversibleUpdateOperation[]): Context.Builder {
+      this.reversible_operations = reversible_operations
       return this
     }
 
@@ -200,8 +200,8 @@ export namespace Context {
       return this
     }
 
-    setFirstFlowId(firstFlowId: string): Context.Builder {
-      this.firstFlowId = firstFlowId
+    setFirstFlowId(first_flow_id: string): Context.Builder {
+      this.first_flow_id = first_flow_id
       return this
     }
 
@@ -210,23 +210,23 @@ export namespace Context {
       return this
     }
 
-    setEntryAt(entryAt: string): Context.Builder {
-      this.entryAt = entryAt
+    setEntryAt(entry_at: string): Context.Builder {
+      this.entry_at = entry_at
       return this
     }
 
-    setExitAt(exitAt: string): Context.Builder {
-      this.exitAt = exitAt
+    setExitAt(exit_at: string): Context.Builder {
+      this.exit_at = exit_at
       return this
     }
 
-    setUserId(userId: string): Context.Builder {
-      this.userId = userId
+    setUserId(user_id: string): Context.Builder {
+      this.user_id = user_id
       return this
     }
 
-    setOrgId(orgId: string): Context.Builder {
-      this.orgId = orgId
+    setOrgId(org_id: string): Context.Builder {
+      this.org_id = org_id
       return this
     }
 
@@ -235,8 +235,8 @@ export namespace Context {
       return this
     }
 
-    setPlatformMetadata(vendorMetadata: {[k: string]: unknown}): Context.Builder {
-      this.vendorMetadata = vendorMetadata
+    setPlatformMetadata(vendor_metadata: {[k: string]: unknown}): Context.Builder {
+      this.vendor_metadata = vendor_metadata
       return this
     }
 
@@ -247,34 +247,34 @@ export namespace Context {
 
     build(): Context {
       assertNotNull(this.id, () => 'Context.Builder.setId() must be called before build()')
-      assertNotNull(this.languageId, () => 'Context.Builder.setLanguageId() must be called before build()')
+      assertNotNull(this.language_id, () => 'Context.Builder.setLanguageId() must be called before build()')
       assertNotNull(this.contact, () => 'Context.Builder.setContact() must be called before build()')
       assertNotNull(this.groups, () => 'Context.Builder.setGroups() must be called before build()')
       assertNotNull(this.flows, () => 'Context.Builder.setFlows() must be called before build()')
-      assertNotNull(this.firstFlowId, () => 'Context.Builder.setFirstFlowId() must be called before build()')
+      assertNotNull(this.first_flow_id, () => 'Context.Builder.setFirstFlowId() must be called before build()')
       assertNotNull(this.resources, () => 'Context.Builder.setResources() must be called before build()')
 
       return new Context(
         this.id,
-        this.createdAt,
-        this.deliveryStatus,
+        this.created_at,
+        this.delivery_status,
         this.mode,
-        this.languageId,
+        this.language_id,
         this.contact,
         this.groups,
-        this.sessionVars,
+        this.session_vars,
         this.interactions,
-        this.nestedFlowBlockInteractionIdStack,
-        this.reversibleOperations,
+        this.nested_flow_block_interaction_id_stack,
+        this.reversible_operations,
         this.flows,
-        this.firstFlowId,
+        this.first_flow_id,
         this.resources,
-        this.entryAt,
-        this.exitAt,
-        this.userId,
-        this.orgId,
+        this.entry_at,
+        this.exit_at,
+        this.user_id,
+        this.org_id,
         this.cursor,
-        this.vendorMetadata,
+        this.vendor_metadata,
         this.logs
       )
     }

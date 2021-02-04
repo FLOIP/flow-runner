@@ -5,7 +5,7 @@ export interface IFlow {
     label?: string;
     last_modified: string;
     interaction_timeout: number;
-    platform_metadata: object;
+    vendor_metadata: object;
     supported_modes: SupportedMode[];
     languages: ILanguage[];
     blocks: IBlock[];

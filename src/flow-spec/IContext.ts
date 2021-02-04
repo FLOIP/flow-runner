@@ -195,7 +195,7 @@ export function findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContex
   const flowId = (runFlowBlock.config as IRunFlowBlockConfig).flow_id
 
   if (flowId == null) {
-    throw new ValidationException('Unable to find nested flowId on Core\\RunFlow')
+    throw new ValidationException('Unable to find nested flowId on Core.Runflow')
   }
 
   return flowId

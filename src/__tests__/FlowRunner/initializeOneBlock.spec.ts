@@ -16,7 +16,7 @@ describe('FlowRunner/initializeOneBlock', () => {
       ctx,
       new BlockRunnerFactoryStore([
         [
-          'MobilePrimitives\\Message',
+          'MobilePrimitives.Message',
           (block, context) => ({
             block,
             context,
@@ -42,7 +42,7 @@ describe('FlowRunner/initializeOneBlock', () => {
       ctx,
       new BlockRunnerFactoryStore([
         [
-          'MobilePrimitives\\Message',
+          'MobilePrimitives.Message',
           (block, context) => ({
             block,
             context,
@@ -76,7 +76,7 @@ describe('FlowRunner/initializeOneBlock', () => {
       ctx,
       new BlockRunnerFactoryStore([
         [
-          'MobilePrimitives\\Message',
+          'MobilePrimitives.Message',
           (block, context) => ({
             block,
             context,

@@ -9,7 +9,7 @@ export declare class ContactGroup extends Group implements IContactGroup {
     updated_at: string;
     deleted_at?: string | undefined;
     constructor(group: IGroup);
-    constructor(groupKey: string, label: string, updatedAt: string, deletedAt?: string);
-    constructor(groupKey: string, updatedAt: string, deletedAt?: string);
+    constructor(group_key: string, label: string, updated_at: string, deleted_at?: string);
+    constructor(group_key: string, updated_at: string, deleted_at?: string);
 }
 //# sourceMappingURL=Group.d.ts.map

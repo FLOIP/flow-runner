@@ -1,35 +1,35 @@
 {
   "id": "cedc429f-4b18-4a1f-9429-862b1c9cf53b",
-  "createdAt": "2019-10-07T15:55:01.804Z",
-  "deliveryStatus": "3",
-  "userId": "15",
+  "created_at": "2019-10-07T15:55:01.804Z",
+  "delivery_status": "3",
+  "user_id": "15",
   "mode": "OFFLINE",
-  "languageId": "22",
+  "language_id": "22",
   "contact": {
     "id": "0"
   },
-  "sessionVars": {},
+  "session_vars": {},
   "interactions": [
     {
       "uuid": "ed14426a-9542-4af6-b575-dfc347aab923",
-      "blockId": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
-      "flowId": "5b8c87d6-de90-4bc4-8668-4f040000006b",
-      "entryAt": "2019-10-07T15:55:01.805Z",
-      "hasResponse": true,
+      "block_id": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
+      "flow_id": "5b8c87d6-de90-4bc4-8668-4f040000006b",
+      "entry_at": "2019-10-07T15:55:01.805Z",
+      "has_response": true,
       "value": "true",
-      "selectedExitId": "29841127-3247-4610-8037-c915c54a60ed",
+      "selected_exit_id": "29841127-3247-4610-8037-c915c54a60ed",
       "details": {},
-      "type": "MobilePrimitives\\SelectOneResponse"
+      "type": "MobilePrimitives.SelectOneResponse"
     }
   ],
-  "nestedFlowBlockInteractionIdStack": [],
+  "nested_flow_block_interaction_id_stack": [],
   "flows": [
     {
       "blocks": [
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
           "name": "1570221906056_83",
-          "type": "MobilePrimitives\\SelectOneResponse",
+          "type": "MobilePrimitives.SelectOneResponse",
           "config": {
             "choices": {
               "true": "29841127-3247-4612-84dd-877400000000",
@@ -42,36 +42,36 @@
           "exits": [
             {
               "config": {},
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf940b278e",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8ecf940b278e",
               "label": "29841127-3247-4610-8037-c915c54a60ed",
-              "semanticLabel": "",
+              "semantic_label": "",
               "tag": "True",
               "test": "@(OR(AND(channel.mode = 'ivr', block.value = '1'), AND(channel.mode != 'ivr', OR(block.value = '1', LOWER(block.value) = 'true'))))",
               "uuid": "29841127-3247-4610-8037-c915c54a60ed"
             },
             {
               "config": {},
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf940b278e",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8ecf940b278e",
               "label": "29841127-3247-4610-8037-c915c54a60ee",
-              "semanticLabel": "",
+              "semantic_label": "",
               "tag": "False",
               "test": "@(OR(AND(channel.mode = 'ivr', block.value = '2'), AND(channel.mode != 'ivr', OR(block.value = '2', LOWER(block.value) = 'false'))))",
               "uuid": "29841127-3247-4610-8037-c915c54a60ee"
             },
             {
               "config": {},
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf940b278e",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8ecf940b278e",
               "label": "29841127-3247-4610-8037-c915c54a60ef",
-              "semanticLabel": "",
+              "semantic_label": "",
               "tag": "Why Not Option 3?",
               "test": "@(OR(AND(channel.mode = 'ivr', block.value = '3'), AND(channel.mode != 'ivr', OR(block.value = '3', LOWER(block.value) = 'why not option 3?'))))",
               "uuid": "29841127-3247-4610-8037-c915c54a60ef"
             },
             {
               "config": {},
-              "destinationBlock": null,
+              "destination_block": null,
               "label": "29841127-3247-4610-8037-c915c54a60f0",
-              "semanticLabel": "",
+              "semantic_label": "",
               "tag": "Unchoosable (Seriously this breaks the tree)",
               "test": "@(OR(AND(channel.mode = 'ivr', block.value = '4'), AND(channel.mode != 'ivr', OR(block.value = '4', LOWER(block.value) = 'unchoosable (seriously this breaks the tree)'))))",
               "uuid": "29841127-3247-4610-8037-c915c54a60f0"
@@ -81,16 +81,16 @@
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
           "name": "1570221922572_66",
-          "type": "MobilePrimitives\\Message",
+          "type": "MobilePrimitives.Message",
           "config": {
             "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2"
           },
           "exits": [
             {
               "config": {},
-              "destinationBlock": null,
+              "destination_block": null,
               "label": "29841127-3247-4610-8037-c915cf227e89",
-              "semanticLabel": "",
+              "semantic_label": "",
               "tag": "1",
               "test": null,
               "uuid": "29841127-3247-4610-8037-c915cf227e89"
@@ -100,23 +100,23 @@
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf940b278e",
           "name": "1570221931334_54",
-          "type": "Core\\Case",
+          "type": "Core.Case",
           "config": {},
           "exits": [
             {
               "config": {},
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
               "label": "29841127-3247-4610-8037-c915d45b7379",
-              "semanticLabel": "",
+              "semantic_label": "",
               "tag": "TRUE",
               "test": "@(OR(flow.1570221906056_83.value = 1, flow.1570221906056_83.value = 4))",
               "uuid": "29841127-3247-4610-8037-c915d45b7379"
             },
             {
               "config": {},
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf9437b3e0",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8ecf9437b3e0",
               "label": "29841127-3247-4610-8037-c915d45b737a",
-              "semanticLabel": "",
+              "semantic_label": "",
               "tag": "FALSE",
               "test": null,
               "uuid": "29841127-3247-4610-8037-c915d45b737a"
@@ -126,23 +126,23 @@
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9437b3e0",
           "name": "1570221960529_60",
-          "type": "Core\\Case",
+          "type": "Core.Case",
           "config": {},
           "exits": [
             {
               "config": {},
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
               "label": "29841127-3247-4610-8037-c915e5c24381",
-              "semanticLabel": "",
+              "semantic_label": "",
               "tag": "TRUE",
               "test": "@(OR(flow.1570221906056_83.value = 2, flow.1570221906056_83.value = 4))",
               "uuid": "29841127-3247-4610-8037-c915e5c24381"
             },
             {
               "config": {},
-              "destinationBlock": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
+              "destination_block": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
               "label": "29841127-3247-4610-8037-c915e5c24382",
-              "semanticLabel": "",
+              "semantic_label": "",
               "tag": "FALSE",
               "test": null,
               "uuid": "29841127-3247-4610-8037-c915e5c24382"
@@ -152,16 +152,16 @@
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
           "name": "1570221972402_58",
-          "type": "MobilePrimitives\\Message",
+          "type": "MobilePrimitives.Message",
           "config": {
             "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2"
           },
           "exits": [
             {
               "config": {},
-              "destinationBlock": null,
+              "destination_block": null,
               "label": "29841127-3247-4610-8037-c915ecd5efc9",
-              "semanticLabel": "",
+              "semantic_label": "",
               "tag": "1",
               "test": null,
               "uuid": "29841127-3247-4610-8037-c915ecd5efc9"
@@ -171,16 +171,16 @@
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
           "name": "1570221973072_23",
-          "type": "MobilePrimitives\\Message",
+          "type": "MobilePrimitives.Message",
           "config": {
             "prompt": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757"
           },
           "exits": [
             {
               "config": {},
-              "destinationBlock": null,
+              "destination_block": null,
               "label": "29841127-3247-4610-8037-c915ed3c1dfd",
-              "semanticLabel": "",
+              "semantic_label": "",
               "tag": "1",
               "test": null,
               "uuid": "29841127-3247-4610-8037-c915ed3c1dfd"
@@ -188,17 +188,17 @@
           ]
         }
       ],
-      "exitBlockId": null,
-      "firstBlockId": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
-      "interactionTimeout": 172800,
+      "exit_block_id": null,
+      "first_block_id": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
+      "interaction_timeout": 172800,
       "label": "",
       "languages": {
         "0": "22"
       },
-      "lastModified": "2019-10-04 21:05:25.000000+00:00",
+      "last_modified": "2019-10-04 21:05:25.000000+00:00",
       "name": "Case Block",
-      "vendorMetadata": {},
-      "supportedModes": {},
+      "vendor_metadata": {},
+      "supported_modes": {},
       "uuid": "5b8c87d6-de90-4bc4-8668-4f040000006b",
       "resources": [
         {
@@ -206,9 +206,9 @@
           "values": [
             {
               "uuid": "29841127-3247-4612-84dd-877400000000;22;text;ivr;sms;ussd;rich_messaging;offline",
-              "resourceUuid": "29841127-3247-4612-84dd-877400000000",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "29841127-3247-4612-84dd-877400000000",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "IVR",
                 "SMS",
@@ -217,8 +217,8 @@
                 "OFFLINE"
               ],
               "value": "True",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -227,9 +227,9 @@
           "values": [
             {
               "uuid": "29841127-3247-4612-84dd-a24000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
-              "resourceUuid": "29841127-3247-4612-84dd-a24000000000",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "29841127-3247-4612-84dd-a24000000000",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "IVR",
                 "SMS",
@@ -238,8 +238,8 @@
                 "OFFLINE"
               ],
               "value": "False",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -248,9 +248,9 @@
           "values": [
             {
               "uuid": "29841127-3247-4612-84dd-bb8000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
-              "resourceUuid": "29841127-3247-4612-84dd-bb8000000000",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "29841127-3247-4612-84dd-bb8000000000",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "IVR",
                 "SMS",
@@ -259,8 +259,8 @@
                 "OFFLINE"
               ],
               "value": "Why Not Option 3?",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -269,9 +269,9 @@
           "values": [
             {
               "uuid": "29841127-3247-4612-84dd-d7c000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
-              "resourceUuid": "29841127-3247-4612-84dd-d7c000000000",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "29841127-3247-4612-84dd-d7c000000000",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "IVR",
                 "SMS",
@@ -280,8 +280,8 @@
                 "OFFLINE"
               ],
               "value": "Unchoosable (Seriously this breaks the tree)",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -290,9 +290,9 @@
           "values": [
             {
               "uuid": "29841127-3247-4610-8037-c915c54a60ed;22;text;ivr;sms;ussd;rich_messaging;offline",
-              "resourceUuid": "29841127-3247-4610-8037-c915c54a60ed",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "29841127-3247-4610-8037-c915c54a60ed",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "IVR",
                 "SMS",
@@ -301,8 +301,8 @@
                 "OFFLINE"
               ],
               "value": "True",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -311,9 +311,9 @@
           "values": [
             {
               "uuid": "29841127-3247-4610-8037-c915c54a60ee;22;text;ivr;sms;ussd;rich_messaging;offline",
-              "resourceUuid": "29841127-3247-4610-8037-c915c54a60ee",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "29841127-3247-4610-8037-c915c54a60ee",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "IVR",
                 "SMS",
@@ -322,8 +322,8 @@
                 "OFFLINE"
               ],
               "value": "False",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -332,9 +332,9 @@
           "values": [
             {
               "uuid": "29841127-3247-4610-8037-c915c54a60ef;22;text;ivr;sms;ussd;rich_messaging;offline",
-              "resourceUuid": "29841127-3247-4610-8037-c915c54a60ef",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "29841127-3247-4610-8037-c915c54a60ef",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "IVR",
                 "SMS",
@@ -343,8 +343,8 @@
                 "OFFLINE"
               ],
               "value": "Why Not Option 3?",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -353,9 +353,9 @@
           "values": [
             {
               "uuid": "29841127-3247-4610-8037-c915c54a60f0;22;text;ivr;sms;ussd;rich_messaging;offline",
-              "resourceUuid": "29841127-3247-4610-8037-c915c54a60f0",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "29841127-3247-4610-8037-c915c54a60f0",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "IVR",
                 "SMS",
@@ -364,8 +364,8 @@
                 "OFFLINE"
               ],
               "value": "Unchoosable (Seriously this breaks the tree)",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -374,15 +374,15 @@
           "values": [
             {
               "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573;22;text;offline",
-              "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "OFFLINE"
               ],
               "value": "Choose one",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -391,9 +391,9 @@
           "values": [
             {
               "uuid": "29841127-3247-4610-8037-c915cf227e89;22;text;ivr;sms;ussd;rich_messaging;offline",
-              "resourceUuid": "29841127-3247-4610-8037-c915cf227e89",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "29841127-3247-4610-8037-c915cf227e89",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "IVR",
                 "SMS",
@@ -402,8 +402,8 @@
                 "OFFLINE"
               ],
               "value": "1",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -412,15 +412,15 @@
           "values": [
             {
               "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2;22;text;offline",
-              "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "OFFLINE"
               ],
               "value": "You Selected True",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -429,9 +429,9 @@
           "values": [
             {
               "uuid": "29841127-3247-4610-8037-c915d45b7379;22;text;ivr;sms;ussd;rich_messaging;offline",
-              "resourceUuid": "29841127-3247-4610-8037-c915d45b7379",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "29841127-3247-4610-8037-c915d45b7379",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "IVR",
                 "SMS",
@@ -440,8 +440,8 @@
                 "OFFLINE"
               ],
               "value": "TRUE",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -450,9 +450,9 @@
           "values": [
             {
               "uuid": "29841127-3247-4610-8037-c915d45b737a;22;text;ivr;sms;ussd;rich_messaging;offline",
-              "resourceUuid": "29841127-3247-4610-8037-c915d45b737a",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "29841127-3247-4610-8037-c915d45b737a",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "IVR",
                 "SMS",
@@ -461,8 +461,8 @@
                 "OFFLINE"
               ],
               "value": "FALSE",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -471,9 +471,9 @@
           "values": [
             {
               "uuid": "29841127-3247-4610-8037-c915e5c24381;22;text;ivr;sms;ussd;rich_messaging;offline",
-              "resourceUuid": "29841127-3247-4610-8037-c915e5c24381",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "29841127-3247-4610-8037-c915e5c24381",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "IVR",
                 "SMS",
@@ -482,8 +482,8 @@
                 "OFFLINE"
               ],
               "value": "TRUE",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -492,9 +492,9 @@
           "values": [
             {
               "uuid": "29841127-3247-4610-8037-c915e5c24382;22;text;ivr;sms;ussd;rich_messaging;offline",
-              "resourceUuid": "29841127-3247-4610-8037-c915e5c24382",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "29841127-3247-4610-8037-c915e5c24382",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "IVR",
                 "SMS",
@@ -503,8 +503,8 @@
                 "OFFLINE"
               ],
               "value": "FALSE",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -513,9 +513,9 @@
           "values": [
             {
               "uuid": "29841127-3247-4610-8037-c915ecd5efc9;22;text;ivr;sms;ussd;rich_messaging;offline",
-              "resourceUuid": "29841127-3247-4610-8037-c915ecd5efc9",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "29841127-3247-4610-8037-c915ecd5efc9",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "IVR",
                 "SMS",
@@ -524,8 +524,8 @@
                 "OFFLINE"
               ],
               "value": "1",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -534,15 +534,15 @@
           "values": [
             {
               "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2;22;text;offline",
-              "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "OFFLINE"
               ],
               "value": "You selected False",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -551,9 +551,9 @@
           "values": [
             {
               "uuid": "29841127-3247-4610-8037-c915ed3c1dfd;22;text;ivr;sms;ussd;rich_messaging;offline",
-              "resourceUuid": "29841127-3247-4610-8037-c915ed3c1dfd",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "29841127-3247-4610-8037-c915ed3c1dfd",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "IVR",
                 "SMS",
@@ -562,8 +562,8 @@
                 "OFFLINE"
               ],
               "value": "1",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         },
@@ -572,34 +572,34 @@
           "values": [
             {
               "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757;22;text;offline",
-              "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
-              "languageId": "22",
-              "contentType": "TEXT",
+              "resource_uuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
+              "language_id": "22",
+              "content_type": "TEXT",
               "modes": [
                 "OFFLINE"
               ],
               "value": "You can't have it both ways",
-              "fileName": null,
-              "hasBeenFetched": true
+              "file_name": null,
+              "has_been_fetched": true
             }
           ]
         }
       ],
-      "iconColor": "#b949e2",
-      "runCount": 7,
+      "icon_color": "#b949e2",
+      "run_count": 7,
       "sessions": []
     }
   ],
-  "firstFlowId": "5b8c87d6-de90-4bc4-8668-4f040000006b",
+  "first_flow_id": "5b8c87d6-de90-4bc4-8668-4f040000006b",
   "resources": [
     {
       "uuid": "29841127-3247-4612-84dd-877400000000",
       "values": [
         {
           "uuid": "29841127-3247-4612-84dd-877400000000;22;text;ivr;sms;ussd;rich_messaging;offline",
-          "resourceUuid": "29841127-3247-4612-84dd-877400000000",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "29841127-3247-4612-84dd-877400000000",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "IVR",
             "SMS",
@@ -608,8 +608,8 @@
             "OFFLINE"
           ],
           "value": "True",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -618,9 +618,9 @@
       "values": [
         {
           "uuid": "29841127-3247-4612-84dd-a24000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
-          "resourceUuid": "29841127-3247-4612-84dd-a24000000000",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "29841127-3247-4612-84dd-a24000000000",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "IVR",
             "SMS",
@@ -629,8 +629,8 @@
             "OFFLINE"
           ],
           "value": "False",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -639,9 +639,9 @@
       "values": [
         {
           "uuid": "29841127-3247-4612-84dd-bb8000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
-          "resourceUuid": "29841127-3247-4612-84dd-bb8000000000",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "29841127-3247-4612-84dd-bb8000000000",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "IVR",
             "SMS",
@@ -650,8 +650,8 @@
             "OFFLINE"
           ],
           "value": "Why Not Option 3?",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -660,9 +660,9 @@
       "values": [
         {
           "uuid": "29841127-3247-4612-84dd-d7c000000000;22;text;ivr;sms;ussd;rich_messaging;offline",
-          "resourceUuid": "29841127-3247-4612-84dd-d7c000000000",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "29841127-3247-4612-84dd-d7c000000000",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "IVR",
             "SMS",
@@ -671,8 +671,8 @@
             "OFFLINE"
           ],
           "value": "Unchoosable (Seriously this breaks the tree)",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -681,9 +681,9 @@
       "values": [
         {
           "uuid": "29841127-3247-4610-8037-c915c54a60ed;22;text;ivr;sms;ussd;rich_messaging;offline",
-          "resourceUuid": "29841127-3247-4610-8037-c915c54a60ed",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "29841127-3247-4610-8037-c915c54a60ed",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "IVR",
             "SMS",
@@ -692,8 +692,8 @@
             "OFFLINE"
           ],
           "value": "True",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -702,9 +702,9 @@
       "values": [
         {
           "uuid": "29841127-3247-4610-8037-c915c54a60ee;22;text;ivr;sms;ussd;rich_messaging;offline",
-          "resourceUuid": "29841127-3247-4610-8037-c915c54a60ee",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "29841127-3247-4610-8037-c915c54a60ee",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "IVR",
             "SMS",
@@ -713,8 +713,8 @@
             "OFFLINE"
           ],
           "value": "False",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -723,9 +723,9 @@
       "values": [
         {
           "uuid": "29841127-3247-4610-8037-c915c54a60ef;22;text;ivr;sms;ussd;rich_messaging;offline",
-          "resourceUuid": "29841127-3247-4610-8037-c915c54a60ef",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "29841127-3247-4610-8037-c915c54a60ef",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "IVR",
             "SMS",
@@ -734,8 +734,8 @@
             "OFFLINE"
           ],
           "value": "Why Not Option 3?",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -744,9 +744,9 @@
       "values": [
         {
           "uuid": "29841127-3247-4610-8037-c915c54a60f0;22;text;ivr;sms;ussd;rich_messaging;offline",
-          "resourceUuid": "29841127-3247-4610-8037-c915c54a60f0",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "29841127-3247-4610-8037-c915c54a60f0",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "IVR",
             "SMS",
@@ -755,8 +755,8 @@
             "OFFLINE"
           ],
           "value": "Unchoosable (Seriously this breaks the tree)",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -765,15 +765,15 @@
       "values": [
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573;22;text;offline",
-          "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93e49573",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "OFFLINE"
           ],
           "value": "Choose one",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -782,9 +782,9 @@
       "values": [
         {
           "uuid": "29841127-3247-4610-8037-c915cf227e89;22;text;ivr;sms;ussd;rich_messaging;offline",
-          "resourceUuid": "29841127-3247-4610-8037-c915cf227e89",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "29841127-3247-4610-8037-c915cf227e89",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "IVR",
             "SMS",
@@ -793,8 +793,8 @@
             "OFFLINE"
           ],
           "value": "1",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -803,15 +803,15 @@
       "values": [
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2;22;text;offline",
-          "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "OFFLINE"
           ],
           "value": "You Selected True",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -820,9 +820,9 @@
       "values": [
         {
           "uuid": "29841127-3247-4610-8037-c915d45b7379;22;text;ivr;sms;ussd;rich_messaging;offline",
-          "resourceUuid": "29841127-3247-4610-8037-c915d45b7379",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "29841127-3247-4610-8037-c915d45b7379",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "IVR",
             "SMS",
@@ -831,8 +831,8 @@
             "OFFLINE"
           ],
           "value": "TRUE",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -841,9 +841,9 @@
       "values": [
         {
           "uuid": "29841127-3247-4610-8037-c915d45b737a;22;text;ivr;sms;ussd;rich_messaging;offline",
-          "resourceUuid": "29841127-3247-4610-8037-c915d45b737a",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "29841127-3247-4610-8037-c915d45b737a",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "IVR",
             "SMS",
@@ -852,8 +852,8 @@
             "OFFLINE"
           ],
           "value": "FALSE",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -862,9 +862,9 @@
       "values": [
         {
           "uuid": "29841127-3247-4610-8037-c915e5c24381;22;text;ivr;sms;ussd;rich_messaging;offline",
-          "resourceUuid": "29841127-3247-4610-8037-c915e5c24381",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "29841127-3247-4610-8037-c915e5c24381",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "IVR",
             "SMS",
@@ -873,8 +873,8 @@
             "OFFLINE"
           ],
           "value": "TRUE",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -883,9 +883,9 @@
       "values": [
         {
           "uuid": "29841127-3247-4610-8037-c915e5c24382;22;text;ivr;sms;ussd;rich_messaging;offline",
-          "resourceUuid": "29841127-3247-4610-8037-c915e5c24382",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "29841127-3247-4610-8037-c915e5c24382",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "IVR",
             "SMS",
@@ -894,8 +894,8 @@
             "OFFLINE"
           ],
           "value": "FALSE",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -904,9 +904,9 @@
       "values": [
         {
           "uuid": "29841127-3247-4610-8037-c915ecd5efc9;22;text;ivr;sms;ussd;rich_messaging;offline",
-          "resourceUuid": "29841127-3247-4610-8037-c915ecd5efc9",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "29841127-3247-4610-8037-c915ecd5efc9",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "IVR",
             "SMS",
@@ -915,8 +915,8 @@
             "OFFLINE"
           ],
           "value": "1",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -925,15 +925,15 @@
       "values": [
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2;22;text;offline",
-          "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "95bd9e4a-93cd-46f2-9b43-8ecf9449d1c2",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "OFFLINE"
           ],
           "value": "You selected False",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -942,9 +942,9 @@
       "values": [
         {
           "uuid": "29841127-3247-4610-8037-c915ed3c1dfd;22;text;ivr;sms;ussd;rich_messaging;offline",
-          "resourceUuid": "29841127-3247-4610-8037-c915ed3c1dfd",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "29841127-3247-4610-8037-c915ed3c1dfd",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "IVR",
             "SMS",
@@ -953,8 +953,8 @@
             "OFFLINE"
           ],
           "value": "1",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     },
@@ -963,20 +963,20 @@
       "values": [
         {
           "uuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757;22;text;offline",
-          "resourceUuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
-          "languageId": "22",
-          "contentType": "TEXT",
+          "resource_uuid": "95bd9e4a-93cd-46f2-9b43-8ecf944ad757",
+          "language_id": "22",
+          "content_type": "TEXT",
           "modes": [
             "OFFLINE"
           ],
           "value": "You can't have it both ways",
-          "fileName": null,
-          "hasBeenFetched": true
+          "file_name": null,
+          "has_been_fetched": true
         }
       ]
     }
   ],
-  "entryAt": "2019-10-07T15:55:01.805Z",
+  "entry_at": "2019-10-07T15:55:01.805Z",
   "cursor": {
     "interactionId": "ed14426a-9542-4af6-b575-dfc347aab923",
     "promptConfig": {
@@ -1005,5 +1005,5 @@
       "isSubmitted": true
     }
   },
-  "vendorMetadata": {}
+  "vendor_metadata": {}
 }

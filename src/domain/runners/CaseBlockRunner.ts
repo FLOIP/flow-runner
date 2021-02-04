@@ -27,7 +27,7 @@ import {
 } from '../..'
 
 /**
- * Block runner for `Core\Case` - Evaluates a list of expressions, one for each exit, and terminates through the first
+ * Block runner for `Core.Case` - Evaluates a list of expressions, one for each exit, and terminates through the first
  * exit where the corresponding expression evaluates to a "truthy" result.
  *
  * This block will sequentially evaluate the test expressions in each exit (passing over any default exit), in order.
@@ -36,8 +36,7 @@ import {
  * proceeds through the default exit.
  */
 export class CaseBlockRunner implements IBlockRunner {
-  constructor(public block: ICaseBlock, public context: IContext) {
-  }
+  constructor(public block: ICaseBlock, public context: IContext) {}
 
   async initialize(): Promise<undefined> {
     return undefined

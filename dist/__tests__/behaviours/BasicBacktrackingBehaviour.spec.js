@@ -6,7 +6,7 @@ const __1 = require("../..");
 describe('BasicBacktrackingBehaviour', () => {
     let backtracking;
     beforeEach(() => {
-        backtracking = new __1.BasicBacktrackingBehaviour({ platform_metadata: {} }, { navigateTo: (_b, _c) => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return ({ interaction: {}, prompt: undefined }); }) }, {
+        backtracking = new __1.BasicBacktrackingBehaviour({ vendor_metadata: {} }, { navigateTo: (_b, _c) => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return ({ interaction: {}, prompt: undefined }); }) }, {
             buildPromptFor: (_b, _i) => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return undefined; }),
         });
     });

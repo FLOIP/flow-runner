@@ -106,7 +106,7 @@ describe('FlowRunner', () => {
         const runner = new FlowRunner(context)
 
         await expect(runner.run()).rejects.toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')
-        // expect((await runner.run())![0].blockId).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
+        // expect((await runner.run())![0].block_id).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
       })
     })
 

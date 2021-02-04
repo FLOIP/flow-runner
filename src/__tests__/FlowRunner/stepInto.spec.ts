@@ -14,10 +14,10 @@ describe('FlowRunner/stepInto', () => {
     const runner = new FlowRunner(ctx)
 
     expect(FlowRunner.prototype.stepInto.bind(runner, block, ctx)).toThrow(ValidationException)
-    expect(FlowRunner.prototype.stepInto.bind(runner, block, ctx)).toThrow('non-Core\\RunFlow')
+    expect(FlowRunner.prototype.stepInto.bind(runner, block, ctx)).toThrow('non-Core.Runflow')
   })
 
-  it("should raise when last interaction doesn't match provided blockId (aka only allow step ins during active interaction)", async () => {
+  it("should raise when last interaction doesn't match provided block_id (aka only allow step ins during active interaction)", async () => {
     const ctx = dataset.contexts[2]
     const block = dataset._blocks[5] // dummy+empty RunFlow
     const runner = new FlowRunner(ctx)

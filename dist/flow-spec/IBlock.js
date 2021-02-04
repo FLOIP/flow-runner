@@ -39,7 +39,7 @@ function generateCachedProxyForBlockName(target, ctx) {
             if (prop in target) {
                 return Reflect.get(...arguments);
             }
-            const evalBlock = lodash_1.get(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`);
+            const evalBlock = lodash_1.get(ctx, `session_vars.block_interactions_by_block_name.${prop.toString()}`);
             if (evalBlock == null) {
                 return;
             }
@@ -47,7 +47,7 @@ function generateCachedProxyForBlockName(target, ctx) {
             return lodash_1.extend({ value, __value__: value }, evalBlock);
         },
         has(target, prop) {
-            return prop in target || lodash_1.has(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`);
+            return prop in target || lodash_1.has(ctx, `session_vars.block_interactions_by_block_name.${prop.toString()}`);
         },
     });
 }

@@ -29,7 +29,7 @@ import {
 } from '../..'
 
 /**
- * Block runner for `MobilePrimitives\OpenResponse` - Obtains an open-ended response from the contact. Dependent on the
+ * Block runner for `MobilePrimitives.OpenResponse` - Obtains an open-ended response from the contact. Dependent on the
  * channel, this is a text response, audio recording, or other type of media recording (e.g. video).
  *
  * - text (SMS): Send an SMS with the prompt text, according to the prompt configuration in config above, and wait to

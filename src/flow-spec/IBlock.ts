@@ -107,7 +107,7 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext): 
       }
 
       // fetch our basic representation of a block stored on the context
-      const evalBlock = get(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`)
+      const evalBlock = get(ctx, `session_vars.block_interactions_by_block_name.${prop.toString()}`)
       if (evalBlock == null) {
         return
       }
@@ -124,7 +124,7 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext): 
     },
 
     has(target, prop) {
-      return prop in target || has(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`)
+      return prop in target || has(ctx, `session_vars.block_interactions_by_block_name.${prop.toString()}`)
     },
   }) as TEvalContextBlockMap
 }

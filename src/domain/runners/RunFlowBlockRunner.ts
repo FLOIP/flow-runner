@@ -20,7 +20,7 @@
 import {IBlock, IBlockExit, IBlockRunner, IContext, IRunFlowBlockConfig} from '../..'
 
 /**
- * Block runner for `Core\RunFlow` - This block starts and runs another {@link IFlow}, and returns execution to the
+ * Block runner for `Core.Runflow` - This block starts and runs another {@link IFlow}, and returns execution to the
  * current {@link IFlow} when finished.
  *
  * Entry:

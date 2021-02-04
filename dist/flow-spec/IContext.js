@@ -21,7 +21,7 @@ function createContextDataObjectFor(contact, groups, userId, orgId, flows, langu
         flows,
         first_flow_id: flows[0].uuid,
         resources,
-        platform_metadata: {},
+        vendor_metadata: {},
         logs: {},
     };
 }
@@ -51,7 +51,7 @@ function findNestedFlowIdFor(interaction, ctx) {
     const runFlowBlock = __1.findBlockWith(interaction.block_id, flow);
     const flowId = runFlowBlock.config.flow_id;
     if (flowId == null) {
-        throw new __1.ValidationException('Unable to find nested flowId on Core\\RunFlow');
+        throw new __1.ValidationException('Unable to find nested flowId on Core.Runflow');
     }
     return flowId;
 }

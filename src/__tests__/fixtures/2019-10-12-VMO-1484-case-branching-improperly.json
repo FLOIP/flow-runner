@@ -15,29 +15,29 @@
       "uuid": "5b8c87d6-de90-4bc4-8668-4f0400004735",
       "name": "Test Decision Branch Block",
       "label": "",
-      "lastModified": "2019-10-12 00:59:07.000000+00:00",
-      "interactionTimeout": 172800,
-      "supportedModes": [],
+      "last_modified": "2019-10-12 00:59:07.000000+00:00",
+      "interaction_timeout": 172800,
+      "supported_modes": [],
       "languages": [{
         "id": "209061",
         "name": "English",
         "abbreviation": "EN",
-        "orgId": "969652746196090880",
-        "rightToLeft": false,
+        "org_id": "969652746196090880",
+        "right_to_left": false,
         "code": null,
-        "deletedAt": null
+        "deleted_at": null
       }],
-      "vendorMetadata": {
+      "vendor_metadata": {
         "io_viamo": {
-          "orgId": "969652746196090880",
-          "treeId": "44897"
+          "org_id": "969652746196090880",
+          "tree_id": "44897"
         }
       },
       "blocks": [{
           "uuid": "95bd9e4a-9300-400a-9f61-8ede02e10e03",
           "name": "1570841821875_23",
           "label": "Dogs/Cats",
-          "semanticLabel": "",
+          "semantic_label": "",
           "config": {
             "choices": {
               "Dogs": "29841127-3247-461d-8194-a376dd8f0800",
@@ -45,10 +45,10 @@
             },
             "prompt": "95bd9e4a-9300-400a-9f61-8ede02e10e03"
           },
-          "vendorMetadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "MultipleChoiceQuestionBlock",
-              "customData": {
+              "custom_data": {
                 "title": "Dogs_or_Cats",
                 "label": "",
                 "tags": [],
@@ -56,135 +56,135 @@
                   "209061": false
                 },
                 "branching": 0,
-                "addExitForNoResponse": 0,
+                "add_exit_for_no_response": 0,
                 "choices": [
                   "Dogs",
                   "Cats"
                 ],
-                "numChoices": 1
+                "num_choices": 1
               },
-              "uiData": {
-                "xPosition": 313,
-                "yPosition": 95,
-                "numConnections": 1,
-                "outputNames": [
+              "ui_data": {
+                "x_position": 313,
+                "y_position": 95,
+                "num_connections": 1,
+                "output_names": [
                   1
                 ],
-                "fieldLabels": [
+                "field_labels": [
                   1
                 ]
               },
-              "audioFiles": [],
-              "smsContent": [],
-              "ussdContent": [],
-              "socialContent": [],
-              "clipboardContent": {
+              "audio_files": [],
+              "sms_content": [],
+              "ussd_content": [],
+              "social_content": [],
+              "clipboard_content": {
                 "209061": "Dogs or Cats?"
               },
-              "smsAutogenLangs": [
+              "sms_autogen_langs": [
                 209061
               ],
-              "ussdAutogenLangs": [
+              "ussd_autogen_langs": [
                 209061
               ],
-              "socialAutogenLangs": [
+              "social_autogen_langs": [
                 209061
               ],
-              "clipboardAutogenLangs": [],
-              "jsKey": "block_1570841821875_23"
+              "clipboard_autogen_langs": [],
+              "js_key": "block_1570841821875_23"
             }
           },
           "exits": [{
             "uuid": "29841127-3247-4610-8000-af6170870181",
-            "destinationBlock": "95bd9e4a-9300-400a-9f61-8ede03123d15",
+            "destination_block": "95bd9e4a-9300-400a-9f61-8ede03123d15",
             "tag": "1",
             "label": "29841127-3247-4610-8000-af6170870181",
-            "semanticLabel": "",
+            "semantic_label": "",
             "test": "@(TRUE)"
           }],
-          "type": "MobilePrimitives\\SelectOneResponse"
+          "type": "MobilePrimitives.SelectOneResponse"
         },
         {
           "uuid": "95bd9e4a-9300-400a-9f61-8ede03123d15",
           "name": "1570841854108_37",
           "label": "If \"Dogs/Cats\" is \"Dogs\".",
-          "semanticLabel": "",
+          "semantic_label": "",
           "config": [],
-          "vendorMetadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "DecisionBranchBlock",
-              "customData": {
+              "custom_data": {
                 "title": "If \"Dogs/Cats\" is \"Dogs\".",
                 "label": "",
                 "tags": [],
                 "reviewed": {
                   "209061": false
                 },
-                "questionBlocks": [{
-                  "jsKey": "block_1570841821875_23",
+                "question_blocks": [{
+                  "js_key": "block_1570841821875_23",
                   "choice": 1,
-                  "directorySelectionFieldValue": null,
-                  "directorySelectionFieldName": null
+                  "directory_selection_field_value": null,
+                  "directory_selection_field_name": null
                 }]
               },
-              "uiData": {
-                "outputNames": [
+              "ui_data": {
+                "output_names": [
                   "trees.output-true",
                   "trees.output-false"
                 ],
-                "xPosition": 306,
-                "yPosition": 306,
-                "numConnections": 2
+                "x_position": 306,
+                "y_position": 306,
+                "num_connections": 2
               },
-              "audioFiles": [],
-              "smsContent": [],
-              "ussdContent": [],
-              "socialContent": [],
-              "clipboardContent": [],
-              "smsAutogenLangs": [
+              "audio_files": [],
+              "sms_content": [],
+              "ussd_content": [],
+              "social_content": [],
+              "clipboard_content": [],
+              "sms_autogen_langs": [
                 209061
               ],
-              "ussdAutogenLangs": [
+              "ussd_autogen_langs": [
                 209061
               ],
-              "socialAutogenLangs": [
+              "social_autogen_langs": [
                 209061
               ],
-              "clipboardAutogenLangs": [],
-              "jsKey": "block_1570841854108_37"
+              "clipboard_autogen_langs": [],
+              "js_key": "block_1570841854108_37"
             }
           },
           "exits": [{
               "uuid": "29841127-3247-4610-8000-af61891e8a81",
-              "destinationBlock": "95bd9e4a-9300-400a-9f61-8ede0325225f",
+              "destination_block": "95bd9e4a-9300-400a-9f61-8ede0325225f",
               "tag": "TRUE",
               "label": "29841127-3247-4610-8000-af61891e8a81",
-              "semanticLabel": "",
+              "semantic_label": "",
               "test": "@(AND(flow.1570841821875_23 = \"Dogs\"))"
             },
             {
               "uuid": "29841127-3247-4610-8000-af61891e8a82",
-              "destinationBlock": "95bd9e4a-9300-400a-9f61-8ede034f93d8",
+              "destination_block": "95bd9e4a-9300-400a-9f61-8ede034f93d8",
               "default": true,
               "tag": "FALSE",
               "label": "29841127-3247-4610-8000-af61891e8a82",
-              "semanticLabel": ""
+              "semantic_label": ""
             }
           ],
-          "type": "Core\\Case"
+          "type": "Core.Case"
         },
         {
           "uuid": "95bd9e4a-9300-400a-9f61-8ede0325225f",
           "name": "1570841866491_83",
           "label": "Dogs",
-          "semanticLabel": "",
+          "semantic_label": "",
           "config": {
             "prompt": "95bd9e4a-9300-400a-9f61-8ede0325225f"
           },
-          "vendorMetadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "MessageBlock",
-              "customData": {
+              "custom_data": {
                 "title": "Dogs",
                 "label": "",
                 "tags": [],
@@ -192,52 +192,52 @@
                   "209061": false
                 }
               },
-              "uiData": {
-                "xPosition": 255,
-                "yPosition": 481,
-                "numConnections": 1
+              "ui_data": {
+                "x_position": 255,
+                "y_position": 481,
+                "num_connections": 1
               },
-              "audioFiles": [],
-              "smsContent": [],
-              "ussdContent": [],
-              "socialContent": [],
-              "clipboardContent": {
+              "audio_files": [],
+              "sms_content": [],
+              "ussd_content": [],
+              "social_content": [],
+              "clipboard_content": {
                 "209061": "You picked Dogs! Good choice"
               },
-              "smsAutogenLangs": [
+              "sms_autogen_langs": [
                 209061
               ],
-              "ussdAutogenLangs": [
+              "ussd_autogen_langs": [
                 209061
               ],
-              "socialAutogenLangs": [
+              "social_autogen_langs": [
                 209061
               ],
-              "clipboardAutogenLangs": [],
-              "jsKey": "block_1570841866491_83"
+              "clipboard_autogen_langs": [],
+              "js_key": "block_1570841866491_83"
             }
           },
           "exits": [{
             "uuid": "29841127-3247-4610-8000-af6192912f81",
-            "destinationBlock": null,
+            "destination_block": null,
             "tag": "1",
             "label": "29841127-3247-4610-8000-af6192912f81",
-            "semanticLabel": ""
+            "semantic_label": ""
           }],
-          "type": "MobilePrimitives\\Message"
+          "type": "MobilePrimitives.Message"
         },
         {
           "uuid": "95bd9e4a-9300-400a-9f61-8ede034f93d8",
           "name": "1570841894307_44",
           "label": "Cats",
-          "semanticLabel": "",
+          "semantic_label": "",
           "config": {
             "prompt": "95bd9e4a-9300-400a-9f61-8ede034f93d8"
           },
-          "vendorMetadata": {
+          "vendor_metadata": {
             "io_viamo": {
               "type": "MessageBlock",
-              "customData": {
+              "custom_data": {
                 "title": "Cats",
                 "label": "",
                 "tags": [],
@@ -245,46 +245,46 @@
                   "209061": false
                 }
               },
-              "uiData": {
-                "xPosition": 411,
-                "yPosition": 485,
-                "numConnections": 1
+              "ui_data": {
+                "x_position": 411,
+                "y_position": 485,
+                "num_connections": 1
               },
-              "audioFiles": [],
-              "smsContent": [],
-              "ussdContent": [],
-              "socialContent": [],
-              "clipboardContent": {
+              "audio_files": [],
+              "sms_content": [],
+              "ussd_content": [],
+              "social_content": [],
+              "clipboard_content": {
                 "209061": "You picked cats. Boo. @(flow.Dogs_or_Cats.text)"
               },
-              "smsAutogenLangs": [
+              "sms_autogen_langs": [
                 209061
               ],
-              "ussdAutogenLangs": [
+              "ussd_autogen_langs": [
                 209061
               ],
-              "socialAutogenLangs": [
+              "social_autogen_langs": [
                 209061
               ],
-              "clipboardAutogenLangs": [],
-              "jsKey": "block_1570841894307_44"
+              "clipboard_autogen_langs": [],
+              "js_key": "block_1570841894307_44"
             }
           },
           "exits": [{
             "uuid": "29841127-3247-4610-8000-af61a7c9ec01",
-            "destinationBlock": null,
+            "destination_block": null,
             "tag": "1",
             "label": "29841127-3247-4610-8000-af61a7c9ec01",
-            "semanticLabel": ""
+            "semantic_label": ""
           }],
-          "type": "MobilePrimitives\\Message"
+          "type": "MobilePrimitives.Message"
         }
       ],
       "resources": [{
           "uuid": "29841127-3247-461d-8194-a376dd8f0800",
           "values": [{
-            "languageId": "209061",
-            "contentType": "TEXT",
+            "language_id": "209061",
+            "content_type": "TEXT",
             "modes": [
               "IVR",
               "SMS",
@@ -298,8 +298,8 @@
         {
           "uuid": "29841127-3247-4611-859e-e8661cd2804b",
           "values": [{
-            "languageId": "209061",
-            "contentType": "TEXT",
+            "language_id": "209061",
+            "content_type": "TEXT",
             "modes": [
               "IVR",
               "SMS",
@@ -313,8 +313,8 @@
         {
           "uuid": "29841127-3247-4610-8000-af6170870181",
           "values": [{
-            "languageId": "209061",
-            "contentType": "TEXT",
+            "language_id": "209061",
+            "content_type": "TEXT",
             "modes": [
               "IVR",
               "SMS",
@@ -328,8 +328,8 @@
         {
           "uuid": "95bd9e4a-9300-400a-9f61-8ede02e10e03",
           "values": [{
-            "languageId": "209061",
-            "contentType": "TEXT",
+            "language_id": "209061",
+            "content_type": "TEXT",
             "modes": [
               "OFFLINE"
             ],
@@ -339,8 +339,8 @@
         {
           "uuid": "29841127-3247-4610-8000-af61891e8a81",
           "values": [{
-            "languageId": "209061",
-            "contentType": "TEXT",
+            "language_id": "209061",
+            "content_type": "TEXT",
             "modes": [
               "IVR",
               "SMS",
@@ -354,8 +354,8 @@
         {
           "uuid": "29841127-3247-4610-8000-af61891e8a82",
           "values": [{
-            "languageId": "209061",
-            "contentType": "TEXT",
+            "language_id": "209061",
+            "content_type": "TEXT",
             "modes": [
               "IVR",
               "SMS",
@@ -369,8 +369,8 @@
         {
           "uuid": "29841127-3247-4610-8000-af6192912f81",
           "values": [{
-            "languageId": "209061",
-            "contentType": "TEXT",
+            "language_id": "209061",
+            "content_type": "TEXT",
             "modes": [
               "IVR",
               "SMS",
@@ -384,8 +384,8 @@
         {
           "uuid": "95bd9e4a-9300-400a-9f61-8ede0325225f",
           "values": [{
-            "languageId": "209061",
-            "contentType": "TEXT",
+            "language_id": "209061",
+            "content_type": "TEXT",
             "modes": [
               "OFFLINE"
             ],
@@ -395,8 +395,8 @@
         {
           "uuid": "29841127-3247-4610-8000-af61a7c9ec01",
           "values": [{
-            "languageId": "209061",
-            "contentType": "TEXT",
+            "language_id": "209061",
+            "content_type": "TEXT",
             "modes": [
               "IVR",
               "SMS",
@@ -410,8 +410,8 @@
         {
           "uuid": "95bd9e4a-9300-400a-9f61-8ede034f93d8",
           "values": [{
-            "languageId": "209061",
-            "contentType": "TEXT",
+            "language_id": "209061",
+            "content_type": "TEXT",
             "modes": [
               "OFFLINE"
             ],

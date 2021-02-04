@@ -72,10 +72,10 @@ describe('BacktrackingBehaviour', () => {
         it('should roll up entire iteration into a stack', async () => {
           // todo: should this nest a stack, or simply append another iteration???
           const interactions = [
-            {blockId: '0', uuid: 'abc-0'},
-            {blockId: '1', uuid: 'abc-1'},
-            {blockId: '2', uuid: 'abc-2'},
-            {blockId: '3', uuid: 'abc-3'},
+            {block_id: '0', uuid: 'abc-0'},
+            {block_id: '1', uuid: 'abc-1'},
+            {block_id: '2', uuid: 'abc-2'},
+            {block_id: '3', uuid: 'abc-3'},
           ]
 
           const interactionStack = createStack([...interactions])
@@ -113,10 +113,10 @@ describe('BacktrackingBehaviour', () => {
         describe('when on root stack', () => {
           it('should insert at current position', async () => {
             const interactions = [
-              {blockId: '0', uuid: 'abc-0'},
-              {blockId: '1', uuid: 'abc-1'},
-              {blockId: '2', uuid: 'abc-2'},
-              {blockId: '3', uuid: 'abc-3'},
+              {block_id: '0', uuid: 'abc-0'},
+              {block_id: '1', uuid: 'abc-1'},
+              {block_id: '2', uuid: 'abc-2'},
+              {block_id: '3', uuid: 'abc-3'},
             ]
 
             const interactionStack = createStack([...interactions])
@@ -135,21 +135,21 @@ describe('BacktrackingBehaviour', () => {
           it('should insert at current position', async () => {
             const sourceInteractions = createStackFrom([
               [
-                {blockId: '1', uuid: 'abc-1'} as IEntity,
+                {block_id: '1', uuid: 'abc-1'} as IEntity,
                 createStackFrom([
                   [
-                    {blockId: '2', uuid: 'abc-2'} as IEntity,
-                    {blockId: '3', uuid: 'abc-3'} as IEntity,
-                    {blockId: '4', uuid: 'abc-4'} as IEntity,
+                    {block_id: '2', uuid: 'abc-2'} as IEntity,
+                    {block_id: '3', uuid: 'abc-3'} as IEntity,
+                    {block_id: '4', uuid: 'abc-4'} as IEntity,
                   ],
                   [
-                    {blockId: '2', uuid: 'abc-5'} as IEntity,
+                    {block_id: '2', uuid: 'abc-5'} as IEntity,
                     createStackFrom([
-                      [{blockId: '3', uuid: 'abc-6'} as IEntity, {blockId: '4', uuid: 'abc-7'} as IEntity],
+                      [{block_id: '3', uuid: 'abc-6'} as IEntity, {block_id: '4', uuid: 'abc-7'} as IEntity],
                       [
-                        {blockId: '3', uuid: 'abc-8'} as IEntity,
-                        {blockId: '4', uuid: 'abc-9'} as IEntity,
-                        {blockId: '5', uuid: 'abc-10'} as IEntity,
+                        {block_id: '3', uuid: 'abc-8'} as IEntity,
+                        {block_id: '4', uuid: 'abc-9'} as IEntity,
+                        {block_id: '5', uuid: 'abc-10'} as IEntity,
                       ],
                     ]),
                   ],
@@ -181,26 +181,26 @@ describe('BacktrackingBehaviour', () => {
         it('should step out when head found one level up', async () => {
           const sourceInteractions = createStackFrom([
             [
-              {blockId: '1', uuid: 'abc-1'} as IEntity,
+              {block_id: '1', uuid: 'abc-1'} as IEntity,
               createStackFrom([
                 [
-                  {blockId: '2', uuid: 'abc-2'} as IEntity,
-                  {blockId: '3', uuid: 'abc-3'} as IEntity,
-                  {blockId: '4', uuid: 'abc-4'} as IEntity,
+                  {block_id: '2', uuid: 'abc-2'} as IEntity,
+                  {block_id: '3', uuid: 'abc-3'} as IEntity,
+                  {block_id: '4', uuid: 'abc-4'} as IEntity,
                 ],
                 [
-                  {blockId: '2', uuid: 'abc-5'} as IEntity,
+                  {block_id: '2', uuid: 'abc-5'} as IEntity,
                   createStackFrom([
-                    [{blockId: '3', uuid: 'abc-6'} as IEntity, {blockId: '4', uuid: 'abc-7'} as IEntity],
+                    [{block_id: '3', uuid: 'abc-6'} as IEntity, {block_id: '4', uuid: 'abc-7'} as IEntity],
                     [
-                      {blockId: '3', uuid: 'abc-8'} as IEntity,
-                      {blockId: '4', uuid: 'abc-9'} as IEntity,
-                      {blockId: '5', uuid: 'abc-10'} as IEntity,
+                      {block_id: '3', uuid: 'abc-8'} as IEntity,
+                      {block_id: '4', uuid: 'abc-9'} as IEntity,
+                      {block_id: '5', uuid: 'abc-10'} as IEntity,
                     ],
                   ]),
                 ],
               ]),
-              // [{blockId: '2', uuid: 'abc-11'}, {blockId: '3', uuid: 'abc-12'}, {blockId: '4', uuid: 'abc-13'}, {blockId: '5', uuid: 'abc-14'}]]]
+              // [{block_id: '2', uuid: 'abc-11'}, {block_id: '3', uuid: 'abc-12'}, {block_id: '4', uuid: 'abc-13'}, {block_id: '5', uuid: 'abc-14'}]]]
             ],
           ])
 
@@ -225,26 +225,26 @@ describe('BacktrackingBehaviour', () => {
         it('should step out multiple times when head found multiple levels up', async () => {
           const sourceInteractions = createStackFrom([
             [
-              {blockId: '1', uuid: 'abc-1'} as IEntity,
+              {block_id: '1', uuid: 'abc-1'} as IEntity,
               createStackFrom([
                 [
-                  {blockId: '2', uuid: 'abc-2'} as IEntity,
-                  {blockId: '3', uuid: 'abc-3'} as IEntity,
-                  {blockId: '4', uuid: 'abc-4'} as IEntity,
+                  {block_id: '2', uuid: 'abc-2'} as IEntity,
+                  {block_id: '3', uuid: 'abc-3'} as IEntity,
+                  {block_id: '4', uuid: 'abc-4'} as IEntity,
                 ],
                 [
-                  {blockId: '2', uuid: 'abc-5'} as IEntity,
+                  {block_id: '2', uuid: 'abc-5'} as IEntity,
                   createStackFrom([
-                    [{blockId: '3', uuid: 'abc-6'} as IEntity, {blockId: '4', uuid: 'abc-7'} as IEntity],
+                    [{block_id: '3', uuid: 'abc-6'} as IEntity, {block_id: '4', uuid: 'abc-7'} as IEntity],
                     [
-                      {blockId: '3', uuid: 'abc-8'} as IEntity,
-                      {blockId: '4', uuid: 'abc-9'} as IEntity,
-                      {blockId: '5', uuid: 'abc-10'} as IEntity,
+                      {block_id: '3', uuid: 'abc-8'} as IEntity,
+                      {block_id: '4', uuid: 'abc-9'} as IEntity,
+                      {block_id: '5', uuid: 'abc-10'} as IEntity,
                     ],
                   ]),
                 ],
               ]),
-              // [{blockId: '2', uuid: 'abc-11'}, {blockId: '3', uuid: 'abc-12'}, {blockId: '4', uuid: 'abc-13'}, {blockId: '5', uuid: 'abc-14'}]]]
+              // [{block_id: '2', uuid: 'abc-11'}, {block_id: '3', uuid: 'abc-12'}, {block_id: '4', uuid: 'abc-13'}, {block_id: '5', uuid: 'abc-14'}]]]
             ],
           ])
 
@@ -276,8 +276,8 @@ describe('BacktrackingBehaviour', () => {
       })
     })
 
-    // todo: when blockId matches current key: replace current interaction on hierarchy --- todo: how do we differentiate between appending and replacing?
-    //       when blockId different than on current key: insert new interaction _before_ key
+    // todo: when block_id matches current key: replace current interaction on hierarchy --- todo: how do we differentiate between appending and replacing?
+    //       when block_id different than on current key: insert new interaction _before_ key
 
     // todo: test stepping forward and making a change.
 
@@ -336,10 +336,10 @@ describe('BacktrackingBehaviour', () => {
       beforeEach(() => {
         interactions = [
           {uuid: 'intx-123-1'},
-          {uuid: 'intx-234-1', type: 'Core\\RunFlow', block_id: 'block-234', flow_id: 'flow-123'}, // nestedFlow::stepIn()
+          {uuid: 'intx-234-1', type: 'Core.Runflow', block_id: 'block-234', flow_id: 'flow-123'}, // nestedFlow::stepIn()
           {uuid: 'intx-567-1', block_id: 'block-567', flow_id: '234'},
           {uuid: 'intx-678-1'},
-          {uuid: 'intx-789-1', type: 'Core\\RunFlow', block_id: 'block-789', flow_id: 'flow-234'}, // nestedFlow::stepIn()
+          {uuid: 'intx-789-1', type: 'Core.Runflow', block_id: 'block-789', flow_id: 'flow-234'}, // nestedFlow::stepIn()
           {uuid: 'intx-890-1'},
           {uuid: 'intx-901-1', block_id: 'block-901', flow_id: 'flow-345'},
           {uuid: 'intx-012-1'},

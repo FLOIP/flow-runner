@@ -21,7 +21,7 @@ import {evaluateToString, IBlockExit, IBlockRunner, IContext, ILogBlock} from '.
 import {createFormattedDate} from '../DateFormat'
 
 /**
- * Block runner for `Core\Log` - Appends a low-level message to {@link IContext.logs}.
+ * Block runner for `Core.Log` - Appends a low-level message to {@link IContext.logs}.
  *
  * The Context for a Flow shall have a log key, which preserves a mapping of timestamps and log messages for debugging.
  * These logs must be maintained for the duration of the Run, and may be maintained for a longer period. The Log Block

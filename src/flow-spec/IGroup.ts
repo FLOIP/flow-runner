@@ -24,5 +24,5 @@ export interface IGroup {
 }
 
 export function isGroup(thing: unknown): thing is IGroup {
-  return typeof thing === 'object' && thing !== null && 'groupKey' in thing && '__value__' in thing
+  return typeof thing === 'object' && thing !== null && 'group_key' in thing && '__value__' in thing
 }

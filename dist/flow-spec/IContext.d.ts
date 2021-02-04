@@ -51,7 +51,7 @@ export interface IContext {
     flows: IFlow[];
     first_flow_id: string;
     resources: IResources;
-    platform_metadata: {
+    vendor_metadata: {
         [k: string]: unknown;
     };
     logs: {

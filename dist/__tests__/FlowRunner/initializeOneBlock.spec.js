@@ -14,7 +14,7 @@ describe('FlowRunner/initializeOneBlock', () => {
         const block = flow.blocks[0];
         const runner = new __1.FlowRunner(ctx, new __1.BlockRunnerFactoryStore([
             [
-                'MobilePrimitives\\Message',
+                'MobilePrimitives.Message',
                 (block, context) => ({
                     block,
                     context,
@@ -33,7 +33,7 @@ describe('FlowRunner/initializeOneBlock', () => {
         const block = flow.blocks[0];
         const runner = new __1.FlowRunner(ctx, new __1.BlockRunnerFactoryStore([
             [
-                'MobilePrimitives\\Message',
+                'MobilePrimitives.Message',
                 (block, context) => ({
                     block,
                     context,
@@ -62,7 +62,7 @@ describe('FlowRunner/initializeOneBlock', () => {
         const block = flow.blocks[0];
         const runner = new __1.FlowRunner(ctx, new __1.BlockRunnerFactoryStore([
             [
-                'MobilePrimitives\\Message',
+                'MobilePrimitives.Message',
                 (block, context) => ({
                     block,
                     context,

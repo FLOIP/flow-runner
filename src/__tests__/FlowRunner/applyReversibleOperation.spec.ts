@@ -21,8 +21,8 @@ describe('applyReversibleDataOperation', () => {
   it('should store the transaction on context', async () => {
     expect(context.reversible_operations).toHaveLength(0)
     runner.applyReversibleDataOperation(operation.forward, operation.reverse, context)
-    expect(context).toHaveProperty('reversibleOperations.0.forward', operation.forward)
-    expect(context).toHaveProperty('reversibleOperations.0.reverse', operation.reverse)
+    expect(context).toHaveProperty('reversible_operations.0.forward', operation.forward)
+    expect(context).toHaveProperty('reversible_operations.0.reverse', operation.reverse)
   })
 
   it('should populate a interactionId that this operation was executed as a part of', async () => {
@@ -30,7 +30,7 @@ describe('applyReversibleDataOperation', () => {
 
     expect(context.reversible_operations).toHaveLength(0)
     runner.applyReversibleDataOperation(operation.forward, operation.reverse, context)
-    expect(context).toHaveProperty('reversibleOperations.0.interactionId', 'intx-123')
+    expect(context).toHaveProperty('reversible_operations.0.interactionId', 'intx-123')
   })
 
   it('should apply the forward operation', async () => {

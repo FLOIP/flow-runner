@@ -13,7 +13,7 @@ class Group {
 }
 exports.Group = Group;
 class ContactGroup extends Group {
-    constructor(groupKeyOrGroup, label, updatedAt, deletedAt) {
+    constructor(groupKeyOrGroup, label, updated_at, deleted_at) {
         if (__1.isGroup(groupKeyOrGroup)) {
             super(groupKeyOrGroup.group_key, groupKeyOrGroup.label);
             this.updated_at = __1.createFormattedDate();
@@ -21,9 +21,9 @@ class ContactGroup extends Group {
         else {
             super(groupKeyOrGroup, label);
         }
-        this.updated_at = updatedAt !== null && updatedAt !== void 0 ? updatedAt : __1.createFormattedDate();
-        if (deletedAt != null) {
-            this.deleted_at = deletedAt;
+        this.updated_at = updated_at !== null && updated_at !== void 0 ? updated_at : __1.createFormattedDate();
+        if (deleted_at != null) {
+            this.deleted_at = deleted_at;
         }
     }
 }

@@ -28,7 +28,7 @@ describe('FlowRunner/navigateTo', () => {
   it("should push an additional interaction onto context's interaction stack", async () => {
     const ctx = dataset.contexts[0]
     const block = ctx.flows[0].blocks[0]
-    const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]]))
+    const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
 
     expect(ctx.interactions).toHaveLength(0)
     await runner.navigateTo(block, ctx)
@@ -39,7 +39,7 @@ describe('FlowRunner/navigateTo', () => {
     it('should overwrite on context when prev cursor absent and return same instance', async () => {
       const ctx = dataset.contexts[0]
       const block = ctx.flows[0].blocks[0]
-      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]]))
+      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
 
       expect(ctx.cursor).toBeFalsy()
       const richCursor = await runner.navigateTo(block, ctx)
@@ -50,7 +50,7 @@ describe('FlowRunner/navigateTo', () => {
     it('should overwrite on context when prev cursor present and return same instance', async () => {
       const ctx = dataset.contexts[0]
       const block = ctx.flows[0].blocks[0]
-      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]]))
+      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
 
       // todo: remove this once it's been pushed out to isolated behaviour
       jest.spyOn(runner, 'cacheInteractionByBlockName').mockImplementation(() => {})
@@ -76,7 +76,7 @@ describe('FlowRunner/navigateTo', () => {
     it('should have interactionId from newly created+pushed interaction', async () => {
       const ctx = dataset.contexts[0]
       const block = ctx.flows[0].blocks[0]
-      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]]))
+      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
 
       const {interaction} = await runner.navigateTo(block, ctx)
       expect(interaction).toBe(last(ctx.interactions) as IBlockInteraction)
@@ -87,7 +87,7 @@ describe('FlowRunner/navigateTo', () => {
       const block = ctx.flows[0].blocks[0]
       const messageBlockRunner = createStaticFirstExitBlockRunnerFor(block, ctx)
 
-      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives\\Message', () => messageBlockRunner]]))
+      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', () => messageBlockRunner]]))
 
       const startSpy = jest.spyOn(messageBlockRunner, 'initialize').mockImplementation(
         async (): Promise<INumericPromptConfig> => ({
@@ -111,7 +111,7 @@ describe('FlowRunner/navigateTo', () => {
     it('should have null prompt from runner when null provided', async () => {
       const ctx = dataset.contexts[0]
       const block = ctx.flows[0].blocks[0]
-      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]]))
+      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
 
       const {prompt} = await runner.navigateTo(block, ctx)
       expect(prompt).toBeUndefined()
@@ -122,7 +122,7 @@ describe('FlowRunner/navigateTo', () => {
     it('should have block provided', async () => {
       const ctx = dataset.contexts[0]
       const block = ctx.flows[0].blocks[0]
-      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]]))
+      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
 
       expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(0)
       await runner.navigateTo(block, ctx)
@@ -133,10 +133,7 @@ describe('FlowRunner/navigateTo', () => {
       it('should be from root flow when not nested', async () => {
         const ctx = dataset.contexts[0]
         const block = ctx.flows[0].blocks[0]
-        const runner = new FlowRunner(
-          ctx,
-          new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]])
-        )
+        const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
 
         expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(0)
         expect(ctx.first_flow_id).toBeTruthy()
@@ -153,10 +150,7 @@ describe('FlowRunner/navigateTo', () => {
 
         // todo: actually, this needs to be the first block on the nested flow!
         const block = ctx.flows[1].blocks[0]
-        const runner = new FlowRunner(
-          ctx,
-          new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]])
-        )
+        const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
 
         // todo: remove this once it's been pushed out to isolated behaviour
         jest.spyOn(runner, 'cacheInteractionByBlockName').mockImplementation(() => {})
@@ -176,10 +170,7 @@ describe('FlowRunner/navigateTo', () => {
       it('should be absent when on root flow', async () => {
         const ctx = dataset.contexts[0]
         const block = ctx.flows[0].blocks[0]
-        const runner = new FlowRunner(
-          ctx,
-          new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]])
-        )
+        const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
 
         expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(0)
         expect(ctx.interactions).toHaveLength(0)
@@ -193,10 +184,7 @@ describe('FlowRunner/navigateTo', () => {
         // RunFlow->(Message)->Message
         const ctx = dataset.contexts[2]
         const block = ctx.flows[1].blocks[0]
-        const runner = new FlowRunner(
-          ctx,
-          new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]])
-        )
+        const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
 
         // todo: remove this once it's been pushed out to isolated behaviour
         jest.spyOn(runner, 'cacheInteractionByBlockName').mockImplementation(() => {})
@@ -216,10 +204,7 @@ describe('FlowRunner/navigateTo', () => {
       it('should be absent when on root flow', async () => {
         const ctx = dataset.contexts[0]
         const block = ctx.flows[0].blocks[0]
-        const runner = new FlowRunner(
-          ctx,
-          new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]])
-        )
+        const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
 
         expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(0)
         expect(ctx.interactions).toHaveLength(0)
@@ -233,10 +218,7 @@ describe('FlowRunner/navigateTo', () => {
         // RunFlow->(Message)->Message
         const ctx = dataset.contexts[2]
         const block = ctx.flows[1].blocks[0]
-        const runner = new FlowRunner(
-          ctx,
-          new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]])
-        )
+        const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
 
         // todo: remove this once it's been pushed out to isolated behaviour
         jest.spyOn(runner, 'cacheInteractionByBlockName').mockImplementation(() => {})

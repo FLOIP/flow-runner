@@ -12,7 +12,7 @@ class BacktrackingBehaviour {
         this.initializeBacktrackingContext();
     }
     initializeBacktrackingContext() {
-        const meta = this.context.platform_metadata;
+        const meta = this.context.vendor_metadata;
         if (meta.backtracking == null) {
             meta.backtracking = {
                 cursor: __1.createKey(),
@@ -27,11 +27,11 @@ class BacktrackingBehaviour {
         }
     }
     hasIndex() {
-        const meta = this.context.platform_metadata;
+        const meta = this.context.vendor_metadata;
         return meta.backtracking.interactionStack != null && meta.backtracking.cursor != null;
     }
     rebuildIndex() {
-        const { backtracking } = this.context.platform_metadata;
+        const { backtracking } = this.context.vendor_metadata;
         const key = (backtracking.cursor = __1.createKey());
         const stack = (backtracking.interactionStack = __1.createStack());
         this.context.interactions.forEach(intx => this.insertInteractionUsing(key, intx, stack));
@@ -68,7 +68,7 @@ class BacktrackingBehaviour {
     }
     jumpTo(interaction, context) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const { backtracking } = this.context.platform_metadata;
+            const { backtracking } = this.context.vendor_metadata;
             const keyForLastOccurrenceOfInteraction = __1.deepIndexOfFrom(__1.createKey(), backtracking.interactionStack, ({ uuid }) => uuid === interaction.uuid);
             if (keyForLastOccurrenceOfInteraction == null) {
                 throw new __1.ValidationException('Unable to find destination interaction in backtracking stack for jumpTo()');
@@ -116,7 +116,7 @@ class BacktrackingBehaviour {
         return __1.deepIndexOfFrom(keyForNextIteration, stack, intx => intx.block_id === block_id);
     }
     postInteractionCreate(interaction, _context) {
-        const { backtracking: { cursor: key, ghostInteractionStacks, }, } = this.context.platform_metadata;
+        const { backtracking: { cursor: key, ghostInteractionStacks, }, } = this.context.vendor_metadata;
         if (ghostInteractionStacks.length === 0) {
             return interaction;
         }
@@ -168,7 +168,7 @@ class BacktrackingBehaviour {
         }
     }
     postInteractionComplete(interaction, _context) {
-        const { backtracking: { cursor: key, interactionStack, ghostInteractionStacks }, } = this.context.platform_metadata;
+        const { backtracking: { cursor: key, interactionStack, ghostInteractionStacks }, } = this.context.vendor_metadata;
         this.insertInteractionUsing(key, interaction, interactionStack);
         if (ghostInteractionStacks.length === 0) {
             return;
