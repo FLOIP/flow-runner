@@ -24,8 +24,8 @@ export interface IBlockExit {
   label: string
 
   tag: string
-  destinationBlock?: string
-  semanticLabel?: string
+  destination_block?: string
+  semantic_label?: string
   test?: string
   config: object
 

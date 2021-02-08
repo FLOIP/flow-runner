@@ -93,7 +93,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
   }
 
   initializeBacktrackingContext() {
-    const meta: IContextBacktrackingPlatformMetadata = (this.context.platformMetadata as unknown) as IContextBacktrackingPlatformMetadata
+    const meta: IContextBacktrackingPlatformMetadata = (this.context.vendor_metadata as unknown) as IContextBacktrackingPlatformMetadata
 
     if (meta.backtracking == null) {
       meta.backtracking = {
@@ -111,12 +111,12 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
   }
 
   hasIndex() {
-    const meta: IContextBacktrackingPlatformMetadata = (this.context.platformMetadata as unknown) as IContextBacktrackingPlatformMetadata
+    const meta: IContextBacktrackingPlatformMetadata = (this.context.vendor_metadata as unknown) as IContextBacktrackingPlatformMetadata
     return meta.backtracking.interactionStack != null && meta.backtracking.cursor != null
   }
 
   rebuildIndex() {
-    const {backtracking} = (this.context.platformMetadata as unknown) as IContextBacktrackingPlatformMetadata
+    const {backtracking} = (this.context.vendor_metadata as unknown) as IContextBacktrackingPlatformMetadata
 
     const key = (backtracking.cursor = createKey())
     const stack = (backtracking.interactionStack = createStack())
@@ -129,7 +129,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     const keyForIntxOfRepeatedBlock = shallowIndexOfRightFrom(
       key,
       interactionStack,
-      intx => (intx as IBlockInteraction).blockId === interaction.blockId,
+      intx => (intx as IBlockInteraction).block_id === interaction.block_id
     )
     if (keyForIntxOfRepeatedBlock != null) {
       // [Step In] Found a new stack to step into
@@ -141,7 +141,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     const keyToBeginningOfStackWithHeadMatchingBlock = findHeadRightFrom(
       key,
       interactionStack,
-      intx => (intx as IBlockInteraction).blockId === interaction.blockId,
+      intx => (intx as IBlockInteraction).block_id === interaction.block_id
     )
     if (keyToBeginningOfStackWithHeadMatchingBlock != null) {
       // [Step Out] Found an stack to continue on from
@@ -157,7 +157,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     keyToBeginningOfStackWithHeadMatchingBlock: Key,
     interactionStack: BacktrackingIntxStack,
     interaction: IBlockInteraction,
-    key: BacktrackingCursor,
+    key: BacktrackingCursor
   ) {
     const stack: IStack = getStackFor(keyToBeginningOfStackWithHeadMatchingBlock, interactionStack)
     _loop(stack, [interaction])
@@ -172,7 +172,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     key: BacktrackingCursor,
     interactionStack: BacktrackingIntxStack,
     keyForIntxOfRepeatedBlock: Key,
-    interaction: IBlockInteraction,
+    interaction: IBlockInteraction
   ) {
     const iteration = getIterationFor(key, interactionStack)
     // todo: abstract key operations
@@ -194,13 +194,13 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
   }
 
   async jumpTo(interaction: IBlockInteraction, context: IContext): Promise<IRichCursor> {
-    const {backtracking} = (this.context.platformMetadata as unknown) as IContextBacktrackingPlatformMetadata
+    const {backtracking} = (this.context.vendor_metadata as unknown) as IContextBacktrackingPlatformMetadata
 
     // find a key for provided past interaction
     const keyForLastOccurrenceOfInteraction = deepIndexOfFrom(
       createKey(), // begins search from beginning -- todo: search from right?
       backtracking.interactionStack,
-      ({uuid}) => uuid === interaction.uuid,
+      ({uuid}) => uuid === interaction.uuid
     )
 
     if (keyForLastOccurrenceOfInteraction == null) {
@@ -216,12 +216,12 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     const discarded = context.interactions.splice(
       // truncate interactions list to pull us back in time; including provided intx
       findLastIndex(context.interactions, interaction),
-      context.interactions.length,
+      context.interactions.length
     )
 
     // step out of nested flows that we've truncated
     forEachRight(discarded, intx =>
-      intx.uuid === last(context.nestedFlowBlockInteractionIdStack) ? context.nestedFlowBlockInteractionIdStack.pop() : null,
+      intx.uuid === last(context.nested_flow_block_interaction_id_stack) ? context.nested_flow_block_interaction_id_stack.pop() : null
     )
 
     // update interactionStack to match
@@ -233,7 +233,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     const keyToTruncateFrom = cloneKeyAndMoveTo(
       createStackKey(deepestStackKeyForIntx[STACK_KEY_ITERATION_NUMBER], deepestStackKeyForIntx[STACK_KEY_ITERATION_INDEX] - 1), // slide left one so that we free current spot up
       keyForLastOccurrenceOfInteraction,
-      backtracking.interactionStack,
+      backtracking.interactionStack
     )
 
     deepTruncateIterationsFrom(keyToTruncateFrom, backtracking.interactionStack)
@@ -244,7 +244,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     // todo: This navigateTo() is going to append an interaction onto context.interactions --> verify that context.interactions.splice() accounts for that
     // todo: this should provide a sourceId="" in meta so that we can tie these together
 
-    return this.navigator.navigateTo(findBlockOnActiveFlowWith(interaction.blockId, this.context), this.context)
+    return this.navigator.navigateTo(findBlockOnActiveFlowWith(interaction.block_id, this.context), this.context)
   }
 
   async peek(steps = 1): Promise<IPrompt<IPromptConfig<any>>> {
@@ -255,7 +255,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
       throw new ValidationException(`Unable to backtrack to an interaction that far back ${JSON.stringify({steps})}`)
     }
 
-    const block = findBlockWith(intx.blockId, findFlowWith(intx.flowId, this.context))
+    const block = findBlockWith(intx.block_id, findFlowWith(intx.flow_id, this.context))
 
     const prompt = await this.promptBuilder.buildPromptFor(block, intx)
     if (prompt == null) {
@@ -264,15 +264,15 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
           context: this.context.id,
           intx,
           block,
-        })}`,
+        })}`
       )
     }
 
     return Object.assign(prompt, {value: intx.value})
   }
 
-  findIndexOfSuggestionFor({blockId}: IBlockInteraction, key: Key, stack: IStack): Key | undefined {
-    const keyForSuggestion = deepIndexOfFrom(key, stack, intx => (intx as IBlockInteraction).blockId === blockId)
+  findIndexOfSuggestionFor({block_id}: IBlockInteraction, key: Key, stack: IStack): Key | undefined {
+    const keyForSuggestion = deepIndexOfFrom(key, stack, intx => (intx as IBlockInteraction).block_id === block_id)
 
     if (keyForSuggestion != null) {
       return keyForSuggestion
@@ -286,7 +286,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     }
 
     const keyForNextIteration = moveStackIndexTo(createStackKey(0, 0), cloneDeep(key)) // todo: use cloneKeyAndMoveTo()
-    return deepIndexOfFrom(keyForNextIteration, stack, intx => (intx as IBlockInteraction).blockId === blockId)
+    return deepIndexOfFrom(keyForNextIteration, stack, intx => (intx as IBlockInteraction).block_id === block_id)
   }
 
   postInteractionCreate(interaction: IBlockInteraction, _context: IContext): IBlockInteraction {
@@ -296,7 +296,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
         // interactionStack,
         ghostInteractionStacks,
       },
-    } = (this.context.platformMetadata as unknown) as IContextBacktrackingPlatformMetadata
+    } = (this.context.vendor_metadata as unknown) as IContextBacktrackingPlatformMetadata
 
     if (ghostInteractionStacks.length === 0) {
       // can't suggest when we don't have ghost interactions from the past
@@ -323,7 +323,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     // need to splice out things between key + keyForSuggestion so that key points to both interaction and suggestion
     if (keyForSuggestion.join() !== key.join()) {
       ghostInteractionStacks.forEach((
-        ghostInteractionStack, // todo: fix up syncGhost now that we're multi-tracking
+        ghostInteractionStack // todo: fix up syncGhost now that we're multi-tracking
       ) => this.syncGhostTo(key, keyForSuggestion, ghostInteractionStack)) // todo: reverse these keys to match signature?!
     }
 
@@ -353,7 +353,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     const iterationForSuggestion = getIterationFor(keyForSuggestion, ghost)
     const remainderOfCurrentGhostIteration = iterationForSuggestion.splice(
       stackKeyForSuggestion[STACK_KEY_ITERATION_INDEX],
-      Number.MAX_VALUE,
+      Number.MAX_VALUE
     )
 
     // discard iterations up to + including one with keepers
@@ -378,7 +378,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     containingIterationForSuggestion.splice(
       deepestStackKeyIndex,
       itemsBetweenKeyAndGhost + (wasEmptyStackLeftOver ? 1 : 0),
-      ...remainderOfCurrentGhostIteration,
+      ...remainderOfCurrentGhostIteration
     )
 
     // when still at greater depth: repeat the ordeal
@@ -390,7 +390,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
   postInteractionComplete(interaction: IBlockInteraction, _context: IContext): void {
     const {
       backtracking: {cursor: key, interactionStack, ghostInteractionStacks},
-    } = (this.context.platformMetadata as unknown) as IContextBacktrackingPlatformMetadata
+    } = (this.context.vendor_metadata as unknown) as IContextBacktrackingPlatformMetadata
 
     this.insertInteractionUsing(key, interaction, interactionStack)
 

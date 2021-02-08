@@ -84,7 +84,7 @@ describe('BasePrompt', () => {
       const firstInteractionId = '09894745-38ba-456f-aab4-720b7d09d5b3'
       const prompt = new MessagePrompt(config as IMessagePromptConfig, firstInteractionId, runner)
 
-      findInteractionWith(firstInteractionId, ctx)!.blockId = 'some-absent-block'
+      findInteractionWith(firstInteractionId, ctx)!.block_id = 'some-absent-block'
       expect(prompt.block).toBeUndefined()
     })
   })

@@ -100,17 +100,17 @@ export class BasicBacktrackingBehaviour implements IBasicBackTrackingBehaviour {
     // step out of nested flows that we've truncated
     // todo: migrate to also use applyReversibleDataOperation()
     forEachRight(discarded, intx =>
-      intx.uuid === last(context.nestedFlowBlockInteractionIdStack) ? context.nestedFlowBlockInteractionIdStack.pop() : null
+      intx.uuid === last(context.nested_flow_block_interaction_id_stack) ? context.nested_flow_block_interaction_id_stack.pop() : null
     )
 
     // can only reverse from the end, so we only compare the last.
     forEachRight(discarded, ({uuid}) => {
-      while (last(context.reversibleOperations)?.interactionId === uuid) {
+      while (last(context.reversible_operations)?.interactionId === uuid) {
         FlowRunner.prototype.reverseLastDataOperation(context)
       }
     })
 
-    const destinationBlock = findBlockOnActiveFlowWith(destinationInteraction.blockId, context)
+    const destinationBlock = findBlockOnActiveFlowWith(destinationInteraction.block_id, context)
 
     this.jumpContext = {discardedInteractions: discarded, destinationInteraction}
     const richCursor = await this.navigator.navigateTo(destinationBlock, context)
@@ -143,7 +143,7 @@ export class BasicBacktrackingBehaviour implements IBasicBackTrackingBehaviour {
 
   async peek(steps = 0, context: IContext = this.context, direction = PeekDirection.LEFT): Promise<IRichCursorInputRequired> {
     const intx = this._findInteractiveInteractionAt(steps, context, direction)
-    const block = findBlockWith(intx.blockId, findFlowWith(intx.flowId, context))
+    const block = findBlockWith(intx.block_id, findFlowWith(intx.flow_id, context))
 
     const prompt = await this.promptBuilder.buildPromptFor(block, intx)
     if (prompt == null) {

@@ -13,9 +13,9 @@ describe('FlowRunner/stepInto', () => {
         const block = ctx.flows[0].blocks[0];
         const runner = new __1.FlowRunner(ctx);
         expect(__1.FlowRunner.prototype.stepInto.bind(runner, block, ctx)).toThrow(__1.ValidationException);
-        expect(__1.FlowRunner.prototype.stepInto.bind(runner, block, ctx)).toThrow('non-Core\\RunFlow');
+        expect(__1.FlowRunner.prototype.stepInto.bind(runner, block, ctx)).toThrow('non-Core.RunFlow');
     }));
-    it("should raise when last interaction doesn't match provided blockId (aka only allow step ins during active interaction)", () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    it("should raise when last interaction doesn't match provided block_id (aka only allow step ins during active interaction)", () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         const ctx = dataset.contexts[2];
         const block = dataset._blocks[5];
         const runner = new __1.FlowRunner(ctx);
@@ -35,10 +35,10 @@ describe('FlowRunner/stepInto', () => {
         const block = ctx.flows[0].blocks[0];
         const runFlowBlockIntx = ctx.interactions[0];
         const runner = new __1.FlowRunner(ctx);
-        ctx.nestedFlowBlockInteractionIdStack = [];
+        ctx.nested_flow_block_interaction_id_stack = [];
         runner.stepInto(block, ctx);
-        expect(ctx.nestedFlowBlockInteractionIdStack).toHaveLength(1);
-        expect(ctx.nestedFlowBlockInteractionIdStack[0]).toBe(runFlowBlockIntx.uuid);
+        expect(ctx.nested_flow_block_interaction_id_stack).toHaveLength(1);
+        expect(ctx.nested_flow_block_interaction_id_stack[0]).toBe(runFlowBlockIntx.uuid);
     }));
     describe('returned block', () => {
         it.todo('should return null when first block absent on freshly nested flow');
@@ -49,9 +49,9 @@ describe('FlowRunner/stepInto', () => {
         const block = ctx.flows[0].blocks[0];
         const runFlowBlockIntx = ctx.interactions[0];
         const runner = new __1.FlowRunner(ctx);
-        delete runFlowBlockIntx.selectedExitId;
+        delete runFlowBlockIntx.selected_exit_id;
         runner.stepInto(block, ctx);
-        expect(runFlowBlockIntx.selectedExitId).toBeUndefined();
+        expect(runFlowBlockIntx.selected_exit_id).toBeUndefined();
     }));
 });
 //# sourceMappingURL=stepInto.spec.js.map

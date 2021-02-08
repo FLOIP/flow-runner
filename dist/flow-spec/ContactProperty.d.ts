@@ -1,12 +1,12 @@
 import { IContactProperty } from '..';
 export declare class ContactProperty implements IContactProperty {
-    deletedAt: string | undefined;
-    createdAt: string;
-    updatedAt: string;
+    deleted_at: string | undefined;
+    created_at: string;
+    updated_at: string;
     __value__: string;
     constructor();
-    get contactPropertyFieldName(): string;
-    set contactPropertyFieldName(contactPropertyFieldName: string);
+    get contact_property_field_name(): string;
+    set contact_property_field_name(contactPropertyFieldName: string);
     get value(): string;
     set value(value: string);
 }

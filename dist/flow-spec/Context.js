@@ -3,29 +3,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Context = void 0;
 const __1 = require("..");
 class Context {
-    constructor(id, createdAt, deliveryStatus, mode, languageId, contact, groups, sessionVars, interactions, nestedFlowBlockInteractionIdStack, reversibleOperations, flows, firstFlowId, resources, entryAt, exitAt, userId, orgId, cursor, platformMetadata = {}, logs = {}) {
-        this.platformMetadata = {};
+    constructor(id, created_at, delivery_status, mode, language_id, contact, groups, session_vars, interactions, nested_flow_block_interaction_id_stack, reversible_operations, flows, first_flow_id, resources, entry_at, exit_at, user_id, org_id, cursor, vendor_metadata = {}, logs = {}) {
+        this.vendor_metadata = {};
         this.logs = {};
         this.logs = logs;
-        this.platformMetadata = platformMetadata;
+        this.vendor_metadata = vendor_metadata;
         this.cursor = cursor;
-        this.orgId = orgId;
-        this.userId = userId;
-        this.exitAt = exitAt;
-        this.entryAt = entryAt;
+        this.org_id = org_id;
+        this.user_id = user_id;
+        this.exit_at = exit_at;
+        this.entry_at = entry_at;
         this.resources = resources;
-        this.firstFlowId = firstFlowId;
+        this.first_flow_id = first_flow_id;
         this.flows = flows;
-        this.reversibleOperations = reversibleOperations;
-        this.nestedFlowBlockInteractionIdStack = nestedFlowBlockInteractionIdStack;
+        this.reversible_operations = reversible_operations;
+        this.nested_flow_block_interaction_id_stack = nested_flow_block_interaction_id_stack;
         this.interactions = interactions;
-        this.sessionVars = sessionVars;
+        this.session_vars = session_vars;
         this.contact = contact;
         this.groups = groups;
-        this.languageId = languageId;
+        this.language_id = language_id;
         this.mode = mode;
-        this.deliveryStatus = deliveryStatus;
-        this.createdAt = createdAt;
+        this.delivery_status = delivery_status;
+        this.created_at = created_at;
         this.id = id;
     }
     getResource(resourceId) {
@@ -36,34 +36,34 @@ exports.Context = Context;
 (function (Context) {
     class Builder {
         constructor() {
-            this.createdAt = __1.createFormattedDate();
-            this.deliveryStatus = __1.DeliveryStatus.QUEUED;
+            this.created_at = __1.createFormattedDate();
+            this.delivery_status = __1.DeliveryStatus.QUEUED;
             this.mode = __1.SupportedMode.OFFLINE;
-            this.sessionVars = {};
+            this.session_vars = {};
             this.interactions = [];
-            this.nestedFlowBlockInteractionIdStack = [];
-            this.reversibleOperations = [];
-            this.platformMetadata = {};
+            this.nested_flow_block_interaction_id_stack = [];
+            this.reversible_operations = [];
+            this.vendor_metadata = {};
             this.logs = {};
         }
         setId(id) {
             this.id = id;
             return this;
         }
-        setCreatedAt(createdAt) {
-            this.createdAt = createdAt;
+        setCreatedAt(created_at) {
+            this.created_at = created_at;
             return this;
         }
-        setDeliveryStatus(deliveryStatus) {
-            this.deliveryStatus = deliveryStatus;
+        setDeliveryStatus(delivery_status) {
+            this.delivery_status = delivery_status;
             return this;
         }
         setMode(mode) {
             this.mode = mode;
             return this;
         }
-        setLanguageId(languageId) {
-            this.languageId = languageId;
+        setLanguageId(language_id) {
+            this.language_id = language_id;
             return this;
         }
         setContact(contact) {
@@ -74,56 +74,56 @@ exports.Context = Context;
             this.groups = groups;
             return this;
         }
-        setSessionVars(sessionVars) {
-            this.sessionVars = sessionVars;
+        setSessionVars(session_vars) {
+            this.session_vars = session_vars;
             return this;
         }
         setInteractions(interactions) {
             this.interactions = interactions;
             return this;
         }
-        setNestedFlowBlockInteractionIdStack(nestedFlowBlockInteractionIdStack) {
-            this.nestedFlowBlockInteractionIdStack = nestedFlowBlockInteractionIdStack;
+        setNestedFlowBlockInteractionIdStack(nested_flow_block_interaction_id_stack) {
+            this.nested_flow_block_interaction_id_stack = nested_flow_block_interaction_id_stack;
             return this;
         }
-        setReversibleOperations(reversibleOperations) {
-            this.reversibleOperations = reversibleOperations;
+        setReversibleOperations(reversible_operations) {
+            this.reversible_operations = reversible_operations;
             return this;
         }
         setFlows(flows) {
             this.flows = flows;
             return this;
         }
-        setFirstFlowId(firstFlowId) {
-            this.firstFlowId = firstFlowId;
+        setFirstFlowId(first_flow_id) {
+            this.first_flow_id = first_flow_id;
             return this;
         }
         setResources(resources) {
             this.resources = resources;
             return this;
         }
-        setEntryAt(entryAt) {
-            this.entryAt = entryAt;
+        setEntryAt(entry_at) {
+            this.entry_at = entry_at;
             return this;
         }
-        setExitAt(exitAt) {
-            this.exitAt = exitAt;
+        setExitAt(exit_at) {
+            this.exit_at = exit_at;
             return this;
         }
-        setUserId(userId) {
-            this.userId = userId;
+        setUserId(user_id) {
+            this.user_id = user_id;
             return this;
         }
-        setOrgId(orgId) {
-            this.orgId = orgId;
+        setOrgId(org_id) {
+            this.org_id = org_id;
             return this;
         }
         setCursor(cursor) {
             this.cursor = cursor;
             return this;
         }
-        setPlatformMetadata(platformMetadata) {
-            this.platformMetadata = platformMetadata;
+        setPlatformMetadata(vendor_metadata) {
+            this.vendor_metadata = vendor_metadata;
             return this;
         }
         setLogs(logs) {
@@ -132,13 +132,13 @@ exports.Context = Context;
         }
         build() {
             __1.assertNotNull(this.id, () => 'Context.Builder.setId() must be called before build()');
-            __1.assertNotNull(this.languageId, () => 'Context.Builder.setLanguageId() must be called before build()');
+            __1.assertNotNull(this.language_id, () => 'Context.Builder.setLanguageId() must be called before build()');
             __1.assertNotNull(this.contact, () => 'Context.Builder.setContact() must be called before build()');
             __1.assertNotNull(this.groups, () => 'Context.Builder.setGroups() must be called before build()');
             __1.assertNotNull(this.flows, () => 'Context.Builder.setFlows() must be called before build()');
-            __1.assertNotNull(this.firstFlowId, () => 'Context.Builder.setFirstFlowId() must be called before build()');
+            __1.assertNotNull(this.first_flow_id, () => 'Context.Builder.setFirstFlowId() must be called before build()');
             __1.assertNotNull(this.resources, () => 'Context.Builder.setResources() must be called before build()');
-            return new Context(this.id, this.createdAt, this.deliveryStatus, this.mode, this.languageId, this.contact, this.groups, this.sessionVars, this.interactions, this.nestedFlowBlockInteractionIdStack, this.reversibleOperations, this.flows, this.firstFlowId, this.resources, this.entryAt, this.exitAt, this.userId, this.orgId, this.cursor, this.platformMetadata, this.logs);
+            return new Context(this.id, this.created_at, this.delivery_status, this.mode, this.language_id, this.contact, this.groups, this.session_vars, this.interactions, this.nested_flow_block_interaction_id_stack, this.reversible_operations, this.flows, this.first_flow_id, this.resources, this.entry_at, this.exit_at, this.user_id, this.org_id, this.cursor, this.vendor_metadata, this.logs);
         }
     }
     Context.Builder = Builder;

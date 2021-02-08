@@ -74,7 +74,7 @@ describe('FlowRunner', () => {
             it('should hit Cats branch', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                 const { flows } = require('./fixtures/2019-10-12-VMO-1484-case-branching-improperly.json');
                 const resources = lodash_1.flatMap(flows, 'resources');
-                const context = __1.createContextDataObjectFor({ id: '1' }, [{ groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup' }], 'user-1234', 'org-1234', flows, 'en_US', __1.SupportedMode.OFFLINE, resources);
+                const context = __1.createContextDataObjectFor({ id: '1' }, [{ group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup' }], 'user-1234', 'org-1234', flows, 'en_US', __1.SupportedMode.OFFLINE, resources);
                 const runner = new __1.FlowRunner(context);
                 let { prompt } = (yield runner.run());
                 prompt.value = prompt.config.choices[1].key;
@@ -84,7 +84,7 @@ describe('FlowRunner', () => {
             it('should hit Dogs branch', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                 const { flows } = require('./fixtures/2019-10-12-VMO-1484-case-branching-improperly.json');
                 const resources = lodash_1.flatMap(flows, 'resources');
-                const context = __1.createContextDataObjectFor({ id: '1' }, [{ groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup' }], 'user-1234', 'org-1234', flows, 'en_US', __1.SupportedMode.OFFLINE, resources);
+                const context = __1.createContextDataObjectFor({ id: '1' }, [{ group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup' }], 'user-1234', 'org-1234', flows, 'en_US', __1.SupportedMode.OFFLINE, resources);
                 const runner = new __1.FlowRunner(context);
                 let { prompt } = (yield runner.run());
                 prompt.value = prompt.config.choices[0].key;
@@ -95,7 +95,7 @@ describe('FlowRunner', () => {
         describe('nested flow', () => {
             it('should run', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                 const { flows, resources } = require('./fixtures/2020-04-14-run-flow-unable-to-find-flow.json');
-                const context = __1.createContextDataObjectFor({ id: '1' }, [{ groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup' }], 'user-1234', 'org-1234', flows, 'en_US', __1.SupportedMode.OFFLINE, resources);
+                const context = __1.createContextDataObjectFor({ id: '1' }, [{ group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup' }], 'user-1234', 'org-1234', flows, 'en_US', __1.SupportedMode.OFFLINE, resources);
                 const runner = new __1.FlowRunner(context);
                 let { prompt } = (yield runner.run());
                 expect(prompt).toBeTruthy();
@@ -138,9 +138,9 @@ describe('FlowRunner', () => {
                 prompt.value = 50;
                 const cursor = yield runner.run();
                 expect(cursor).toBeUndefined();
-                expect(context.deliveryStatus).toBe(__1.DeliveryStatus.FINISHED_COMPLETE);
-                expect(context.exitAt).toBeTruthy();
-                expect(lodash_1.every(context.interactions, i => i.exitAt)).toBeTruthy();
+                expect(context.delivery_status).toBe(__1.DeliveryStatus.FINISHED_COMPLETE);
+                expect(context.exit_at).toBeTruthy();
+                expect(lodash_1.every(context.interactions, i => i.exit_at)).toBeTruthy();
             }));
         });
     });

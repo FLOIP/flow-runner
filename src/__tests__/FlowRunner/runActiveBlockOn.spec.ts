@@ -17,7 +17,7 @@ describe('FlowRunner/runActiveBlockOn', () => {
     const ctx = dataset.contexts[1] as IContextInputRequired
     const block = ctx.flows[1].blocks[0]
     const expectedExit = block.exits[0]
-    const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]]))
+    const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
 
     const richCursor = runner.hydrateRichCursorFrom(ctx)
     const exit = await runner.runActiveBlockOn(richCursor, block)
@@ -29,20 +29,20 @@ describe('FlowRunner/runActiveBlockOn', () => {
     const ctx = dataset.contexts[1] as IContextInputRequired
     const block = ctx.flows[1].blocks[0]
     const expectedExit = block.exits[0]
-    const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]]))
+    const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
     const richCursor = runner.hydrateRichCursorFrom(ctx)
 
-    delete richCursor.interaction.selectedExitId // set as incomplete interaction state
+    delete richCursor.interaction.selected_exit_id // set as incomplete interaction state
 
     await runner.runActiveBlockOn(richCursor, block)
-    expect(richCursor.interaction.selectedExitId).toBe(expectedExit.uuid)
+    expect(richCursor.interaction.selected_exit_id).toBe(expectedExit.uuid)
   })
 
   it('should complete interaction with selected exit', async () => {
     const ctx = dataset.contexts[1] as IContextInputRequired
     const block = ctx.flows[1].blocks[0]
     const expectedExit = block.exits[0]
-    const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]]))
+    const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
     const richCursor = runner.hydrateRichCursorFrom(ctx)
 
     jest.spyOn(runner, 'completeInteraction').mockImplementation(() => richCursor.interaction)
@@ -54,7 +54,7 @@ describe('FlowRunner/runActiveBlockOn', () => {
   it('should raise when interaction has previously been flagged as processed', async () => {
     const ctx = dataset.contexts[1] as IContextInputRequired
     const block = ctx.flows[1].blocks[0]
-    const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]]))
+    const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
     const richCursor = runner.hydrateRichCursorFrom(ctx)
 
     richCursor.prompt!.config.isSubmitted = true
@@ -70,7 +70,7 @@ describe('FlowRunner/runActiveBlockOn', () => {
     it('should flag on prompt as having been submitted + accepted by the flow runner', async () => {
       const ctx = dataset.contexts[1] as IContextInputRequired
       const block = ctx.flows[1].blocks[0]
-      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]]))
+      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
 
       expect(ctx.cursor.promptConfig.isSubmitted).toBeFalsy()
       await runner.runActiveBlockOn(runner.hydrateRichCursorFrom(ctx), block)
@@ -80,7 +80,7 @@ describe('FlowRunner/runActiveBlockOn', () => {
     it('should set interaction value from prompt', async () => {
       const ctx = dataset.contexts[1] as IContextInputRequired
       const block = ctx.flows[1].blocks[0]
-      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]]))
+      const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
       const richCursor = runner.hydrateRichCursorFrom(ctx)
 
       delete richCursor.interaction.value // setup to ensure we get a value during run
@@ -96,14 +96,14 @@ describe('FlowRunner/runActiveBlockOn', () => {
         const runner = new FlowRunner(
           ctx,
           new BlockRunnerFactoryStore([
-            ['MobilePrimitives\\OpenResponse', (block, ctx) => new OpenResponseBlockRunner(block as IOpenResponseBlock, ctx)],
+            ['MobilePrimitives.OpenResponse', (block, ctx) => new OpenResponseBlockRunner(block as IOpenResponseBlock, ctx)],
           ])
         )
         const richCursor = runner.hydrateRichCursorFrom(ctx)
 
-        expect(richCursor.interaction.hasResponse).toBeFalsy()
+        expect(richCursor.interaction.has_response).toBeFalsy()
         await runner.runActiveBlockOn(richCursor, block)
-        expect(richCursor.interaction.hasResponse).toBeTruthy()
+        expect(richCursor.interaction.has_response).toBeTruthy()
       })
     })
 
@@ -111,15 +111,12 @@ describe('FlowRunner/runActiveBlockOn', () => {
       it('should set interaction hasResponse to false', async () => {
         const ctx = dataset.contexts[1] as IContextInputRequired
         const block = ctx.flows[1].blocks[0]
-        const runner = new FlowRunner(
-          ctx,
-          new BlockRunnerFactoryStore([['MobilePrimitives\\Message', createStaticFirstExitBlockRunnerFor]])
-        )
+        const runner = new FlowRunner(ctx, new BlockRunnerFactoryStore([['MobilePrimitives.Message', createStaticFirstExitBlockRunnerFor]]))
         const richCursor = runner.hydrateRichCursorFrom(ctx)
 
-        expect(richCursor.interaction.hasResponse).toBeFalsy()
+        expect(richCursor.interaction.has_response).toBeFalsy()
         await runner.runActiveBlockOn(richCursor, block)
-        expect(richCursor.interaction.hasResponse).toBeFalsy()
+        expect(richCursor.interaction.has_response).toBeFalsy()
       })
     })
   })

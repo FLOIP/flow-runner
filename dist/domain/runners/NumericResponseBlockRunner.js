@@ -10,7 +10,7 @@ class NumericResponseBlockRunner {
     }
     initialize({ value }) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const { prompt, validationMinimum: min, validationMaximum: max } = this.block.config;
+            const { prompt, validation_minimum: min, validation_maximum: max } = this.block.config;
             return {
                 kind: __1.NUMERIC_PROMPT_KEY,
                 prompt,

@@ -22,23 +22,23 @@ export interface IBlockInteraction {
   uuid: string
 
   // UUID32
-  blockId: string
+  block_id: string
 
   // UUID32
-  flowId: string
-  entryAt: string
-  exitAt?: string
-  hasResponse: boolean
+  flow_id: string
+  entry_at: string
+  exit_at?: string
+  has_response: boolean
   value?: unknown
   details: IBlockInteractionDetails
-  selectedExitId?: string
+  selected_exit_id?: string
   type: string
 
   // UUID64
-  originBlockInteractionId?: string
+  origin_block_interaction_id?: string
 
   // UUID64
-  originFlowId?: string
+  origin_flow_id?: string
 }
 
 export interface IBlockInteractionDetails {}

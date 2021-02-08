@@ -21,10 +21,10 @@ import {IResource} from '../..'
 
 export interface IAdvancedSelectOneBlockConfig {
   prompt: string
-  promptAudio?: string
-  primaryField: string
-  secondaryFields: string[]
-  choiceRowFields: string[]
-  choiceRows: IResource['uuid']
-  responseFields?: string[]
+  prompt_audio?: string
+  primary_field: string
+  secondary_fields: string[]
+  choice_row_fields: string[]
+  choice_rows: IResource['uuid']
+  response_fields?: string[]
 }

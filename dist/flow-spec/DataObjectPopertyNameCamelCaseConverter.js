@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.convertKeysToCamelCase = exports.EXCLUDED_DATA_HIERARCHIES_BY_KEY = void 0;
 const lodash_1 = require("lodash");
-exports.EXCLUDED_DATA_HIERARCHIES_BY_KEY = ['choices', 'platformMetadata', 'platform_metadata'];
+exports.EXCLUDED_DATA_HIERARCHIES_BY_KEY = ['choices', 'vendorMetadata', 'vendor_metadata'];
 function convertKeysToCamelCase(x, exclusions = exports.EXCLUDED_DATA_HIERARCHIES_BY_KEY) {
     if (lodash_1.isArray(x)) {
         return x.map(_ => convertKeysToCamelCase(_, exclusions));

@@ -4,9 +4,9 @@ exports.SupportedContentType = void 0;
 class SupportedContentType {
 }
 exports.SupportedContentType = SupportedContentType;
-SupportedContentType.TEXT = 'text';
-SupportedContentType.AUDIO = 'audio';
-SupportedContentType.IMAGE = 'image';
-SupportedContentType.VIDEO = 'video';
-SupportedContentType.CSV = 'csv';
+SupportedContentType.TEXT = 'TEXT';
+SupportedContentType.AUDIO = 'AUDIO';
+SupportedContentType.IMAGE = 'IMAGE';
+SupportedContentType.VIDEO = 'VIDEO';
+SupportedContentType.CSV = 'CSV';
 //# sourceMappingURL=SupportedContentType.js.map

@@ -6,7 +6,7 @@ function createTextResourceVariantWith(value, ctx) {
     return {
         contentType: __1.SupportedContentType.TEXT,
         value,
-        languageId: ctx.languageId,
+        languageId: ctx.language_id,
         modes: [ctx.mode],
     };
 }

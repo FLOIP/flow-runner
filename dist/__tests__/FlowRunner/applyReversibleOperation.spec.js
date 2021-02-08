@@ -9,8 +9,8 @@ describe('applyReversibleDataOperation', () => {
     beforeEach(() => {
         context = {
             interactions: [],
-            sessionVars: {},
-            reversibleOperations: [],
+            session_vars: {},
+            reversible_operations: [],
         };
         runner = new __1.FlowRunner(context);
         operation = {
@@ -19,26 +19,26 @@ describe('applyReversibleDataOperation', () => {
         };
     });
     it('should store the transaction on context', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-        expect(context.reversibleOperations).toHaveLength(0);
+        expect(context.reversible_operations).toHaveLength(0);
         runner.applyReversibleDataOperation(operation.forward, operation.reverse, context);
-        expect(context).toHaveProperty('reversibleOperations.0.forward', operation.forward);
-        expect(context).toHaveProperty('reversibleOperations.0.reverse', operation.reverse);
+        expect(context).toHaveProperty('reversible_operations.0.forward', operation.forward);
+        expect(context).toHaveProperty('reversible_operations.0.reverse', operation.reverse);
     }));
     it('should populate a interactionId that this operation was executed as a part of', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         context.interactions.push({ uuid: 'intx-123' });
-        expect(context.reversibleOperations).toHaveLength(0);
+        expect(context.reversible_operations).toHaveLength(0);
         runner.applyReversibleDataOperation(operation.forward, operation.reverse, context);
-        expect(context).toHaveProperty('reversibleOperations.0.interactionId', 'intx-123');
+        expect(context).toHaveProperty('reversible_operations.0.interactionId', 'intx-123');
     }));
     it('should apply the forward operation', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-        expect(context.sessionVars).not.toHaveProperty('sampleKey.sampleNestedKey');
+        expect(context.session_vars).not.toHaveProperty('sampleKey.sampleNestedKey');
         runner.applyReversibleDataOperation(operation.forward, operation.reverse, context);
-        expect(context.sessionVars).toHaveProperty('sampleKey.sampleNestedKey', 'sample forward val');
+        expect(context.session_vars).toHaveProperty('sampleKey.sampleNestedKey', 'sample forward val');
     }));
     it('should not apply the reversal operation', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-        expect(context.sessionVars).not.toHaveProperty('sampleKey.sampleNestedKey');
+        expect(context.session_vars).not.toHaveProperty('sampleKey.sampleNestedKey');
         runner.applyReversibleDataOperation(operation.forward, operation.reverse, context);
-        expect(context.sessionVars).not.toHaveProperty('sampleKey.sampleNestedKey', 'sample reverse val');
+        expect(context.session_vars).not.toHaveProperty('sampleKey.sampleNestedKey', 'sample reverse val');
     }));
 });
 //# sourceMappingURL=applyReversibleOperation.spec.js.map

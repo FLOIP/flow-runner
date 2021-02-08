@@ -96,11 +96,11 @@ describe('IBlock', () => {
       it('should perform search over interactions for block whose name matches prop name when prop absent from target', async () => {
         // *intx/Message->Message/09894745-38ba-456f-aab4-720b7d09d5b3
         // &flowId/(Message|Message|Message)/711b1ff7-d16f-4ed9-8524-054afa4049a5
-        // *blockId/Message->(Message)/5e5d397a-a606-49e0-9a4d-8553a1af52aa
+        // *block_id/Message->(Message)/5e5d397a-a606-49e0-9a4d-8553a1af52aa
 
         const ctx = dataset.contexts[1]
         const name = '1570221906056_83'
-        set(ctx.sessionVars, `blockInteractionsByBlockName.${name}`, {
+        set(ctx.session_vars, `block_interactions_by_block_name.${name}`, {
           __interactionId: '09894745-38ba-456f-aab4-720b7d09d5b3',
           time: '2023-10-10T23:23:23.023Z',
           text: 'some text',
@@ -114,14 +114,14 @@ describe('IBlock', () => {
         expect(blockForEvalContext.time).toEqual('2023-10-10T23:23:23.023Z')
       })
 
-      // this will do a lookup on context of `sessionVars.blockInteractionsByBlockName.${prop.toString()}`
+      // this will do a lookup on context of `session_vars.block_interactions_by_block_name.${prop.toString()}`
       // so, setup has a few steps:
-      // - we need our pseudo eval-context block to exist at `sessionVars.blockInteractionsByBlockName.1570221906056_83`
+      // - we need our pseudo eval-context block to exist at `session_vars.block_interactions_by_block_name.1570221906056_83`
       // - we need our block interactions to match up with the __interactionId on ^^^
       // - we need two interactions with this same interaction id (this would never happen
       //   but this is the simplest method of verifying search starting point
 
-      // todo: merge module declaration of `sessionVars` to have `blockInteractionsByBlockName: {[k: string]: IEvalContextBlock}`
+      // todo: merge module declaration of `session_vars` to have `block_interactions_by_block_name: {[k: string]: IEvalContextBlock}`
       it('should perform search over interactions from right-to-left to provide most recent interaction value', async () => {
         const ctx = dataset.contexts[1]
         const expectedInteractionId = ctx.interactions[0].uuid
@@ -130,7 +130,7 @@ describe('IBlock', () => {
         // duplicate interaction to verify ltr/rtl hunt.
         ctx.interactions = [Object.assign(cloneDeep(ctx.interactions[0]), {value: 'Incorrect value'}), ctx.interactions[0]]
 
-        set(ctx, 'sessionVars.blockInteractionsByBlockName.1570221906056_83', {__interactionId: expectedInteractionId})
+        set(ctx, 'session_vars.block_interactions_by_block_name.1570221906056_83', {__interactionId: expectedInteractionId})
 
         const proxy = generateCachedProxyForBlockName({}, ctx) as {'1570221906056_83': IEvalContextBlock}
         const blockForEvalContext = proxy['1570221906056_83']
@@ -145,7 +145,7 @@ describe('IBlock', () => {
         const ctx = dataset.contexts[1]
         const expectedInteractionId = ctx.interactions[0].uuid
 
-        set(ctx, 'sessionVars.blockInteractionsByBlockName.1570221906056_83', {__interactionId: expectedInteractionId})
+        set(ctx, 'session_vars.block_interactions_by_block_name.1570221906056_83', {__interactionId: expectedInteractionId})
 
         const proxy = generateCachedProxyForBlockName({}, ctx) as {'1570221906056_83': IEvalContextBlock}
 
@@ -222,26 +222,26 @@ describe('IBlock', () => {
   describe('createEvalContactFrom', () => {
     it('should clone the passed contact, deleting marked groups', () => {
       const groupToDelete = {
-        groupKey: 'two',
+        group_key: 'two',
         __value__: 'two',
-        updatedAt: '0000-00-00',
-        deletedAt: '2020-01-01',
+        updated_at: '0000-00-00',
+        deleted_at: '2020-01-01',
       } as IContactGroup
 
       const contact = new Contact()
       contact.groups = [
         {
-          groupKey: 'one',
+          group_key: 'one',
           __value__: 'one',
-          updatedAt: '0000-00-00',
-          deletedAt: undefined,
+          updated_at: '0000-00-00',
+          deleted_at: undefined,
         } as IContactGroup,
         groupToDelete,
         {
-          groupKey: 'three',
+          group_key: 'three',
           __value__: 'three',
-          updatedAt: '0000-00-00',
-          deletedAt: undefined,
+          updated_at: '0000-00-00',
+          deleted_at: undefined,
         } as IContactGroup,
       ]
 

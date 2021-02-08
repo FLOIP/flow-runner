@@ -1,8 +1,8 @@
 export declare enum SupportedMode {
-    SMS = "sms",
-    USSD = "ussd",
-    IVR = "ivr",
-    RICH_MESSAGING = "rich_messaging",
-    OFFLINE = "offline"
+    SMS = "SMS",
+    USSD = "USSD",
+    IVR = "IVR",
+    RICH_MESSAGING = "RICH_MESSAGING",
+    OFFLINE = "OFFLINE"
 }
 //# sourceMappingURL=SupportedMode.d.ts.map

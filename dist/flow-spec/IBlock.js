@@ -30,7 +30,7 @@ function findDefaultBlockExitOn(block) {
 }
 exports.findDefaultBlockExitOn = findDefaultBlockExitOn;
 function isLastBlock({ exits }) {
-    return exits.every(e => e.destinationBlock == null);
+    return exits.every(e => e.destination_block == null);
 }
 exports.isLastBlock = isLastBlock;
 function generateCachedProxyForBlockName(target, ctx) {
@@ -39,7 +39,7 @@ function generateCachedProxyForBlockName(target, ctx) {
             if (prop in target) {
                 return Reflect.get(...arguments);
             }
-            const evalBlock = lodash_1.get(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`);
+            const evalBlock = lodash_1.get(ctx, `session_vars.block_interactions_by_block_name.${prop.toString()}`);
             if (evalBlock == null) {
                 return;
             }
@@ -47,19 +47,19 @@ function generateCachedProxyForBlockName(target, ctx) {
             return lodash_1.extend({ value, __value__: value }, evalBlock);
         },
         has(target, prop) {
-            return prop in target || lodash_1.has(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`);
+            return prop in target || lodash_1.has(ctx, `session_vars.block_interactions_by_block_name.${prop.toString()}`);
         },
     });
 }
 exports.generateCachedProxyForBlockName = generateCachedProxyForBlockName;
 function createEvalContextFrom(context) {
-    const { contact, cursor, mode, languageId: language } = context;
+    const { contact, cursor, mode, language_id: language } = context;
     let flow;
     let block;
     let prompt;
     if (cursor != null) {
         flow = __1.getActiveFlowFrom(context);
-        block = __1.findBlockWith(__1.findInteractionWith(cursor.interactionId, context).blockId, flow);
+        block = __1.findBlockWith(__1.findInteractionWith(cursor.interactionId, context).block_id, flow);
         prompt = cursor.promptConfig;
     }
     return {
@@ -73,7 +73,7 @@ exports.createEvalContextFrom = createEvalContextFrom;
 function createEvalContactFrom(contact) {
     var _a, _b;
     const evalContact = lodash_1.cloneDeep(contact);
-    evalContact.groups = (_b = (_a = evalContact.groups) === null || _a === void 0 ? void 0 : _a.filter(group => group.deletedAt === null)) !== null && _b !== void 0 ? _b : [];
+    evalContact.groups = (_b = (_a = evalContact.groups) === null || _a === void 0 ? void 0 : _a.filter(group => group.deleted_at === null)) !== null && _b !== void 0 ? _b : [];
     return evalContact;
 }
 exports.createEvalContactFrom = createEvalContactFrom;

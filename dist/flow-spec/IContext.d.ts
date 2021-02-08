@@ -31,27 +31,27 @@ export interface IReversibleUpdateOperation {
 }
 export interface IContext {
     id: string;
-    createdAt: string;
-    entryAt?: string;
-    exitAt?: string;
-    deliveryStatus: DeliveryStatus;
-    userId?: string;
-    orgId?: string;
+    created_at: string;
+    entry_at?: string;
+    exit_at?: string;
+    delivery_status: DeliveryStatus;
+    user_id?: string;
+    org_id?: string;
     mode: SupportedMode;
-    languageId: string;
+    language_id: string;
     contact: IContact;
     groups: IGroup[];
-    sessionVars: {
+    session_vars: {
         [k: string]: unknown;
     };
     interactions: IBlockInteraction[];
-    nestedFlowBlockInteractionIdStack: string[];
-    reversibleOperations: IReversibleUpdateOperation[];
+    nested_flow_block_interaction_id_stack: string[];
+    reversible_operations: IReversibleUpdateOperation[];
     cursor?: ICursor;
     flows: IFlow[];
-    firstFlowId: string;
+    first_flow_id: string;
     resources: IResources;
-    platformMetadata: {
+    vendor_metadata: {
         [k: string]: unknown;
     };
     logs: {
@@ -72,7 +72,7 @@ export declare function findNestedFlowIdFor(interaction: IBlockInteraction, ctx:
 export declare function getActiveFlowIdFrom(ctx: IContext): string;
 export declare function getActiveFlowFrom(ctx: IContext): IFlow;
 export declare function isLastBlockOn(ctx: IContext, block: IBlock): boolean;
-export declare function isNested({ nestedFlowBlockInteractionIdStack }: IContext): boolean;
+export declare function isNested({ nested_flow_block_interaction_id_stack }: IContext): boolean;
 export declare const contextService: IContextService;
 export interface IContextService {
     findInteractionWith(uuid: string, { interactions }: IContext): IBlockInteraction;

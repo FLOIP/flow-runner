@@ -6,7 +6,7 @@ describe('ResourceResolver', () => {
     let resolver;
     let ctx;
     beforeEach(() => {
-        ctx = __1.createContextDataObjectFor({ id: 'contact-123', name: 'Bert' }, [{ groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup' }], 'user-123', 'org-123', [{ uuid: 'flow-123' }], 'eng', __1.SupportedMode.OFFLINE);
+        ctx = __1.createContextDataObjectFor({ id: 'contact-123', name: 'Bert' }, [{ group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup' }], 'user-123', 'org-123', [{ uuid: 'flow-123' }], 'eng', __1.SupportedMode.OFFLINE);
         resolver = new __1.ResourceResolver(ctx);
     });
     describe('resolve', () => {
@@ -18,7 +18,7 @@ describe('ResourceResolver', () => {
                 const value = 'hello world!';
                 const expectedResourceContentTypeSpecific = {
                     modes: [ctx.mode],
-                    languageId: ctx.languageId,
+                    languageId: ctx.language_id,
                     value,
                     contentType: __1.SupportedContentType.TEXT,
                 };
@@ -69,7 +69,7 @@ describe('ResourceResolver', () => {
                     const expectedValues = variants.filter((_v, i) => expectedResourceDefIndices.indexOf(i) !== -1);
                     Object.assign(resolver.context, {
                         mode,
-                        languageId,
+                        language_id: languageId,
                         resources: [
                             {
                                 uuid: 'known000-0000-0000-0000-resource0123',

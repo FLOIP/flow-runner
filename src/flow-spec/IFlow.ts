@@ -27,18 +27,18 @@ export interface IFlow {
   label?: string
 
   // UTC like: 2016-12-25 13:42:05.234598
-  lastModified: string
-  interactionTimeout: number
-  platformMetadata: object
+  last_modified: string
+  interaction_timeout: number
+  vendor_metadata: object
 
-  supportedModes: SupportedMode[]
+  supported_modes: SupportedMode[]
 
   // eunm for ISO 639-3 codes
   languages: ILanguage[]
   blocks: IBlock[]
 
-  firstBlockId: string
-  exitBlockId?: string
+  first_block_id: string
+  exit_block_id?: string
 }
 
 export function findBlockWith(uuid: string, {blocks}: IFlow): IBlock {

@@ -1,5 +1,5 @@
 export interface IReadBlockConfig {
-    formatString: string;
-    destinationVariables: string[];
+    format_string: string;
+    destination_variables: string[];
 }
 //# sourceMappingURL=IReadBlockConfig.d.ts.map

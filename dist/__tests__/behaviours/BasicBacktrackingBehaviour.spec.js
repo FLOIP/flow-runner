@@ -6,7 +6,7 @@ const __1 = require("../..");
 describe('BasicBacktrackingBehaviour', () => {
     let backtracking;
     beforeEach(() => {
-        backtracking = new __1.BasicBacktrackingBehaviour({ platformMetadata: {} }, { navigateTo: (_b, _c) => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return ({ interaction: {}, prompt: undefined }); }) }, {
+        backtracking = new __1.BasicBacktrackingBehaviour({ vendor_metadata: {} }, { navigateTo: (_b, _c) => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return ({ interaction: {}, prompt: undefined }); }) }, {
             buildPromptFor: (_b, _i) => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return undefined; }),
         });
     });
@@ -17,10 +17,10 @@ describe('BasicBacktrackingBehaviour', () => {
                 interactions: [
                     { uuid: 'intx-123' },
                     { uuid: 'intx-234' },
-                    { uuid: 'intx-345', flowId: 'flow-123', blockId: 'block-123', value: 'value #345' },
+                    { uuid: 'intx-345', flow_id: 'flow-123', block_id: 'block-123', value: 'value #345' },
                     { uuid: 'intx-456' },
                     { uuid: 'intx-567' },
-                    { uuid: 'intx-678', flowId: 'flow-123', blockId: 'block-123', value: 'value #678' },
+                    { uuid: 'intx-678', flow_id: 'flow-123', block_id: 'block-123', value: 'value #678' },
                 ],
                 flows: [{ uuid: 'flow-123', blocks: [{ uuid: 'block-123' }] }],
             };

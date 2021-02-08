@@ -1,5 +1,5 @@
 export interface ISetGroupMembershipBlockConfig {
-    groupKey: string;
-    isMember: string;
+    group_key: string;
+    is_member: string;
 }
 //# sourceMappingURL=ISetGroupMembershipBlockConfig.d.ts.map

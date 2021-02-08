@@ -34,11 +34,11 @@ export class Resource implements IResource {
     const def = this._findByContentType(contentType)
 
     if (def == null) {
-      const {languageId, mode} = this.context
+      const {language_id, mode} = this.context
       throw new ResourceNotFoundException(
         `Unable to find resource for ${JSON.stringify({
           contentType,
-          languageId,
+          language_id,
           mode,
         })}`
       )

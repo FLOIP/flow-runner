@@ -18,11 +18,11 @@
  **/
 
 export interface IGroup {
-  groupKey: string
+  group_key: string
   label?: string
   __value__: string
 }
 
 export function isGroup(thing: unknown): thing is IGroup {
-  return typeof thing === 'object' && thing !== null && 'groupKey' in thing && '__value__' in thing
+  return typeof thing === 'object' && thing !== null && 'group_key' in thing && '__value__' in thing
 }
