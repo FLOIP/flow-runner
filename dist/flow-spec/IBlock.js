@@ -83,15 +83,19 @@ function wrapInExprSyntaxWhenAbsent(expr) {
 }
 exports.wrapInExprSyntaxWhenAbsent = wrapInExprSyntaxWhenAbsent;
 function setContactProperty(block, context) {
-    var _a, _b;
     if (__1.isSetContactPropertyConfig(block.config)) {
-        const key = (_a = block.config.set_contact_property) === null || _a === void 0 ? void 0 : _a.property_key;
-        const valueExpression = (_b = block.config.set_contact_property) === null || _b === void 0 ? void 0 : _b.property_value;
-        if (typeof key === 'string' && typeof valueExpression === 'string') {
-            const value = evaluateToString(valueExpression, createEvalContextFrom(context));
-            context.contact.setProperty(key, value);
+        const setContactProperty = block.config.set_contact_property;
+        if (Array.isArray(setContactProperty)) {
+            setContactProperty.forEach(property => setSingleContactProperty(property, context));
+        }
+        else if (__1.isSetContactProperty(setContactProperty)) {
+            setSingleContactProperty(setContactProperty, context);
         }
     }
 }
 exports.setContactProperty = setContactProperty;
+function setSingleContactProperty(property, context) {
+    const value = evaluateToString(property.property_value, createEvalContextFrom(context));
+    context.contact.setProperty(property.property_key, value);
+}
 //# sourceMappingURL=IBlock.js.map
