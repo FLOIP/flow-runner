@@ -3,7 +3,6 @@ import {
   IContact,
   IContext,
   IFlow,
-  IGroup,
   IResource,
   IResourceDefinition,
   IResourceDefinitionContentTypeSpecific,
@@ -21,7 +20,6 @@ describe('ResourceResolver', () => {
   beforeEach(() => {
     ctx = createContextDataObjectFor(
       ({id: 'contact-123', name: 'Bert'} as unknown) as IContact,
-      [{groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
       'user-123',
       'org-123',
       [{uuid: 'flow-123'} as IFlow],

@@ -18,7 +18,7 @@
  **/
 
 import {IContactProperty} from '..'
-import {createFormattedDate} from '../domain/DateFormat'
+import { createFormattedDate } from '../domain/DateFormat'
 
 export class ContactProperty implements IContactProperty {
   deletedAt: string | undefined

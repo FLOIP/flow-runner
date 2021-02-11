@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Context = void 0;
 const __1 = require("..");
 class Context {
-    constructor(id, createdAt, deliveryStatus, mode, languageId, contact, groups, sessionVars, interactions, nestedFlowBlockInteractionIdStack, reversibleOperations, flows, firstFlowId, resources, entryAt, exitAt, userId, orgId, cursor, platformMetadata = {}, logs = {}) {
+    constructor(id, createdAt, deliveryStatus, mode, languageId, contact, sessionVars, interactions, nestedFlowBlockInteractionIdStack, reversibleOperations, flows, firstFlowId, resources, entryAt, exitAt, userId, orgId, cursor, platformMetadata = {}, logs = {}) {
         this.platformMetadata = {};
         this.logs = {};
         this.logs = logs;
@@ -21,7 +21,6 @@ class Context {
         this.interactions = interactions;
         this.sessionVars = sessionVars;
         this.contact = contact;
-        this.groups = groups;
         this.languageId = languageId;
         this.mode = mode;
         this.deliveryStatus = deliveryStatus;
@@ -68,10 +67,6 @@ exports.Context = Context;
         }
         setContact(contact) {
             this.contact = contact;
-            return this;
-        }
-        setGroups(groups) {
-            this.groups = groups;
             return this;
         }
         setSessionVars(sessionVars) {
@@ -134,11 +129,10 @@ exports.Context = Context;
             __1.assertNotNull(this.id, () => 'Context.Builder.setId() must be called before build()');
             __1.assertNotNull(this.languageId, () => 'Context.Builder.setLanguageId() must be called before build()');
             __1.assertNotNull(this.contact, () => 'Context.Builder.setContact() must be called before build()');
-            __1.assertNotNull(this.groups, () => 'Context.Builder.setGroups() must be called before build()');
             __1.assertNotNull(this.flows, () => 'Context.Builder.setFlows() must be called before build()');
             __1.assertNotNull(this.firstFlowId, () => 'Context.Builder.setFirstFlowId() must be called before build()');
             __1.assertNotNull(this.resources, () => 'Context.Builder.setResources() must be called before build()');
-            return new Context(this.id, this.createdAt, this.deliveryStatus, this.mode, this.languageId, this.contact, this.groups, this.sessionVars, this.interactions, this.nestedFlowBlockInteractionIdStack, this.reversibleOperations, this.flows, this.firstFlowId, this.resources, this.entryAt, this.exitAt, this.userId, this.orgId, this.cursor, this.platformMetadata, this.logs);
+            return new Context(this.id, this.createdAt, this.deliveryStatus, this.mode, this.languageId, this.contact, this.sessionVars, this.interactions, this.nestedFlowBlockInteractionIdStack, this.reversibleOperations, this.flows, this.firstFlowId, this.resources, this.entryAt, this.exitAt, this.userId, this.orgId, this.cursor, this.platformMetadata, this.logs);
         }
     }
     Context.Builder = Builder;

@@ -27,7 +27,6 @@ import {
   IContact,
   IdGeneratorUuidV4,
   IFlow,
-  IGroup,
   IIdGenerator,
   IPrompt,
   IPromptConfig,
@@ -105,7 +104,6 @@ export interface IContext {
   languageId: string
 
   contact: IContact
-  groups: IGroup[]
 
   sessionVars: {[k: string]: unknown}
   interactions: IBlockInteraction[]
@@ -131,7 +129,6 @@ export interface IContextInputRequired extends IContext {
 
 export function createContextDataObjectFor(
   contact: IContact,
-  groups: IGroup[],
   userId: string,
   orgId: string,
   flows: IFlow[],
@@ -151,7 +148,6 @@ export function createContextDataObjectFor(
     languageId,
 
     contact,
-    groups,
     sessionVars: {},
     interactions: [],
     nestedFlowBlockInteractionIdStack: [],

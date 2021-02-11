@@ -24,7 +24,6 @@ function createDefaultBlockRunnerStore() {
         ['Core\\Log', (block, ctx) => new __1.LogBlockRunner(block, ctx)],
         ['ConsoleIO\\Print', (block, ctx) => new __1.PrintBlockRunner(block, ctx)],
         ['Core\\RunFlow', (block, ctx) => new __1.RunFlowBlockRunner(block, ctx)],
-        [__1.SET_GROUP_MEMBERSHIP_BLOCK_TYPE, (block, ctx) => new __1.SetGroupMembershipBlockRunner(block, ctx)],
     ]);
 }
 exports.createDefaultBlockRunnerStore = createDefaultBlockRunnerStore;

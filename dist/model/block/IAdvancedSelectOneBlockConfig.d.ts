@@ -3,7 +3,7 @@ export interface IAdvancedSelectOneBlockConfig {
     prompt: string;
     promptAudio?: string;
     primaryField: string;
-    secondaryFields: string[];
+    secondaryFields?: string[];
     choiceRowFields: string[];
     choiceRows: IResource['uuid'];
     responseFields?: string[];

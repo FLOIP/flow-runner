@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContextService = exports.contextService = exports.isNested = exports.isLastBlockOn = exports.getActiveFlowFrom = exports.getActiveFlowIdFrom = exports.findNestedFlowIdFor = exports.findBlockOnActiveFlowWith = exports.findFlowWith = exports.findInteractionWith = exports.createContextDataObjectFor = void 0;
 const __1 = require("..");
 const lodash_1 = require("lodash");
-function createContextDataObjectFor(contact, groups, userId, orgId, flows, languageId, mode = __1.SupportedMode.OFFLINE, resources = [], idGenerator = new __1.IdGeneratorUuidV4()) {
+function createContextDataObjectFor(contact, userId, orgId, flows, languageId, mode = __1.SupportedMode.OFFLINE, resources = [], idGenerator = new __1.IdGeneratorUuidV4()) {
     return {
         id: idGenerator.generate(),
         createdAt: __1.createFormattedDate(),
@@ -13,7 +13,6 @@ function createContextDataObjectFor(contact, groups, userId, orgId, flows, langu
         mode,
         languageId,
         contact,
-        groups,
         sessionVars: {},
         interactions: [],
         nestedFlowBlockInteractionIdStack: [],

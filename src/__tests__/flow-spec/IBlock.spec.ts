@@ -5,22 +5,19 @@ import {
   generateCachedProxyForBlockName,
   IBlockExitTestRequired,
   IBlockWithTestExits,
-  IContact,
   IContext,
   IEvalContextBlock,
   wrapInExprSyntaxWhenAbsent,
 } from '../..'
 import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
-import {setContactProperty, IBlock, createEvalContactFrom} from '../../flow-spec/IBlock'
+import {setContactProperty, IBlock} from '../../flow-spec/IBlock'
 import {ISetContactPropertyBlockConfig} from '../../model/block/IBlockConfig'
 import Contact from '../../flow-spec/Contact'
 import IContactProperty from '../../flow-spec/IContactProperty'
-import {IContactGroup} from '../../flow-spec/IContactGroup'
 
 describe('IBlock', () => {
   let dataset: IDataset
   let target: IEvalContextBlock
-  let dummyContext: IContext
 
   beforeEach(() => {
     dataset = createDefaultDataset()
@@ -31,7 +28,6 @@ describe('IBlock', () => {
       value: 'my first value',
       text: 'my text',
     }
-    dummyContext = {contact: {} as IContact} as IContext
   })
 
   describe('findFirstTruthyEvaluatingBlockExitOn', () => {
@@ -46,7 +42,7 @@ describe('IBlock', () => {
             {test: '@(true = false)'},
           ] as IBlockExitTestRequired[],
         } as IBlockWithTestExits,
-        dummyContext
+        {} as IContext
       )
 
       expect(exit).toEqual({test: '@(true = true)'})
@@ -64,7 +60,7 @@ describe('IBlock', () => {
             {test: '@(true = false)'},
           ] as IBlockExitTestRequired[],
         } as IBlockWithTestExits,
-        dummyContext
+        {} as IContext
       )
 
       expect(exit).toEqual({test: '@(true = true)'})
@@ -73,7 +69,7 @@ describe('IBlock', () => {
 
   describe('generateCachedProxyForBlockName', () => {
     it('should return an object resembling the one provided', async () => {
-      const proxy = generateCachedProxyForBlockName(target, dummyContext)
+      const proxy = generateCachedProxyForBlockName(target, {} as IContext)
       expect(proxy).toEqual(target)
     })
 
@@ -189,66 +185,6 @@ describe('IBlock', () => {
       const property = context.contact.getProperty('foo')
       expect(typeof property).toBe('object')
       expect((property as IContactProperty).__value__).toBe('bar')
-    })
-
-    it('should set an array of contact properties', () => {
-      dataset = createDefaultDataset()
-      const context = Object.assign({}, cloneDeep(dataset.contexts[1]))
-      context.contact = new Contact()
-      const block = {
-        config: {
-          set_contact_property: [
-            {
-              property_key: 'foo',
-              property_value: 'bar',
-            } as ISetContactPropertyBlockConfig,
-            {
-              property_key: 'baz',
-              property_value: 'qux',
-            } as ISetContactPropertyBlockConfig,
-          ],
-        },
-      } as IBlock
-      setContactProperty(block, context)
-      const property1 = context.contact.getProperty('foo')
-      expect(typeof property1).toBe('object')
-      expect((property1 as IContactProperty).__value__).toBe('bar')
-      const property2 = context.contact.getProperty('baz')
-      expect(typeof property2).toBe('object')
-      expect((property2 as IContactProperty).__value__).toBe('qux')
-    })
-  })
-
-  describe('createEvalContactFrom', () => {
-    it('should clone the passed contact, deleting marked groups', () => {
-      const groupToDelete = {
-        groupKey: 'two',
-        __value__: 'two',
-        updatedAt: '0000-00-00',
-        deletedAt: '2020-01-01',
-      } as IContactGroup
-
-      const contact = new Contact()
-      contact.groups = [
-        {
-          groupKey: 'one',
-          __value__: 'one',
-          updatedAt: '0000-00-00',
-          deletedAt: undefined,
-        } as IContactGroup,
-        groupToDelete,
-        {
-          groupKey: 'three',
-          __value__: 'three',
-          updatedAt: '0000-00-00',
-          deletedAt: undefined,
-        } as IContactGroup,
-      ]
-
-      const evalContact = createEvalContactFrom(contact)
-
-      expect(contact.groups).toContain(groupToDelete)
-      expect(evalContact.groups).not.toContain(groupToDelete)
     })
   })
 })
