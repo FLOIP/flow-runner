@@ -21,7 +21,7 @@ describe.skip('FlowRunner integration', () => {
   })
 
   it('should work when simple + single backtrack', async () => {
-    const context = createContextDataObjectFor(
+    const context = await createContextDataObjectFor(
       {id: '1'} as IContact,
       [{group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
       'user-1234',

@@ -24,7 +24,7 @@ import uuid from 'uuid'
  * Implementation of {@link IIdGenerator} that generates UUIDv4-format IDs.
  */
 export class IdGeneratorUuidV4 implements IIdGenerator {
-  generate(): string {
+  async generate(): Promise<string> {
     return uuid.v4()
   }
 }

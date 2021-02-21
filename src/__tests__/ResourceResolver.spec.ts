@@ -18,8 +18,8 @@ describe('ResourceResolver', () => {
   let resolver: IResourceResolver
   let ctx: IContext
 
-  beforeEach(() => {
-    ctx = createContextDataObjectFor(
+  beforeEach(async () => {
+    ctx = await createContextDataObjectFor(
       ({id: 'contact-123', name: 'Bert'} as unknown) as IContact,
       [{group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
       'user-123',
