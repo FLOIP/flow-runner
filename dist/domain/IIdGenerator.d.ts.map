@@ -1,1 +1,1 @@
-{"version":3,"file":"IIdGenerator.d.ts","sourceRoot":"","sources":["../../src/domain/IIdGenerator.ts"],"names":[],"mappings":"AA0BA,MAAM,WAAW,YAAY;IAC3B,QAAQ,IAAI,MAAM,CAAA;CACnB"}
+{"version":3,"file":"IIdGenerator.d.ts","sourceRoot":"","sources":["../../src/domain/IIdGenerator.ts"],"names":[],"mappings":"AA0BA,MAAM,WAAW,YAAY;IAC3B,QAAQ,IAAI,OAAO,CAAC,MAAM,CAAC,CAAA;CAC5B"}

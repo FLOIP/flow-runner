@@ -201,7 +201,7 @@ class FlowRunner {
     }
     initializeOneBlock(block, flowId, originFlowId, originBlockInteractionId) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId);
+            let interaction = yield this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId);
             Object.values(this.behaviours).forEach(b => (interaction = b.postInteractionCreate(interaction, this.context)));
             return { interaction, prompt: undefined };
         });
@@ -304,20 +304,22 @@ class FlowRunner {
         return lodash_1.find(blocks, { uuid: destination_block });
     }
     createBlockInteractionFor({ uuid: block_id, type }, flowId, originFlowId, originBlockInteractionId) {
-        return {
-            uuid: this.idGenerator.generate(),
-            block_id: block_id,
-            flow_id: flowId,
-            entry_at: __1.createFormattedDate(),
-            exit_at: undefined,
-            has_response: false,
-            value: undefined,
-            selected_exit_id: undefined,
-            details: {},
-            type,
-            origin_flow_id: originFlowId,
-            origin_block_interaction_id: originBlockInteractionId,
-        };
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return {
+                uuid: yield this.idGenerator.generate(),
+                block_id: block_id,
+                flow_id: flowId,
+                entry_at: __1.createFormattedDate(),
+                exit_at: undefined,
+                has_response: false,
+                value: undefined,
+                selected_exit_id: undefined,
+                details: {},
+                type,
+                origin_flow_id: originFlowId,
+                origin_block_interaction_id: originBlockInteractionId,
+            };
+        });
     }
     _inflatePromptForBlockOnto(richCursor, block, ctx) {
         var _a;
