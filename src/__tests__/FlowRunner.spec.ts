@@ -128,7 +128,7 @@ describe('FlowRunner', () => {
         // our server-side implementation currently returns
         const resources: IResources = flatMap(flows, 'resources')
 
-        const context = createContextDataObjectFor(
+        const context = await createContextDataObjectFor(
           {id: '1'} as IContact,
           [{group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
           'user-1234',
@@ -155,7 +155,7 @@ describe('FlowRunner', () => {
         // our server-side implementation currently returns
         const resources: IResources = flatMap(flows, 'resources')
 
-        const context = createContextDataObjectFor(
+        const context = await createContextDataObjectFor(
           {id: '1'} as IContact,
           [{group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
           'user-1234',
@@ -183,7 +183,7 @@ describe('FlowRunner', () => {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const {flows, resources}: IContext = require('./fixtures/2020-04-14-run-flow-unable-to-find-flow.json')
 
-        const context = createContextDataObjectFor(
+        const context = await createContextDataObjectFor(
           {id: '1'} as IContact,
           [{group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
           'user-1234',
