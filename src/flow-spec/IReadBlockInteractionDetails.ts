@@ -20,7 +20,7 @@
 import {IBlockInteractionDetails} from '..'
 
 export interface IReadBlockInteractionDetails extends IBlockInteractionDetails {
-  readError: IReadError
+  read_error: IReadError
 }
 
 export interface IReadError {

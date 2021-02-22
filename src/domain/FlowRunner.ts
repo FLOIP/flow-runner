@@ -94,23 +94,23 @@ const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
 /**
  * Block types that do not request additional input from an `IContact`
  */
-export const NON_INTERACTIVE_BLOCK_TYPES = ['Core\\Case', 'Core\\RunFlow']
+export const NON_INTERACTIVE_BLOCK_TYPES = ['Core.Case', 'Core.RunFlow']
 
 /**
  * A map of `IBlock.type` to an `TBlockRunnerFactory` function.
  */
 export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
   return new BlockRunnerFactoryStore([
-    ['MobilePrimitives\\Message', (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
-    ['MobilePrimitives\\OpenResponse', (block, ctx) => new OpenResponseBlockRunner(block as IOpenResponseBlock, ctx)],
-    ['MobilePrimitives\\NumericResponse', (block, ctx) => new NumericResponseBlockRunner(block as INumericResponseBlock, ctx)],
-    ['MobilePrimitives\\SelectOneResponse', (block, ctx) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
-    ['MobilePrimitives\\SelectManyResponse', (block, ctx) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
-    ['Core\\Case', (block, ctx) => new CaseBlockRunner(block as ICaseBlock, ctx)],
-    ['Core\\Output', (block, ctx) => new OutputBlockRunner(block as IOutputBlock, ctx)],
-    ['Core\\Log', (block, ctx) => new LogBlockRunner(block as ILogBlock, ctx)],
-    ['ConsoleIO\\Print', (block, ctx) => new PrintBlockRunner(block as IPrintBlock, ctx)],
-    ['Core\\RunFlow', (block, ctx) => new RunFlowBlockRunner(block as IRunFlowBlock, ctx)],
+    ['MobilePrimitives.Message', (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
+    ['MobilePrimitives.OpenResponse', (block, ctx) => new OpenResponseBlockRunner(block as IOpenResponseBlock, ctx)],
+    ['MobilePrimitives.NumericResponse', (block, ctx) => new NumericResponseBlockRunner(block as INumericResponseBlock, ctx)],
+    ['MobilePrimitives.SelectOneResponse', (block, ctx) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
+    ['MobilePrimitives.SelectManyResponse', (block, ctx) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
+    ['Core.Case', (block, ctx) => new CaseBlockRunner(block as ICaseBlock, ctx)],
+    ['Core.Output', (block, ctx) => new OutputBlockRunner(block as IOutputBlock, ctx)],
+    ['Core.Log', (block, ctx) => new LogBlockRunner(block as ILogBlock, ctx)],
+    ['ConsoleIO.Print', (block, ctx) => new PrintBlockRunner(block as IPrintBlock, ctx)],
+    ['Core.RunFlow', (block, ctx) => new RunFlowBlockRunner(block as IRunFlowBlock, ctx)],
     [SET_GROUP_MEMBERSHIP_BLOCK_TYPE, (block, ctx) => new SetGroupMembershipBlockRunner(block as ISetGroupMembershipBlock, ctx)],
   ])
 }
@@ -179,8 +179,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
       throw new ValidationException('Unable to initialize flow without blocks.')
     }
 
-    ctx.deliveryStatus = DeliveryStatus.IN_PROGRESS
-    ctx.entryAt = createFormattedDate()
+    ctx.delivery_status = DeliveryStatus.IN_PROGRESS
+    ctx.entry_at = createFormattedDate()
 
     // kick-start by navigating to first block
     return this.navigateTo(block, this.context)
@@ -266,26 +266,26 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   // todo: this could be findFirstExitOnActiveFlowBlockFor to an Expressions Behaviour
   //       ie. cacheInteractionByBlockName, applyReversibleDataOperation and reverseLastDataOperation
   cacheInteractionByBlockName(
-    {uuid, entryAt}: IBlockInteraction,
+    {uuid, entry_at}: IBlockInteraction,
     {name, config: {prompt}}: IMessageBlock,
     context: IContext = this.context
   ): void {
-    if (!('blockInteractionsByBlockName' in this.context.sessionVars)) {
-      context.sessionVars.blockInteractionsByBlockName = {}
+    if (!('block_interactions_by_block_name' in this.context.session_vars)) {
+      context.session_vars.block_interactions_by_block_name = {}
     }
 
-    if (context.reversibleOperations == null) {
-      context.reversibleOperations = []
+    if (context.reversible_operations == null) {
+      context.reversible_operations = []
     }
 
     // create a cache of `{[block.name]: {...}}` for subsequent lookups
-    const blockNameKey = `blockInteractionsByBlockName.${name}`
-    const previous = this.context.sessionVars[blockNameKey]
+    const blockNameKey = `block_interactions_by_block_name.${name}`
+    const previous = this.context.session_vars[blockNameKey]
     const resource = prompt == null ? undefined : new ResourceResolver(context).resolve(prompt)
 
     const current = {
       __interactionId: uuid,
-      time: entryAt,
+      time: entry_at,
       text: resource != null && resource.hasText() ? resource.getText() : '',
     }
 
@@ -293,7 +293,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   }
 
   /**
-   * Apply a mutation to `sessionVars` and operations in both directions.
+   * Apply a mutation to `session_vars` and operations in both directions.
    * These vars are made available in content Expressions.
    * @param forward
    * @param reverse
@@ -304,8 +304,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     reverse: NonBreakingUpdateOperation,
     context: IContext = this.context
   ): void {
-    context.sessionVars = update(context.sessionVars, forward)
-    context.reversibleOperations.push({
+    context.session_vars = update(context.session_vars, forward)
+    context.reversible_operations.push({
       interactionId: last(context.interactions)?.uuid,
       forward,
       reverse,
@@ -313,17 +313,17 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   }
 
   /**
-   * Pop last mutation to `sessionVars` and apply its reversal operation.
+   * Pop last mutation to `session_vars` and apply its reversal operation.
    * @param context
    */
   reverseLastDataOperation(context: IContext = this.context): IReversibleUpdateOperation | undefined {
-    if (context.reversibleOperations.length === 0) {
+    if (context.reversible_operations.length === 0) {
       return
     }
 
-    const lastOperation = last(context.reversibleOperations) as IReversibleUpdateOperation
-    context.sessionVars = update(context.sessionVars, lastOperation.reverse)
-    return context.reversibleOperations.pop()
+    const lastOperation = last(context.reversible_operations) as IReversibleUpdateOperation
+    context.session_vars = update(context.session_vars, lastOperation.reverse)
+    return context.reversible_operations.pop()
   }
 
   /**
@@ -335,7 +335,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    */
   async runUntilInputRequiredFrom(ctx: IContextWithCursor): Promise<IRichCursorInputRequired | undefined> {
     let richCursor: IRichCursor = this.hydrateRichCursorFrom(ctx)
-    let block: IBlock | undefined = this._contextService.findBlockOnActiveFlowWith(richCursor.interaction.blockId, ctx)
+    let block: IBlock | undefined = this._contextService.findBlockOnActiveFlowWith(richCursor.interaction.block_id, ctx)
 
     do {
       if (this.isInputRequiredFor(ctx)) {
@@ -357,7 +357,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
         continue
       }
 
-      if (block.type === 'Core\\RunFlow') {
+      if (block.type === 'Core.RunFlow') {
         richCursor = await this.navigateTo(block, ctx)
         block = this.stepInto(block, ctx)
       }
@@ -388,8 +388,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    */
   complete(ctx: IContext, completedAt: Date = new Date()): void {
     delete ctx.cursor
-    ctx.deliveryStatus = DeliveryStatus.FINISHED_COMPLETE
-    ctx.exitAt = createFormattedDate(completedAt)
+    ctx.delivery_status = DeliveryStatus.FINISHED_COMPLETE
+    ctx.exit_at = createFormattedDate(completedAt)
   }
 
   /**
@@ -399,8 +399,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param completedAt
    */
   completeInteraction(intx: IBlockInteraction, selectedExitId: IBlockExit['uuid'], completedAt: Date = new Date()): IBlockInteraction {
-    intx.exitAt = createFormattedDate(completedAt)
-    intx.selectedExitId = selectedExitId
+    intx.exit_at = createFormattedDate(completedAt)
+    intx.selected_exit_id = selectedExitId
 
     return intx
   }
@@ -413,16 +413,16 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param completedAt
    */
   completeActiveNestedFlow(ctx: IContext, completedAt: Date = new Date()): IBlockInteraction {
-    const {nestedFlowBlockInteractionIdStack} = ctx
+    const {nested_flow_block_interaction_id_stack} = ctx
 
     if (!this._contextService.isNested(ctx)) {
       throw new ValidationException('Unable to complete a nested flow when not nested.')
     }
 
-    const runFlowIntx = this._contextService.findInteractionWith(last(nestedFlowBlockInteractionIdStack) as string, ctx)
+    const runFlowIntx = this._contextService.findInteractionWith(last(nested_flow_block_interaction_id_stack) as string, ctx)
 
     // once we are in a valid state and able to find our corresponding interaction, let's update active nested flow
-    nestedFlowBlockInteractionIdStack.pop()
+    nested_flow_block_interaction_id_stack.pop()
 
     // since we've un-nested one level, we may seek using freshly active flow
     const exit: IBlockExit = this.findFirstExitOnActiveFlowBlockFor(runFlowIntx, ctx)
@@ -466,7 +466,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param originBlockInteractionId
    */
   async initializeOneBlock(block: IBlock, flowId: string, originFlowId?: string, originBlockInteractionId?: string): Promise<IRichCursor> {
-    let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
+    let interaction = await this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
 
     Object.values(this.behaviours).forEach(b => (interaction = b.postInteractionCreate(interaction, this.context)))
 
@@ -501,7 +501,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
 
     if (this.isRichCursorInputRequired(richCursor)) {
       interaction.value = richCursor.prompt.value
-      interaction.hasResponse = interaction.value != null
+      interaction.has_response = interaction.value != null
     }
 
     const exit = await this.createBlockRunnerFor(block, this.context).run(richCursor)
@@ -557,15 +557,15 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   }
 
   async _inflateInteractionAndContainerCursorFor(block: IBlock, ctx: IContext): Promise<IRichCursor> {
-    const {nestedFlowBlockInteractionIdStack} = ctx
+    const {nested_flow_block_interaction_id_stack} = ctx
     const flowId = this._contextService.getActiveFlowIdFrom(ctx)
-    const originInteractionId = last(nestedFlowBlockInteractionIdStack)
+    const originInteractionId = last(nested_flow_block_interaction_id_stack)
     const originInteraction = originInteractionId != null ? this._contextService.findInteractionWith(originInteractionId, ctx) : null
 
     const richCursor = await this.initializeOneBlock(
       block,
       flowId,
-      originInteraction == null ? undefined : originInteraction.flowId,
+      originInteraction == null ? undefined : originInteraction.flow_id,
       originInteractionId
     )
 
@@ -585,20 +585,20 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * todo: would it be possible for stepping into and out of be handled by the RunFlow itself?
    *       Eg. these are esentially RunFlowRunner's .start() + .resume() equivalents */
   stepInto(runFlowBlock: IBlock, ctx: IContext): IBlock | undefined {
-    if (runFlowBlock.type !== 'Core\\RunFlow') {
-      throw new ValidationException('Unable to step into a non-Core\\RunFlow block type')
+    if (runFlowBlock.type !== 'Core.RunFlow') {
+      throw new ValidationException('Unable to step into a non-Core.RunFlow block type')
     }
 
     const runFlowInteraction = last(ctx.interactions)
     if (runFlowInteraction == null) {
-      throw new ValidationException("Unable to step into Core\\RunFlow that hasn't yet been started")
+      throw new ValidationException("Unable to step into Core.RunFlow that hasn't yet been started")
     }
 
-    if (runFlowBlock.uuid !== runFlowInteraction.blockId) {
-      throw new ValidationException("Unable to step into Core\\RunFlow block that doesn't match last interaction")
+    if (runFlowBlock.uuid !== runFlowInteraction.block_id) {
+      throw new ValidationException("Unable to step into Core.RunFlow block that doesn't match last interaction")
     }
 
-    ctx.nestedFlowBlockInteractionIdStack.push(runFlowInteraction.uuid)
+    ctx.nested_flow_block_interaction_id_stack.push(runFlowInteraction.uuid)
 
     const firstNestedBlock = first(this._contextService.getActiveFlowFrom(ctx).blocks)
     // todo: use IFlow.firstBlockId
@@ -624,8 +624,8 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
     return this.findNextBlockFrom(this.completeActiveNestedFlow(ctx), ctx)
   }
 
-  findFirstExitOnActiveFlowBlockFor({blockId}: IBlockInteraction, ctx: IContext): IBlockExit {
-    const {exits} = this._contextService.findBlockOnActiveFlowWith(blockId, ctx)
+  findFirstExitOnActiveFlowBlockFor({block_id}: IBlockInteraction, ctx: IContext): IBlockExit {
+    const {exits} = this._contextService.findBlockOnActiveFlowWith(block_id, ctx)
     return first(exits) as IBlockExit
   }
 
@@ -650,21 +650,21 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
   /**
    * Find next block leveraging destinationBlock on current interaction's `selectedExit`.
    * Raises when `selectedExitId` absent.
-   * @param blockId
+   * @param block_id
    * @param selectedExitId
    * @param ctx
    */
-  findNextBlockFrom({blockId, selectedExitId}: IBlockInteraction, ctx: IContext): IBlock | undefined {
-    if (selectedExitId == null) {
+  findNextBlockFrom({block_id, selected_exit_id}: IBlockInteraction, ctx: IContext): IBlock | undefined {
+    if (selected_exit_id == null) {
       // todo: maybe tighten check on this, like: prompt.isFulfilled() === false || !called block.run()
       throw new ValidationException('Unable to navigate past incomplete interaction; did you forget to call runner.run()?')
     }
 
-    const block = this._contextService.findBlockOnActiveFlowWith(blockId, ctx)
-    const {destinationBlock} = findBlockExitWith(selectedExitId, block)
+    const block = this._contextService.findBlockOnActiveFlowWith(block_id, ctx)
+    const {destination_block} = findBlockExitWith(selected_exit_id, block)
     const {blocks} = this._contextService.getActiveFlowFrom(ctx)
 
-    return find(blocks, {uuid: destinationBlock})
+    return find(blocks, {uuid: destination_block})
   }
 
   /**
@@ -672,36 +672,36 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * - UUID via `IIdGenerator.generate()`
    * - entryAt via current timestamp
    * - flowId (provisioned)
-   * - blockId via block.uuid
+   * - block_id via block.uuid
    * - type via block.type provisioned
    * - hasResponse as `false`
-   * @param blockId
+   * @param block_id
    * @param type
    * @param flowId
    * @param originFlowId
    * @param originBlockInteractionId
    */
-  private createBlockInteractionFor(
-    {uuid: blockId, type}: IBlock,
+  private async createBlockInteractionFor(
+    {uuid: block_id, type}: IBlock,
     flowId: string,
     originFlowId: string | undefined,
     originBlockInteractionId: string | undefined
-  ): IBlockInteraction {
+  ): Promise<IBlockInteraction> {
     return {
-      uuid: this.idGenerator.generate(),
-      blockId,
-      flowId,
-      entryAt: createFormattedDate(),
-      exitAt: undefined,
-      hasResponse: false,
+      uuid: await this.idGenerator.generate(),
+      block_id: block_id,
+      flow_id: flowId,
+      entry_at: createFormattedDate(),
+      exit_at: undefined,
+      has_response: false,
       value: undefined,
-      selectedExitId: undefined,
+      selected_exit_id: undefined,
       details: {},
       type,
 
       // Nested flows behaviour:
-      originFlowId,
-      originBlockInteractionId,
+      origin_flow_id: originFlowId,
+      origin_block_interaction_id: originBlockInteractionId,
     }
   }
 

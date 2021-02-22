@@ -82,7 +82,7 @@ export function createTextResourceVariantWith(value: string, ctx: IContext): IRe
   return {
     contentType: SupportedContentType.TEXT,
     value,
-    languageId: ctx.languageId,
+    languageId: ctx.language_id,
     modes: [ctx.mode],
   }
 }

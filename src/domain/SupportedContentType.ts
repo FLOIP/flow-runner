@@ -3,9 +3,9 @@
  * `SupportedContentType.addCustomSupportedContentType()`.
  */
 export class SupportedContentType {
-  static TEXT = 'text'
-  static AUDIO = 'audio'
-  static IMAGE = 'image'
-  static VIDEO = 'video'
-  static CSV = 'csv'
+  static TEXT = 'TEXT'
+  static AUDIO = 'AUDIO'
+  static IMAGE = 'IMAGE'
+  static VIDEO = 'VIDEO'
+  static CSV = 'CSV'
 }

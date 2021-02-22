@@ -1,4 +1,4 @@
 export interface IIdGenerator {
-    generate(): string;
+    generate(): Promise<string>;
 }
 //# sourceMappingURL=IIdGenerator.d.ts.map

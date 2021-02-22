@@ -21,9 +21,9 @@ import {ISetContactPropertyBlockConfig} from '../..'
 
 export interface ISelectOneResponseBlockConfig extends ISetContactPropertyBlockConfig {
   prompt: string
-  promptAudio: string
-  questionPrompt?: string
-  choicesPrompt?: string
+  prompt_audio: string
+  question_prompt?: string
+  choices_prompt?: string
   choices: StringMapType
 }
 

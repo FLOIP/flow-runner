@@ -22,7 +22,7 @@ describe('SelectOneResponseBlockRunner', () => {
       ;(ctx.contact as IContactWithAge).age = '12'
 
       const interaction = findInteractionWith(ctx.cursor!.interactionId, ctx)
-      const block: ISelectOneResponseBlock = Object.assign(findBlockOnActiveFlowWith(interaction.blockId, ctx), {
+      const block: ISelectOneResponseBlock = Object.assign(findBlockOnActiveFlowWith(interaction.block_id, ctx), {
         exits: [
           {test: '@(contact.age > 73)'} as IBlockExit,
           {test: '@(contact.age > 50)'} as IBlockExit,

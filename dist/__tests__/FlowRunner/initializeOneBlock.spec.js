@@ -14,7 +14,7 @@ describe('FlowRunner/initializeOneBlock', () => {
         const block = flow.blocks[0];
         const runner = new __1.FlowRunner(ctx, new __1.BlockRunnerFactoryStore([
             [
-                'MobilePrimitives\\Message',
+                'MobilePrimitives.Message',
                 (block, context) => ({
                     block,
                     context,
@@ -33,7 +33,7 @@ describe('FlowRunner/initializeOneBlock', () => {
         const block = flow.blocks[0];
         const runner = new __1.FlowRunner(ctx, new __1.BlockRunnerFactoryStore([
             [
-                'MobilePrimitives\\Message',
+                'MobilePrimitives.Message',
                 (block, context) => ({
                     block,
                     context,
@@ -62,7 +62,7 @@ describe('FlowRunner/initializeOneBlock', () => {
         const block = flow.blocks[0];
         const runner = new __1.FlowRunner(ctx, new __1.BlockRunnerFactoryStore([
             [
-                'MobilePrimitives\\Message',
+                'MobilePrimitives.Message',
                 (block, context) => ({
                     block,
                     context,
@@ -72,8 +72,8 @@ describe('FlowRunner/initializeOneBlock', () => {
             ],
         ]));
         const { interaction } = yield runner.initializeOneBlock(block, flow.uuid, undefined, undefined);
-        expect(interaction).toEqual(expect.objectContaining({ blockId: block.uuid }));
-        expect(interaction).toEqual(expect.objectContaining({ flowId: flow.uuid }));
+        expect(interaction).toEqual(expect.objectContaining({ block_id: block.uuid }));
+        expect(interaction).toEqual(expect.objectContaining({ flow_id: flow.uuid }));
     }));
 });
 //# sourceMappingURL=initializeOneBlock.spec.js.map

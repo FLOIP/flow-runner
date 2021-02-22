@@ -94,29 +94,29 @@ export interface IReversibleUpdateOperation {
 
 export interface IContext {
   id: string
-  createdAt: string
-  entryAt?: string
-  exitAt?: string
-  deliveryStatus: DeliveryStatus
+  created_at: string
+  entry_at?: string
+  exit_at?: string
+  delivery_status: DeliveryStatus
 
-  userId?: string
-  orgId?: string
+  user_id?: string
+  org_id?: string
   mode: SupportedMode
-  languageId: string
+  language_id: string
 
   contact: IContact
   groups: IGroup[]
 
-  sessionVars: {[k: string]: unknown}
+  session_vars: {[k: string]: unknown}
   interactions: IBlockInteraction[]
-  nestedFlowBlockInteractionIdStack: string[]
-  reversibleOperations: IReversibleUpdateOperation[]
+  nested_flow_block_interaction_id_stack: string[]
+  reversible_operations: IReversibleUpdateOperation[]
   cursor?: ICursor
 
   flows: IFlow[]
-  firstFlowId: string
+  first_flow_id: string
   resources: IResources
-  platformMetadata: {[k: string]: unknown}
+  vendor_metadata: {[k: string]: unknown}
 
   logs: {[k: string]: string}
 }
@@ -129,7 +129,7 @@ export interface IContextInputRequired extends IContext {
   cursor: ICursorInputRequired
 }
 
-export function createContextDataObjectFor(
+export async function createContextDataObjectFor(
   contact: IContact,
   groups: IGroup[],
   userId: string,
@@ -139,29 +139,29 @@ export function createContextDataObjectFor(
   mode: SupportedMode = SupportedMode.OFFLINE,
   resources: IResourceDefinition[] = [],
   idGenerator: IIdGenerator = new IdGeneratorUuidV4()
-): IContext {
+): Promise<IContext> {
   return {
-    id: idGenerator.generate(),
-    createdAt: createFormattedDate(),
-    deliveryStatus: DeliveryStatus.QUEUED,
+    id: await idGenerator.generate(),
+    created_at: createFormattedDate(),
+    delivery_status: DeliveryStatus.QUEUED,
 
-    userId,
-    orgId,
+    user_id: userId,
+    org_id: orgId,
     mode,
-    languageId,
+    language_id: languageId,
 
     contact,
     groups,
-    sessionVars: {},
+    session_vars: {},
     interactions: [],
-    nestedFlowBlockInteractionIdStack: [],
-    reversibleOperations: [],
+    nested_flow_block_interaction_id_stack: [],
+    reversible_operations: [],
 
     flows,
-    firstFlowId: flows[0].uuid,
+    first_flow_id: flows[0].uuid,
 
     resources,
-    platformMetadata: {},
+    vendor_metadata: {},
 
     logs: {},
   }
@@ -190,25 +190,25 @@ export function findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock {
 }
 
 export function findNestedFlowIdFor(interaction: IBlockInteraction, ctx: IContext): string {
-  const flow = findFlowWith(interaction.flowId, ctx)
-  const runFlowBlock = findBlockWith(interaction.blockId, flow)
-  const flowId = (runFlowBlock.config as IRunFlowBlockConfig).flowId
+  const flow = findFlowWith(interaction.flow_id, ctx)
+  const runFlowBlock = findBlockWith(interaction.block_id, flow)
+  const flowId = (runFlowBlock.config as IRunFlowBlockConfig).flow_id
 
   if (flowId == null) {
-    throw new ValidationException('Unable to find nested flowId on Core\\RunFlow')
+    throw new ValidationException('Unable to find nested flowId on Core.RunFlow')
   }
 
   return flowId
 }
 
 export function getActiveFlowIdFrom(ctx: IContext): string {
-  const {firstFlowId, nestedFlowBlockInteractionIdStack} = ctx
+  const {first_flow_id, nested_flow_block_interaction_id_stack} = ctx
 
-  if (nestedFlowBlockInteractionIdStack.length === 0) {
-    return firstFlowId
+  if (nested_flow_block_interaction_id_stack.length === 0) {
+    return first_flow_id
   }
 
-  const interaction = findInteractionWith(last(nestedFlowBlockInteractionIdStack) as string, ctx)
+  const interaction = findInteractionWith(last(nested_flow_block_interaction_id_stack) as string, ctx)
   return findNestedFlowIdFor(interaction, ctx)
 }
 
@@ -220,8 +220,8 @@ export function isLastBlockOn(ctx: IContext, block: IBlock): boolean {
   return !isNested(ctx) && isLastBlock(block)
 }
 
-export function isNested({nestedFlowBlockInteractionIdStack}: IContext): boolean {
-  return nestedFlowBlockInteractionIdStack.length > 0
+export function isNested({nested_flow_block_interaction_id_stack}: IContext): boolean {
+  return nested_flow_block_interaction_id_stack.length > 0
 }
 
 export const contextService: IContextService = {

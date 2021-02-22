@@ -13,7 +13,7 @@ describe('SelectOneResponseBlockRunner', () => {
             const ctx = dataset.contexts[1];
             ctx.contact.age = '12';
             const interaction = __1.findInteractionWith(ctx.cursor.interactionId, ctx);
-            const block = Object.assign(__1.findBlockOnActiveFlowWith(interaction.blockId, ctx), {
+            const block = Object.assign(__1.findBlockOnActiveFlowWith(interaction.block_id, ctx), {
                 exits: [
                     { test: '@(contact.age > 73)' },
                     { test: '@(contact.age > 50)' },

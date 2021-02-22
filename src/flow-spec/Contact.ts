@@ -34,10 +34,10 @@ export class Contact implements IContact {
     const prop: IContactProperty = {
       __value__: value,
       value: value,
-      contactPropertyFieldName: name,
-      createdAt: createFormattedDate(),
-      updatedAt: createFormattedDate(),
-      deletedAt: undefined,
+      contact_property_field_name: name,
+      created_at: createFormattedDate(),
+      updated_at: createFormattedDate(),
+      deleted_at: undefined,
     }
     this[name] = prop
     return prop
@@ -51,13 +51,13 @@ export class Contact implements IContact {
   }
 
   public addGroup(newGroup: IGroup): void {
-    this.groups.find(group => group.groupKey === newGroup.groupKey) ?? this.groups.push(new ContactGroup(newGroup))
+    this.groups.find(group => group.group_key === newGroup.group_key) ?? this.groups.push(new ContactGroup(newGroup))
   }
 
   public delGroup(toRemove: IGroup): void {
-    const group = this.groups.find(group => group.groupKey === toRemove.groupKey)
+    const group = this.groups.find(group => group.group_key === toRemove.group_key)
     if (group) {
-      group.deletedAt = createFormattedDate()
+      group.deleted_at = createFormattedDate()
     }
   }
 }

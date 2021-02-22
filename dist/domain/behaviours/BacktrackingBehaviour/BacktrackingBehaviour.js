@@ -12,7 +12,7 @@ class BacktrackingBehaviour {
         this.initializeBacktrackingContext();
     }
     initializeBacktrackingContext() {
-        const meta = this.context.platformMetadata;
+        const meta = this.context.vendor_metadata;
         if (meta.backtracking == null) {
             meta.backtracking = {
                 cursor: __1.createKey(),
@@ -27,22 +27,22 @@ class BacktrackingBehaviour {
         }
     }
     hasIndex() {
-        const meta = this.context.platformMetadata;
+        const meta = this.context.vendor_metadata;
         return meta.backtracking.interactionStack != null && meta.backtracking.cursor != null;
     }
     rebuildIndex() {
-        const { backtracking } = this.context.platformMetadata;
+        const { backtracking } = this.context.vendor_metadata;
         const key = (backtracking.cursor = __1.createKey());
         const stack = (backtracking.interactionStack = __1.createStack());
         this.context.interactions.forEach(intx => this.insertInteractionUsing(key, intx, stack));
     }
     insertInteractionUsing(key, interaction, interactionStack) {
-        const keyForIntxOfRepeatedBlock = __1.shallowIndexOfRightFrom(key, interactionStack, intx => intx.blockId === interaction.blockId);
+        const keyForIntxOfRepeatedBlock = __1.shallowIndexOfRightFrom(key, interactionStack, intx => intx.block_id === interaction.block_id);
         if (keyForIntxOfRepeatedBlock != null) {
             this._stepIn(key, interactionStack, keyForIntxOfRepeatedBlock, interaction);
             return;
         }
-        const keyToBeginningOfStackWithHeadMatchingBlock = __1.findHeadRightFrom(key, interactionStack, intx => intx.blockId === interaction.blockId);
+        const keyToBeginningOfStackWithHeadMatchingBlock = __1.findHeadRightFrom(key, interactionStack, intx => intx.block_id === interaction.block_id);
         if (keyToBeginningOfStackWithHeadMatchingBlock != null) {
             this._stepOut(keyToBeginningOfStackWithHeadMatchingBlock, interactionStack, interaction, key);
             return;
@@ -68,19 +68,19 @@ class BacktrackingBehaviour {
     }
     jumpTo(interaction, context) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const { backtracking } = this.context.platformMetadata;
+            const { backtracking } = this.context.vendor_metadata;
             const keyForLastOccurrenceOfInteraction = __1.deepIndexOfFrom(__1.createKey(), backtracking.interactionStack, ({ uuid }) => uuid === interaction.uuid);
             if (keyForLastOccurrenceOfInteraction == null) {
                 throw new __1.ValidationException('Unable to find destination interaction in backtracking stack for jumpTo()');
             }
             backtracking.ghostInteractionStacks.push(lodash_1.cloneDeep(backtracking.interactionStack));
             const discarded = context.interactions.splice(lodash_1.findLastIndex(context.interactions, interaction), context.interactions.length);
-            lodash_1.forEachRight(discarded, intx => intx.uuid === lodash_1.last(context.nestedFlowBlockInteractionIdStack) ? context.nestedFlowBlockInteractionIdStack.pop() : null);
+            lodash_1.forEachRight(discarded, intx => intx.uuid === lodash_1.last(context.nested_flow_block_interaction_id_stack) ? context.nested_flow_block_interaction_id_stack.pop() : null);
             const deepestStackKeyForIntx = lodash_1.last(keyForLastOccurrenceOfInteraction);
             const keyToTruncateFrom = __1.cloneKeyAndMoveTo(__1.createStackKey(deepestStackKeyForIntx[__1.STACK_KEY_ITERATION_NUMBER], deepestStackKeyForIntx[__1.STACK_KEY_ITERATION_INDEX] - 1), keyForLastOccurrenceOfInteraction, backtracking.interactionStack);
             __1.deepTruncateIterationsFrom(keyToTruncateFrom, backtracking.interactionStack);
             backtracking.cursor = keyToTruncateFrom;
-            return this.navigator.navigateTo(__1.findBlockOnActiveFlowWith(interaction.blockId, this.context), this.context);
+            return this.navigator.navigateTo(__1.findBlockOnActiveFlowWith(interaction.block_id, this.context), this.context);
         });
     }
     peek(steps = 1) {
@@ -90,7 +90,7 @@ class BacktrackingBehaviour {
             if (intx == null || _steps > 0) {
                 throw new __1.ValidationException(`Unable to backtrack to an interaction that far back ${JSON.stringify({ steps })}`);
             }
-            const block = __1.findBlockWith(intx.blockId, __1.findFlowWith(intx.flowId, this.context));
+            const block = __1.findBlockWith(intx.block_id, __1.findFlowWith(intx.flow_id, this.context));
             const prompt = yield this.promptBuilder.buildPromptFor(block, intx);
             if (prompt == null) {
                 throw new __1.ValidationException(`Unable to build a prompt for ${JSON.stringify({
@@ -102,8 +102,8 @@ class BacktrackingBehaviour {
             return Object.assign(prompt, { value: intx.value });
         });
     }
-    findIndexOfSuggestionFor({ blockId }, key, stack) {
-        const keyForSuggestion = __1.deepIndexOfFrom(key, stack, intx => intx.blockId === blockId);
+    findIndexOfSuggestionFor({ block_id }, key, stack) {
+        const keyForSuggestion = __1.deepIndexOfFrom(key, stack, intx => intx.block_id === block_id);
         if (keyForSuggestion != null) {
             return keyForSuggestion;
         }
@@ -113,10 +113,10 @@ class BacktrackingBehaviour {
             return;
         }
         const keyForNextIteration = __1.moveStackIndexTo(__1.createStackKey(0, 0), lodash_1.cloneDeep(key));
-        return __1.deepIndexOfFrom(keyForNextIteration, stack, intx => intx.blockId === blockId);
+        return __1.deepIndexOfFrom(keyForNextIteration, stack, intx => intx.block_id === block_id);
     }
     postInteractionCreate(interaction, _context) {
-        const { backtracking: { cursor: key, ghostInteractionStacks, }, } = this.context.platformMetadata;
+        const { backtracking: { cursor: key, ghostInteractionStacks, }, } = this.context.vendor_metadata;
         if (ghostInteractionStacks.length === 0) {
             return interaction;
         }
@@ -168,7 +168,7 @@ class BacktrackingBehaviour {
         }
     }
     postInteractionComplete(interaction, _context) {
-        const { backtracking: { cursor: key, interactionStack, ghostInteractionStacks }, } = this.context.platformMetadata;
+        const { backtracking: { cursor: key, interactionStack, ghostInteractionStacks }, } = this.context.vendor_metadata;
         this.insertInteractionUsing(key, interaction, interactionStack);
         if (ghostInteractionStacks.length === 0) {
             return;

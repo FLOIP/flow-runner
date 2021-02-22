@@ -106,7 +106,7 @@ describe('FlowRunner', () => {
         const runner = new FlowRunner(context)
 
         await expect(runner.run()).rejects.toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')
-        // expect((await runner.run())![0].blockId).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
+        // expect((await runner.run())![0].block_id).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
       })
     })
 
@@ -128,9 +128,9 @@ describe('FlowRunner', () => {
         // our server-side implementation currently returns
         const resources: IResources = flatMap(flows, 'resources')
 
-        const context = createContextDataObjectFor(
+        const context = await createContextDataObjectFor(
           {id: '1'} as IContact,
-          [{groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
+          [{group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
           'user-1234',
           'org-1234',
           flows,
@@ -155,9 +155,9 @@ describe('FlowRunner', () => {
         // our server-side implementation currently returns
         const resources: IResources = flatMap(flows, 'resources')
 
-        const context = createContextDataObjectFor(
+        const context = await createContextDataObjectFor(
           {id: '1'} as IContact,
-          [{groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
+          [{group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
           'user-1234',
           'org-1234',
           flows,
@@ -183,9 +183,9 @@ describe('FlowRunner', () => {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const {flows, resources}: IContext = require('./fixtures/2020-04-14-run-flow-unable-to-find-flow.json')
 
-        const context = createContextDataObjectFor(
+        const context = await createContextDataObjectFor(
           {id: '1'} as IContact,
-          [{groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
+          [{group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
           'user-1234',
           'org-1234',
           flows,
@@ -256,10 +256,10 @@ describe('FlowRunner', () => {
         prompt.value = 50
         const cursor = await runner.run()
         expect(cursor).toBeUndefined()
-        expect(context.deliveryStatus).toBe(DeliveryStatus.FINISHED_COMPLETE)
-        expect(context.exitAt).toBeTruthy()
+        expect(context.delivery_status).toBe(DeliveryStatus.FINISHED_COMPLETE)
+        expect(context.exit_at).toBeTruthy()
 
-        expect(every(context.interactions, i => i.exitAt)).toBeTruthy()
+        expect(every(context.interactions, i => i.exit_at)).toBeTruthy()
       })
     })
   })

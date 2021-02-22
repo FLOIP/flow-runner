@@ -20,7 +20,7 @@
 import {evaluateToString, IBlockExit, IBlockRunner, IContext, IOutputBlock, IRichCursor} from '../..'
 
 /**
- * Block runner for `Core\Output` - This block provides a connection to the
+ * Block runner for `Core.Output` - This block provides a connection to the
  * [Flow Results specification](https://github.com/FLOIP/flow-results/blob/master/specification.md), by storing a named
  * Output variable.
  *

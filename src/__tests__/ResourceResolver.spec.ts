@@ -18,10 +18,10 @@ describe('ResourceResolver', () => {
   let resolver: IResourceResolver
   let ctx: IContext
 
-  beforeEach(() => {
-    ctx = createContextDataObjectFor(
+  beforeEach(async () => {
+    ctx = await createContextDataObjectFor(
       ({id: 'contact-123', name: 'Bert'} as unknown) as IContact,
-      [{groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
+      [{group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
       'user-123',
       'org-123',
       [{uuid: 'flow-123'} as IFlow],
@@ -42,7 +42,7 @@ describe('ResourceResolver', () => {
         const value = 'hello world!'
         const expectedResourceContentTypeSpecific: IResourceDefinitionContentTypeSpecific = {
           modes: [ctx.mode],
-          languageId: ctx.languageId,
+          languageId: ctx.language_id,
           value,
           contentType: SupportedContentType.TEXT,
         }
@@ -118,7 +118,7 @@ describe('ResourceResolver', () => {
 
           Object.assign(resolver.context, {
             mode,
-            languageId,
+            language_id: languageId,
             resources: [
               {
                 uuid: 'known000-0000-0000-0000-resource0123',

@@ -21,13 +21,14 @@ describe.skip('FlowRunner integration', () => {
   })
 
   it('should work when simple + single backtrack', async () => {
-    const context = createContextDataObjectFor(
+    const context = await createContextDataObjectFor(
       {id: '1'} as IContact,
-      [{groupKey: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
+      [{group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
       'user-1234',
       'org-1234',
       [flow],
-      'en_US', SupportedMode.OFFLINE
+      'en_US',
+      SupportedMode.OFFLINE
     )
 
     const runner = new FlowRunner(context)

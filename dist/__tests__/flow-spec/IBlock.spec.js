@@ -68,7 +68,7 @@ describe('IBlock', () => {
             it('should perform search over interactions for block whose name matches prop name when prop absent from target', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                 const ctx = dataset.contexts[1];
                 const name = '1570221906056_83';
-                lodash_1.set(ctx.sessionVars, `blockInteractionsByBlockName.${name}`, {
+                lodash_1.set(ctx.session_vars, `block_interactions_by_block_name.${name}`, {
                     __interactionId: '09894745-38ba-456f-aab4-720b7d09d5b3',
                     time: '2023-10-10T23:23:23.023Z',
                     text: 'some text',
@@ -83,7 +83,7 @@ describe('IBlock', () => {
                 const ctx = dataset.contexts[1];
                 const expectedInteractionId = ctx.interactions[0].uuid;
                 ctx.interactions = [Object.assign(lodash_1.cloneDeep(ctx.interactions[0]), { value: 'Incorrect value' }), ctx.interactions[0]];
-                lodash_1.set(ctx, 'sessionVars.blockInteractionsByBlockName.1570221906056_83', { __interactionId: expectedInteractionId });
+                lodash_1.set(ctx, 'session_vars.block_interactions_by_block_name.1570221906056_83', { __interactionId: expectedInteractionId });
                 const proxy = __1.generateCachedProxyForBlockName({}, ctx);
                 const blockForEvalContext = proxy['1570221906056_83'];
                 expect(blockForEvalContext).toBeTruthy();
@@ -93,7 +93,7 @@ describe('IBlock', () => {
             it('should return latest value from interactions upon each invocation', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                 const ctx = dataset.contexts[1];
                 const expectedInteractionId = ctx.interactions[0].uuid;
-                lodash_1.set(ctx, 'sessionVars.blockInteractionsByBlockName.1570221906056_83', { __interactionId: expectedInteractionId });
+                lodash_1.set(ctx, 'session_vars.block_interactions_by_block_name.1570221906056_83', { __interactionId: expectedInteractionId });
                 const proxy = __1.generateCachedProxyForBlockName({}, ctx);
                 let blockForEvalContext = proxy['1570221906056_83'];
                 expect(blockForEvalContext).toBeTruthy();
@@ -161,25 +161,25 @@ describe('IBlock', () => {
     describe('createEvalContactFrom', () => {
         it('should clone the passed contact, deleting marked groups', () => {
             const groupToDelete = {
-                groupKey: 'two',
+                group_key: 'two',
                 __value__: 'two',
-                updatedAt: '0000-00-00',
-                deletedAt: '2020-01-01',
+                updated_at: '0000-00-00',
+                deleted_at: '2020-01-01',
             };
             const contact = new Contact_1.default();
             contact.groups = [
                 {
-                    groupKey: 'one',
+                    group_key: 'one',
                     __value__: 'one',
-                    updatedAt: '0000-00-00',
-                    deletedAt: undefined,
+                    updated_at: '0000-00-00',
+                    deleted_at: undefined,
                 },
                 groupToDelete,
                 {
-                    groupKey: 'three',
+                    group_key: 'three',
                     __value__: 'three',
-                    updatedAt: '0000-00-00',
-                    deletedAt: undefined,
+                    updated_at: '0000-00-00',
+                    deleted_at: undefined,
                 },
             ];
             const evalContact = IBlock_1.createEvalContactFrom(contact);

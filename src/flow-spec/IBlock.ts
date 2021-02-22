@@ -39,7 +39,7 @@ export interface IBlock {
   uuid: string
   name: string
   label?: string
-  semanticLabel?: string
+  semantic_label?: string
   type: string
   config: object
   exits: IBlockExit[]
@@ -81,7 +81,7 @@ export function findDefaultBlockExitOn(block: IBlock): IBlockExit {
 }
 
 export function isLastBlock({exits}: IBlock): boolean {
-  return exits.every(e => e.destinationBlock == null)
+  return exits.every(e => e.destination_block == null)
 }
 
 export interface IEvalContextBlock {
@@ -107,7 +107,7 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext): 
       }
 
       // fetch our basic representation of a block stored on the context
-      const evalBlock = get(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`)
+      const evalBlock = get(ctx, `session_vars.block_interactions_by_block_name.${prop.toString()}`)
       if (evalBlock == null) {
         return
       }
@@ -124,14 +124,14 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext): 
     },
 
     has(target, prop) {
-      return prop in target || has(ctx, `sessionVars.blockInteractionsByBlockName.${prop.toString()}`)
+      return prop in target || has(ctx, `session_vars.block_interactions_by_block_name.${prop.toString()}`)
     },
   }) as TEvalContextBlockMap
 }
 
 // todo: push eval stuff into `Expression.evaluate()` abstraction for evalContext + result handling 👇
 export function createEvalContextFrom(context: IContext): object {
-  const {contact, cursor, mode, languageId: language} = context
+  const {contact, cursor, mode, language_id: language} = context
   let flow: IFlow | undefined
   let block: IBlock | undefined
   let prompt: ICursor['promptConfig']
@@ -139,7 +139,7 @@ export function createEvalContextFrom(context: IContext): object {
   if (cursor != null) {
     // because evalContext.block references the current block we're working on
     flow = getActiveFlowFrom(context)
-    block = findBlockWith(findInteractionWith(cursor.interactionId, context).blockId, flow)
+    block = findBlockWith(findInteractionWith(cursor.interactionId, context).block_id, flow)
     prompt = cursor.promptConfig
   }
 
@@ -168,7 +168,7 @@ export function createEvalContextFrom(context: IContext): object {
  */
 export function createEvalContactFrom(contact: IContact): IContact {
   const evalContact = cloneDeep(contact)
-  evalContact.groups = evalContact.groups?.filter(group => group.deletedAt === null) ?? []
+  evalContact.groups = evalContact.groups?.filter(group => group.deleted_at === null) ?? []
 
   return evalContact
 }

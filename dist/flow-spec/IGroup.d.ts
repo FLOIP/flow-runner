@@ -1,5 +1,5 @@
 export interface IGroup {
-    groupKey: string;
+    group_key: string;
     label?: string;
     __value__: string;
 }

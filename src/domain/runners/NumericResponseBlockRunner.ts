@@ -49,7 +49,7 @@ export class NumericResponseBlockRunner implements IBlockRunner {
   constructor(public block: INumericResponseBlock, public context: IContext) {}
 
   async initialize({value}: IBlockInteraction): Promise<INumericPromptConfig> {
-    const {prompt, validationMinimum: min, validationMaximum: max} = this.block.config
+    const {prompt, validation_minimum: min, validation_maximum: max} = this.block.config
 
     return {
       kind: NUMERIC_PROMPT_KEY,

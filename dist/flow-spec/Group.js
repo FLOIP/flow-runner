@@ -3,27 +3,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContactGroup = exports.Group = void 0;
 const __1 = require("..");
 class Group {
-    constructor(groupKey, label) {
-        this.groupKey = groupKey;
+    constructor(group_key, label) {
+        this.group_key = group_key;
         this.label = label;
     }
     get __value__() {
-        return this.groupKey;
+        return this.group_key;
     }
 }
 exports.Group = Group;
 class ContactGroup extends Group {
-    constructor(groupKeyOrGroup, label, updatedAt, deletedAt) {
+    constructor(groupKeyOrGroup, label, updated_at, deleted_at) {
         if (__1.isGroup(groupKeyOrGroup)) {
-            super(groupKeyOrGroup.groupKey, groupKeyOrGroup.label);
-            this.updatedAt = __1.createFormattedDate();
+            super(groupKeyOrGroup.group_key, groupKeyOrGroup.label);
+            this.updated_at = __1.createFormattedDate();
         }
         else {
             super(groupKeyOrGroup, label);
         }
-        this.updatedAt = updatedAt !== null && updatedAt !== void 0 ? updatedAt : __1.createFormattedDate();
-        if (deletedAt != null) {
-            this.deletedAt = deletedAt;
+        this.updated_at = updated_at !== null && updated_at !== void 0 ? updated_at : __1.createFormattedDate();
+        if (deleted_at != null) {
+            this.deleted_at = deleted_at;
         }
     }
 }
