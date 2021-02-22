@@ -9,7 +9,7 @@ describe.skip('FlowRunner integration', () => {
         flow = require('../../fixtures/2019-10-10-shortcut-flow.json');
     });
     it('should work when simple + single backtrack', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-        const context = __1.createContextDataObjectFor({ id: '1' }, [{ group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup' }], 'user-1234', 'org-1234', [flow], 'en_US', __1.SupportedMode.OFFLINE);
+        const context = yield __1.createContextDataObjectFor({ id: '1' }, [{ group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup' }], 'user-1234', 'org-1234', [flow], 'en_US', __1.SupportedMode.OFFLINE);
         const runner = new __1.FlowRunner(context);
         let { prompt } = (yield runner.run());
         prompt.value = prompt.config.choices[0].key;

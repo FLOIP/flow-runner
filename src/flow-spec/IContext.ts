@@ -129,7 +129,7 @@ export interface IContextInputRequired extends IContext {
   cursor: ICursorInputRequired
 }
 
-export function createContextDataObjectFor(
+export async function createContextDataObjectFor(
   contact: IContact,
   groups: IGroup[],
   userId: string,
@@ -139,9 +139,9 @@ export function createContextDataObjectFor(
   mode: SupportedMode = SupportedMode.OFFLINE,
   resources: IResourceDefinition[] = [],
   idGenerator: IIdGenerator = new IdGeneratorUuidV4()
-): IContext {
+): Promise<IContext> {
   return {
-    id: idGenerator.generate(),
+    id: await idGenerator.generate(),
     created_at: createFormattedDate(),
     delivery_status: DeliveryStatus.QUEUED,
 

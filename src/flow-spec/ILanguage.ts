@@ -19,10 +19,8 @@
 
 export interface ILanguage {
   id: string
-  name: string
-  abbreviation: string
-  org_id: string
-  right_to_left: boolean
-  code?: string
-  deleted_at?: string
+  label: string
+  iso_639_3: string
+  variant?: string
+  bcp_47?: string
 }

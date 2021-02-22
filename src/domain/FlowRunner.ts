@@ -466,7 +466,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param originBlockInteractionId
    */
   async initializeOneBlock(block: IBlock, flowId: string, originFlowId?: string, originBlockInteractionId?: string): Promise<IRichCursor> {
-    let interaction = this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
+    let interaction = await this.createBlockInteractionFor(block, flowId, originFlowId, originBlockInteractionId)
 
     Object.values(this.behaviours).forEach(b => (interaction = b.postInteractionCreate(interaction, this.context)))
 
@@ -681,14 +681,14 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * @param originFlowId
    * @param originBlockInteractionId
    */
-  private createBlockInteractionFor(
+  private async createBlockInteractionFor(
     {uuid: block_id, type}: IBlock,
     flowId: string,
     originFlowId: string | undefined,
     originBlockInteractionId: string | undefined
-  ): IBlockInteraction {
+  ): Promise<IBlockInteraction> {
     return {
-      uuid: this.idGenerator.generate(),
+      uuid: await this.idGenerator.generate(),
       block_id: block_id,
       flow_id: flowId,
       entry_at: createFormattedDate(),
