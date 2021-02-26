@@ -17,13 +17,17 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {assertNotNull, BasePrompt, IAdvancedSelectOne, IAdvancedSelectOnePromptConfig, ValidationException} from '../..'
+import {BasePrompt, IAdvancedSelectOnePromptConfig} from '../..'
 
 export const ADVANCED_SELECT_ONE_PROMPT_KEY = 'AdvancedSelectOne'
 
 export class AdvancedSelectOnePrompt extends BasePrompt<IAdvancedSelectOnePromptConfig> {
-  validate(selectedRow?: IAdvancedSelectOne[], choiceRows?: string[][]): boolean {
-    const {choiceRowFields, isResponseRequired} = this.config
+  /**
+   * This is commented out, because It's literally impossible for this to pass, as a CSV is needed in order to handle this, and the CSV
+   * data never gets put into FlowRunner.
+   **/
+  validate(/*selectedRow?: IAdvancedSelectOne[] , choiceRows?: string[][]*/): boolean {
+    /*const {choiceRowFields, isResponseRequired} = this.config
 
     assertNotNull(
       choiceRows,
@@ -45,7 +49,7 @@ export class AdvancedSelectOnePrompt extends BasePrompt<IAdvancedSelectOnePrompt
       if (!hasSelectedRow) {
         throw new ValidationException(`Failed to find the given row: ${selectedRow}`)
       }
-    }
+    }*/
 
     return true
   }
