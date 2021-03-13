@@ -20,15 +20,16 @@
 import {
   createEvalContextFrom,
   IContext,
-  IResource,
-  IResourceDefinitionContentTypeSpecific,
+  IResourceWithContext,
   ResourceNotFoundException,
   SupportedContentType,
 } from '..'
+import {IResourceValue} from '../flow-spec/IResource'
+
 import {EvaluatorFactory} from '@floip/expression-evaluator'
 
-export class Resource implements IResource {
-  constructor(public uuid: string, public values: IResourceDefinitionContentTypeSpecific[], public context: IContext) {}
+export class Resource implements IResourceWithContext {
+  constructor(public uuid: string, public values: IResourceValue[], public context: IContext) {}
 
   _getValueByContentType(contentType: SupportedContentType): string {
     const def = this._findByContentType(contentType)
@@ -51,8 +52,8 @@ export class Resource implements IResource {
     return this._findByContentType(contentType) != null
   }
 
-  _findByContentType(contentType: SupportedContentType): IResourceDefinitionContentTypeSpecific | undefined {
-    return this.values.find(def => def.contentType === contentType)
+  _findByContentType(contentType: SupportedContentType): IResourceValue | undefined {
+    return this.values.find(def => def.content_type === contentType)
   }
 
   getAudio(): string {

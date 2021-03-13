@@ -31,13 +31,12 @@ import {
   IIdGenerator,
   IPrompt,
   IPromptConfig,
-  IResourceDefinition,
-  IResources,
   IRunFlowBlockConfig,
   isLastBlock,
   SupportedMode,
   ValidationException,
 } from '..'
+import {IResource, IResources} from '../flow-spec/IResource'
 import {find, findLast, last} from 'lodash'
 
 export interface ICursor {
@@ -137,7 +136,7 @@ export async function createContextDataObjectFor(
   flows: IFlow[],
   languageId: string,
   mode: SupportedMode = SupportedMode.OFFLINE,
-  resources: IResourceDefinition[] = [],
+  resources: IResource[] = [],
   idGenerator: IIdGenerator = new IdGeneratorUuidV4()
 ): Promise<IContext> {
   return {
