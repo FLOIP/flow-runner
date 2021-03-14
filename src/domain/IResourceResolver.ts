@@ -17,8 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IContext, SupportedContentType, ResourceResolver, SupportedMode} from '..'
-import {IResource, IResourceValue} from '../flow-spec/IResource'
+import {IContext, SupportedContentType, ResourceResolver, IResource, IResourceValue} from '..'
 
 /**
  * Resource definition: https://floip.gitbook.io/flow-specification/flows#resources

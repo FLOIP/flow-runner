@@ -21,10 +21,10 @@ import {
   createEvalContextFrom,
   IContext,
   IResourceWithContext,
+  IResourceValue,
   ResourceNotFoundException,
   SupportedContentType,
 } from '..'
-import {IResourceValue} from '../flow-spec/IResource'
 
 import {EvaluatorFactory} from '@floip/expression-evaluator'
 

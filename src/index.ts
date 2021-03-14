@@ -91,6 +91,7 @@ export * from './flow-spec/IFlow'
 export * from './flow-spec/IGroup'
 export * from './flow-spec/ILanguage'
 export * from './flow-spec/SupportedMode'
+export * from './flow-spec/IResource'
 
 export * from './model/block/IBlockConfig'
 export * from './model/block/ICaseBlock'

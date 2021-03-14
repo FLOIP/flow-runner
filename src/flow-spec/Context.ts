@@ -28,12 +28,13 @@ import {
   ICursor,
   IFlow,
   IResourceWithContext,
+  IResource,
+  IResources,
   IReversibleUpdateOperation,
   ResourceResolver,
   SupportedMode,
   IGroup,
 } from '..'
-import {IResource, IResources} from '../flow-spec/IResource'
 
 // noinspection DuplicatedCode
 export class Context implements IContext {

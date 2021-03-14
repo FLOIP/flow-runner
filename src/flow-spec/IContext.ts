@@ -31,12 +31,13 @@ import {
   IIdGenerator,
   IPrompt,
   IPromptConfig,
+  IResource,
+  IResources,
   IRunFlowBlockConfig,
   isLastBlock,
   SupportedMode,
   ValidationException,
 } from '..'
-import {IResource, IResources} from '../flow-spec/IResource'
 import {find, findLast, last} from 'lodash'
 
 export interface ICursor {
