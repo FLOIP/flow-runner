@@ -1,4 +1,4 @@
-import { DeliveryStatus, IBlockInteraction, IContact, IContext, ICursor, IFlow, IResource, IResourceDefinition, IResources, IReversibleUpdateOperation, SupportedMode, IGroup } from '..';
+import { DeliveryStatus, IBlockInteraction, IContact, IContext, ICursor, IFlow, IResourceWithContext, IResource, IResources, IReversibleUpdateOperation, SupportedMode, IGroup } from '..';
 export declare class Context implements IContext {
     id: string;
     created_at: string;
@@ -34,7 +34,7 @@ export declare class Context implements IContext {
     }, logs?: {
         [k: string]: string;
     });
-    getResource(resourceId: string): IResource;
+    getResource(resourceId: string): IResourceWithContext;
 }
 export declare namespace Context {
     class Builder {
@@ -53,7 +53,7 @@ export declare namespace Context {
         reversible_operations: IReversibleUpdateOperation[];
         flows?: IFlow[];
         first_flow_id?: string;
-        resources?: IResourceDefinition[];
+        resources?: IResource[];
         entry_at?: string;
         exit_at?: string;
         user_id?: string;
@@ -80,7 +80,7 @@ export declare namespace Context {
         setReversibleOperations(reversible_operations: IReversibleUpdateOperation[]): Context.Builder;
         setFlows(flows: IFlow[]): Context.Builder;
         setFirstFlowId(first_flow_id: string): Context.Builder;
-        setResources(resources: IResourceDefinition[]): Context.Builder;
+        setResources(resources: IResource[]): Context.Builder;
         setEntryAt(entry_at: string): Context.Builder;
         setExitAt(exit_at: string): Context.Builder;
         setUserId(user_id: string): Context.Builder;

@@ -4,6 +4,7 @@ export interface IBlock {
     name: string;
     label?: string;
     semantic_label?: string;
+    vendor_metadata: object;
     type: string;
     config: object;
     exits: IBlockExit[];

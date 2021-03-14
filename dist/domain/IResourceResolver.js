@@ -4,9 +4,9 @@ exports.getResource = exports.createTextResourceVariantWith = void 0;
 const __1 = require("..");
 function createTextResourceVariantWith(value, ctx) {
     return {
-        contentType: __1.SupportedContentType.TEXT,
+        content_type: __1.SupportedContentType.TEXT,
         value,
-        languageId: ctx.language_id,
+        language_id: ctx.language_id,
         modes: [ctx.mode],
     };
 }

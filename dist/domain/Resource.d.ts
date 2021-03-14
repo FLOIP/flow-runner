@@ -1,12 +1,12 @@
-import { IContext, IResource, IResourceDefinitionContentTypeSpecific, SupportedContentType } from '..';
-export declare class Resource implements IResource {
+import { IContext, IResourceWithContext, IResourceValue, SupportedContentType } from '..';
+export declare class Resource implements IResourceWithContext {
     uuid: string;
-    values: IResourceDefinitionContentTypeSpecific[];
+    values: IResourceValue[];
     context: IContext;
-    constructor(uuid: string, values: IResourceDefinitionContentTypeSpecific[], context: IContext);
+    constructor(uuid: string, values: IResourceValue[], context: IContext);
     _getValueByContentType(contentType: SupportedContentType): string;
     _hasByContentType(contentType: SupportedContentType): boolean;
-    _findByContentType(contentType: SupportedContentType): IResourceDefinitionContentTypeSpecific | undefined;
+    _findByContentType(contentType: SupportedContentType): IResourceValue | undefined;
     getAudio(): string;
     getImage(): string;
     getText(): string;

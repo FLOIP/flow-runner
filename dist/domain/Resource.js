@@ -25,7 +25,7 @@ class Resource {
         return this._findByContentType(contentType) != null;
     }
     _findByContentType(contentType) {
-        return this.values.find(def => def.contentType === contentType);
+        return this.values.find(def => def.content_type === contentType);
     }
     getAudio() {
         return this._getValueByContentType(__1.SupportedContentType.AUDIO);
