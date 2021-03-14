@@ -21,9 +21,32 @@
  * Language descriptor used within Flows and Resources: https://floip.gitbook.io/flow-specification/flows#language-objects-and-identifiers
  */
 export interface ILanguage {
+  /**
+   * Language Identifier, e.g. "eng-female", described in https://floip.gitbook.io/flow-specification/flows#language-identifiers
+   */
   id: string
-  label: string
+
+  /**
+   * Human-readable description for this language and variant.
+   */
+  label?: string
+
+  /**
+   * ISO 639-3 code for the language. This is a 3-letter string, e.g. "eng".
+   * "mis" is the ISO 639-3 code for languages not yet included in ISO 639-3.
+   *
+   * @TJS-pattern ^[a-z][a-z][a-z]$
+   */
   iso_639_3: string
+
+  /**
+   * Where multiple languages/content sets are used with the same ISO 639-3 code, variant describes the specialization, e.g. "east_africa".
+   */
   variant?: string
+
+  /**
+   * The BCP 47 locale code for this language, e.g. "en-GB". 
+   * These codes are often useful in conjunction with speech synthesis and speech recognition tools.
+   */
   bcp_47?: string
 }

@@ -39,12 +39,55 @@ import {EvaluatorFactory} from '@floip/expression-evaluator'
  * Block Structure: https://floip.gitbook.io/flow-specification/flows#blocks
  */
 export interface IBlock {
+  /**
+   * A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)
+   *
+   * @TJS-pattern ^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$
+   */
   uuid: string
+
+  /**
+   * A human-readable "variable name" for this block.
+   * This must be restricted to word characters so that it can be used as a variable name in expressions.
+   * When blocks write results output, they write to a variable corresponding the name of the block.
+   *
+   * @TJS-pattern ^[a-zA-Z_]\w*$
+   */
   name: string
+
+  /**
+   * A human-readable free-form description for this Block.
+   */
   label?: string
+
+  /**
+   * A user-controlled field that can be used to code the meaning of the data collected by this block in a standard taxonomy or
+   * coding system, * e.g.: a FHIR ValueSet, an industry-specific coding system like SNOMED CT,
+   * or an organization's internal taxonomy service. (e.g. "SNOMEDCT::Gender finding")
+   */
   semantic_label?: string
+
+  /**
+   * A set of key-value elements that is not controlled by the Specification,
+   * but could be relevant to a specific vendor/platform/implementation.
+   */
+  vendor_metadata: object
+
+  /**
+   * A specific string designating the type or "subclass" of this Block.
+   * This must be one of the Block type names within the specification, such as Core.RunFlow or MobilePrimitives.Message.
+   */
   type: string
+
+  /**
+   * Additional parameters that are specific to the type of the block. Details are provided within the Block documentation.
+   */
   config: object
+
+  /**
+   * a list of all the exits for the block.
+   * Exits must contain the required keys below, and can contain additional keys based on the Block type
+   */
   exits: IBlockExit[]
 }
 

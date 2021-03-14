@@ -1,9 +1,8 @@
 import {SupportedMode} from '..'
-import {SupportedContentType} from '../domain/SupportedContentType'
 
 export interface IResourceValue {
   language_id: string
-  content_type: SupportedContentType
+  content_type: string
   mime_type?: string
   modes: SupportedMode[]
   value: string

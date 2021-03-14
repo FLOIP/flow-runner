@@ -20,14 +20,44 @@
 import {IFlow, IResource} from '..'
 
 /**
- * Flow structure: https://floip.gitbook.io/flow-specification/flows#flows
+ * Flow Containers hold a group of related Flows: https://floip.gitbook.io/flow-specification/flows#flows
  */
 export interface IContainer {
+  /**
+   * The version of the Flow Spec that this package is compliant with, e.g. 1.0.0-rc1
+   */
   specification_version: string
+
+  /**
+   * A globally unique identifier for this Container.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)
+   *
+   * @TJS-pattern ^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$
+   */
   uuid: string
+
+  /**
+   * A human-readable name for the Container content.
+   */
   name: string
-  description: string
-  vendor_metadata: object
+
+  /**
+   * An extended human-readable description of the content.
+   */
+  description?: string
+
+  /**
+   * A set of key-value elements that is not controlled by the Specification,
+   * but could be relevant to a specific vendor/platform/implementation.
+   */
+  vendor_metadata?: object
+
+  /**
+   * A list of the Flows within the Container (see below)
+   */
   flows: IFlow[]
+
+  /**
+   * A set of the Resources needed for executing the Flows in the Container, keyed by resource uuid.
+   */
   resources: IResource[]
 }
