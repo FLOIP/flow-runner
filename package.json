@@ -20,6 +20,7 @@
     "lodash": "^4.17.20",
     "reflect-metadata": "^0.1.13",
     "sp2": "^1.6.3",
+    "ts-json-schema-generator": "^0.89.0",
     "tslib": "^2.0.1",
     "uuid": "^3.3.2"
   },

@@ -17,6 +17,9 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
+/**
+ * Block Exit: https://floip.gitbook.io/flow-specification/flows#exit-node-specification
+ */
 export interface IBlockExit {
   uuid: string
 

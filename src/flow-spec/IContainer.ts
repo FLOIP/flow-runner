@@ -17,14 +17,17 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
+import {IFlow, IResource} from '..'
+
 /**
- * Supported modes for Flows and Resources: https://floip.gitbook.io/flow-specification/flows#modes
+ * Flow structure: https://floip.gitbook.io/flow-specification/flows#flows
  */
-export enum SupportedMode {
-  // noinspection JSUnusedGlobalSymbols
-  SMS = 'SMS',
-  USSD = 'USSD',
-  IVR = 'IVR',
-  RICH_MESSAGING = 'RICH_MESSAGING',
-  OFFLINE = 'OFFLINE',
+export interface IContainer {
+  specification_version: string
+  uuid: string
+  name: string
+  description: string
+  vendor_metadata: object
+  flows: IFlow[]
+  resources: IResource[]
 }

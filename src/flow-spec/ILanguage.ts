@@ -17,6 +17,9 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
+/**
+ * Language descriptor used within Flows and Resources: https://floip.gitbook.io/flow-specification/flows#language-objects-and-identifiers
+ */
 export interface ILanguage {
   id: string
   label: string

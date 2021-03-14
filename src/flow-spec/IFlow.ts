@@ -20,6 +20,9 @@
 import {IBlock, ILanguage, SupportedMode, ValidationException} from '..'
 import {find} from 'lodash'
 
+/**
+ * Flow structure: https://floip.gitbook.io/flow-specification/flows#flows
+ */
 export interface IFlow {
   // UUID32
   uuid: string

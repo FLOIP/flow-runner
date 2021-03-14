@@ -35,6 +35,9 @@ import {
 import {cloneDeep, extend, find, get, has, startsWith} from 'lodash'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
 
+/**
+ * Block Structure: https://floip.gitbook.io/flow-specification/flows#blocks
+ */
 export interface IBlock {
   uuid: string
   name: string
