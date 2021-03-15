@@ -9,6 +9,7 @@ import Ajv, {ErrorObject} from 'ajv'
  * @param container : The result of calling JSON.parse() on flow spec container json
  * @returns null if there are no errors, or a set of validation errors
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getFlowStructureErrors(container: IContainer): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const flowSpecJsonSchema = require('../../../dist/resources/flowSpecJsonSchema.json')

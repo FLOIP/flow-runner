@@ -42,7 +42,7 @@ export interface IBlockExit {
    * (Some authoring tools may choose to auto-generate the tag from the label's primary language,
    * to avoid usability problems with these getting out of sync.)
    * Word characters only.
-   * 
+   *
    * @TJS-pattern ^[a-zA-Z_]\w*$
    */
   tag: string
@@ -56,7 +56,7 @@ export interface IBlockExit {
 
   /**
    * A user-controlled field that can be used to code the meaning of the data collected by this block in a standard taxonomy
-   * or coding system, e.g.: a FHIR ValueSet, an industry-specific coding system like SNOMED CT, 
+   * or coding system, e.g.: a FHIR ValueSet, an industry-specific coding system like SNOMED CT,
    * or an organization's internal taxonomy service. (e.g. "SNOMEDCT::Feminine Gender")
    */
   semantic_label?: string

@@ -10,7 +10,8 @@ export interface IResourceValue {
 
 export interface IResource {
   uuid: string
-  values: IResourceValue[] // each describes the resource content to use for a content_type
+  // each describes the resource content to use for a content_type
+  values: IResourceValue[]
 }
 
 export type IResources = IResource[]

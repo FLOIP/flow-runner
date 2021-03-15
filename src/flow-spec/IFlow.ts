@@ -58,7 +58,7 @@ export interface IFlow {
   interaction_timeout: number
 
   /**
-   * A set of key-value elements that is not controlled by the Specification, 
+   * A set of key-value elements that is not controlled by the Specification,
    * but could be relevant to a specific vendor/platform/implementation.
    */
   vendor_metadata?: object
@@ -87,7 +87,7 @@ export interface IFlow {
   first_block_id: string
 
   /**
-   * If provided, the ID of the block in blocks that will be jumped to if there is an error or deliberate exit condition during Flow Run. 
+   * If provided, the ID of the block in blocks that will be jumped to if there is an error or deliberate exit condition during Flow Run.
    * If not provided, the Flow Run will end immediately.
    *
    * @TJS-pattern ^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$

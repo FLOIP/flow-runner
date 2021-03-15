@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  * Flow Interoperability Project (flowinterop.org)
  * Flow Runner

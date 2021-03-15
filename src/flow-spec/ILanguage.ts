@@ -45,7 +45,7 @@ export interface ILanguage {
   variant?: string
 
   /**
-   * The BCP 47 locale code for this language, e.g. "en-GB". 
+   * The BCP 47 locale code for this language, e.g. "en-GB".
    * These codes are often useful in conjunction with speech synthesis and speech recognition tools.
    */
   bcp_47?: string
