@@ -131,9 +131,11 @@ export function isLastBlock({exits}: IBlock): boolean {
 }
 
 export interface IEvalContextBlock {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   __value__: any
   time: string
   __interactionId: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any
   text: string
 }
@@ -195,12 +197,14 @@ export function createEvalContextFrom(context: IContext): object {
     flow: generateCachedProxyForBlockName(
       {
         ...flow,
-        language, // todo: why isn't this languageId?
+        // todo: why isn't this languageId?
+        language,
       },
       context
     ),
     block: {
-      ...block, // todo: should this differ from our IEvalContextBlock lookups on flow?
+      // todo: should this differ from our IEvalContextBlock lookups on flow?
+      ...block,
       value: prompt != null ? prompt.value : undefined,
     },
   }
