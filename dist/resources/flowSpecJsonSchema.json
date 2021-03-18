@@ -298,6 +298,7 @@
     "SupportedMode": {
       "description": "Supported modes for Flows and Resources: https://floip.gitbook.io/flow-specification/flows#modes",
       "enum": [
+        "TEXT",
         "SMS",
         "USSD",
         "IVR",

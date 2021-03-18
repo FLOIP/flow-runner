@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SupportedMode = void 0;
 var SupportedMode;
 (function (SupportedMode) {
+    SupportedMode["TEXT"] = "TEXT";
     SupportedMode["SMS"] = "SMS";
     SupportedMode["USSD"] = "USSD";
     SupportedMode["IVR"] = "IVR";
