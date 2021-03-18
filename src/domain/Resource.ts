@@ -49,12 +49,38 @@ export class Resource implements IResourceWithContext {
     return def.value
   }
 
+  _getValueByContentAndMimeType(contentType: SupportedContentType, mimeType: string): string {
+    const def = this._findByContentAndMimeType(contentType, mimeType)
+
+    if (def == null) {
+      const {language_id, mode} = this.context
+      throw new ResourceNotFoundException(
+        `Unable to find resource for ${JSON.stringify({
+          contentType,
+          mimeType,
+          language_id,
+          mode,
+        })}`
+      )
+    }
+
+    return def.value
+  }
+
   _hasByContentType(contentType: SupportedContentType): boolean {
     return this._findByContentType(contentType) != null
   }
 
+  _hasByContentAndMimeType(contentType: SupportedContentType, mimeType: string): boolean {
+    return this._findByContentAndMimeType(contentType, mimeType) != null
+  }
+
   _findByContentType(contentType: SupportedContentType): IResourceValue | undefined {
     return this.values.find(def => def.content_type === contentType)
+  }
+
+  _findByContentAndMimeType(contentType: SupportedContentType, mimeType: string): IResourceValue | undefined {
+    return this.values.find(def => def.content_type === contentType && def.mime_type === mimeType)
   }
 
   getAudio(): string {
@@ -73,11 +99,20 @@ export class Resource implements IResourceWithContext {
     return this._getValueByContentType(SupportedContentType.VIDEO)
   }
 
+  /**
+   * Convenience replacement for getData("text/csv").
+   * This should be deprecated and replaced with getData() to stick to the spec and be simpler.
+   * @returns equivalent of this.getData("text/csv")
+   */
   getCsv(): string {
-    return this._getValueByContentType(SupportedContentType.CSV)
+    return this.getData('text/csv')
   }
 
-  get(key: string): string {
+  getData(mimeType: string): string {
+    return this._getValueByContentAndMimeType(SupportedContentType.DATA, mimeType)
+  }
+
+  get(key: SupportedContentType): string {
     return this._getValueByContentType(key)
   }
 
@@ -98,10 +133,14 @@ export class Resource implements IResourceWithContext {
   }
 
   hasCsv(): boolean {
-    return this._hasByContentType(SupportedContentType.CSV)
+    return this.hasData('text/csv')
   }
 
-  has(key: string): boolean {
+  hasData(mimeType: string): boolean {
+    return this._hasByContentAndMimeType(SupportedContentType.DATA, mimeType)
+  }
+
+  has(key: SupportedContentType): boolean {
     return this._hasByContentType(key)
   }
 }
