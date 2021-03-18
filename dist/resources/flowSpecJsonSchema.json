@@ -73,7 +73,7 @@
           "type": "string"
         },
         "semantic_label": {
-          "description": "A user-controlled field that can be used to code the meaning of the data collected by this block in a standard taxonomy or coding system, e.g.: a FHIR ValueSet, an industry-specific coding system like SNOMED CT,  or an organization's internal taxonomy service. (e.g. \"SNOMEDCT::Feminine Gender\")",
+          "description": "A user-controlled field that can be used to code the meaning of the data collected by this block in a standard taxonomy or coding system, e.g.: a FHIR ValueSet, an industry-specific coding system like SNOMED CT, or an organization's internal taxonomy service. (e.g. \"SNOMEDCT::Feminine Gender\")",
           "type": "string"
         },
         "tag": {
@@ -157,7 +157,7 @@
           "type": "array"
         },
         "exit_block_id": {
-          "description": "If provided, the ID of the block in blocks that will be jumped to if there is an error or deliberate exit condition during Flow Run.  If not provided, the Flow Run will end immediately.",
+          "description": "If provided, the ID of the block in blocks that will be jumped to if there is an error or deliberate exit condition during Flow Run. If not provided, the Flow Run will end immediately.",
           "type": "string"
         },
         "first_block_id": {
@@ -199,7 +199,7 @@
           "type": "string"
         },
         "vendor_metadata": {
-          "description": "A set of key-value elements that is not controlled by the Specification,  but could be relevant to a specific vendor/platform/implementation.",
+          "description": "A set of key-value elements that is not controlled by the Specification, but could be relevant to a specific vendor/platform/implementation.",
           "type": "object"
         }
       },
@@ -220,7 +220,7 @@
       "description": "Language descriptor used within Flows and Resources: https://floip.gitbook.io/flow-specification/flows#language-objects-and-identifiers",
       "properties": {
         "bcp_47": {
-          "description": "The BCP 47 locale code for this language, e.g. \"en-GB\".  These codes are often useful in conjunction with speech synthesis and speech recognition tools.",
+          "description": "The BCP 47 locale code for this language, e.g. \"en-GB\". These codes are often useful in conjunction with speech synthesis and speech recognition tools.",
           "type": "string"
         },
         "id": {

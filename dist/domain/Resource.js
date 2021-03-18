@@ -21,11 +21,30 @@ class Resource {
         }
         return def.value;
     }
+    _getValueByContentAndMimeType(contentType, mimeType) {
+        const def = this._findByContentAndMimeType(contentType, mimeType);
+        if (def == null) {
+            const { language_id, mode } = this.context;
+            throw new __1.ResourceNotFoundException(`Unable to find resource for ${JSON.stringify({
+                contentType,
+                mimeType,
+                language_id,
+                mode,
+            })}`);
+        }
+        return def.value;
+    }
     _hasByContentType(contentType) {
         return this._findByContentType(contentType) != null;
     }
+    _hasByContentAndMimeType(contentType, mimeType) {
+        return this._findByContentAndMimeType(contentType, mimeType) != null;
+    }
     _findByContentType(contentType) {
         return this.values.find(def => def.content_type === contentType);
+    }
+    _findByContentAndMimeType(contentType, mimeType) {
+        return this.values.find(def => def.content_type === contentType && def.mime_type === mimeType);
     }
     getAudio() {
         return this._getValueByContentType(__1.SupportedContentType.AUDIO);
@@ -40,7 +59,10 @@ class Resource {
         return this._getValueByContentType(__1.SupportedContentType.VIDEO);
     }
     getCsv() {
-        return this._getValueByContentType(__1.SupportedContentType.CSV);
+        return this.getData('text/csv');
+    }
+    getData(mimeType) {
+        return this._getValueByContentAndMimeType(__1.SupportedContentType.DATA, mimeType);
     }
     get(key) {
         return this._getValueByContentType(key);
@@ -58,7 +80,10 @@ class Resource {
         return this._hasByContentType(__1.SupportedContentType.VIDEO);
     }
     hasCsv() {
-        return this._hasByContentType(__1.SupportedContentType.CSV);
+        return this.hasData('text/csv');
+    }
+    hasData(mimeType) {
+        return this._hasByContentAndMimeType(__1.SupportedContentType.DATA, mimeType);
     }
     has(key) {
         return this._hasByContentType(key);
