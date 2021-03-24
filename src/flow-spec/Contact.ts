@@ -51,13 +51,22 @@ export class Contact implements IContact {
   }
 
   public addGroup(newGroup: IGroup): void {
-    this.groups.find(group => group.group_key === newGroup.group_key) ?? this.groups.push(new ContactGroup(newGroup))
+    const existingGroup = this.groups.find(group => group.group_key === newGroup.group_key)
+    if (existingGroup) {
+      existingGroup.updated_at = createFormattedDate()
+      // make sure this group isn't marked as deleted
+      existingGroup.deleted_at = undefined
+    } else {
+      this.groups.push(new ContactGroup(newGroup))
+    }
   }
 
   public delGroup(toRemove: IGroup): void {
     const group = this.groups.find(group => group.group_key === toRemove.group_key)
     if (group) {
-      group.deleted_at = createFormattedDate()
+      const now = createFormattedDate()
+      group.deleted_at = now
+      group.updated_at = now
     }
   }
 }
