@@ -142,24 +142,42 @@ export class BasicBacktrackingBehaviour implements IBasicBackTrackingBehaviour {
   }
 
   async peek(steps = 0, context: IContext = this.context, direction = PeekDirection.LEFT): Promise<IRichCursorInputRequired> {
-    const intx = this._findInteractiveInteractionAt(steps, context, direction)
-    const block = findBlockWith(intx.block_id, findFlowWith(intx.flow_id, context))
+    // keep a trace of all interactions we attempt to make a prompt from
+    const attemptedPrompts = []
+    let prompt
 
-    const prompt = await this.promptBuilder.buildPromptFor(block, intx)
-    if (prompt == null) {
-      throw new ValidationException(
-        `Unable to build a prompt for ${JSON.stringify({
-          context: context.id,
-          intx,
-          block,
-        })}`
-      )
-    }
+    // we'll keep trying to backtrack to an interactive prompt until we run out
+    // of interactions -- when that happens, we should catch an exception
+    while (prompt == null) {
+      try {
+        // attempt to build a prompt from the next interaction
+        const intx = this._findInteractiveInteractionAt(steps, context, direction)
+        const block = findBlockWith(intx.block_id, findFlowWith(intx.flow_id, context))
+        const prompt = await this.promptBuilder.buildPromptFor(block, intx)
 
-    return {
-      interaction: intx,
-      prompt: Object.assign(prompt, {value: intx.value}),
+        if (prompt == null) {
+          // we weren't able to build a prompt
+          attemptedPrompts.push({intx, block})
+        } else {
+          return {
+            interaction: intx,
+            prompt: Object.assign(prompt, {value: intx.value}),
+          }
+        }
+        // we'll try stepping over the interaction that had no prompt
+        ++steps
+      } catch (e) {
+        const attemptedMsg = `Skipped Interactions with No Prompt: ${JSON.stringify(attemptedPrompts)}`
+        if (e instanceof Error) {
+          throw new ValidationException(`${e.message}:\n${attemptedMsg}`)
+        } else {
+          throw new ValidationException(`${JSON.stringify(e)}:\n${attemptedMsg}}`)
+        }
+      }
     }
+    throw new ValidationException(
+      `Logic error when backtracking.\nSkipped Interactions with No Prompt: ${JSON.stringify(attemptedPrompts)}`
+    )
   }
 
   postInteractionCreate(interaction: IBlockInteraction, _context: IContext): IBlockInteraction {
