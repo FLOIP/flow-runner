@@ -13,15 +13,14 @@ class Group {
 }
 exports.Group = Group;
 class ContactGroup extends Group {
-    constructor(groupKeyOrGroup, label, updated_at, deleted_at) {
+    constructor(groupKeyOrGroup, updated_at = __1.createFormattedDate(), deleted_at, label) {
         if (__1.isGroup(groupKeyOrGroup)) {
             super(groupKeyOrGroup.group_key, groupKeyOrGroup.label);
-            this.updated_at = __1.createFormattedDate();
         }
         else {
             super(groupKeyOrGroup, label);
         }
-        this.updated_at = updated_at !== null && updated_at !== void 0 ? updated_at : __1.createFormattedDate();
+        this.updated_at = updated_at;
         if (deleted_at != null) {
             this.deleted_at = deleted_at;
         }
