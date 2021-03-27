@@ -45,9 +45,7 @@
       "required": [
         "uuid",
         "name",
-        "vendor_metadata",
         "type",
-        "config",
         "exits"
       ],
       "type": "object"

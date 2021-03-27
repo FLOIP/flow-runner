@@ -4,9 +4,9 @@ export interface IBlock {
     name: string;
     label?: string;
     semantic_label?: string;
-    vendor_metadata: object;
+    vendor_metadata?: Record<string, any>;
     type: string;
-    config: object;
+    config?: Record<string, any>;
     exits: IBlockExit[];
 }
 export interface IBlockWithTestExits extends IBlock {
