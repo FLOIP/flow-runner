@@ -71,7 +71,8 @@ export interface IBlock {
    * A set of key-value elements that is not controlled by the Specification,
    * but could be relevant to a specific vendor/platform/implementation.
    */
-  vendor_metadata: object
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  vendor_metadata?: Record<string,any>
 
   /**
    * A specific string designating the type or "subclass" of this Block.
@@ -82,7 +83,8 @@ export interface IBlock {
   /**
    * Additional parameters that are specific to the type of the block. Details are provided within the Block documentation.
    */
-  config: object
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  config?: Record<string,any>
 
   /**
    * a list of all the exits for the block.
