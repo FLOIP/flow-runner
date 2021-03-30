@@ -35,6 +35,7 @@ function generateSchema(config, output_file) {
   } catch (e) {
     console.error('Cannot generate schema for', config, 'to', output_file)
     console.error(e)
+    //TODO: fix/find workaround for IAdvancedSelectOneBlock
   }
 }
 
