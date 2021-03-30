@@ -8,7 +8,7 @@ let path = 'src/model/block/'
 let config = {
   path: `../${path}*.ts`, // it fails without `../` prefix
   tsconfig: 'tsconfig.json',
-  type: 'ILogBlock',
+  type: '',
 }
 
 const output_path = 'dist/resources/'
