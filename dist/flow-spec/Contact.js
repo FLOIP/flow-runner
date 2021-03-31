@@ -25,13 +25,21 @@ class Contact {
         return this[name];
     }
     addGroup(newGroup) {
-        var _a;
-        (_a = this.groups.find(group => group.group_key === newGroup.group_key)) !== null && _a !== void 0 ? _a : this.groups.push(new __1.ContactGroup(newGroup));
+        const existingGroup = this.groups.find(group => group.group_key === newGroup.group_key);
+        if (existingGroup) {
+            existingGroup.updated_at = __1.createFormattedDate();
+            existingGroup.deleted_at = undefined;
+        }
+        else {
+            this.groups.push(new __1.ContactGroup(newGroup));
+        }
     }
     delGroup(toRemove) {
         const group = this.groups.find(group => group.group_key === toRemove.group_key);
         if (group) {
-            group.deleted_at = __1.createFormattedDate();
+            const now = __1.createFormattedDate();
+            group.deleted_at = now;
+            group.updated_at = now;
         }
     }
 }

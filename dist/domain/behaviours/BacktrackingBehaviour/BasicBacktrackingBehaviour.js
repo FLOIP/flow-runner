@@ -58,20 +58,35 @@ class BasicBacktrackingBehaviour {
     }
     peek(steps = 0, context = this.context, direction = PeekDirection.LEFT) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const intx = this._findInteractiveInteractionAt(steps, context, direction);
-            const block = __1.findBlockWith(intx.block_id, __1.findFlowWith(intx.flow_id, context));
-            const prompt = yield this.promptBuilder.buildPromptFor(block, intx);
-            if (prompt == null) {
-                throw new __1.ValidationException(`Unable to build a prompt for ${JSON.stringify({
-                    context: context.id,
-                    intx,
-                    block,
-                })}`);
+            const attemptedPrompts = [];
+            let prompt;
+            while (prompt == null) {
+                try {
+                    const intx = this._findInteractiveInteractionAt(steps, context, direction);
+                    const block = __1.findBlockWith(intx.block_id, __1.findFlowWith(intx.flow_id, context));
+                    const prompt = yield this.promptBuilder.buildPromptFor(block, intx);
+                    if (prompt == null) {
+                        attemptedPrompts.push({ intx, block });
+                    }
+                    else {
+                        return {
+                            interaction: intx,
+                            prompt: Object.assign(prompt, { value: intx.value }),
+                        };
+                    }
+                    ++steps;
+                }
+                catch (e) {
+                    const attemptedMsg = `Skipped Interactions with No Prompt: ${JSON.stringify(attemptedPrompts)}`;
+                    if (e instanceof Error) {
+                        throw new __1.ValidationException(`${e.message}:\n${attemptedMsg}`);
+                    }
+                    else {
+                        throw new __1.ValidationException(`${JSON.stringify(e)}:\n${attemptedMsg}}`);
+                    }
+                }
             }
-            return {
-                interaction: intx,
-                prompt: Object.assign(prompt, { value: intx.value }),
-            };
+            throw new __1.ValidationException(`Logic error when backtracking.\nSkipped Interactions with No Prompt: ${JSON.stringify(attemptedPrompts)}`);
         });
     }
     postInteractionCreate(interaction, _context) {
