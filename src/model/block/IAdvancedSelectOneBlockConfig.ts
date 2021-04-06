@@ -1,5 +1,3 @@
-import {IResourceWithContext} from '../..'
-
 /**
  * Flow Interoperability Project (flowinterop.org)
  * Flow Runner
@@ -25,6 +23,6 @@ export interface IAdvancedSelectOneBlockConfig {
   primary_field: string
   secondary_fields: string[]
   choice_row_fields: string[]
-  choice_rows: IResourceWithContext['uuid']
+  choice_rows: string // IResourceWithContext['uuid'], we're not using interface reference here to avoid circular reference issue with JsonSchema generator
   response_fields?: string[]
 }

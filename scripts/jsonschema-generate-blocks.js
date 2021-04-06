@@ -8,7 +8,7 @@ let path = 'src/model/block/'
 let config = {
   path: `../${path}*.ts`, // it fails without `../` prefix
   tsconfig: 'tsconfig.json',
-  type: '',
+  type: '', // will be set later
 }
 
 const output_path = 'dist/resources/'
@@ -35,7 +35,6 @@ function generateSchema(config, output_file) {
   } catch (e) {
     console.error('Cannot generate schema for', config, 'to', output_file)
     console.error(e)
-    //TODO: fix/find workaround for IAdvancedSelectOneBlock
   }
 }
 
