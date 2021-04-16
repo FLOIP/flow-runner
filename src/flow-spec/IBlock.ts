@@ -190,7 +190,14 @@ export function createEvalContactFrom(contact: IContact): IContact {
 }
 
 export function evaluateToBool(expr: string, ctx: object): boolean {
-  return JSON.parse(evaluateToString(expr, ctx).toLowerCase())
+  const result = evaluateToString(expr, ctx).toLowerCase().trim()
+  if (result === 'true') {
+    return true
+  }
+  if (result === 'false') {
+    return false
+  }
+  throw new ValidationException(`Expression "${expr} does not evaluate to bool: ${result}"`)
 }
 
 export function evaluateToString(expr: string, ctx: object): string {
