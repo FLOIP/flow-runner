@@ -30,10 +30,8 @@ export interface IBlockExit {
 
   /**
    * This is the human-readable name of the exit (as a translated resource ID), which might be presented to a contact.
-   *
-   * @pattern ^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$
    */
-  // resource ID
+  // resource ID??
   label: string
 
   /**
