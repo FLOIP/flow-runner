@@ -19,7 +19,7 @@
 
 import {ISelectOneResponseBlock} from '../..'
 
-export interface ISelectManyResponseBlockConfig extends ISelectOneResponseBlock {
+export interface ISelectManyResponseBlock extends ISelectOneResponseBlock {
   prompt: string
   prompt_audio: string
   question_prompt?: string
