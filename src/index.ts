@@ -120,5 +120,6 @@ export * from './model/block/ISelectOneResponseBlock'
 export * from './model/block/ISelectOneResponseBlockConfig'
 export * from './model/block/ISetGroupMembershipBlock'
 export * from './model/block/ISetGroupMembershipBlockConfig'
+export * from './model/block/ILocationResponseBlockConfig'
 
 export {Prompt} from './domain/prompt/Prompt'

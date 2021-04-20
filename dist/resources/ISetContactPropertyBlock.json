@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$ref": "#/definitions/ISetGroupMembershipBlock",
+  "$ref": "#/definitions/ISetContactPropertyBlock",
   "definitions": {
-    "ISetGroupMembershipBlock": {
+    "ISetContactPropertyBlock": {
       "type": "object",
       "properties": {
         "uuid": {
@@ -32,7 +32,7 @@
           "description": "A specific string designating the type or \"subclass\" of this Block. This must be one of the Block type names within the specification, such as Core.RunFlow or MobilePrimitives.Message."
         },
         "config": {
-          "$ref": "#/definitions/ISetGroupMembershipBlockConfig",
+          "$ref": "#/definitions/ISetContactPropertyBlockConfig",
           "description": "Additional parameters that are specific to the type of the block. Details are provided within the Block documentation."
         },
         "exits": {
@@ -52,22 +52,38 @@
       ],
       "additionalProperties": false
     },
-    "ISetGroupMembershipBlockConfig": {
+    "ISetContactPropertyBlockConfig": {
       "type": "object",
       "properties": {
-        "group_key": {
+        "set_contact_property": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SetContactProperty"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SetContactProperty"
+              }
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "SetContactProperty": {
+      "type": "object",
+      "properties": {
+        "property_key": {
           "type": "string"
         },
-        "group_name": {
-          "type": "string"
-        },
-        "is_member": {
+        "property_value": {
           "type": "string"
         }
       },
       "required": [
-        "group_key",
-        "is_member"
+        "property_key",
+        "property_value"
       ],
       "additionalProperties": false
     },

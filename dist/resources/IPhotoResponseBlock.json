@@ -1,9 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$ref": "#/definitions/ISetGroupMembershipBlock",
+  "$ref": "#/definitions/IPhotoResponseBlock",
   "definitions": {
-    "ISetGroupMembershipBlock": {
+    "IPhotoResponseBlock": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "uuid": {
           "type": "string",
@@ -32,7 +33,7 @@
           "description": "A specific string designating the type or \"subclass\" of this Block. This must be one of the Block type names within the specification, such as Core.RunFlow or MobilePrimitives.Message."
         },
         "config": {
-          "$ref": "#/definitions/ISetGroupMembershipBlockConfig",
+          "type": "object",
           "description": "Additional parameters that are specific to the type of the block. Details are provided within the Block documentation."
         },
         "exits": {
@@ -44,32 +45,11 @@
         }
       },
       "required": [
-        "config",
         "exits",
         "name",
         "type",
         "uuid"
-      ],
-      "additionalProperties": false
-    },
-    "ISetGroupMembershipBlockConfig": {
-      "type": "object",
-      "properties": {
-        "group_key": {
-          "type": "string"
-        },
-        "group_name": {
-          "type": "string"
-        },
-        "is_member": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "group_key",
-        "is_member"
-      ],
-      "additionalProperties": false
+      ]
     },
     "IBlockExit": {
       "type": "object",
