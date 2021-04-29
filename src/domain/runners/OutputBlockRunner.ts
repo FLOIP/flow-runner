@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {evaluateToString, IBlockExit, IBlockRunner, IContext, IOutputBlock, IRichCursor} from '../..'
+import {evaluateToString, IBlockExit, IBlockRunner, IContext, IOutputBlock, IRichCursor, setContactProperty} from '../..'
 
 /**
  * Block runner for `Core.Output` - This block provides a connection to the
@@ -40,6 +40,7 @@ export class OutputBlockRunner implements IBlockRunner {
   async run(cursor: IRichCursor): Promise<IBlockExit> {
     // todo: should we be setting hasRepsonse to `true` here?
     cursor.interaction.value = evaluateToString(this.block.config.value, this.context)
+    setContactProperty(this.block, this.context)
     return this.block.exits[0]
   }
 }
