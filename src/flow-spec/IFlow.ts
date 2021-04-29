@@ -27,7 +27,7 @@ export interface IFlow {
   /**
    * A globally unique identifier for this Flow.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)
    *
-   * @pattern ^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$
+   * @pattern ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
    */
   // UUID32
   uuid: string
@@ -89,7 +89,7 @@ export interface IFlow {
   /**
    * The ID of the block in blocks that is at the beginning of the flow.
    *
-   * @pattern ^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$
+   * @pattern ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
    */
   first_block_id: string
 
@@ -97,7 +97,7 @@ export interface IFlow {
    * If provided, the ID of the block in blocks that will be jumped to if there is an error or deliberate exit condition during Flow Run.
    * If not provided, the Flow Run will end immediately.
    *
-   * @pattern ^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$
+   * @pattern ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
    */
   exit_block_id?: string
 }
