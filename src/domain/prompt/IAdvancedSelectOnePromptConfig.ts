@@ -17,14 +17,14 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {getResource, IContext, IPromptConfig, IResource} from '../..'
+import {getResource, IContext, IPromptConfig, IResourceWithContext} from '../..'
 
 export interface IAdvancedSelectOnePromptConfig extends IPromptConfig<IAdvancedSelectOne[]> {
   promptAudio?: string
   primaryField: string
   secondaryFields: string[]
   choiceRowFields: string[]
-  choiceRows: IResource['uuid']
+  choiceRows: IResourceWithContext['uuid']
   responseFields?: string[]
 }
 

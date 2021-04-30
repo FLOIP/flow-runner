@@ -1,8 +1,8 @@
 import {
   IContact,
   IContext,
-  IResource,
-  IResourceDefinitionContentTypeSpecific,
+  IResourceWithContext,
+  IResourceValue,
   Resource,
   ResourceNotFoundException,
   SupportedContentType,
@@ -10,27 +10,27 @@ import {
 } from '..'
 
 describe('Resource', () => {
-  let baseResource: IResourceDefinitionContentTypeSpecific
-  let values: IResourceDefinitionContentTypeSpecific[]
-  let resource: IResource
+  let baseResource: IResourceValue
+  let values: IResourceValue[]
+  let resource: IResourceWithContext
 
   beforeEach(() => {
     baseResource = {
-      contentType: SupportedContentType.AUDIO,
+      content_type: SupportedContentType.AUDIO,
       modes: [SupportedMode.SMS],
-      languageId: 'some-language-id',
+      language_id: 'some-language-id',
       value: 'hello world!',
     }
 
     values = [
-      {...baseResource, contentType: SupportedContentType.TEXT, value: 'My first text!'},
-      {...baseResource, contentType: SupportedContentType.TEXT},
-      {...baseResource, contentType: SupportedContentType.AUDIO, value: 'viamo://your-audio-file.wav'},
-      {...baseResource, contentType: SupportedContentType.AUDIO},
-      {...baseResource, contentType: SupportedContentType.IMAGE, value: 'viamo://your-image-file.jpg'},
-      {...baseResource, contentType: SupportedContentType.IMAGE},
-      {...baseResource, contentType: SupportedContentType.VIDEO, value: 'viamo://your-video-file.mp4'},
-      {...baseResource, contentType: SupportedContentType.VIDEO},
+      {...baseResource, content_type: SupportedContentType.TEXT, value: 'My first text!'},
+      {...baseResource, content_type: SupportedContentType.TEXT},
+      {...baseResource, content_type: SupportedContentType.AUDIO, value: 'viamo://your-audio-file.wav'},
+      {...baseResource, content_type: SupportedContentType.AUDIO},
+      {...baseResource, content_type: SupportedContentType.IMAGE, value: 'viamo://your-image-file.jpg'},
+      {...baseResource, content_type: SupportedContentType.IMAGE},
+      {...baseResource, content_type: SupportedContentType.VIDEO, value: 'viamo://your-video-file.mp4'},
+      {...baseResource, content_type: SupportedContentType.VIDEO},
     ]
 
     resource = new Resource('some-uuid', values, ({
@@ -66,7 +66,7 @@ describe('Resource', () => {
     })
 
     it('should return text interpolated with values from context when an expression is provided', async () => {
-      resource.values = [{...baseResource, contentType: SupportedContentType.TEXT, value: 'Hello @contact.name!'}]
+      resource.values = [{...baseResource, content_type: SupportedContentType.TEXT, value: 'Hello @contact.name!'}]
       expect(resource.getText()).toBe('Hello Expressions!')
     })
   })

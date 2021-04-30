@@ -17,8 +17,11 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
+/**
+ * Supported modes for Flows and Resources: https://floip.gitbook.io/flow-specification/flows#modes
+ */
 export enum SupportedMode {
-  // noinspection JSUnusedGlobalSymbols
+  TEXT = 'TEXT',
   SMS = 'SMS',
   USSD = 'USSD',
   IVR = 'IVR',

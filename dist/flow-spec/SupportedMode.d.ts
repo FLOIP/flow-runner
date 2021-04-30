@@ -1,4 +1,5 @@
 export declare enum SupportedMode {
+    TEXT = "TEXT",
     SMS = "SMS",
     USSD = "USSD",
     IVR = "IVR",

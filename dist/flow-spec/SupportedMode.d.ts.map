@@ -1,1 +1,1 @@
-{"version":3,"file":"SupportedMode.d.ts","sourceRoot":"","sources":["../../src/flow-spec/SupportedMode.ts"],"names":[],"mappings":"AAmBA,oBAAY,aAAa;IAEvB,GAAG,QAAQ;IACX,IAAI,SAAS;IACb,GAAG,QAAQ;IACX,cAAc,mBAAmB;IACjC,OAAO,YAAY;CACpB"}
+{"version":3,"file":"SupportedMode.d.ts","sourceRoot":"","sources":["../../src/flow-spec/SupportedMode.ts"],"names":[],"mappings":"AAsBA,oBAAY,aAAa;IACvB,IAAI,SAAS;IACb,GAAG,QAAQ;IACX,IAAI,SAAS;IACb,GAAG,QAAQ;IACX,cAAc,mBAAmB;IACjC,OAAO,YAAY;CACpB"}

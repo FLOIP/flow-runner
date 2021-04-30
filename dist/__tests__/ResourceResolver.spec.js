@@ -18,9 +18,9 @@ describe('ResourceResolver', () => {
                 const value = 'hello world!';
                 const expectedResourceContentTypeSpecific = {
                     modes: [ctx.mode],
-                    languageId: ctx.language_id,
+                    language_id: ctx.language_id,
                     value,
-                    contentType: __1.SupportedContentType.TEXT,
+                    content_type: __1.SupportedContentType.TEXT,
                 };
                 const actual = resolver.resolve(value);
                 expect(actual.uuid).toBe(value);
@@ -85,6 +85,6 @@ describe('ResourceResolver', () => {
     });
 });
 function createResourceDefWith(languageId, contentType, modes, value = 'sample-resource-value') {
-    return { languageId, contentType, value, modes };
+    return { language_id: languageId, content_type: contentType, value, modes };
 }
 //# sourceMappingURL=ResourceResolver.spec.js.map

@@ -24,10 +24,16 @@ export interface IOpenResponseBlockConfig extends ISetContactPropertyBlockConfig
   prompt_audio: string
 
   ivr?: {
+    /**
+     * @minimum 0
+     */
     max_duration_seconds: number
   }
 
   text?: {
+    /**
+     * @minimum 0
+     */
     max_response_characters?: number
   }
 }

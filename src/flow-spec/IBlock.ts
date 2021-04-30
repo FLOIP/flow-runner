@@ -36,13 +36,61 @@ import {cloneDeep, extend, find, get, has, startsWith} from 'lodash'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
 import {createFormattedDate} from '../domain/DateFormat'
 
+/**
+ * Block Structure: https://floip.gitbook.io/flow-specification/flows#blocks
+ */
 export interface IBlock {
+  /**
+   * A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)
+   *
+   * @pattern ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+   */
   uuid: string
+
+  /**
+   * A human-readable "variable name" for this block.
+   * This must be restricted to word characters so that it can be used as a variable name in expressions.
+   * When blocks write results output, they write to a variable corresponding the name of the block.
+   *
+   * @pattern ^[a-zA-Z_]\w*$
+   */
   name: string
+
+  /**
+   * A human-readable free-form description for this Block.
+   */
   label?: string
+
+  /**
+   * A user-controlled field that can be used to code the meaning of the data collected by this block in a standard taxonomy or
+   * coding system, * e.g.: a FHIR ValueSet, an industry-specific coding system like SNOMED CT,
+   * or an organization's internal taxonomy service. (e.g. "SNOMEDCT::Gender finding")
+   */
   semantic_label?: string
+
+  /**
+   * A set of key-value elements that is not controlled by the Specification,
+   * but could be relevant to a specific vendor/platform/implementation.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  vendor_metadata?: Record<string, any>
+
+  /**
+   * A specific string designating the type or "subclass" of this Block.
+   * This must be one of the Block type names within the specification, such as Core.RunFlow or MobilePrimitives.Message.
+   */
   type: string
-  config: object
+
+  /**
+   * Additional parameters that are specific to the type of the block. Details are provided within the Block documentation.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  config?: Record<string, any>
+
+  /**
+   * a list of all the exits for the block.
+   * Exits must contain the required keys below, and can contain additional keys based on the Block type
+   */
   exits: IBlockExit[]
 }
 
@@ -86,9 +134,11 @@ export function isLastBlock({exits}: IBlock): boolean {
 }
 
 export interface IEvalContextBlock {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   __value__: any
   time: string
   __interactionId: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any
   text: string
 }
@@ -159,12 +209,14 @@ export function createEvalContextFrom(context: IContext): object {
     flow: generateCachedProxyForBlockName(
       {
         ...flow,
-        language, // todo: why isn't this languageId?
+        // todo: why isn't this languageId?
+        language,
       },
       context
     ),
     block: {
-      ...block, // todo: should this differ from our IEvalContextBlock lookups on flow?
+      // todo: should this differ from our IEvalContextBlock lookups on flow?
+      ...block,
       value: prompt != null ? prompt.value : undefined,
     },
     date: {

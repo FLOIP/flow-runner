@@ -1,12 +1,13 @@
+/* eslint-disable max-len */
 import {
   createContextDataObjectFor,
   IContact,
   IContext,
   IFlow,
   IGroup,
+  IResourceWithContext,
   IResource,
-  IResourceDefinition,
-  IResourceDefinitionContentTypeSpecific,
+  IResourceValue,
   IResourceResolver,
   ResourceNotFoundException,
   ResourceResolver,
@@ -40,14 +41,14 @@ describe('ResourceResolver', () => {
     describe('when uuid provided is a string resource', () => {
       it('should return a wrapper resource', async () => {
         const value = 'hello world!'
-        const expectedResourceContentTypeSpecific: IResourceDefinitionContentTypeSpecific = {
+        const expectedResourceContentTypeSpecific: IResourceValue = {
           modes: [ctx.mode],
-          languageId: ctx.language_id,
+          language_id: ctx.language_id,
           value,
-          contentType: SupportedContentType.TEXT,
+          content_type: SupportedContentType.TEXT,
         }
 
-        const actual: IResource = resolver.resolve(value)
+        const actual: IResourceWithContext = resolver.resolve(value)
 
         expect(actual.uuid).toBe(value)
         expect(actual.values).toEqual([expectedResourceContentTypeSpecific])
@@ -57,7 +58,7 @@ describe('ResourceResolver', () => {
 
     describe('when resource with uuid present', () => {
       it('should return resource with UUID provided', async () => {
-        const expected: IResourceDefinition = {uuid: 'known000-0000-0000-0000-resource0123', values: []}
+        const expected: IResource = {uuid: 'known000-0000-0000-0000-resource0123', values: []}
 
         ctx.resources = [
           {uuid: 'notknown-0000-0000-0000-resource0654', values: []},
@@ -65,7 +66,7 @@ describe('ResourceResolver', () => {
           {uuid: 'notknown-0000-0000-0000-resource0123', values: []},
         ]
 
-        const actual: IResource = resolver.resolve('known000-0000-0000-0000-resource0123')
+        const actual: IResourceWithContext = resolver.resolve('known000-0000-0000-0000-resource0123')
 
         expect(actual.uuid).toBe(expected.uuid)
         expect(actual.values).toEqual(expected.values)
@@ -73,7 +74,7 @@ describe('ResourceResolver', () => {
       })
 
       describe('filtered resource definitions', () => {
-        let variants: IResourceDefinitionContentTypeSpecific[]
+        let variants: IResourceValue[]
 
         beforeEach(
           () =>
@@ -127,7 +128,7 @@ describe('ResourceResolver', () => {
             ],
           } as Partial<IContext>)
 
-          const actual: IResource = resolver.resolve('known000-0000-0000-0000-resource0123')
+          const actual: IResourceWithContext = resolver.resolve('known000-0000-0000-0000-resource0123')
           expect(actual.values).toEqual(expectedValues)
         })
       })
@@ -136,10 +137,10 @@ describe('ResourceResolver', () => {
 })
 
 function createResourceDefWith(
-  languageId: IResourceDefinitionContentTypeSpecific['languageId'],
-  contentType: IResourceDefinitionContentTypeSpecific['contentType'],
-  modes: IResourceDefinitionContentTypeSpecific['modes'],
-  value: IResourceDefinitionContentTypeSpecific['value'] = 'sample-resource-value'
-): IResourceDefinitionContentTypeSpecific {
-  return {languageId, contentType, value, modes}
+  languageId: IResourceValue['language_id'],
+  contentType: IResourceValue['content_type'],
+  modes: IResourceValue['modes'],
+  value: IResourceValue['value'] = 'sample-resource-value'
+): IResourceValue {
+  return {language_id: languageId, content_type: contentType, value, modes}
 }

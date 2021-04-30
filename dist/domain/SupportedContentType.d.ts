@@ -1,8 +1,8 @@
-export declare class SupportedContentType {
-    static TEXT: string;
-    static AUDIO: string;
-    static IMAGE: string;
-    static VIDEO: string;
-    static CSV: string;
+export declare enum SupportedContentType {
+    TEXT = "TEXT",
+    AUDIO = "AUDIO",
+    IMAGE = "IMAGE",
+    VIDEO = "VIDEO",
+    DATA = "DATA"
 }
 //# sourceMappingURL=SupportedContentType.d.ts.map

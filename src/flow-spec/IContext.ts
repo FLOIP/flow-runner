@@ -31,7 +31,7 @@ import {
   IIdGenerator,
   IPrompt,
   IPromptConfig,
-  IResourceDefinition,
+  IResource,
   IResources,
   IRunFlowBlockConfig,
   isLastBlock,
@@ -73,11 +73,13 @@ export interface IRichCursor {
    * When present, we call it a TRichCursorInputRequired.
    * In absence, the TRichCursorNoInputRequired will maintain `prompt` with a null-ish value.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   prompt?: IPrompt<IPromptConfig<any>>
 }
 
 export interface IRichCursorInputRequired {
   interaction: IBlockInteraction
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   prompt: IPrompt<IPromptConfig<any>>
 }
 
@@ -137,7 +139,7 @@ export async function createContextDataObjectFor(
   flows: IFlow[],
   languageId: string,
   mode: SupportedMode = SupportedMode.OFFLINE,
-  resources: IResourceDefinition[] = [],
+  resources: IResource[] = [],
   idGenerator: IIdGenerator = new IdGeneratorUuidV4()
 ): Promise<IContext> {
   return {

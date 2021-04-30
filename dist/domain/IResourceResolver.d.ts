@@ -1,18 +1,7 @@
-import { IContext, SupportedContentType, SupportedMode } from '..';
-export interface IResourceDefinitionContentTypeSpecific {
-    languageId: string;
-    contentType: SupportedContentType;
-    modes: SupportedMode[];
-    value: string;
-}
-export interface IResourceDefinition {
+import { IContext, IResource, IResourceValue } from '..';
+export interface IResourceWithContext extends IResource {
     uuid: string;
-    values: IResourceDefinitionContentTypeSpecific[];
-}
-export declare type IResources = IResourceDefinition[];
-export interface IResource {
-    uuid: string;
-    values: IResourceDefinitionContentTypeSpecific[];
+    values: IResourceValue[];
     context: IContext;
     getText(): string;
     hasText(): boolean;
@@ -29,8 +18,8 @@ export interface IResource {
 }
 export interface IResourceResolver {
     context: IContext;
-    resolve(resourceId: string): IResource;
+    resolve(resourceId: string): IResourceWithContext;
 }
-export declare function createTextResourceVariantWith(value: string, ctx: IContext): IResourceDefinitionContentTypeSpecific;
-export declare function getResource(context: IContext, resourceId: string): IResource;
+export declare function createTextResourceVariantWith(value: string, ctx: IContext): IResourceValue;
+export declare function getResource(context: IContext, resourceId: string): IResourceWithContext;
 //# sourceMappingURL=IResourceResolver.d.ts.map

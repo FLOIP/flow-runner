@@ -27,8 +27,8 @@ import {
   IContext,
   ICursor,
   IFlow,
+  IResourceWithContext,
   IResource,
-  IResourceDefinition,
   IResources,
   IReversibleUpdateOperation,
   ResourceResolver,
@@ -106,7 +106,7 @@ export class Context implements IContext {
     this.id = id
   }
 
-  getResource(resourceId: string): IResource {
+  getResource(resourceId: string): IResourceWithContext {
     return new ResourceResolver(this).resolve(resourceId)
   }
 }
@@ -131,7 +131,7 @@ export namespace Context {
     reversible_operations: IReversibleUpdateOperation[] = []
     flows?: IFlow[]
     first_flow_id?: string
-    resources?: IResourceDefinition[]
+    resources?: IResource[]
     entry_at?: string
     exit_at?: string
     user_id?: string
@@ -205,7 +205,7 @@ export namespace Context {
       return this
     }
 
-    setResources(resources: IResourceDefinition[]): Context.Builder {
+    setResources(resources: IResource[]): Context.Builder {
       this.resources = resources
       return this
     }

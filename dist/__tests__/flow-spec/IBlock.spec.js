@@ -119,6 +119,10 @@ describe('IBlock', () => {
             const context = Object.assign({}, lodash_1.cloneDeep(dataset.contexts[1]));
             context.contact = new Contact_1.default();
             const block = {
+                uuid: 'block-123',
+                type: 'test',
+                name: 'test',
+                exits: [],
                 config: {
                     set_contact_property: {
                         property_key: 'foo',
@@ -136,6 +140,10 @@ describe('IBlock', () => {
             const context = Object.assign({}, lodash_1.cloneDeep(dataset.contexts[1]));
             context.contact = new Contact_1.default();
             const block = {
+                uuid: 'block-123',
+                type: 'test',
+                name: 'test',
+                exits: [],
                 config: {
                     set_contact_property: [
                         {

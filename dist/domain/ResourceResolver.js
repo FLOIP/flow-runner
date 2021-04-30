@@ -23,7 +23,7 @@ class ResourceResolver {
                 language_id,
             })}`);
         }
-        const values = resource.values.filter(def => def.languageId === language_id && lodash_1.intersection(def.modes, [mode]).length > 0);
+        const values = resource.values.filter(def => def.language_id === language_id && lodash_1.intersection(def.modes, [mode]).length > 0);
         return new __1.Resource(resourceId, values, this.context);
     }
 }

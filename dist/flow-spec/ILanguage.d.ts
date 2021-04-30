@@ -1,6 +1,6 @@
 export interface ILanguage {
     id: string;
-    label: string;
+    label?: string;
     iso_639_3: string;
     variant?: string;
     bcp_47?: string;

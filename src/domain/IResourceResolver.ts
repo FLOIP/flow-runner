@@ -17,28 +17,16 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IContext, SupportedContentType, ResourceResolver, SupportedMode} from '..'
+import {IContext, SupportedContentType, ResourceResolver, IResource, IResourceValue} from '..'
 
-export interface IResourceDefinitionContentTypeSpecific {
-  // todo: rename to IResourceDefinitionVariant
-  languageId: string
-  contentType: SupportedContentType
-  modes: SupportedMode[]
-  value: string
-}
-
-export interface IResourceDefinition {
-  uuid: string
-  values: IResourceDefinitionContentTypeSpecific[] // each to be tailored to a particular content type
-}
-
-export type IResources = IResourceDefinition[]
-
-/** Basically, a smarter version of an IResourceDefinition with
+/**
+ * Resource definition: https://floip.gitbook.io/flow-specification/flows#resources
+ *
+ * Basically, a smarter version of an IResource with
  * her values having been filtered by (languageId, modes). */
-export interface IResource {
+export interface IResourceWithContext extends IResource {
   uuid: string
-  values: IResourceDefinitionContentTypeSpecific[]
+  values: IResourceValue[]
   context: IContext
 
   /** @throws ResourceNotFoundException */
@@ -75,18 +63,18 @@ export interface IResource {
 export interface IResourceResolver {
   context: IContext
 
-  resolve(resourceId: string): IResource
+  resolve(resourceId: string): IResourceWithContext
 }
 
-export function createTextResourceVariantWith(value: string, ctx: IContext): IResourceDefinitionContentTypeSpecific {
+export function createTextResourceVariantWith(value: string, ctx: IContext): IResourceValue {
   return {
-    contentType: SupportedContentType.TEXT,
+    content_type: SupportedContentType.TEXT,
     value,
-    languageId: ctx.language_id,
+    language_id: ctx.language_id,
     modes: [ctx.mode],
   }
 }
 
-export function getResource(context: IContext, resourceId: string): IResource {
+export function getResource(context: IContext, resourceId: string): IResourceWithContext {
   return new ResourceResolver(context).resolve(resourceId)
 }
