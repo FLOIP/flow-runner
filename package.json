@@ -7,8 +7,8 @@
   "author": "bzabos <b.zabos@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "jsonschema:generate-container": "./node_modules/.bin/ts-json-schema-generator --type IContainer --tsconfig 'tsconfig.json' --out 'dist/resources/flowSpecJsonSchema.json'",
-    "jsonschema:generate-blocks": "node scripts/jsonschema-generate-blocks.js",
+    "jsonschema:generate-container": "mkdir -p ./dist/resources && ./node_modules/.bin/ts-json-schema-generator --type IContainer --tsconfig 'tsconfig.json' --out 'dist/resources/flowSpecJsonSchema.json'",
+    "jsonschema:generate-blocks": "mkdir -p ./dist/resources && node scripts/jsonschema-generate-blocks.js",
     "build": "tsc --declaration; yarn jsonschema:generate-container && yarn jsonschema:generate-blocks",
     "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist/",
     "deploy": "yarn clean && yarn build && git add dist/ && git commit -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD",
