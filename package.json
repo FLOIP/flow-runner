@@ -1,6 +1,6 @@
 {
   "name": "@floip/flow-runner",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "repository": "git@github.com:FLOIP/flow-runner.git",
@@ -17,9 +17,9 @@
     "upgrade-ts": "yarn upgrade typescript eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser @typescript-eslint/typescript-estree"
   },
   "dependencies": {
+    "@floip/expression-evaluator": "^1.3.0",
     "ajv": "^7.2.1",
     "ajv-formats": "^1.5.1",
-    "@floip/expression-evaluator": "^1.3.0",
     "class-transformer": "^0.3.1",
     "lodash": "^4.17.20",
     "reflect-metadata": "^0.1.13",
