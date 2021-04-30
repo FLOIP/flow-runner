@@ -1,1 +1,1 @@
-{"version":3,"file":"ISetGroupMembershipBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/ISetGroupMembershipBlockConfig.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,8BAA8B;IAC7C,SAAS,EAAE,MAAM,CAAA;IACjB,SAAS,EAAE,MAAM,CAAA;CAClB"}
+{"version":3,"file":"ISetGroupMembershipBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/ISetGroupMembershipBlockConfig.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,8BAA8B;IAC7C,SAAS,EAAE,MAAM,CAAA;IACjB,UAAU,CAAC,EAAE,MAAM,CAAA;IACnB,SAAS,EAAE,MAAM,CAAA;CAClB"}

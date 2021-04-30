@@ -87,7 +87,12 @@ export * from './model/block/IRunFlowBlock';
 export * from './model/block/IRunFlowBlockConfig';
 export * from './model/block/ISelectOneResponseBlock';
 export * from './model/block/ISelectOneResponseBlockConfig';
+export * from './model/block/ISelectManyResponseBlock';
 export * from './model/block/ISetGroupMembershipBlock';
 export * from './model/block/ISetGroupMembershipBlockConfig';
+export * from './model/block/ISetContactPropertyBlock';
+export * from './model/block/ILocationResponseBlock';
+export * from './model/block/ILocationResponseBlockConfig';
+export * from './model/block/IPhotoResponseBlock';
 export { Prompt } from './domain/prompt/Prompt';
 //# sourceMappingURL=index.d.ts.map

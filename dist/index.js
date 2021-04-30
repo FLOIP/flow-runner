@@ -91,8 +91,13 @@ tslib_1.__exportStar(require("./model/block/IRunFlowBlock"), exports);
 tslib_1.__exportStar(require("./model/block/IRunFlowBlockConfig"), exports);
 tslib_1.__exportStar(require("./model/block/ISelectOneResponseBlock"), exports);
 tslib_1.__exportStar(require("./model/block/ISelectOneResponseBlockConfig"), exports);
+tslib_1.__exportStar(require("./model/block/ISelectManyResponseBlock"), exports);
 tslib_1.__exportStar(require("./model/block/ISetGroupMembershipBlock"), exports);
 tslib_1.__exportStar(require("./model/block/ISetGroupMembershipBlockConfig"), exports);
+tslib_1.__exportStar(require("./model/block/ISetContactPropertyBlock"), exports);
+tslib_1.__exportStar(require("./model/block/ILocationResponseBlock"), exports);
+tslib_1.__exportStar(require("./model/block/ILocationResponseBlockConfig"), exports);
+tslib_1.__exportStar(require("./model/block/IPhotoResponseBlock"), exports);
 var Prompt_1 = require("./domain/prompt/Prompt");
 Object.defineProperty(exports, "Prompt", { enumerable: true, get: function () { return Prompt_1.Prompt; } });
 //# sourceMappingURL=index.js.map
