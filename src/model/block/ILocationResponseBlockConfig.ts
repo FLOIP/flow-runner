@@ -17,23 +17,14 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {ISetContactPropertyBlockConfig} from '../..'
+export interface ILocationResponseBlockConfig {
+  /**
+   * @minimum 0
+   */
+  accuracy_threshold_meters: number
 
-export interface IOpenResponseBlockConfig extends ISetContactPropertyBlockConfig {
-  prompt: string
-  prompt_audio: string
-
-  ivr?: {
-    /**
-     * @minimum 0
-     */
-    max_duration_seconds: number
-  }
-
-  text?: {
-    /**
-     * @minimum 0
-     */
-    max_response_characters?: number
-  }
+  /**
+   * @minimum 0
+   */
+  accuracy_timeout_seconds: number
 }

@@ -42,7 +42,7 @@ export interface IBlock {
   /**
    * A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)
    *
-   * @TJS-pattern ^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$
+   * @pattern ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
    */
   uuid: string
 
@@ -51,7 +51,7 @@ export interface IBlock {
    * This must be restricted to word characters so that it can be used as a variable name in expressions.
    * When blocks write results output, they write to a variable corresponding the name of the block.
    *
-   * @TJS-pattern ^[a-zA-Z_]\w*$
+   * @pattern ^[a-zA-Z_]\w*$
    */
   name: string
 
@@ -72,7 +72,7 @@ export interface IBlock {
    * but could be relevant to a specific vendor/platform/implementation.
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  vendor_metadata?: Record<string,any>
+  vendor_metadata?: Record<string, any>
 
   /**
    * A specific string designating the type or "subclass" of this Block.
@@ -84,7 +84,7 @@ export interface IBlock {
    * Additional parameters that are specific to the type of the block. Details are provided within the Block documentation.
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  config?: Record<string,any>
+  config?: Record<string, any>
 
   /**
    * a list of all the exits for the block.

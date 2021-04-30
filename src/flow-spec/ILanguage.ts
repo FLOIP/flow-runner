@@ -35,7 +35,7 @@ export interface ILanguage {
    * ISO 639-3 code for the language. This is a 3-letter string, e.g. "eng".
    * "mis" is the ISO 639-3 code for languages not yet included in ISO 639-3.
    *
-   * @TJS-pattern ^[a-z][a-z][a-z]$
+   * @pattern ^[a-z][a-z][a-z]$
    */
   iso_639_3: string
 

@@ -26,6 +26,9 @@ export interface INumericBlockConfig extends ISetContactPropertyBlockConfig {
   validation_maximum: number
 
   ivr: {
+    /**
+     * @minimum 0
+     */
     max_digits: number
   }
 }

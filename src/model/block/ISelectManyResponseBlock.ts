@@ -17,23 +17,14 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {ISetContactPropertyBlockConfig} from '../..'
+import {ISelectOneResponseBlock} from '../..'
 
-export interface IOpenResponseBlockConfig extends ISetContactPropertyBlockConfig {
+export interface ISelectManyResponseBlock extends ISelectOneResponseBlock {
   prompt: string
   prompt_audio: string
-
-  ivr?: {
-    /**
-     * @minimum 0
-     */
-    max_duration_seconds: number
-  }
-
-  text?: {
-    /**
-     * @minimum 0
-     */
-    max_response_characters?: number
-  }
+  question_prompt?: string
+  choices_prompt?: string
+  choices: StringMapType
 }
+
+type StringMapType = {[k: string]: string}

@@ -1,5 +1,6 @@
 import {IContainer} from '../..'
 import Ajv, {ErrorObject} from 'ajv'
+import ajvFormat from 'ajv-formats'
 
 /**
  * Validate a Flow Spec container and return a set of errors (if they exist).
@@ -14,6 +15,7 @@ export function getFlowStructureErrors(container: IContainer): ErrorObject<strin
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const flowSpecJsonSchema = require('../../../dist/resources/flowSpecJsonSchema.json')
   const ajv = new Ajv()
+  ajvFormat(ajv) // we need this to use AJV format such as 'date-time' (https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
   const validate = ajv.compile(flowSpecJsonSchema)
   if (!validate(container)) {
     return validate.errors

@@ -24,16 +24,14 @@ export interface IBlockExit {
   /**
    * A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)
    *
-   * @TJS-pattern ^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$
+   * @pattern ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
    */
   uuid: string
 
   /**
    * This is the human-readable name of the exit (as a translated resource ID), which might be presented to a contact.
-   *
-   * @TJS-pattern ^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$
    */
-  // resource ID
+  // resource ID??
   label: string
 
   /**
@@ -43,14 +41,14 @@ export interface IBlockExit {
    * to avoid usability problems with these getting out of sync.)
    * Word characters only.
    *
-   * @TJS-pattern ^[a-zA-Z_]\w*$
+   * @pattern ^[a-zA-Z_]\w*$
    */
   tag: string
 
   /**
    * This is the uuid of the Block this exit connects to. It can be null if the exit does not connect to a block (if it is the final block).
    *
-   * @TJS-pattern ^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$
+   * @pattern ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
    */
   destination_block?: string
 
