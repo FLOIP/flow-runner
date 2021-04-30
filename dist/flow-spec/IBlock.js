@@ -4,6 +4,7 @@ exports.setContactProperty = exports.wrapInExprSyntaxWhenAbsent = exports.evalua
 const __1 = require("..");
 const lodash_1 = require("lodash");
 const expression_evaluator_1 = require("@floip/expression-evaluator");
+const DateFormat_1 = require("../domain/DateFormat");
 function findBlockExitWith(uuid, block) {
     const exit = lodash_1.find(block.exits, { uuid });
     if (exit == null) {
@@ -62,11 +63,24 @@ function createEvalContextFrom(context) {
         block = __1.findBlockWith(__1.findInteractionWith(cursor.interactionId, context).block_id, flow);
         prompt = cursor.promptConfig;
     }
+    const today = new Date();
+    const tomorrow = new Date();
+    const yesterday = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    yesterday.setDate(today.getDate() - 1);
+    yesterday.setHours(0, 0, 0, 0);
     return {
         contact: createEvalContactFrom(contact),
         channel: { mode },
         flow: generateCachedProxyForBlockName(Object.assign(Object.assign({}, flow), { language }), context),
         block: Object.assign(Object.assign({}, block), { value: prompt != null ? prompt.value : undefined }),
+        date: {
+            today: DateFormat_1.createFormattedDate(today),
+            tomorrow: DateFormat_1.createFormattedDate(tomorrow),
+            yesterday: DateFormat_1.createFormattedDate(yesterday),
+            __value__: DateFormat_1.createFormattedDate(today),
+        },
     };
 }
 exports.createEvalContextFrom = createEvalContextFrom;

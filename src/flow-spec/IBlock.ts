@@ -34,6 +34,7 @@ import {
 } from '..'
 import {cloneDeep, extend, find, get, has, startsWith} from 'lodash'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
+import {createFormattedDate} from '../domain/DateFormat'
 
 /**
  * Block Structure: https://floip.gitbook.io/flow-specification/flows#blocks
@@ -193,6 +194,15 @@ export function createEvalContextFrom(context: IContext): object {
     prompt = cursor.promptConfig
   }
 
+  const today = new Date()
+  const tomorrow = new Date()
+  const yesterday = new Date()
+
+  tomorrow.setDate(today.getDate() + 1)
+  tomorrow.setHours(0, 0, 0, 0)
+  yesterday.setDate(today.getDate() - 1)
+  yesterday.setHours(0, 0, 0, 0)
+
   return {
     contact: createEvalContactFrom(contact),
     channel: {mode},
@@ -208,6 +218,12 @@ export function createEvalContextFrom(context: IContext): object {
       // todo: should this differ from our IEvalContextBlock lookups on flow?
       ...block,
       value: prompt != null ? prompt.value : undefined,
+    },
+    date: {
+      today: createFormattedDate(today),
+      tomorrow: createFormattedDate(tomorrow),
+      yesterday: createFormattedDate(yesterday),
+      __value__: createFormattedDate(today),
     },
   }
 }
