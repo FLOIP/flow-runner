@@ -18,6 +18,7 @@
  **/
 
 import {evaluateToString, IBlockExit, IBlockRunner, IContext, IOutputBlock, IRichCursor, setContactProperty} from '../..'
+import { createEvalContextFrom } from '../../'
 
 /**
  * Block runner for `Core.Output` - This block provides a connection to the
@@ -38,7 +39,7 @@ export class OutputBlockRunner implements IBlockRunner {
   }
 
   async run(cursor: IRichCursor): Promise<IBlockExit> {
-    cursor.interaction.value = evaluateToString(this.block.config.value, this.context)
+    cursor.interaction.value = evaluateToString(this.block.config.value, createEvalContextFrom(this.context))
     cursor.interaction.has_response = true
     setContactProperty(this.block, this.context)
     return this.block.exits[0]
