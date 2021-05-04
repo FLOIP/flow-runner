@@ -17,8 +17,16 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {evaluateToString, IBlockExit, IBlockRunner, IContext, IOutputBlock, IRichCursor, setContactProperty} from '../..'
-import { createEvalContextFrom } from '../../'
+import {
+  evaluateToString,
+  IBlockExit,
+  IBlockRunner,
+  IContext,
+  IOutputBlock,
+  IRichCursor,
+  setContactProperty,
+  createEvalContextFrom,
+} from '../..'
 
 /**
  * Block runner for `Core.Output` - This block provides a connection to the
