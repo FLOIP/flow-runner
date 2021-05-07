@@ -28,6 +28,7 @@ export declare type TEvalContextBlockMap = {
 export declare function generateCachedProxyForBlockName(target: object, ctx: IContext): TEvalContextBlockMap;
 export declare function createEvalContextFrom(context: IContext): object;
 export declare function createEvalContactFrom(contact: IContact): IContact;
+export declare function evaluate(expr: string, ctx: object): string;
 export declare function evaluateToBool(expr: string, ctx: object): boolean;
 export declare function evaluateToString(expr: string, ctx: object): string;
 export declare function wrapInExprSyntaxWhenAbsent(expr: string): string;

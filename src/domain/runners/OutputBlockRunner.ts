@@ -18,7 +18,6 @@
  **/
 
 import {
-  evaluateToString,
   IBlockExit,
   IBlockRunner,
   IContext,

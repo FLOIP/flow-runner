@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setContactProperty = exports.wrapInExprSyntaxWhenAbsent = exports.evaluateToString = exports.evaluateToBool = exports.createEvalContactFrom = exports.createEvalContextFrom = exports.generateCachedProxyForBlockName = exports.isLastBlock = exports.findDefaultBlockExitOn = exports.findFirstTruthyEvaluatingBlockExitOn = exports.findBlockExitWith = void 0;
+exports.setContactProperty = exports.wrapInExprSyntaxWhenAbsent = exports.evaluateToString = exports.evaluateToBool = exports.evaluate = exports.createEvalContactFrom = exports.createEvalContextFrom = exports.generateCachedProxyForBlockName = exports.isLastBlock = exports.findDefaultBlockExitOn = exports.findFirstTruthyEvaluatingBlockExitOn = exports.findBlockExitWith = void 0;
 const __1 = require("..");
 const lodash_1 = require("lodash");
 const expression_evaluator_1 = require("@floip/expression-evaluator");
@@ -91,6 +91,10 @@ function createEvalContactFrom(contact) {
     return evalContact;
 }
 exports.createEvalContactFrom = createEvalContactFrom;
+function evaluate(expr, ctx) {
+    return expression_evaluator_1.EvaluatorFactory.create().evaluate(expr, ctx);
+}
+exports.evaluate = evaluate;
 function evaluateToBool(expr, ctx) {
     return JSON.parse(evaluateToString(expr, ctx).toLowerCase());
 }
