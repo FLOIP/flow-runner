@@ -189,6 +189,10 @@ export function createEvalContactFrom(contact: IContact): IContact {
   return evalContact
 }
 
+export function evaluate(expr: string, ctx: object) {
+  return EvaluatorFactory.create().evaluate(expr, ctx)
+}
+
 export function evaluateToBool(expr: string, ctx: object): boolean {
   return JSON.parse(evaluateToString(expr, ctx).toLowerCase())
 }
