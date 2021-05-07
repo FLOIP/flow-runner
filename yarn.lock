@@ -474,17 +474,17 @@
     minimist "^1.2.0"
 
 "@floip/expression-evaluator@^2.0":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@floip/expression-evaluator/-/expression-evaluator-2.1.1.tgz#50f527d41cc1b592ee1f1c6d1b27a5b18834cab9"
-  integrity sha512-/ekPQgsiyTl5H7u/Ux4jGOqHAKyFr1+/7NBQBxmWrSVWTivmps3ozNC3xJPkv0ID5IwGP3rbcoAWvclKhKzFKA==
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@floip/expression-evaluator/-/expression-evaluator-2.1.2.tgz#68bab9f30b04c4852ab91753b44b696b46a37d58"
+  integrity sha512-dq0Y2TLIAzI5/Gv/5NDvt9YQ5JrEwBH/6D6EUgqSeOAwcef4yTUJjvzUmQXFuUT9BWGOo1uBxm5t2m8U498ucg==
   dependencies:
     "@floip/expression-parser" "^1.10.0"
     moment "^2.24.0"
 
 "@floip/expression-parser@^1.10.0":
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/@floip/expression-parser/-/expression-parser-1.11.0.tgz#0d93371008c701e2867cf027a23f72160beaff22"
-  integrity sha512-oTM8omN3J+xJNfBUPaG06lRoKm39XrY9a4GgEJ+ONMEJGGajLRvdKVMdj8/epZ2Bme32B6EyvXmrU5StqamfoQ==
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/@floip/expression-parser/-/expression-parser-1.11.1.tgz#d64b0234c1fb08c80de5c910dbb53eab965ba670"
+  integrity sha512-F4LBmOdTHkjV5mFuTDwhDKUvvpqyoOCrfRS7G7pXhL/oY5cddwtnzi0GFj1+Lq3tkUHoW6muKqwW+25CKJmWiw==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
