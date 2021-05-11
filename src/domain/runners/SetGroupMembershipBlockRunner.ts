@@ -1,4 +1,4 @@
-import {evaluateToBool, IBlockExit, IContext, IRichCursor, ISetGroupMembershipBlock, IBlockRunner, ValidationException} from '../..'
+import {IBlockExit, IContext, IRichCursor, ISetGroupMembershipBlock, IBlockRunner, ValidationException} from '../..'
 
 const EXIT_SUCCESS = 0
 
@@ -23,7 +23,7 @@ export class SetGroupMembershipBlockRunner implements IBlockRunner {
       throw new ValidationException(`Cannot add contact to non-existent group ${group_key}`)
     }
 
-    if (evaluateToBool(is_member, this.context)) {
+    if (is_member) {
       contact.addGroup(group)
     } else {
       contact.delGroup(group)

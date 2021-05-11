@@ -23,7 +23,7 @@ class SetGroupMembershipBlockRunner {
             if (group == null) {
                 throw new __1.ValidationException(`Cannot add contact to non-existent group ${group_key}`);
             }
-            if (__1.evaluateToBool(is_member, this.context)) {
+            if (is_member) {
                 contact.addGroup(group);
             }
             else {

@@ -62,7 +62,7 @@
           "type": "string"
         },
         "is_member": {
-          "type": "string"
+          "type": "boolean"
         }
       },
       "required": [
