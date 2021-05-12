@@ -57,7 +57,7 @@
     "ts-json-schema-generator": "^0.89.0",
     "tsc": "^1.20150623.0",
     "typescript": "^4.2.3",
-    "violation-comments-to-github-command-line": "^1.14.0",
+    "violation-comments-to-github-command-line": "^1.19.0",
     "yaml-import": "^2.0.0"
   }
 }
