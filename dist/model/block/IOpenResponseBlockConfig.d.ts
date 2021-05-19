@@ -1,7 +1,6 @@
 import { ISetContactPropertyBlockConfig } from '../..';
 export interface IOpenResponseBlockConfig extends ISetContactPropertyBlockConfig {
     prompt: string;
-    prompt_audio: string;
     ivr?: {
         max_duration_seconds: number;
     };

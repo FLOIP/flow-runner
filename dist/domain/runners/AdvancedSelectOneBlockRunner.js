@@ -11,11 +11,10 @@ class AdvancedSelectOneBlockRunner {
     }
     initialize({ value }) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const { prompt, prompt_audio, primary_field, secondary_fields, choice_row_fields, choice_rows, response_fields } = this.block.config;
+            const { prompt, primary_field, secondary_fields, choice_row_fields, choice_rows, response_fields } = this.block.config;
             return {
                 kind: __1.ADVANCED_SELECT_ONE_PROMPT_KEY,
                 prompt,
-                promptAudio: prompt_audio,
                 primaryField: primary_field,
                 secondaryFields: secondary_fields,
                 choiceRowFields: choice_row_fields,
