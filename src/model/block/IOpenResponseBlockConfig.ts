@@ -21,7 +21,6 @@ import {ISetContactPropertyBlockConfig} from '../..'
 
 export interface IOpenResponseBlockConfig extends ISetContactPropertyBlockConfig {
   prompt: string
-  prompt_audio: string
 
   ivr?: {
     /**

@@ -41,33 +41,12 @@
             "$ref": "#/definitions/IBlockExitTestRequired"
           },
           "description": "a list of all the exits for the block. Exits must contain the required keys below, and can contain additional keys based on the Block type"
-        },
-        "prompt": {
-          "type": "string"
-        },
-        "prompt_audio": {
-          "type": "string"
-        },
-        "question_prompt": {
-          "type": "string"
-        },
-        "choices_prompt": {
-          "type": "string"
-        },
-        "choices": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
         }
       },
       "required": [
-        "choices",
         "config",
         "exits",
         "name",
-        "prompt",
-        "prompt_audio",
         "type",
         "uuid"
       ],
@@ -92,9 +71,6 @@
         "prompt": {
           "type": "string"
         },
-        "prompt_audio": {
-          "type": "string"
-        },
         "question_prompt": {
           "type": "string"
         },
@@ -110,7 +86,6 @@
       },
       "required": [
         "prompt",
-        "prompt_audio",
         "choices"
       ],
       "additionalProperties": false

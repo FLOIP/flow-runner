@@ -71,9 +71,6 @@
         "prompt": {
           "type": "string"
         },
-        "prompt_audio": {
-          "type": "string"
-        },
         "question_prompt": {
           "type": "string"
         },
@@ -89,7 +86,6 @@
       },
       "required": [
         "prompt",
-        "prompt_audio",
         "choices"
       ],
       "additionalProperties": false

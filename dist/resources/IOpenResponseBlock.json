@@ -71,9 +71,6 @@
         "prompt": {
           "type": "string"
         },
-        "prompt_audio": {
-          "type": "string"
-        },
         "ivr": {
           "type": "object",
           "properties": {
@@ -99,8 +96,7 @@
         }
       },
       "required": [
-        "prompt",
-        "prompt_audio"
+        "prompt"
       ],
       "additionalProperties": false
     },

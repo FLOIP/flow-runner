@@ -26,7 +26,6 @@ _defaults:
     <<: *defaults/block
     config:
       prompt: My first block config's prompt
-      prompt_audio: 066a593b-16e7-4b70-887a-bf6cb7f3fdff
     type: MobilePrimitives.OpenResponse
 
   - &defaults/intx
