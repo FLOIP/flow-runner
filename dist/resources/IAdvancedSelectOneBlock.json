@@ -58,9 +58,6 @@
         "prompt": {
           "type": "string"
         },
-        "prompt_audio": {
-          "type": "string"
-        },
         "primary_field": {
           "type": "string"
         },

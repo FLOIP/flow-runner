@@ -71,9 +71,6 @@
         "prompt": {
           "type": "string"
         },
-        "prompt_audio": {
-          "type": "string"
-        },
         "validation_minimum": {
           "type": "number"
         },
@@ -96,7 +93,6 @@
       },
       "required": [
         "prompt",
-        "prompt_audio",
         "validation_minimum",
         "validation_maximum",
         "ivr"

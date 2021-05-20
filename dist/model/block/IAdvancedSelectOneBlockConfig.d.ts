@@ -1,6 +1,5 @@
 export interface IAdvancedSelectOneBlockConfig {
     prompt: string;
-    prompt_audio?: string;
     primary_field: string;
     secondary_fields: string[];
     choice_row_fields: string[];

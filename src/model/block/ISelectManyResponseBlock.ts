@@ -17,14 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {ISelectOneResponseBlock} from '../..'
+import {IBlockWithTestExits, ISelectOneResponseBlockConfig} from '../..'
 
-export interface ISelectManyResponseBlock extends ISelectOneResponseBlock {
-  prompt: string
-  prompt_audio: string
-  question_prompt?: string
-  choices_prompt?: string
-  choices: StringMapType
+export interface ISelectManyResponseBlock extends IBlockWithTestExits {
+  config: ISelectOneResponseBlockConfig
 }
-
-type StringMapType = {[k: string]: string}

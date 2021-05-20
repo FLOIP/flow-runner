@@ -1,7 +1,6 @@
 import { ISetContactPropertyBlockConfig } from '../..';
 export interface INumericBlockConfig extends ISetContactPropertyBlockConfig {
     prompt: string;
-    prompt_audio: string;
     validation_minimum: number;
     validation_maximum: number;
     ivr: {
