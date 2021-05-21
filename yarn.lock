@@ -493,7 +493,7 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@floip/expression-evaluator@^2.0":
+"@floip/expression-evaluator@^2.1.3":
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/@floip/expression-evaluator/-/expression-evaluator-2.1.3.tgz#8e10bcc79aead874c42f5ec0e47d57a7b85f7605"
   integrity sha512-OVHQn+6IgBCNH48nCNXtsYdRbCahml2h9QzM9eg9LRtFJ9rpaX8Lj+vTK9D2QCYtAzu1FxySKejq4VJenHP+4w==
@@ -5106,10 +5106,10 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-violation-comments-to-github-command-line@^1.14.0:
-  version "1.17.0"
-  resolved "https://registry.yarnpkg.com/violation-comments-to-github-command-line/-/violation-comments-to-github-command-line-1.17.0.tgz#fdc55a49111114724a5bfb4db3f3983aac1cb243"
-  integrity sha512-4K/NerHBahH3O064VpA+phLB0YjvXQlDaoHhL8lAEx+HV+EtyZHEpc6CyCI4EWJ4VhRs2JJubSrZmxZUaHXa5w==
+violation-comments-to-github-command-line@^1.19.0:
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/violation-comments-to-github-command-line/-/violation-comments-to-github-command-line-1.19.0.tgz#9223300df879ed291497ba4fbb9e47bf0796acd4"
+  integrity sha512-4pB1t2I+kJyACZjqHHqseRbIYCZoG4anV6DRWBd8bK9G2pIlnImdEHSNRwF0v3kVDUL9wRvjiJz1ZoIiPx+N2w==
   dependencies:
     shelljs "^0.7.5"
 
