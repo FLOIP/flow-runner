@@ -47,7 +47,7 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
 //       via https://stackoverflow.com/questions/46025487/create-extendable-enums-for-use-in-extendable-interfaces
 
 /** Interface for configuration to resolve and build a {@link BasePrompt} instance. */
-export interface IPromptConfig<T> extends IBasePromptConfig {
+export interface IPromptConfig<T = unknown> extends IBasePromptConfig {
   kind: string
   isResponseRequired: boolean
   prompt: string
@@ -60,5 +60,5 @@ export interface IBasePromptConfig {
 }
 
 export interface PromptConstructor<T> {
-  new(config: T, interactionId: string, runner: IFlowRunner): BasePrompt<any>
+  new (config: T, interactionId: string, runner: IFlowRunner): BasePrompt<any>
 }

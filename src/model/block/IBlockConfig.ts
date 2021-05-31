@@ -1,20 +1,21 @@
+export interface IBlockConfig {}
+
 export interface SetContactProperty {
   property_key: string
   property_value: string
 }
-export interface ISetContactPropertyBlockConfig {
+
+export interface ISetContactPropertyBlockConfig extends IBlockConfig {
   set_contact_property?: SetContactProperty | SetContactProperty[]
 }
 
 export function isSetContactPropertyConfig(thing: unknown): thing is ISetContactPropertyBlockConfig {
-  if (typeof thing === 'object' && thing !== null) {
-    if ('set_contact_property' in thing) {
-      const setContactProperty = (thing as ISetContactPropertyBlockConfig).set_contact_property
-      if (Array.isArray(setContactProperty)) {
-        return setContactProperty.every(isSetContactProperty)
-      } else {
-        return isSetContactProperty(setContactProperty)
-      }
+  if (typeof thing === 'object' && thing !== null && 'set_contact_property' in thing) {
+    const setContactProperty = (thing as ISetContactPropertyBlockConfig).set_contact_property
+    if (Array.isArray(setContactProperty)) {
+      return setContactProperty.every(isSetContactProperty)
+    } else {
+      return isSetContactProperty(setContactProperty)
     }
   }
   return false
@@ -22,6 +23,7 @@ export function isSetContactPropertyConfig(thing: unknown): thing is ISetContact
 
 export function isSetContactProperty(thing: unknown): thing is SetContactProperty {
   if (typeof thing === 'object' && thing !== null) {
+    // noinspection SuspiciousTypeOfGuard
     return (
       'property_key' in thing &&
       'property_value' in thing &&

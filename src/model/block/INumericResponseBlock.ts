@@ -19,6 +19,4 @@
 
 import {IBlock, INumericBlockConfig} from '../..'
 
-export interface INumericResponseBlock extends IBlock {
-  config: INumericBlockConfig
-}
+export interface INumericResponseBlock extends IBlock<INumericBlockConfig> {}

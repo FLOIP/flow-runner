@@ -16,12 +16,13 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
+import {ISetContactPropertyBlockConfig} from '../..'
 
-export interface IAdvancedSelectOneBlockConfig {
+export interface IAdvancedSelectOneBlockConfig extends ISetContactPropertyBlockConfig {
   prompt: string
   primary_field: string
   secondary_fields: string[]
   choice_row_fields: string[]
-  choice_rows: string // IResourceWithContext['uuid'], we're not using interface reference here to avoid circular reference issue with JsonSchema generator
+  choice_rows: string
   response_fields?: string[]
 }

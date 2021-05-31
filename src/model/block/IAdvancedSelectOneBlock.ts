@@ -17,10 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlockWithTestExits, IAdvancedSelectOneBlockConfig} from '../..'
+import {IAdvancedSelectOneBlockConfig, IBlock} from '../..'
 
 export const ADVANCED_SELECT_ONE_BLOCK_TYPE = 'MobilePrimitives.Extended.AdvancedSelectOne'
 
-export interface IAdvancedSelectOneBlock extends IBlockWithTestExits {
-  config: IAdvancedSelectOneBlockConfig
-}
+export interface IAdvancedSelectOneBlock extends IBlock<IAdvancedSelectOneBlockConfig> {}

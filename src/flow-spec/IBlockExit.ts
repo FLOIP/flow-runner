@@ -20,7 +20,7 @@
 /**
  * Block Exit: https://floip.gitbook.io/flow-specification/flows#exit-node-specification
  */
-export interface IBlockExit {
+export interface IBlockExit<BLOCK_EXIT_CONFIG = {}> {
   /**
    * A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)
    *
@@ -68,7 +68,7 @@ export interface IBlockExit {
   /**
    * This contains additional information required for each mode supported by the block. Details are provided within the Block documentation
    */
-  config: object
+  config: BLOCK_EXIT_CONFIG
 
   /**
    * If this key is present and true, the exit is treated as the flow-through default in a case evaluation.
@@ -79,6 +79,34 @@ export interface IBlockExit {
   default?: boolean
 }
 
-export interface IBlockExitTestRequired extends IBlockExit {
-  test: string
+// noinspection DuplicatedCode
+export class BlockExit<BLOCK_EXIT_CONFIG> implements IBlockExit<BLOCK_EXIT_CONFIG> {
+  config: BLOCK_EXIT_CONFIG
+  default: boolean
+  destination_block: string
+  label: string
+  semantic_label: string
+  tag: string
+  uuid: string
+  test?: string
+
+  constructor(
+    config: BLOCK_EXIT_CONFIG,
+    isDefault: boolean,
+    destination_block: string,
+    label: string,
+    semantic_label: string,
+    tag: string,
+    uuid: string,
+    test?: string
+  ) {
+    this.config = config
+    this.default = isDefault
+    this.destination_block = destination_block
+    this.label = label
+    this.semantic_label = semantic_label
+    this.tag = tag
+    this.uuid = uuid
+    this.test = test
+  }
 }

@@ -19,7 +19,8 @@ describe('SelectOneResponseBlockRunner', () => {
   describe('run', () => {
     it('sanity // should return an exit when some exist', async () => {
       const ctx: IContext = dataset.contexts[1]
-      ;(ctx.contact as IContactWithAge).age = '12'
+      const contact = ctx.contact as IContactWithAge
+      contact.age = '12'
 
       const interaction = findInteractionWith(ctx.cursor!.interactionId, ctx)
       const block: ISelectOneResponseBlock = Object.assign(findBlockOnActiveFlowWith(interaction.block_id, ctx), {

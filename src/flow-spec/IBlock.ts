@@ -22,15 +22,15 @@ import {
   findInteractionWith,
   getActiveFlowFrom,
   IBlockExit,
-  IBlockExitTestRequired,
+  IContact,
   IContext,
   ICursor,
   IFlow,
-  ValidationException,
+  ISetContactPropertyBlockConfig,
+  isSetContactProperty,
   isSetContactPropertyConfig,
   SetContactProperty,
-  isSetContactProperty,
-  IContact,
+  ValidationException,
 } from '..'
 import {cloneDeep, extend, find, get, has, startsWith} from 'lodash'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
@@ -39,7 +39,7 @@ import {createFormattedDate} from '../domain/DateFormat'
 /**
  * Block Structure: https://floip.gitbook.io/flow-specification/flows#blocks
  */
-export interface IBlock {
+export interface IBlock<BLOCK_CONFIG = {}, BLOCK_EXIT_CONFIG = {}> {
   /**
    * A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)
    *
@@ -84,21 +84,19 @@ export interface IBlock {
   /**
    * Additional parameters that are specific to the type of the block. Details are provided within the Block documentation.
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  config?: Record<string, any>
+  config: BLOCK_CONFIG
 
   /**
    * a list of all the exits for the block.
    * Exits must contain the required keys below, and can contain additional keys based on the Block type
    */
-  exits: IBlockExit[]
+  exits: IBlockExit<BLOCK_EXIT_CONFIG>[]
 }
 
-export interface IBlockWithTestExits extends IBlock {
-  exits: IBlockExitTestRequired[]
-}
-
-export function findBlockExitWith(uuid: string, block: IBlock): IBlockExit {
+export function findBlockExitWith<BLOCK_EXIT_CONFIG>(
+  uuid: string,
+  block: IBlock<unknown, BLOCK_EXIT_CONFIG>
+): IBlockExit<BLOCK_EXIT_CONFIG> {
   const exit = find(block.exits, {uuid})
   if (exit == null) {
     throw new ValidationException('Unable to find exit on block')
@@ -107,20 +105,17 @@ export function findBlockExitWith(uuid: string, block: IBlock): IBlockExit {
   return exit
 }
 
-export function findFirstTruthyEvaluatingBlockExitOn(block: IBlockWithTestExits, context: IContext): IBlockExitTestRequired | undefined {
+export function findFirstTruthyEvaluatingBlockExitOn(block: IBlock, context: IContext): IBlockExit | undefined {
   const {exits} = block
   if (exits.length === 0) {
     throw new ValidationException(`Unable to find exits on block ${block.uuid}`)
   }
 
   const evalContext = createEvalContextFrom(context)
-  return find<IBlockExitTestRequired>(
-    exits,
-    ({test, default: isDefault = false}) => !isDefault && evaluateToBool(String(test), evalContext)
-  )
+  return find<IBlockExit>(exits, ({test, default: isDefault = false}) => !isDefault && evaluateToBool(String(test), evalContext))
 }
 
-export function findDefaultBlockExitOn(block: IBlock): IBlockExit {
+export function findDefaultBlockExitOn<BLOCK_EXIT_CONFIG>(block: IBlock<unknown, BLOCK_EXIT_CONFIG>): IBlockExit<BLOCK_EXIT_CONFIG> {
   const exit = find(block.exits, {default: true})
   if (exit == null) {
     throw new ValidationException(`Unable to find default exit on block ${block.uuid}`)
@@ -134,12 +129,10 @@ export function isLastBlock({exits}: IBlock): boolean {
 }
 
 export interface IEvalContextBlock {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  __value__: any
+  __value__: unknown
   time: string
   __interactionId: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  value: any
+  value: unknown
   text: string
 }
 
@@ -184,7 +177,7 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext): 
 export function createEvalContextFrom(context: IContext): object {
   const {contact, cursor, mode, language_id: language} = context
   let flow: IFlow | undefined
-  let block: IBlock | undefined
+  let block: IBlock<unknown, unknown> | undefined
   let prompt: ICursor['promptConfig']
 
   if (cursor != null) {
@@ -256,7 +249,10 @@ export function wrapInExprSyntaxWhenAbsent(expr: string): string {
 /**
  * Set a property on the contact contained in the flow context.
  */
-export function setContactProperty(block: IBlock, context: IContext): void {
+export function setContactProperty<BLOCK_CONFIG extends ISetContactPropertyBlockConfig>(
+  block: IBlock<BLOCK_CONFIG>,
+  context: IContext
+): void {
   if (isSetContactPropertyConfig(block.config)) {
     const setContactProperty = block.config.set_contact_property
 
@@ -273,20 +269,15 @@ function setSingleContactProperty(property: SetContactProperty, context: IContex
   context.contact.setProperty(property.property_key, value)
 }
 
-export interface IBlockService {
-  findBlockExitWith(uuid: string, block: IBlock): IBlockExit
-
-  findFirstTruthyEvaluatingBlockExitOn(block: IBlockWithTestExits, context: IContext): IBlockExitTestRequired | undefined
-
-  findDefaultBlockExitOn(block: IBlock): IBlockExit
-
-  isLastBlock(block: IBlock): boolean
-
-  findAndGenerateExpressionBlockFor(blockName: IBlock['name'], ctx: IContext): IEvalContextBlock | undefined
-
+export interface IBlockService<BLOCK_EXIT_CONFIG> {
+  findBlockExitWith<BLOCK_EXIT_CONFIG>(uuid: string, block: IBlock<unknown, BLOCK_EXIT_CONFIG>): IBlockExit<BLOCK_EXIT_CONFIG>
+  findFirstTruthyEvaluatingBlockExitOn<BLOCK_EXIT_CONFIG>(
+    block: IBlock<unknown, BLOCK_EXIT_CONFIG>,
+    context: IContext
+  ): IBlockExit<BLOCK_EXIT_CONFIG> | undefined
+  findDefaultBlockExitOn(block: IBlock<unknown, BLOCK_EXIT_CONFIG>): IBlockExit<BLOCK_EXIT_CONFIG>
+  isLastBlock(block: IBlock<unknown, unknown>): boolean
   generateCachedProxyForBlockName(target: object, ctx: IContext): object
-
   createEvalContextFrom(context: IContext): object
-
   evaluateToBool(expr: string, ctx: object): boolean
 }

@@ -3,11 +3,11 @@ import {
   createFormattedDate,
   findFirstTruthyEvaluatingBlockExitOn,
   generateCachedProxyForBlockName,
-  IBlockExitTestRequired,
-  IBlockWithTestExits,
+  IBlockExit,
   IContact,
   IContext,
   IEvalContextBlock,
+  SetContactProperty,
   wrapInExprSyntaxWhenAbsent,
 } from '../..'
 import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
@@ -44,8 +44,8 @@ describe('IBlock', () => {
             {test: '@(true = true)'},
             {test: '@(true = false)'},
             {test: '@(true = false)'},
-          ] as IBlockExitTestRequired[],
-        } as IBlockWithTestExits,
+          ] as IBlockExit[],
+        } as IBlock,
         dummyContext
       )
 
@@ -62,8 +62,8 @@ describe('IBlock', () => {
             {test: '@(true = true)'},
             {test: '@(true = false)'},
             {test: '@(true = false)'},
-          ] as IBlockExitTestRequired[],
-        } as IBlockWithTestExits,
+          ] as IBlockExit[],
+        } as IBlock,
         dummyContext
       )
 
@@ -89,7 +89,6 @@ describe('IBlock', () => {
       it('should return undefined when unable to find property on target', async () => {
         const sampleTarget = {name: 'Bert', age: '40-something'}
         const proxy = generateCachedProxyForBlockName(sampleTarget, {} as IContext)
-        // @ts-ignore
         expect(proxy.unknown).toBeUndefined()
       })
 
@@ -209,14 +208,14 @@ describe('IBlock', () => {
             {
               property_key: 'foo',
               property_value: 'bar',
-            } as ISetContactPropertyBlockConfig,
+            } as SetContactProperty,
             {
               property_key: 'baz',
               property_value: 'qux',
-            } as ISetContactPropertyBlockConfig,
+            } as SetContactProperty,
           ],
         },
-      } as IBlock
+      } as IBlock<ISetContactPropertyBlockConfig>
       setContactProperty(block, context)
       const property1 = context.contact.getProperty('foo')
       expect(typeof property1).toBe('object')

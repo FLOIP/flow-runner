@@ -226,17 +226,6 @@ export function isNested({nested_flow_block_interaction_id_stack}: IContext): bo
   return nested_flow_block_interaction_id_stack.length > 0
 }
 
-export const contextService: IContextService = {
-  findInteractionWith,
-  findFlowWith,
-  findBlockOnActiveFlowWith,
-  findNestedFlowIdFor,
-  getActiveFlowIdFrom,
-  getActiveFlowFrom,
-  isLastBlockOn,
-  isNested,
-}
-
 export interface IContextService {
   findInteractionWith(uuid: string, {interactions}: IContext): IBlockInteraction
 

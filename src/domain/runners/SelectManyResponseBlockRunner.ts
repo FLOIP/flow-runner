@@ -20,13 +20,13 @@
 import {
   findFirstTruthyEvaluatingBlockExitOn,
   IBlockExit,
-  IBlockExitTestRequired,
   IBlockInteraction,
   IBlockRunner,
   IContext,
   ISelectManyPromptConfig,
   ISelectOneResponseBlock,
   SELECT_MANY_PROMPT_KEY,
+  ValidationException,
 } from '../..'
 import {last} from 'lodash'
 
@@ -69,6 +69,11 @@ export class SelectManyResponseBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExit> {
-    return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? (last(this.block.exits) as IBlockExitTestRequired)
+    const maybeTruthyBlockExit = findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? last(this.block.exits)
+    if (maybeTruthyBlockExit != null) {
+      return maybeTruthyBlockExit
+    } else {
+      throw new ValidationException(`Unable to find exits on block ${this.block.uuid}`)
+    }
   }
 }

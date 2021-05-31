@@ -20,10 +20,11 @@
 import {
   findDefaultBlockExitOn,
   findFirstTruthyEvaluatingBlockExitOn,
-  IBlockExitTestRequired,
+  IBlockExit,
   IBlockRunner,
   ICaseBlock,
   IContext,
+  ValidationException,
 } from '../..'
 
 /**
@@ -42,7 +43,12 @@ export class CaseBlockRunner implements IBlockRunner {
     return undefined
   }
 
-  async run(): Promise<IBlockExitTestRequired> {
-    return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? (findDefaultBlockExitOn(this.block) as IBlockExitTestRequired)
+  async run(): Promise<IBlockExit> {
+    const maybeTruthyBlockExit = findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? findDefaultBlockExitOn(this.block)
+    if (maybeTruthyBlockExit != null) {
+      return maybeTruthyBlockExit
+    } else {
+      throw new ValidationException(`Unable to find exits on block ${this.block.uuid}`)
+    }
   }
 }

@@ -60,7 +60,6 @@ export class OpenResponseBlockRunner implements IBlockRunner {
       prompt: blockConfig.prompt,
       isResponseRequired: true,
       maxResponseCharacters: maxResponseCharacters,
-
       value: value as IOpenPromptConfig['value'],
     }
   }

@@ -1,3 +1,5 @@
+import {IBlockConfig} from './IBlockConfig'
+
 /**
  * Flow Interoperability Project (flowinterop.org)
  * Flow Runner
@@ -17,7 +19,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-export interface ILocationResponseBlockConfig {
+export interface ILocationResponseBlockConfig extends IBlockConfig {
   /**
    * @minimum 0
    */
