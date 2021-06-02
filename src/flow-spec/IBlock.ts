@@ -93,10 +93,7 @@ export interface IBlock<BLOCK_CONFIG = {}, BLOCK_EXIT_CONFIG = {}> {
   exits: IBlockExit<BLOCK_EXIT_CONFIG>[]
 }
 
-export function findBlockExitWith<BLOCK_EXIT_CONFIG>(
-  uuid: string,
-  block: IBlock<unknown, BLOCK_EXIT_CONFIG>
-): IBlockExit<BLOCK_EXIT_CONFIG> {
+export function findBlockExitWith(uuid: string, block: IBlock): IBlockExit {
   const exit = find(block.exits, {uuid})
   if (exit == null) {
     throw new ValidationException('Unable to find exit on block')
@@ -115,7 +112,7 @@ export function findFirstTruthyEvaluatingBlockExitOn(block: IBlock, context: ICo
   return find<IBlockExit>(exits, ({test, default: isDefault = false}) => !isDefault && evaluateToBool(String(test), evalContext))
 }
 
-export function findDefaultBlockExitOn<BLOCK_EXIT_CONFIG>(block: IBlock<unknown, BLOCK_EXIT_CONFIG>): IBlockExit<BLOCK_EXIT_CONFIG> {
+export function findDefaultBlockExitOn(block: IBlock): IBlockExit {
   const exit = find(block.exits, {default: true})
   if (exit == null) {
     throw new ValidationException(`Unable to find default exit on block ${block.uuid}`)
@@ -269,15 +266,20 @@ function setSingleContactProperty(property: SetContactProperty, context: IContex
   context.contact.setProperty(property.property_key, value)
 }
 
-export interface IBlockService<BLOCK_EXIT_CONFIG> {
-  findBlockExitWith<BLOCK_EXIT_CONFIG>(uuid: string, block: IBlock<unknown, BLOCK_EXIT_CONFIG>): IBlockExit<BLOCK_EXIT_CONFIG>
-  findFirstTruthyEvaluatingBlockExitOn<BLOCK_EXIT_CONFIG>(
-    block: IBlock<unknown, BLOCK_EXIT_CONFIG>,
-    context: IContext
-  ): IBlockExit<BLOCK_EXIT_CONFIG> | undefined
-  findDefaultBlockExitOn(block: IBlock<unknown, BLOCK_EXIT_CONFIG>): IBlockExit<BLOCK_EXIT_CONFIG>
+export interface IBlockService {
+  findBlockExitWith(uuid: string, block: IBlock): IBlockExit
+
+  findFirstTruthyEvaluatingBlockExitOn(block: IBlock, context: IContext): IBlockExit | undefined
+
+  findDefaultBlockExitOn(block: IBlock): IBlockExit
+
   isLastBlock(block: IBlock<unknown, unknown>): boolean
+
   generateCachedProxyForBlockName(target: object, ctx: IContext): object
+
   createEvalContextFrom(context: IContext): object
+
   evaluateToBool(expr: string, ctx: object): boolean
+
+  setContactProperty<BLOCK_CONFIG extends ISetContactPropertyBlockConfig>(block: IBlock<BLOCK_CONFIG>, context: IContext): void
 }
