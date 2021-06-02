@@ -174,7 +174,7 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext): 
 export function createEvalContextFrom(context: IContext): object {
   const {contact, cursor, mode, language_id: language} = context
   let flow: IFlow | undefined
-  let block: IBlock<unknown, unknown> | undefined
+  let block: IBlock | undefined
   let prompt: ICursor['promptConfig']
 
   if (cursor != null) {
