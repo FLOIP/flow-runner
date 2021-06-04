@@ -1,4 +1,5 @@
 import {
+  assertNotNull,
   findBlockOnActiveFlowWith,
   findInteractionWith,
   IBlockExit,
@@ -22,7 +23,9 @@ describe('SelectOneResponseBlockRunner', () => {
       const contact = ctx.contact as IContactWithAge
       contact.age = '12'
 
-      const interaction = findInteractionWith(ctx.cursor!.interactionId, ctx)
+      const cursorInteractionId = ctx.cursor?.interactionId
+      assertNotNull(cursorInteractionId)
+      const interaction = findInteractionWith(cursorInteractionId, ctx)
       const block: ISelectOneResponseBlock = Object.assign(findBlockOnActiveFlowWith(interaction.block_id, ctx), {
         exits: [
           {test: '@(contact.age > 73)'} as IBlockExit,

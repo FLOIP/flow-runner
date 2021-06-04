@@ -97,22 +97,6 @@ describe('FlowRunner', () => {
       expect(await runner.run()).toBeFalsy()
     })
 
-    describe('block-exit-test', () => {
-      it('TODO', async () => {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const context: IContext = require('./fixtures/2020-04-23-test-all-exitTypes.context.json')
-
-        const runner = new FlowRunner(context)
-        let cursor = await runner.run()
-
-        cursor!.prompt.value = 'a'
-        cursor = await runner.run()
-
-        cursor!.prompt.value = 1
-        cursor = await runner.run()
-      })
-    })
-
     describe.skip('case block always evaluates to false', () => {
       it('shouldnt raise an except requiring prompt', async () => {
         // eslint-disable-next-line @typescript-eslint/no-var-requires

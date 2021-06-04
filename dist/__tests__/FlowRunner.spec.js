@@ -55,17 +55,6 @@ describe('FlowRunner', () => {
             cursor.prompt.value = null;
             expect(yield runner.run()).toBeFalsy();
         }));
-        describe('block-exit-test', () => {
-            it('TODO', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-                const context = require('./fixtures/2020-04-23-test-all-exitTypes.context.json');
-                const runner = new __1.FlowRunner(context);
-                let cursor = yield runner.run();
-                cursor.prompt.value = 'a';
-                cursor = yield runner.run();
-                cursor.prompt.value = 1;
-                cursor = yield runner.run();
-            }));
-        });
         describe.skip('case block always evaluates to false', () => {
             it('shouldnt raise an except requiring prompt', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                 const context = require('./fixtures/2019-10-09-case-block-always-false.json');

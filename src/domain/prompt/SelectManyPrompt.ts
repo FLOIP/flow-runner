@@ -29,7 +29,8 @@ export const SELECT_MANY_PROMPT_KEY = 'SelectMany'
  * least one, from an {@link IContact}.
  */
 export class SelectManyPrompt extends BasePrompt<ISelectManyPromptConfig> {
-  // TODO: This will return true, or throw an error, but it seems like it should return a false instead of throwing error. Consider making a validateOrThrow and a and a validate, where validate only returns true/false.
+  /* TODO: This will return true, or throw an error, but it seems like it should return a false instead of throwing error.
+      Consider making a validateOrThrow and a and a validate, where validate only returns true/false. */
   validate(selections: IChoice['key'][]): boolean {
     const {isResponseRequired, choices} = this.config
 

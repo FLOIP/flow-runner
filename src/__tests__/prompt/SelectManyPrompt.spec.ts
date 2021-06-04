@@ -77,7 +77,7 @@ describe('SelectManyPrompt', () => {
   })
 })
 
-function verifyValidationThrows(invoker: Function, ErrorType: Function, msg: string, choices?: IChoice['key'][]) {
+function verifyValidationThrows(invoker: Function, ErrorType: Function, msg: string, choices?: IChoice['key'][]): void {
   try {
     invoker()
 
