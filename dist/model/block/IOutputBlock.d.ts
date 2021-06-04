@@ -1,5 +1,4 @@
 import { IBlock, IOutputBlockConfig } from '../..';
-export interface IOutputBlock extends IBlock {
-    config: IOutputBlockConfig;
+export interface IOutputBlock extends IBlock<IOutputBlockConfig> {
 }
 //# sourceMappingURL=IOutputBlock.d.ts.map

@@ -1,4 +1,5 @@
 import {
+  IPromptConfig,
   MESSAGE_PROMPT_KEY,
   MessagePrompt,
   NUMERIC_PROMPT_KEY,
@@ -17,7 +18,6 @@ import {
  * `Prompt.addCustomPrompt()`.
  */
 export class Prompt {
-
   private static VALUES: Prompt[] = []
 
   public static readonly MESSAGE = new Prompt(MessagePrompt, MESSAGE_PROMPT_KEY)
@@ -26,7 +26,7 @@ export class Prompt {
   public static readonly SELECT_MANY = new Prompt(SelectManyPrompt, SELECT_MANY_PROMPT_KEY)
   public static readonly OPEN = new Prompt(OpenPrompt, OPEN_PROMPT_KEY)
 
-  promptConstructor: PromptConstructor<unknown>
+  promptConstructor: PromptConstructor<IPromptConfig>
   promptKey: string
 
   /**
@@ -52,7 +52,7 @@ export class Prompt {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static addCustomPrompt(promptConstructor: PromptConstructor<any>, promptKey: string): void {
+  static addCustomPrompt<T extends IPromptConfig>(promptConstructor: PromptConstructor<T>, promptKey: string): void {
     new Prompt(promptConstructor, promptKey)
   }
 

@@ -20,7 +20,7 @@ class MessageBlockRunner {
     }
     run() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return this.block.exits[0];
+            return __1.firstTrueBlockExitOrThrow(this.block, this.context);
         });
     }
 }

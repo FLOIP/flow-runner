@@ -18,6 +18,8 @@
  **/
 
 import {
+  findDefaultBlockExitOrThrow,
+  firstTrueBlockExitOrThrow,
   IBlockExit,
   IBlockInteraction,
   IBlockRunner,
@@ -65,8 +67,12 @@ export class OpenResponseBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExit> {
-    setContactProperty(this.block, this.context)
-    // todo: should there be a BaseBlockRunner that defaults to returning first exit?
-    return this.block.exits[0]
+    try {
+      setContactProperty(this.block, this.context)
+    } catch (e) {
+      console.error(e)
+      return findDefaultBlockExitOrThrow(this.block)
+    }
+    return firstTrueBlockExitOrThrow(this.block, this.context)
   }
 }

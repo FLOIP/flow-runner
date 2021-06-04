@@ -21,14 +21,13 @@ import {
   findBlockWith,
   findInteractionWith,
   getActiveFlowFrom,
+  IBlockConfig,
   IBlockExit,
   IContact,
   IContext,
   ICursor,
   IFlow,
   ISetContactPropertyBlockConfig,
-  isSetContactProperty,
-  isSetContactPropertyConfig,
   SetContactProperty,
   ValidationException,
 } from '..'
@@ -39,7 +38,7 @@ import {createFormattedDate} from '../domain/DateFormat'
 /**
  * Block Structure: https://floip.gitbook.io/flow-specification/flows#blocks
  */
-export interface IBlock<BLOCK_CONFIG = {}, BLOCK_EXIT_CONFIG = {}> {
+export interface IBlock<BLOCK_CONFIG = IBlockConfig, BLOCK_EXIT_CONFIG = {}> {
   /**
    * A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)
    *
@@ -102,6 +101,11 @@ export function findBlockExitWith(uuid: string, block: IBlock): IBlockExit {
   return exit
 }
 
+/**
+ * @param block
+ * @param context
+ * @deprecated Use firstTrueBlockExitOrThrow or firstTrueBlockExitOrNull
+ */
 export function findFirstTruthyEvaluatingBlockExitOn(block: IBlock, context: IContext): IBlockExit | undefined {
   const {exits} = block
   if (exits.length === 0) {
@@ -112,8 +116,47 @@ export function findFirstTruthyEvaluatingBlockExitOn(block: IBlock, context: ICo
   return find<IBlockExit>(exits, ({test, default: isDefault = false}) => !isDefault && evaluateToBool(String(test), evalContext))
 }
 
-export function findDefaultBlockExitOn(block: IBlock): IBlockExit {
-  const exit = find(block.exits, {default: true})
+export function firstTrueBlockExitOrNull(block: IBlock, context: IContext): IBlockExit | undefined {
+  try {
+    return firstTrueBlockExitOrThrow(block, context)
+  } catch (e) {
+    return undefined
+  }
+}
+
+export function firstTrueBlockExitOrThrow(block: IBlock, context: IContext): IBlockExit {
+  const blockExit = _firstBlockExit(context, block)
+  if (blockExit == null) {
+    throw new ValidationException(`All block exits evaluated to false. Block: ${block.uuid}`)
+  }
+  return blockExit
+}
+
+function _firstBlockExit(context: IContext, block: IBlock): IBlockExit | undefined {
+  try {
+    const evalContext = createEvalContextFrom(context)
+    return (
+      find<IBlockExit>(block.exits, blockExit => evaluateToBool(String(blockExit.test), evalContext)) ?? findDefaultBlockExitOnOrNull(block)
+    )
+  } catch (e) {
+    console.error(e)
+    return findDefaultBlockExitOnOrNull(block)
+  }
+}
+
+export function findDefaultBlockExitOnOrNull(block: IBlock): IBlockExit | undefined {
+  try {
+    return findDefaultBlockExitOrThrow(block)
+  } catch (e) {
+    return undefined
+  }
+}
+
+export function findDefaultBlockExitOrThrow(block: IBlock): IBlockExit {
+  /* We have to test against null, as some default exits are being sent with a value of null
+      (MessageBlock, SetGroupMembershipBlock, CaseBlock)*/
+  const exit = find(block.exits, blockExit => blockExit.default || blockExit.test == null)
+
   if (exit == null) {
     throw new ValidationException(`Unable to find default exit on block ${block.uuid}`)
   }
@@ -250,14 +293,11 @@ export function setContactProperty<BLOCK_CONFIG extends ISetContactPropertyBlock
   block: IBlock<BLOCK_CONFIG>,
   context: IContext
 ): void {
-  if (isSetContactPropertyConfig(block.config)) {
-    const setContactProperty = block.config.set_contact_property
-
-    if (Array.isArray(setContactProperty)) {
-      setContactProperty.forEach(property => setSingleContactProperty(property, context))
-    } else if (isSetContactProperty(setContactProperty)) {
-      setSingleContactProperty(setContactProperty, context)
-    }
+  const setContactProperty = block.config.set_contact_property
+  if (Array.isArray(setContactProperty)) {
+    setContactProperty.forEach(property => setSingleContactProperty(property, context))
+  } else if (setContactProperty != null) {
+    setSingleContactProperty(setContactProperty, context)
   }
 }
 
@@ -269,11 +309,18 @@ function setSingleContactProperty(property: SetContactProperty, context: IContex
 export interface IBlockService {
   findBlockExitWith(uuid: string, block: IBlock): IBlockExit
 
+  /**
+   * @deprecated Use firstTrueBlockExitOrThrow or firstTrueBlockExitOrNull
+   */
   findFirstTruthyEvaluatingBlockExitOn(block: IBlock, context: IContext): IBlockExit | undefined
 
+  firstTrueBlockExitOrNull(block: IBlock, context: IContext): IBlockExit | undefined
+  firstTrueBlockExitOrThrow(block: IBlock, context: IContext): IBlockExit
+  findDefaultBlockExitOrNull(block: IBlock): IBlockExit | undefined
+  findDefaultBlockExitOrThrow(block: IBlock): IBlockExit
   findDefaultBlockExitOn(block: IBlock): IBlockExit
 
-  isLastBlock(block: IBlock<unknown, unknown>): boolean
+  isLastBlock(block: IBlock): boolean
 
   generateCachedProxyForBlockName(target: object, ctx: IContext): object
 

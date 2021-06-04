@@ -11,7 +11,7 @@ import {
   wrapInExprSyntaxWhenAbsent,
 } from '../..'
 import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
-import {setContactProperty, IBlock, createEvalContactFrom} from '../../flow-spec/IBlock'
+import {createEvalContactFrom, IBlock, setContactProperty} from '../../flow-spec/IBlock'
 import {ISetContactPropertyBlockConfig} from '../../model/block/IBlockConfig'
 import Contact from '../../flow-spec/Contact'
 import IContactProperty from '../../flow-spec/IContactProperty'
@@ -34,6 +34,7 @@ describe('IBlock', () => {
     dummyContext = {contact: {} as IContact} as IContext
   })
 
+  // TODO: Remove, as this is deprecated
   describe('findFirstTruthyEvaluatingBlockExitOn', () => {
     it('should return first truthy exit', async () => {
       const exit = findFirstTruthyEvaluatingBlockExitOn(
@@ -70,6 +71,12 @@ describe('IBlock', () => {
       expect(exit).toEqual({test: '@(true = true)'})
     })
   })
+
+  // TODO: Add tests for firstTrueBlockExitOrNull
+  // TODO: Add tests for firstTrueBlockExitOrThrow
+  // TODO: Add tests for findDefaultBlockExitOrNull
+  // TODO: Add tests for findDefaultBlockExitOrThrow
+  // TODO: Add tests for findDefaultBlockExitOn
 
   describe('generateCachedProxyForBlockName', () => {
     it('should return an object resembling the one provided', async () => {

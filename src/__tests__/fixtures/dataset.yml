@@ -4,7 +4,7 @@ _defaults:
     label: ''
     config: {}
     tag: ''
-    test: ''
+    test: '@(TRUE)'
 
   - &defaults/block
     name: My first block

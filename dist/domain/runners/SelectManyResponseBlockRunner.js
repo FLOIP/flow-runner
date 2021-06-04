@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SelectManyResponseBlockRunner = void 0;
 const tslib_1 = require("tslib");
 const __1 = require("../..");
-const lodash_1 = require("lodash");
 class SelectManyResponseBlockRunner {
     constructor(block, context) {
         this.block = block;
@@ -25,9 +24,8 @@ class SelectManyResponseBlockRunner {
         });
     }
     run() {
-        var _a;
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return (_a = __1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context)) !== null && _a !== void 0 ? _a : lodash_1.last(this.block.exits);
+            return __1.firstTrueBlockExitOrThrow(this.block, this.context);
         });
     }
 }

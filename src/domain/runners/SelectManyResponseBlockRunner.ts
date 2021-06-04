@@ -18,7 +18,7 @@
  **/
 
 import {
-  findFirstTruthyEvaluatingBlockExitOn,
+  firstTrueBlockExitOrThrow,
   IBlockExit,
   IBlockInteraction,
   IBlockRunner,
@@ -26,9 +26,7 @@ import {
   ISelectManyPromptConfig,
   ISelectOneResponseBlock,
   SELECT_MANY_PROMPT_KEY,
-  ValidationException,
 } from '../..'
-import {last} from 'lodash'
 
 /**
  * Block runner for `MobilePrimitives\SelectManyResponse` - Obtains the answer to a Multiple Choice question from the
@@ -69,11 +67,6 @@ export class SelectManyResponseBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExit> {
-    const maybeTruthyBlockExit = findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? last(this.block.exits)
-    if (maybeTruthyBlockExit != null) {
-      return maybeTruthyBlockExit
-    } else {
-      throw new ValidationException(`Unable to find exits on block ${this.block.uuid}`)
-    }
+    return firstTrueBlockExitOrThrow(this.block, this.context)
   }
 }

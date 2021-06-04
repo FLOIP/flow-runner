@@ -23,7 +23,7 @@ import {BasePrompt, IBlock, IFlowRunner, IRichCursorInputRequired, PromptValidat
  * Primary interface for interacting with an {@link IContact}; typically not immplemented fully, it is recommended that
  * additional {@link IPrompt} implementations rather extend provided {@link BasePrompt}.
  */
-export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']>> {
+export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> = IPromptConfig> {
   interactionId: string
   config: PromptConfigType
   runner: IFlowRunner
@@ -47,11 +47,11 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
 //       via https://stackoverflow.com/questions/46025487/create-extendable-enums-for-use-in-extendable-interfaces
 
 /** Interface for configuration to resolve and build a {@link BasePrompt} instance. */
-export interface IPromptConfig<T = unknown> extends IBasePromptConfig {
+export interface IPromptConfig<VALUE_TYPE = unknown> extends IBasePromptConfig {
   kind: string
   isResponseRequired: boolean
   prompt: string
-  value?: T
+  value?: VALUE_TYPE
 }
 
 /** Interface for local {@link BasePrompt} properties not intersecting with {@link IPromptConfig} */
@@ -59,6 +59,6 @@ export interface IBasePromptConfig {
   isSubmitted?: boolean
 }
 
-export interface PromptConstructor<T> {
-  new (config: T, interactionId: string, runner: IFlowRunner): BasePrompt<any>
+export interface PromptConstructor<T extends IPromptConfig> {
+  new (config: T, interactionId: string, runner: IFlowRunner): BasePrompt<T>
 }

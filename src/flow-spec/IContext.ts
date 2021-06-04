@@ -50,12 +50,12 @@ export interface ICursor {
    * If it does, we call it an `ICursorInputRequired`.
    * If not, `ICursorNoInputRequired` will have a `null-ish` `promptConfig`.
    */
-  promptConfig?: IPromptConfig<unknown>
+  promptConfig?: IPromptConfig
 }
 
 export interface ICursorInputRequired {
   interactionId: string
-  promptConfig: IPromptConfig<unknown>
+  promptConfig: IPromptConfig
 }
 
 export interface ICursorNoInputRequired {
@@ -63,7 +63,7 @@ export interface ICursorNoInputRequired {
   promptConfig: undefined
 }
 
-export interface IRichCursor {
+export interface IRichCursor<PROMPT_CONFIG extends IPromptConfig = IPromptConfig> {
   /**
    * An object representation of the current interaction with a block.
    */
@@ -73,14 +73,12 @@ export interface IRichCursor {
    * When present, we call it a TRichCursorInputRequired.
    * In absence, the TRichCursorNoInputRequired will maintain `prompt` with a null-ish value.
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  prompt?: IPrompt<IPromptConfig<any>>
+  prompt?: IPrompt<PROMPT_CONFIG>
 }
 
-export interface IRichCursorInputRequired {
+export interface IRichCursorInputRequired<PROMPT_CONFIG extends IPromptConfig = IPromptConfig> {
   interaction: IBlockInteraction
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  prompt: IPrompt<IPromptConfig<any>>
+  prompt: IPrompt<PROMPT_CONFIG>
 }
 
 export interface IRichCursorNoInputRequired {

@@ -1,1 +1,1 @@
-{"version":3,"file":"ILocationResponseBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/ILocationResponseBlockConfig.ts"],"names":[],"mappings":"AAmBA,MAAM,WAAW,4BAA4B;IAI3C,yBAAyB,EAAE,MAAM,CAAA;IAKjC,wBAAwB,EAAE,MAAM,CAAA;CACjC"}
+{"version":3,"file":"ILocationResponseBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/ILocationResponseBlockConfig.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,YAAY,EAAC,MAAM,gBAAgB,CAAA;AAqB3C,MAAM,WAAW,4BAA6B,SAAQ,YAAY;IAIhE,yBAAyB,EAAE,MAAM,CAAA;IAKjC,wBAAwB,EAAE,MAAM,CAAA;CACjC"}

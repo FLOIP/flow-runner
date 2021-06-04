@@ -17,7 +17,15 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {evaluateToString, IBlockExit, IBlockRunner, IContext, ILogBlock} from '../..'
+import {
+  evaluateToString,
+  findDefaultBlockExitOrThrow,
+  firstTrueBlockExitOrThrow,
+  IBlockExit,
+  IBlockRunner,
+  IContext,
+  ILogBlock,
+} from '../..'
 import {createFormattedDate} from '../DateFormat'
 
 /**
@@ -36,9 +44,12 @@ export class LogBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExit> {
-    this.context.logs[createFormattedDate()] = evaluateToString(this.block.config.message, this.context)
-
-    // todo: should we also write this as the value of the block interaction like the output block?
-    return this.block.exits[0]
+    try {
+      this.context.logs[createFormattedDate()] = evaluateToString(this.block.config.message, this.context)
+    } catch (e) {
+      console.error(e)
+      return findDefaultBlockExitOrThrow(this.block)
+    }
+    return firstTrueBlockExitOrThrow(this.block, this.context)
   }
 }

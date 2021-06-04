@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlock, IBlockExit, IBlockRunner, IContext, IRunFlowBlockConfig} from '../..'
+import {firstTrueBlockExitOrThrow, IBlock, IBlockExit, IBlockRunner, IContext, IRunFlowBlockConfig} from '../..'
 
 /**
  * Block runner for `Core.RunFlow` - This block starts and runs another {@link IFlow}, and returns execution to the
@@ -41,6 +41,6 @@ export class RunFlowBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExit> {
-    return this.block.exits[0]
+    return firstTrueBlockExitOrThrow(this.block, this.context)
   }
 }

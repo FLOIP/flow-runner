@@ -55,12 +55,15 @@ describe('FlowRunner', () => {
             cursor.prompt.value = null;
             expect(yield runner.run()).toBeFalsy();
         }));
-        describe('case block unable to find cursor', () => {
-            it('shouldnt raise an exception requiring prompt', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-                const context = require('./fixtures/2019-10-08-case-block-eval-issue.json');
-                lodash_1.set(context, 'cursor.promptConfig.isSubmitted', false);
+        describe('block-exit-test', () => {
+            it('TODO', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+                const context = require('./fixtures/2020-04-23-test-all-exitTypes.context.json');
                 const runner = new __1.FlowRunner(context);
-                yield expect(runner.run()).rejects.toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e');
+                let cursor = yield runner.run();
+                cursor.prompt.value = 'a';
+                cursor = yield runner.run();
+                cursor.prompt.value = 1;
+                cursor = yield runner.run();
             }));
         });
         describe.skip('case block always evaluates to false', () => {

@@ -11,7 +11,8 @@ describe('SelectOneResponseBlockRunner', () => {
     describe('run', () => {
         it('sanity // should return an exit when some exist', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
             const ctx = dataset.contexts[1];
-            ctx.contact.age = '12';
+            const contact = ctx.contact;
+            contact.age = '12';
             const interaction = __1.findInteractionWith(ctx.cursor.interactionId, ctx);
             const block = Object.assign(__1.findBlockOnActiveFlowWith(interaction.block_id, ctx), {
                 exits: [

@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlockExit, IBlockRunner, IContext, IMessageBlock, IMessagePromptConfig, MESSAGE_PROMPT_KEY} from '../..'
+import {firstTrueBlockExitOrThrow, IBlockExit, IBlockRunner, IContext, IMessageBlock, IMessagePromptConfig, MESSAGE_PROMPT_KEY} from '../..'
 
 /**
  * Block runner for `MobilePrimitives\Message` - Presents a single message to the contact. The form of the message can
@@ -45,6 +45,6 @@ export class MessageBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExit> {
-    return this.block.exits[0]
+    return firstTrueBlockExitOrThrow(this.block, this.context)
   }
 }

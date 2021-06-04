@@ -19,7 +19,8 @@
 
 import {
   ADVANCED_SELECT_ONE_PROMPT_KEY,
-  findFirstTruthyEvaluatingBlockExitOn,
+  findDefaultBlockExitOrThrow,
+  firstTrueBlockExitOrThrow,
   IAdvancedSelectOneBlock,
   IAdvancedSelectOnePromptConfig,
   IBlockExit,
@@ -27,9 +28,7 @@ import {
   IBlockRunner,
   IContext,
   setContactProperty,
-  ValidationException,
 } from '../..'
-import {last} from 'lodash'
 
 export class AdvancedSelectOneBlockRunner implements IBlockRunner {
   constructor(public block: IAdvancedSelectOneBlock, public context: IContext) {}
@@ -51,12 +50,12 @@ export class AdvancedSelectOneBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExit> {
-    setContactProperty(this.block, this.context)
-    const maybeTruthyBlockExit = findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? last(this.block.exits)
-    if (maybeTruthyBlockExit != null) {
-      return maybeTruthyBlockExit
-    } else {
-      throw new ValidationException(`Unable to find exits on block ${this.block.uuid}`)
+    try {
+      setContactProperty(this.block, this.context)
+    } catch (e) {
+      console.error(e)
+      return findDefaultBlockExitOrThrow(this.block)
     }
+    return firstTrueBlockExitOrThrow(this.block, this.context)
   }
 }

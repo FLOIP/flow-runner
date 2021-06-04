@@ -1,5 +1,4 @@
 import { IBlock, INumericBlockConfig } from '../..';
-export interface INumericResponseBlock extends IBlock {
-    config: INumericBlockConfig;
+export interface INumericResponseBlock extends IBlock<INumericBlockConfig> {
 }
 //# sourceMappingURL=INumericResponseBlock.d.ts.map

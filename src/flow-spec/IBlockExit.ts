@@ -78,35 +78,3 @@ export interface IBlockExit<BLOCK_EXIT_CONFIG = {}> {
   // todo: we need to update docs -- they specify "key presence", but I'd prefer us to be more explicit
   default?: boolean
 }
-
-// noinspection DuplicatedCode
-export class BlockExit<BLOCK_EXIT_CONFIG> implements IBlockExit<BLOCK_EXIT_CONFIG> {
-  config: BLOCK_EXIT_CONFIG
-  default: boolean
-  destination_block: string
-  label: string
-  semantic_label: string
-  tag: string
-  uuid: string
-  test?: string
-
-  constructor(
-    config: BLOCK_EXIT_CONFIG,
-    isDefault: boolean,
-    destination_block: string,
-    label: string,
-    semantic_label: string,
-    tag: string,
-    uuid: string,
-    test?: string
-  ) {
-    this.config = config
-    this.default = isDefault
-    this.destination_block = destination_block
-    this.label = label
-    this.semantic_label = semantic_label
-    this.tag = tag
-    this.uuid = uuid
-    this.test = test
-  }
-}

@@ -26,6 +26,8 @@ import {
   IRichCursor,
   setContactProperty,
   createEvalContextFrom,
+  findDefaultBlockExitOrThrow,
+  firstTrueBlockExitOrThrow,
 } from '../..'
 
 /**
@@ -47,9 +49,14 @@ export class OutputBlockRunner implements IBlockRunner {
   }
 
   async run(cursor: IRichCursor): Promise<IBlockExit> {
-    cursor.interaction.value = evaluateToString(this.block.config.value, createEvalContextFrom(this.context))
-    cursor.interaction.has_response = true
-    setContactProperty(this.block, this.context)
-    return this.block.exits[0]
+    try {
+      cursor.interaction.value = evaluateToString(this.block.config.value, createEvalContextFrom(this.context))
+      cursor.interaction.has_response = true
+      setContactProperty(this.block, this.context)
+    } catch (e) {
+      console.error(e)
+      return findDefaultBlockExitOrThrow(this.block)
+    }
+    return firstTrueBlockExitOrThrow(this.block, this.context)
   }
 }
