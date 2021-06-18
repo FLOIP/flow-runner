@@ -195,6 +195,7 @@
         },
         "name": {
           "description": "A human-readable name for the Flow content",
+          "minLength": 3,
           "type": "string"
         },
         "supported_modes": {

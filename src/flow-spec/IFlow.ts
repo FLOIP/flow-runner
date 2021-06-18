@@ -35,7 +35,7 @@ export interface IFlow {
   /**
    * A human-readable name for the Flow content
    *
-   * @pattern ^[a-zA-Z_]\w*$
+   * @minLength 3
    */
   name: string
 
