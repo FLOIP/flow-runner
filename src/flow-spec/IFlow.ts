@@ -34,6 +34,8 @@ export interface IFlow {
 
   /**
    * A human-readable name for the Flow content
+   *
+   * @minLength 3
    */
   name: string
 
