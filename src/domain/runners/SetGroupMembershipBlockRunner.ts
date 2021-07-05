@@ -1,5 +1,7 @@
 import {
+  assertNotNull,
   findDefaultBlockExitOrThrow,
+  firstTrueOrNullBlockExitOrThrow,
   IBlockExit,
   IBlockRunner,
   IContext,
@@ -19,16 +21,24 @@ export class SetGroupMembershipBlockRunner implements IBlockRunner {
   }
 
   async run(_cursor: IRichCursor): Promise<IBlockExit> {
-    const group = this.context.groups.find(group => group.group_key === this.block.config.group_key)
-    if (group == null) {
-      throw new ValidationException(`Cannot add contact to non-existent group ${this.block.config.group_key}`)
-    }
-    if (this.block.config.is_member) {
-      this.context.contact.addGroup(group)
-    } else {
-      this.context.contact.delGroup(group)
-    }
+    try {
+      const group = this.context.groups.find(group => group.group_key === this.block.config.group_key)
+      assertNotNull(
+        group,
+        () => `Cannot add contact to non-existent group ${this.block.config.group_key}`,
+        errorMessage => new ValidationException(errorMessage)
+      )
 
-    return findDefaultBlockExitOrThrow(this.block)
+      if (this.block.config.is_member) {
+        this.context.contact.addGroup(group)
+      } else {
+        this.context.contact.delGroup(group)
+      }
+
+      return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
+    } catch (e) {
+      console.error(e)
+      return findDefaultBlockExitOrThrow(this.block)
+    }
   }
 }

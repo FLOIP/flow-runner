@@ -73,7 +73,7 @@ describe('IBlock', () => {
   })
 
   // TODO: Add tests for firstTrueBlockExitOrNull
-  // TODO: Add tests for firstTrueBlockExitOrThrow
+  // TODO: Add tests for firstTrueOrNullBlockExitOrThrow
   // TODO: Add tests for findDefaultBlockExitOrNull
   // TODO: Add tests for findDefaultBlockExitOrThrow
   // TODO: Add tests for findDefaultBlockExitOn

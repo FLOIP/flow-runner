@@ -104,7 +104,7 @@ export function findBlockExitWith(uuid: string, block: IBlock): IBlockExit {
 /**
  * @param block
  * @param context
- * @deprecated Use firstTrueBlockExitOrThrow or firstTrueBlockExitOrNull
+ * @deprecated Use firstTrueOrNullBlockExitOrThrow or firstTrueBlockExitOrNull
  */
 export function findFirstTruthyEvaluatingBlockExitOn(block: IBlock, context: IContext): IBlockExit | undefined {
   const {exits} = block
@@ -118,13 +118,13 @@ export function findFirstTruthyEvaluatingBlockExitOn(block: IBlock, context: ICo
 
 export function firstTrueBlockExitOrNull(block: IBlock, context: IContext): IBlockExit | undefined {
   try {
-    return firstTrueBlockExitOrThrow(block, context)
+    return firstTrueOrNullBlockExitOrThrow(block, context)
   } catch (e) {
     return undefined
   }
 }
 
-export function firstTrueBlockExitOrThrow(block: IBlock, context: IContext): IBlockExit {
+export function firstTrueOrNullBlockExitOrThrow(block: IBlock, context: IContext): IBlockExit {
   const blockExit = _firstBlockExit(context, block)
   if (blockExit == null) {
     throw new ValidationException(`All block exits evaluated to false. Block: ${block.uuid}`)
@@ -310,7 +310,7 @@ export interface IBlockService {
   findBlockExitWith(uuid: string, block: IBlock): IBlockExit
 
   /**
-   * @deprecated Use firstTrueBlockExitOrThrow or firstTrueBlockExitOrNull
+   * @deprecated Use firstTrueOrNullBlockExitOrThrow or firstTrueBlockExitOrNull
    */
   findFirstTruthyEvaluatingBlockExitOn(block: IBlock, context: IContext): IBlockExit | undefined
 

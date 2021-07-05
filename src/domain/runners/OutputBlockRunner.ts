@@ -27,7 +27,7 @@ import {
   setContactProperty,
   createEvalContextFrom,
   findDefaultBlockExitOrThrow,
-  firstTrueBlockExitOrThrow,
+  firstTrueOrNullBlockExitOrThrow,
 } from '../..'
 
 /**
@@ -53,10 +53,10 @@ export class OutputBlockRunner implements IBlockRunner {
       cursor.interaction.value = evaluateToString(this.block.config.value, createEvalContextFrom(this.context))
       cursor.interaction.has_response = true
       setContactProperty(this.block, this.context)
+      return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
     } catch (e) {
       console.error(e)
       return findDefaultBlockExitOrThrow(this.block)
     }
-    return firstTrueBlockExitOrThrow(this.block, this.context)
   }
 }

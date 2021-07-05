@@ -20,7 +20,7 @@
 import {
   evaluateToString,
   findDefaultBlockExitOrThrow,
-  firstTrueBlockExitOrThrow,
+  firstTrueOrNullBlockExitOrThrow,
   IBlockExit,
   IBlockRunner,
   IContext,
@@ -40,10 +40,10 @@ export class PrintBlockRunner implements IBlockRunner {
   async run(): Promise<IBlockExit> {
     try {
       this.console.log(this.block.type, evaluateToString(this.block.config.message, this.context))
+      return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
     } catch (e) {
       console.error(e)
       return findDefaultBlockExitOrThrow(this.block)
     }
-    return firstTrueBlockExitOrThrow(this.block, this.context)
   }
 }

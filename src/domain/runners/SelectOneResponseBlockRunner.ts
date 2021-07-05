@@ -19,7 +19,7 @@
 
 import {
   findDefaultBlockExitOrThrow,
-  firstTrueBlockExitOrThrow,
+  firstTrueOrNullBlockExitOrThrow,
   IBlockExit,
   IBlockInteraction,
   IBlockRunner,
@@ -71,10 +71,10 @@ export class SelectOneResponseBlockRunner implements IBlockRunner {
   async run(): Promise<IBlockExit> {
     try {
       setContactProperty(this.block, this.context)
+      return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
     } catch (e) {
       console.error(e)
       return findDefaultBlockExitOrThrow(this.block)
     }
-    return firstTrueBlockExitOrThrow(this.block, this.context)
   }
 }

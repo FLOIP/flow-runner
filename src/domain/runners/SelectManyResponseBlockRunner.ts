@@ -18,7 +18,8 @@
  **/
 
 import {
-  firstTrueBlockExitOrThrow,
+  findDefaultBlockExitOrThrow,
+  firstTrueOrNullBlockExitOrThrow,
   IBlockExit,
   IBlockInteraction,
   IBlockRunner,
@@ -67,6 +68,11 @@ export class SelectManyResponseBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExit> {
-    return firstTrueBlockExitOrThrow(this.block, this.context)
+    try {
+      return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
+    } catch (e) {
+      console.error(e)
+      return findDefaultBlockExitOrThrow(this.block)
+    }
   }
 }

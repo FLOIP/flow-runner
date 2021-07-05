@@ -20,7 +20,7 @@
 import {
   ADVANCED_SELECT_ONE_PROMPT_KEY,
   findDefaultBlockExitOrThrow,
-  firstTrueBlockExitOrThrow,
+  firstTrueOrNullBlockExitOrThrow,
   IAdvancedSelectOneBlock,
   IAdvancedSelectOnePromptConfig,
   IBlockExit,
@@ -52,10 +52,10 @@ export class AdvancedSelectOneBlockRunner implements IBlockRunner {
   async run(): Promise<IBlockExit> {
     try {
       setContactProperty(this.block, this.context)
+      return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
     } catch (e) {
       console.error(e)
       return findDefaultBlockExitOrThrow(this.block)
     }
-    return firstTrueBlockExitOrThrow(this.block, this.context)
   }
 }
