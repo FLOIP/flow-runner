@@ -1,7 +1,6 @@
 export interface IBlockExit {
     uuid: string;
-    label: string;
-    tag: string;
+    name: string;
     destination_block?: string;
     semantic_label?: string;
     test?: string;

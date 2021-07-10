@@ -352,10 +352,10 @@ describe('BacktrackingBehaviour', () => {
             uuid: 'flow-123',
             name:"test", interaction_timeout:300, languages: [], supported_modes: [], last_modified: "2016-12-25 13:42:05.234598", first_block_id: "0",
             blocks: [
-              {uuid: 'block-123', type: 'test', name: 'test', exits: []},
-              {uuid: 'block-234', type: 'test', name: 'test', exits: [], config: {flow_id: 'flow-234'} as IRunFlowBlockConfig},
-              {uuid: 'block-345', type: 'test', name: 'test', exits: []},
-              {uuid: 'block-456', type: 'test', name: 'test', exits: []},
+              {uuid: 'block-123', type: 'test', name: 'test', ui_metadata: {canvas_coordinates: {x: 10, y: 10}}, exits: []},
+              {uuid: 'block-234', type: 'test', name: 'test', ui_metadata: {canvas_coordinates: {x: 10, y: 10}}, exits: [], config: {flow_id: 'flow-234'} as IRunFlowBlockConfig},
+              {uuid: 'block-345', type: 'test', name: 'test', ui_metadata: {canvas_coordinates: {x: 10, y: 10}}, exits: []},
+              {uuid: 'block-456', type: 'test', name: 'test', ui_metadata: {canvas_coordinates: {x: 10, y: 10}}, exits: []},
             ],
           },
           {

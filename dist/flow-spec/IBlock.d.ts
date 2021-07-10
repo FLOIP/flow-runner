@@ -1,10 +1,19 @@
 import { IBlockExit, IBlockExitTestRequired, IContext, IContact } from '..';
+export interface IBlockUIMetadataCanvasCoordinates {
+    x: number;
+    y: number;
+}
+export interface IBlockUIMetadata extends Record<string, any> {
+    canvas_coordinates: IBlockUIMetadataCanvasCoordinates;
+}
 export interface IBlock {
     uuid: string;
     name: string;
     label?: string;
     semantic_label?: string;
+    tags?: Array<string>;
     vendor_metadata?: Record<string, any>;
+    ui_metadata: IBlockUIMetadata;
     type: string;
     config?: Record<string, any>;
     exits: IBlockExit[];

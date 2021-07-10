@@ -12,8 +12,30 @@ import ajvFormat from 'ajv-formats'
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getFlowStructureErrors(container: IContainer): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const flowSpecJsonSchema = require('../../../dist/resources/flowSpecJsonSchema.json')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let flowSpecJsonSchema: any
+
+  if (container.specification_version == '1.0.0-rc1') {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc1/flowSpecJsonSchema.json')
+  }
+  else if (container.specification_version == '1.0.0-rc2') {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc2/flowSpecJsonSchema.json')
+  }
+  else {
+    return [
+      {
+        keyword: 'version',
+        dataPath: '/containers/0/specification_version',
+        schemaPath: '#/properties/specification_version/valid',
+        params: [],
+        propertyName: 'specification_version',
+        message: 'Unsupported specification version',
+      },
+    ]
+  }
+
   const ajv = new Ajv()
   ajvFormat(ajv) // we need this to use AJV format such as 'date-time' (https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
   const validate = ajv.compile(flowSpecJsonSchema)

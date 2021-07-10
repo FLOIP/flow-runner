@@ -182,6 +182,7 @@ describe('IBlock', () => {
         type: 'test',
         name: 'test',
         exits: [],
+        ui_metadata: {canvas_coordinates: {x: 10, y: 10}},
         config: {
           set_contact_property: {
             property_key: 'foo',
@@ -204,6 +205,12 @@ describe('IBlock', () => {
         type: 'test',
         name: 'test',
         exits: [],
+        ui_metadata: {
+          canvas_coordinates: {
+            x: 10,
+            y: 10,
+          },
+        },
         config: {
           set_contact_property: [
             {
