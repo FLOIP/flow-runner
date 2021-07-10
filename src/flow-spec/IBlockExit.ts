@@ -29,21 +29,10 @@ export interface IBlockExit {
   uuid: string
 
   /**
-   * This is the human-readable name of the exit (as a translated resource ID), which might be presented to a contact.
+   * This is an identifier for the exit, suitable for use in rolling up results (e.g.: "male"), and to display on flowchart canvases.
+   * Expressions can reference the name of the exit taken out of another block via @(flow.block_name.exit).
    */
-  // resource ID??
-  label: string
-
-  /**
-   * This is an identifier for the exit, suitable for use as a variable name in rolling up results (e.g.: "male").
-   * It does not need to be unique within the block; multiple exits may be tagged the same.
-   * (Some authoring tools may choose to auto-generate the tag from the label's primary language,
-   * to avoid usability problems with these getting out of sync.)
-   * Word characters only.
-   *
-   * @pattern ^[a-zA-Z_]\w*$
-   */
-  tag: string
+  name: string
 
   /**
    * This is the uuid of the Block this exit connects to. It can be null if the exit does not connect to a block (if it is the final block).

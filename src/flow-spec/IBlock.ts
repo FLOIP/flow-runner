@@ -37,6 +37,22 @@ import {EvaluatorFactory} from '@floip/expression-evaluator'
 import {createFormattedDate} from '../domain/DateFormat'
 
 /**
+ * Coordinates indicating location of this block on the Flow Builder's canvas
+ */
+export interface IBlockUIMetadataCanvasCoordinates {
+  x: number
+  y: number
+}
+
+/**
+ * A set of key-value records describing information about how blocks are displayed on a UI/flowchart editor
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface IBlockUIMetadata extends Record<string, any> {
+  canvas_coordinates: IBlockUIMetadataCanvasCoordinates
+}
+
+/**
  * Block Structure: https://floip.gitbook.io/flow-specification/flows#blocks
  */
 export interface IBlock {
@@ -69,11 +85,23 @@ export interface IBlock {
   semantic_label?: string
 
   /**
+   * an arbitrary list of strings for categorization of the block's content, meaning, etc.
+   * This has a similar purpose to semantic_label, but the assumption is that many related blocks
+   * might have the same tags.
+   */
+  tags?: Array<string>
+
+  /**
    * A set of key-value elements that is not controlled by the Specification,
    * but could be relevant to a specific vendor/platform/implementation.
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   vendor_metadata?: Record<string, any>
+
+  /**
+   * A set of key-value records describing information about how blocks are displayed on a UI/flowchart editor
+   */
+  ui_metadata: IBlockUIMetadata
 
   /**
    * A specific string designating the type or "subclass" of this Block.
