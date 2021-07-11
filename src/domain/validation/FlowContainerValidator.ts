@@ -1,11 +1,11 @@
 import {IContainer} from '../..'
 import Ajv, {ErrorObject} from 'ajv'
 import ajvFormat from 'ajv-formats'
-import { IMessageBlock } from '../../model/block/IMessageBlock'
-import { ISelectOneResponseBlock } from '../../model/block/ISelectOneResponseBlock'
-import { ISelectManyResponseBlock } from '../../model/block/ISelectManyResponseBlock'
-import { IOpenResponseBlock } from '../../model/block/IOpenResponseBlock'
-import { INumericResponseBlock } from '../../model/block/INumericResponseBlock'
+import {IMessageBlock} from '../../model/block/IMessageBlock'
+import {ISelectOneResponseBlock} from '../../model/block/ISelectOneResponseBlock'
+import {ISelectManyResponseBlock} from '../../model/block/ISelectManyResponseBlock'
+import {IOpenResponseBlock} from '../../model/block/IOpenResponseBlock'
+import {INumericResponseBlock} from '../../model/block/INumericResponseBlock'
 
 /**
  * Validate a Flow Spec container and return a set of errors (if they exist).
