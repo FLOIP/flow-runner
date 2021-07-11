@@ -57,8 +57,7 @@ describe('Validation Usage Tests', () => {
                   }
                 ],
                 "config": {
-                  "prompt": "3559a6fc-5a80-4fd9-89b4-9972cf218519",
-                  "message_audio": ""
+                  "prompt": "3559a6fc-5a80-4fd9-89b4-9972cf218519"
                 }
               },
               {
