@@ -18,12 +18,10 @@ export function getFlowStructureErrors(container: IContainer): ErrorObject<strin
   if (container.specification_version == '1.0.0-rc1') {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc1/flowSpecJsonSchema.json')
-  }
-  else if (container.specification_version == '1.0.0-rc2') {
+  } else if (container.specification_version == '1.0.0-rc2') {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc2/flowSpecJsonSchema.json')
-  }
-  else {
+  } else {
     return [
       {
         keyword: 'version',
