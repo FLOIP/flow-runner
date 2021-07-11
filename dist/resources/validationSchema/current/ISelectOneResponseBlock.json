@@ -115,9 +115,6 @@
         "question_prompt": {
           "type": "string"
         },
-        "choices_prompt": {
-          "type": "string"
-        },
         "choices": {
           "type": "object",
           "additionalProperties": {

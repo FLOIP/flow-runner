@@ -2,7 +2,6 @@ import { ISetContactPropertyBlockConfig } from '../..';
 export interface ISelectOneResponseBlockConfig extends ISetContactPropertyBlockConfig {
     prompt: string;
     question_prompt?: string;
-    choices_prompt?: string;
     choices: StringMapType;
 }
 declare type StringMapType = {

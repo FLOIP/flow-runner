@@ -19,5 +19,4 @@
 
 export interface IMessageBlockConfig {
   prompt: string
-  message_audio: string
 }

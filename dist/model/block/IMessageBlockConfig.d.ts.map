@@ -1,1 +1,1 @@
-{"version":3,"file":"IMessageBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/IMessageBlockConfig.ts"],"names":[],"mappings":"AAmBA,MAAM,WAAW,mBAAmB;IAClC,MAAM,EAAE,MAAM,CAAA;IACd,aAAa,EAAE,MAAM,CAAA;CACtB"}
+{"version":3,"file":"IMessageBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/IMessageBlockConfig.ts"],"names":[],"mappings":"AAmBA,MAAM,WAAW,mBAAmB;IAClC,MAAM,EAAE,MAAM,CAAA;CACf"}
