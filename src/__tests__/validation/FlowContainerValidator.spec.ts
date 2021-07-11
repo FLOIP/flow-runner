@@ -3,15 +3,15 @@ import {getFlowStructureErrors} from '../../domain/validation/FlowContainerValid
 describe('Validation Usage Tests', () => {
   test('Valid Usage Example', async () => {
     const flowJson = `{
-        "specification_version": "1.0.0-rc1",
+        "specification_version": "1.0.0-rc2",
         "uuid": "e0616de8-68c5-4918-b375-f5eb9fcc1695",
         "name": "Museum of Interop Reception",
         "description": "Welcome and main menu for the Museum of Interoperability",
         "flows": [
           {
             "uuid": "b15be41c-d29b-41fb-b981-26b2ebe8a6ff",
-            "name": "",
-            "label": "",
+            "name": "Museum of Interop Reception",
+            "label": "Welcome and main menu for the Museum of Interoperability",
             "last_modified": "2021-03-14 16:11:43.326Z",
             "interaction_timeout": 172800,
             "supported_modes": [
@@ -37,12 +37,10 @@ describe('Validation Usage Tests', () => {
             "blocks": [
               {
                 "uuid": "3d2d806a-19a9-4827-93c3-22d4357ff8b2",
-                "vendor_metadata": {
-                  "io_viamo": {
-                    "ui_data": {
-                      "x_position": 200,
-                      "y_position": 158
-                    }
+                "ui_metadata": {
+                  "canvas_coordinates": {
+                    "x": 200,
+                    "y": 158
                   }
                 },
                 "type": "MobilePrimitives.Message",
@@ -52,8 +50,7 @@ describe('Validation Usage Tests', () => {
                 "exits": [
                   {
                     "uuid": "d4cb73df-c993-4395-9f75-1884ab7a0176",
-                    "tag": "Default",
-                    "label": "Default",
+                    "name": "Default",
                     "default": true,
                     "config": {},
                     "destination_block": "2099719b-beb2-44cc-9093-e713e43ae5cc"
@@ -66,12 +63,10 @@ describe('Validation Usage Tests', () => {
               },
               {
                 "uuid": "2099719b-beb2-44cc-9093-e713e43ae5cc",
-                "vendor_metadata": {
-                  "io_viamo": {
-                    "ui_data": {
-                      "x_position": 426,
-                      "y_position": 159
-                    }
+                "ui_metadata": {
+                  "canvas_coordinates": {
+                    "x": 426,
+                    "y": 159
                   }
                 },
                 "type": "MobilePrimitives.SelectOneResponse",
@@ -81,15 +76,8 @@ describe('Validation Usage Tests', () => {
                 "exits": [
                   {
                     "uuid": "79d68b66-a50e-4c06-85b6-f766c72110d9",
-                    "tag": "Default",
-                    "label": "Default",
+                    "name": "Default",
                     "default": true,
-                    "config": {}
-                  },
-                  {
-                    "uuid": "c056daf7-69c8-4766-8fd4-a0f7187bb5b7",
-                    "tag": "Error",
-                    "label": "Error",
                     "config": {}
                   }
                 ],
