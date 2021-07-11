@@ -96,6 +96,9 @@
     "ILocationResponseBlockConfig": {
       "type": "object",
       "properties": {
+        "prompt": {
+          "type": "string"
+        },
         "accuracy_threshold_meters": {
           "type": "number",
           "minimum": 0
@@ -106,6 +109,7 @@
         }
       },
       "required": [
+        "prompt",
         "accuracy_threshold_meters",
         "accuracy_timeout_seconds"
       ],

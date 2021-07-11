@@ -1,1 +1,1 @@
-{"version":3,"file":"IPhotoResponseBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/IPhotoResponseBlock.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,MAAM,EAAC,MAAM,OAAO,CAAA;AAE5B,MAAM,WAAW,mBAAoB,SAAQ,MAAM;CAAG"}
+{"version":3,"file":"IPhotoResponseBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/IPhotoResponseBlock.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,MAAM,EAAC,MAAM,OAAO,CAAA;AAC5B,OAAO,EAAC,yBAAyB,EAAC,MAAM,6BAA6B,CAAA;AAErE,MAAM,WAAW,mBAAoB,SAAQ,MAAM;IACjD,MAAM,EAAE,yBAAyB,CAAA;CAClC"}

@@ -19,6 +19,11 @@
 
 export interface ILocationResponseBlockConfig {
   /**
+   *
+   */
+  prompt: string
+
+  /**
    * @minimum 0
    */
   accuracy_threshold_meters: number
