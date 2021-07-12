@@ -21,7 +21,7 @@
     "ajv": "^7.2.1",
     "ajv-formats": "^1.5.1",
     "class-transformer": "^0.3.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13",
     "sp2": "^1.6.3",
     "tslib": "^2.0.1",
