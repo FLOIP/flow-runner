@@ -1,10 +1,19 @@
 import { IBlockConfig, IBlockExit, IContact, IContext, ISetContactPropertyBlockConfig } from '..';
+export interface IBlockUIMetadataCanvasCoordinates {
+    x: number;
+    y: number;
+}
+export interface IBlockUIMetadata extends Record<string, any> {
+    canvas_coordinates: IBlockUIMetadataCanvasCoordinates;
+}
 export interface IBlock<BLOCK_CONFIG = IBlockConfig, BLOCK_EXIT_CONFIG = {}> {
     uuid: string;
     name: string;
     label?: string;
     semantic_label?: string;
+    tags?: Array<string>;
     vendor_metadata?: Record<string, any>;
+    ui_metadata: IBlockUIMetadata;
     type: string;
     config: BLOCK_CONFIG;
     exits: IBlockExit<BLOCK_EXIT_CONFIG>[];
@@ -12,7 +21,7 @@ export interface IBlock<BLOCK_CONFIG = IBlockConfig, BLOCK_EXIT_CONFIG = {}> {
 export declare function findBlockExitWith(uuid: string, block: IBlock): IBlockExit;
 export declare function findFirstTruthyEvaluatingBlockExitOn(block: IBlock, context: IContext): IBlockExit | undefined;
 export declare function firstTrueBlockExitOrNull(block: IBlock, context: IContext): IBlockExit | undefined;
-export declare function firstTrueBlockExitOrThrow(block: IBlock, context: IContext): IBlockExit;
+export declare function firstTrueOrNullBlockExitOrThrow(block: IBlock, context: IContext): IBlockExit;
 export declare function findDefaultBlockExitOnOrNull(block: IBlock): IBlockExit | undefined;
 export declare function findDefaultBlockExitOrThrow(block: IBlock): IBlockExit;
 export declare function isLastBlock({ exits }: IBlock): boolean;

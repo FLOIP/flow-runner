@@ -4,6 +4,7 @@
   "definitions": {
     "ISelectOneResponseBlock": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "uuid": {
           "type": "string",
@@ -49,7 +50,7 @@
         "exits": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/IBlockExitTestRequired"
+            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2272-2275-939705591-2252-2275-939705591-2113-4566-939705591-0-12821%3Cdef-interface-225191395-1275-1435-225191395-0-1480%3E%3E"
           },
           "description": "a list of all the exits for the block. Exits must contain the required keys below, and can contain additional keys based on the Block type"
         }
@@ -61,8 +62,7 @@
         "type",
         "ui_metadata",
         "uuid"
-      ],
-      "additionalProperties": false
+      ]
     },
     "IBlockUIMetadata": {
       "type": "object",
@@ -144,7 +144,7 @@
       ],
       "additionalProperties": false
     },
-    "IBlockExitTestRequired": {
+    "IBlockExit<structure-939705591-2272-2275-939705591-2252-2275-939705591-2113-4566-939705591-0-12821<def-interface-225191395-1275-1435-225191395-0-1480>>": {
       "type": "object",
       "properties": {
         "uuid": {
@@ -171,6 +171,7 @@
         },
         "config": {
           "type": "object",
+          "additionalProperties": false,
           "description": "This contains additional information required for each mode supported by the block. Details are provided within the Block documentation"
         },
         "default": {
@@ -179,12 +180,12 @@
         }
       },
       "required": [
-        "config",
+        "uuid",
         "name",
-        "test",
-        "uuid"
+        "config"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "description": "Block Exit: https://floip.gitbook.io/flow-specification/flows#exit-node-specification"
     }
   }
 }

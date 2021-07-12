@@ -4,6 +4,7 @@
   "definitions": {
     "ISetContactPropertyBlock": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "uuid": {
           "type": "string",
@@ -49,7 +50,7 @@
         "exits": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/IBlockExit"
+            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2272-2275-939705591-2252-2275-939705591-2113-4566-939705591-0-12821%3Cdef-interface-1956904740-121-262-1956904740-0-1178%3E%3E"
           },
           "description": "a list of all the exits for the block. Exits must contain the required keys below, and can contain additional keys based on the Block type"
         }
@@ -61,8 +62,7 @@
         "type",
         "ui_metadata",
         "uuid"
-      ],
-      "additionalProperties": false
+      ]
     },
     "IBlockUIMetadata": {
       "type": "object",
@@ -128,7 +128,7 @@
       ],
       "additionalProperties": false
     },
-    "IBlockExit": {
+    "IBlockExit<structure-939705591-2272-2275-939705591-2252-2275-939705591-2113-4566-939705591-0-12821<def-interface-1956904740-121-262-1956904740-0-1178>>": {
       "type": "object",
       "properties": {
         "uuid": {
@@ -155,6 +155,7 @@
         },
         "config": {
           "type": "object",
+          "additionalProperties": false,
           "description": "This contains additional information required for each mode supported by the block. Details are provided within the Block documentation"
         },
         "default": {
