@@ -18,6 +18,8 @@
  **/
 
 import {
+  findDefaultBlockExitOrThrow,
+  firstTrueOrNullBlockExitOrThrow,
   IBlockExit,
   IBlockInteraction,
   IBlockRunner,
@@ -64,8 +66,12 @@ export class NumericResponseBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExit> {
-    setContactProperty(this.block, this.context)
-    // todo: what constitutes an error exit on web/android chanels?
-    return this.block.exits[0]
+    try {
+      setContactProperty(this.block, this.context)
+      return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
+    } catch (e) {
+      console.error(e)
+      return findDefaultBlockExitOrThrow(this.block)
+    }
   }
 }

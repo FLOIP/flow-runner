@@ -1,5 +1,4 @@
 import { IBlock, IOpenResponseBlockConfig } from '../..';
-export interface IOpenResponseBlock extends IBlock {
-    config: IOpenResponseBlockConfig;
+export interface IOpenResponseBlock extends IBlock<IOpenResponseBlockConfig> {
 }
 //# sourceMappingURL=IOpenResponseBlock.d.ts.map

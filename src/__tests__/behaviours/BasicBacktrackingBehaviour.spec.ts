@@ -7,7 +7,6 @@ import {
   IContext,
   IFlow,
   IPrompt,
-  IPromptConfig,
   NON_INTERACTIVE_BLOCK_TYPES,
   PeekDirection,
 } from '../..'
@@ -20,13 +19,13 @@ describe('BasicBacktrackingBehaviour', () => {
       {vendor_metadata: {}} as IContext,
       {navigateTo: async (_b, _c) => ({interaction: {} as IBlockInteraction, prompt: undefined})},
       {
-        buildPromptFor: async (_b: IBlock, _i: IBlockInteraction): Promise<IPrompt<IPromptConfig<any>> | undefined> => undefined,
+        buildPromptFor: async (_b: IBlock, _i: IBlockInteraction): Promise<IPrompt | undefined> => undefined,
       }
     )
   })
 
   describe('peek', () => {
-    let virtualPrompt: IPrompt<any>
+    let virtualPrompt: IPrompt
 
     beforeEach(() => {
       backtracking.context = {
@@ -42,7 +41,7 @@ describe('BasicBacktrackingBehaviour', () => {
         flows: [{uuid: 'flow-123', blocks: [{uuid: 'block-123'} as IBlock]} as IFlow] as IFlow[],
       } as IContext
 
-      virtualPrompt = {} as IPrompt<any>
+      virtualPrompt = {} as IPrompt
 
       jest.spyOn(backtracking.promptBuilder, 'buildPromptFor').mockReturnValue(Promise.resolve(virtualPrompt))
     })

@@ -1,4 +1,4 @@
-import { IBlockExit, IContext, IRichCursor, ISetGroupMembershipBlock, IBlockRunner } from '../..';
+import { IBlockExit, IBlockRunner, IContext, IRichCursor, ISetGroupMembershipBlock } from '../..';
 export declare class SetGroupMembershipBlockRunner implements IBlockRunner {
     block: ISetGroupMembershipBlock;
     context: IContext;

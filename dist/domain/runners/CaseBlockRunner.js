@@ -14,9 +14,9 @@ class CaseBlockRunner {
         });
     }
     run() {
-        var _a;
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return (_a = __1.findFirstTruthyEvaluatingBlockExitOn(this.block, this.context)) !== null && _a !== void 0 ? _a : __1.findDefaultBlockExitOn(this.block);
+            const iBlockExit = __1.firstTrueBlockExitOrThrow(this.block, this.context);
+            return iBlockExit;
         });
     }
 }

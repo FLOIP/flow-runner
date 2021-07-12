@@ -17,14 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {
-  findDefaultBlockExitOn,
-  findFirstTruthyEvaluatingBlockExitOn,
-  IBlockExitTestRequired,
-  IBlockRunner,
-  ICaseBlock,
-  IContext,
-} from '../..'
+import {findDefaultBlockExitOrThrow, firstTrueOrNullBlockExitOrThrow, IBlockExit, IBlockRunner, ICaseBlock, IContext} from '../..'
 
 /**
  * Block runner for `Core.Case` - Evaluates a list of expressions, one for each exit, and terminates through the first
@@ -42,7 +35,12 @@ export class CaseBlockRunner implements IBlockRunner {
     return undefined
   }
 
-  async run(): Promise<IBlockExitTestRequired> {
-    return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? (findDefaultBlockExitOn(this.block) as IBlockExitTestRequired)
+  async run(): Promise<IBlockExit> {
+    try {
+      return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
+    } catch (e) {
+      console.error(e)
+      return findDefaultBlockExitOrThrow(this.block)
+    }
   }
 }

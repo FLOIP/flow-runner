@@ -19,6 +19,4 @@
 
 import {IBlock, ILocationResponseBlockConfig} from '../..'
 
-export interface ILocationResponseBlock extends IBlock {
-  config: ILocationResponseBlockConfig
-}
+export interface ILocationResponseBlock extends IBlock<ILocationResponseBlockConfig> {}

@@ -42,7 +42,6 @@ import {
   IFlowNavigator,
   IPrompt,
   IPromptBuilder,
-  IPromptConfig,
   IRichCursor,
   isEntity,
   IStack,
@@ -84,7 +83,7 @@ export interface IBackTrackingBehaviour extends IBehaviour {
   // todo: this should likely take in steps rather than interaction itself
   jumpTo(interaction: IBlockInteraction, context: IContext): Promise<IRichCursor>
 
-  peek(steps?: number): Promise<IPrompt<IPromptConfig<any>>>
+  peek(steps?: number): Promise<IPrompt>
 }
 
 export class BacktrackingBehaviour implements IBackTrackingBehaviour {
@@ -247,7 +246,7 @@ export class BacktrackingBehaviour implements IBackTrackingBehaviour {
     return this.navigator.navigateTo(findBlockOnActiveFlowWith(interaction.block_id, this.context), this.context)
   }
 
-  async peek(steps = 1): Promise<IPrompt<IPromptConfig<any>>> {
+  async peek(steps = 1): Promise<IPrompt> {
     let _steps = steps
     const intx = findLast(this.context.interactions, ({type}) => !includes(NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0)
 

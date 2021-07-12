@@ -2,23 +2,23 @@ import { NonBreakingUpdateOperation } from 'sp2';
 import { DeliveryStatus, IBlock, IBlockInteraction, IContact, IFlow, IGroup, IIdGenerator, IPrompt, IPromptConfig, IResource, IResources, SupportedMode } from '..';
 export interface ICursor {
     interactionId: string;
-    promptConfig?: IPromptConfig<unknown>;
+    promptConfig?: IPromptConfig;
 }
 export interface ICursorInputRequired {
     interactionId: string;
-    promptConfig: IPromptConfig<unknown>;
+    promptConfig: IPromptConfig;
 }
 export interface ICursorNoInputRequired {
     interactionId: string;
     promptConfig: undefined;
 }
-export interface IRichCursor {
+export interface IRichCursor<PROMPT_CONFIG extends IPromptConfig = IPromptConfig> {
     interaction: IBlockInteraction;
-    prompt?: IPrompt<IPromptConfig<any>>;
+    prompt?: IPrompt<PROMPT_CONFIG>;
 }
-export interface IRichCursorInputRequired {
+export interface IRichCursorInputRequired<PROMPT_CONFIG extends IPromptConfig = IPromptConfig> {
     interaction: IBlockInteraction;
-    prompt: IPrompt<IPromptConfig<any>>;
+    prompt: IPrompt<PROMPT_CONFIG>;
 }
 export interface IRichCursorNoInputRequired {
     interaction: IBlockInteraction;
@@ -73,7 +73,6 @@ export declare function getActiveFlowIdFrom(ctx: IContext): string;
 export declare function getActiveFlowFrom(ctx: IContext): IFlow;
 export declare function isLastBlockOn(ctx: IContext, block: IBlock): boolean;
 export declare function isNested({ nested_flow_block_interaction_id_stack }: IContext): boolean;
-export declare const contextService: IContextService;
 export interface IContextService {
     findInteractionWith(uuid: string, { interactions }: IContext): IBlockInteraction;
     findFlowWith(uuid: string, ctx: IContext): IFlow;

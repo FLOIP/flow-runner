@@ -1,5 +1,5 @@
 import { BasePrompt, IBlock, IFlowRunner, IRichCursorInputRequired, PromptValidationException } from '../..';
-export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']>> {
+export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType['value']> = IPromptConfig> {
     interactionId: string;
     config: PromptConfigType;
     runner: IFlowRunner;
@@ -10,16 +10,16 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
     validate(val: PromptConfigType['value']): boolean;
     fulfill(val: PromptConfigType['value']): Promise<IRichCursorInputRequired | undefined>;
 }
-export interface IPromptConfig<T> extends IBasePromptConfig {
+export interface IPromptConfig<VALUE_TYPE = unknown> extends IBasePromptConfig {
     kind: string;
     isResponseRequired: boolean;
     prompt: string;
-    value?: T;
+    value?: VALUE_TYPE;
 }
 export interface IBasePromptConfig {
     isSubmitted?: boolean;
 }
-export interface PromptConstructor<T> {
-    new (config: T, interactionId: string, runner: IFlowRunner): BasePrompt<any>;
+export interface PromptConstructor<T extends IPromptConfig> {
+    new (config: T, interactionId: string, runner: IFlowRunner): BasePrompt<T>;
 }
 //# sourceMappingURL=IPrompt.d.ts.map

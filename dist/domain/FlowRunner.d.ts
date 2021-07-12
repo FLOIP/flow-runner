@@ -67,7 +67,7 @@ export declare namespace FlowRunner {
         addBlockRunner(add: (store: BlockRunnerFactoryStore) => BlockRunnerFactoryStore): FlowRunner.Builder;
         setIdGenerator(idGenerator: IIdGenerator): FlowRunner.Builder;
         addBehaviour(behaviourKey: string, behaviour: IBehaviour): FlowRunner.Builder;
-        addCustomPrompt<T>(constructor: PromptConstructor<T>, promptKey: string): FlowRunner.Builder;
+        addCustomPrompt<T extends IPromptConfig>(constructor: PromptConstructor<T>, promptKey: string): FlowRunner.Builder;
         build(): FlowRunner;
     }
 }

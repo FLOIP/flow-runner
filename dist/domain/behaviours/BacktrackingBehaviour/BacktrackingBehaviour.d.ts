@@ -1,4 +1,4 @@
-import { IBehaviour, IBlockInteraction, IContext, IFlowNavigator, IPrompt, IPromptBuilder, IPromptConfig, IRichCursor, IStack, Key } from '../../..';
+import { IBehaviour, IBlockInteraction, IContext, IFlowNavigator, IPrompt, IPromptBuilder, IRichCursor, IStack, Key } from '../../..';
 export interface IBacktrackingContext {
     cursor: Key;
     interactionStack: IStack;
@@ -12,7 +12,7 @@ declare type BacktrackingIntxStack = IBacktrackingContext['interactionStack'];
 export interface IBackTrackingBehaviour extends IBehaviour {
     rebuildIndex(): void;
     jumpTo(interaction: IBlockInteraction, context: IContext): Promise<IRichCursor>;
-    peek(steps?: number): Promise<IPrompt<IPromptConfig<any>>>;
+    peek(steps?: number): Promise<IPrompt>;
 }
 export declare class BacktrackingBehaviour implements IBackTrackingBehaviour {
     context: IContext;
@@ -26,7 +26,7 @@ export declare class BacktrackingBehaviour implements IBackTrackingBehaviour {
     _stepOut(keyToBeginningOfStackWithHeadMatchingBlock: Key, interactionStack: BacktrackingIntxStack, interaction: IBlockInteraction, key: BacktrackingCursor): void;
     _stepIn(key: BacktrackingCursor, interactionStack: BacktrackingIntxStack, keyForIntxOfRepeatedBlock: Key, interaction: IBlockInteraction): void;
     jumpTo(interaction: IBlockInteraction, context: IContext): Promise<IRichCursor>;
-    peek(steps?: number): Promise<IPrompt<IPromptConfig<any>>>;
+    peek(steps?: number): Promise<IPrompt>;
     findIndexOfSuggestionFor({ block_id }: IBlockInteraction, key: Key, stack: IStack): Key | undefined;
     postInteractionCreate(interaction: IBlockInteraction, _context: IContext): IBlockInteraction;
     syncGhostTo(key: Key, keyForSuggestion: Key, ghost: IStack): void;

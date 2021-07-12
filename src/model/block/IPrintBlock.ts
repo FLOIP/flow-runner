@@ -19,6 +19,4 @@
 
 import {IBlock, IPrintBlockConfig} from '../..'
 
-export interface IPrintBlock extends IBlock {
-  config: IPrintBlockConfig
-}
+export interface IPrintBlock extends IBlock<IPrintBlockConfig> {}

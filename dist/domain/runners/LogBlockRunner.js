@@ -16,8 +16,14 @@ class LogBlockRunner {
     }
     run() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            this.context.logs[DateFormat_1.createFormattedDate()] = __1.evaluateToString(this.block.config.message, this.context);
-            return this.block.exits[0];
+            try {
+                this.context.logs[DateFormat_1.createFormattedDate()] = __1.evaluateToString(this.block.config.message, this.context);
+            }
+            catch (e) {
+                console.error(e);
+                return __1.findDefaultBlockExitOrThrow(this.block);
+            }
+            return __1.firstTrueBlockExitOrThrow(this.block, this.context);
         });
     }
 }

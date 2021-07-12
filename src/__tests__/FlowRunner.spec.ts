@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import {every, flatMap, set, noop} from 'lodash'
+import {every, flatMap, noop} from 'lodash'
 import {createDefaultDataset, IDataset} from './fixtures/IDataset'
 import {deserialize, plainToClass, serialize} from 'class-transformer'
 
@@ -33,6 +33,7 @@ describe('FlowRunner', () => {
       const deserializedContext = deserialize(Context, serializedContext)
 
       expect(contextObj).toEqual(deserializedContext)
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(contextObj.getResource).toBeInstanceOf(Function)
     })
   })
@@ -94,20 +95,6 @@ describe('FlowRunner', () => {
 
       // done?
       expect(await runner.run()).toBeFalsy()
-    })
-
-    describe('case block unable to find cursor', () => {
-      it('shouldnt raise an exception requiring prompt', async () => {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const context: IContext = require('./fixtures/2019-10-08-case-block-eval-issue.json')
-        // this should be okay since we're attempting to replay a scenario
-        set(context, 'cursor.promptConfig.isSubmitted', false)
-
-        const runner = new FlowRunner(context)
-
-        await expect(runner.run()).rejects.toThrow('Unable to find default exit on block 95bd9e4a-93cd-46f2-9b43-8ecf940b278e')
-        // expect((await runner.run())![0].block_id).toBe('95bd9e4a-93cd-46f2-9b43-8ecf93fdc8f2')
-      })
     })
 
     describe.skip('case block always evaluates to false', () => {

@@ -22,7 +22,7 @@ describe('SelectManyPrompt', () => {
   describe('validate', () => {
     let prompt: SelectManyPrompt
     beforeEach(() => {
-      const config: IPromptConfig<any> = dataset._prompts[1]
+      const config: IPromptConfig = dataset._prompts[1]
       const ctx = dataset.contexts[1] as IContextInputRequired
       const runner = new FlowRunner(ctx)
 
@@ -77,7 +77,7 @@ describe('SelectManyPrompt', () => {
   })
 })
 
-const verifyValidationThrows = /*<E extends Error>*/ (invoker: Function, ErrorType: Function, msg: string, choices?: IChoice['key'][]) => {
+function verifyValidationThrows(invoker: Function, ErrorType: Function, msg: string, choices?: IChoice['key'][]): void {
   try {
     invoker()
 

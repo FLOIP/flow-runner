@@ -1,5 +1,4 @@
 import { IBlock, ILogBlockConfig } from '../..';
-export interface ILogBlock extends IBlock {
-    config: ILogBlockConfig;
+export interface ILogBlock extends IBlock<ILogBlockConfig> {
 }
 //# sourceMappingURL=ILogBlock.d.ts.map

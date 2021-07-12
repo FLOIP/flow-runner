@@ -18,9 +18,9 @@
  **/
 
 import {
-  findFirstTruthyEvaluatingBlockExitOn,
+  findDefaultBlockExitOrThrow,
+  firstTrueOrNullBlockExitOrThrow,
   IBlockExit,
-  IBlockExitTestRequired,
   IBlockInteraction,
   IBlockRunner,
   IContext,
@@ -29,7 +29,6 @@ import {
   SELECT_ONE_PROMPT_KEY,
   setContactProperty,
 } from '../..'
-import {last} from 'lodash'
 
 /**
  * Block runner for `MobilePrimitives\SelectOneResponse` - Obtains the answer to a Multiple Choice question from the
@@ -70,7 +69,12 @@ export class SelectOneResponseBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExit> {
-    setContactProperty(this.block, this.context)
-    return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? (last(this.block.exits) as IBlockExitTestRequired)
+    try {
+      setContactProperty(this.block, this.context)
+      return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
+    } catch (e) {
+      console.error(e)
+      return findDefaultBlockExitOrThrow(this.block)
+    }
   }
 }

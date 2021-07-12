@@ -1,1 +1,1 @@
-{"version":3,"file":"ICaseBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/ICaseBlock.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,MAAM,EAAE,sBAAsB,EAAE,gBAAgB,EAAC,MAAM,OAAO,CAAA;AAEtE,MAAM,WAAW,UAAW,SAAQ,MAAM;IACxC,MAAM,EAAE,gBAAgB,CAAA;IACxB,KAAK,EAAE,sBAAsB,EAAE,CAAA;CAChC"}
+{"version":3,"file":"ICaseBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/ICaseBlock.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,MAAM,EAAE,UAAU,EAAE,gBAAgB,EAAC,MAAM,OAAO,CAAA;AAE1D,MAAM,WAAW,UAAW,SAAQ,MAAM,CAAC,gBAAgB,CAAC;IAC1D,KAAK,EAAE,UAAU,EAAE,CAAA;CACpB"}

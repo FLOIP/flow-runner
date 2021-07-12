@@ -1,6 +1,14 @@
-import {IBlockExit, IContext, IRichCursor, ISetGroupMembershipBlock, IBlockRunner, ValidationException} from '../..'
-
-const EXIT_SUCCESS = 0
+import {
+  assertNotNull,
+  findDefaultBlockExitOrThrow,
+  firstTrueOrNullBlockExitOrThrow,
+  IBlockExit,
+  IBlockRunner,
+  IContext,
+  IRichCursor,
+  ISetGroupMembershipBlock,
+  ValidationException,
+} from '../..'
 
 /**
  * Adds or removes a group from the contact.
@@ -13,22 +21,24 @@ export class SetGroupMembershipBlockRunner implements IBlockRunner {
   }
 
   async run(_cursor: IRichCursor): Promise<IBlockExit> {
-    const {exits} = this.block
-    const {contact, groups} = this.context
-    const {group_key, is_member} = this.block.config
+    try {
+      const group = this.context.groups.find(group => group.group_key === this.block.config.group_key)
+      assertNotNull(
+        group,
+        () => `Cannot add contact to non-existent group ${this.block.config.group_key}`,
+        errorMessage => new ValidationException(errorMessage)
+      )
 
-    const group = groups.find(group => group.group_key === group_key)
+      if (this.block.config.is_member) {
+        this.context.contact.addGroup(group)
+      } else {
+        this.context.contact.delGroup(group)
+      }
 
-    if (group == null) {
-      throw new ValidationException(`Cannot add contact to non-existent group ${group_key}`)
+      return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
+    } catch (e) {
+      console.error(e)
+      return findDefaultBlockExitOrThrow(this.block)
     }
-
-    if (is_member) {
-      contact.addGroup(group)
-    } else {
-      contact.delGroup(group)
-    }
-
-    return exits[EXIT_SUCCESS]
   }
 }

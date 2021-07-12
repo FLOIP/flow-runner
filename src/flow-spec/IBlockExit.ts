@@ -20,7 +20,7 @@
 /**
  * Block Exit: https://floip.gitbook.io/flow-specification/flows#exit-node-specification
  */
-export interface IBlockExit {
+export interface IBlockExit<BLOCK_EXIT_CONFIG = {}> {
   /**
    * A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)
    *
@@ -68,7 +68,7 @@ export interface IBlockExit {
   /**
    * This contains additional information required for each mode supported by the block. Details are provided within the Block documentation
    */
-  config: object
+  config: BLOCK_EXIT_CONFIG
 
   /**
    * If this key is present and true, the exit is treated as the flow-through default in a case evaluation.
@@ -77,8 +77,4 @@ export interface IBlockExit {
   // todo: should we rename this to isDefault to capture boolean type?
   // todo: we need to update docs -- they specify "key presence", but I'd prefer us to be more explicit
   default?: boolean
-}
-
-export interface IBlockExitTestRequired extends IBlockExit {
-  test: string
 }

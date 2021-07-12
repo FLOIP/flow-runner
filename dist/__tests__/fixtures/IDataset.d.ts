@@ -1,6 +1,6 @@
 import { IBlock, IBlockExit, IBlockInteraction, IContext, IFlow, IPromptConfig } from '../..';
 export interface IDataset {
-    _prompts: IPromptConfig<any>[];
+    _prompts: IPromptConfig[];
     contexts: IContext[];
     _defaults: object;
     _flows: IFlow[];

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setContactProperty = exports.wrapInExprSyntaxWhenAbsent = exports.evaluateToString = exports.evaluateToBool = exports.createEvalContactFrom = exports.createEvalContextFrom = exports.generateCachedProxyForBlockName = exports.isLastBlock = exports.findDefaultBlockExitOn = exports.findFirstTruthyEvaluatingBlockExitOn = exports.findBlockExitWith = void 0;
+exports.setContactProperty = exports.wrapInExprSyntaxWhenAbsent = exports.evaluateToString = exports.evaluateToBool = exports.createEvalContactFrom = exports.createEvalContextFrom = exports.generateCachedProxyForBlockName = exports.isLastBlock = exports.findDefaultBlockExitOrThrow = exports.findDefaultBlockExitOnOrNull = exports.firstTrueBlockExitOrThrow = exports.firstTrueBlockExitOrNull = exports.findFirstTruthyEvaluatingBlockExitOn = exports.findBlockExitWith = void 0;
 const __1 = require("..");
 const lodash_1 = require("lodash");
 const expression_evaluator_1 = require("@floip/expression-evaluator");
@@ -22,14 +22,51 @@ function findFirstTruthyEvaluatingBlockExitOn(block, context) {
     return lodash_1.find(exits, ({ test, default: isDefault = false }) => !isDefault && evaluateToBool(String(test), evalContext));
 }
 exports.findFirstTruthyEvaluatingBlockExitOn = findFirstTruthyEvaluatingBlockExitOn;
-function findDefaultBlockExitOn(block) {
-    const exit = lodash_1.find(block.exits, { default: true });
+function firstTrueBlockExitOrNull(block, context) {
+    try {
+        return firstTrueBlockExitOrThrow(block, context);
+    }
+    catch (e) {
+        return undefined;
+    }
+}
+exports.firstTrueBlockExitOrNull = firstTrueBlockExitOrNull;
+function firstTrueBlockExitOrThrow(block, context) {
+    const blockExit = _firstBlockExit(context, block);
+    if (blockExit == null) {
+        throw new __1.ValidationException(`All block exits evaluated to false. Block: ${block.uuid}`);
+    }
+    return blockExit;
+}
+exports.firstTrueBlockExitOrThrow = firstTrueBlockExitOrThrow;
+function _firstBlockExit(context, block) {
+    var _a;
+    try {
+        const evalContext = createEvalContextFrom(context);
+        return ((_a = lodash_1.find(block.exits, blockExit => evaluateToBool(String(blockExit.test), evalContext))) !== null && _a !== void 0 ? _a : findDefaultBlockExitOnOrNull(block));
+    }
+    catch (e) {
+        console.error(e);
+        return findDefaultBlockExitOnOrNull(block);
+    }
+}
+function findDefaultBlockExitOnOrNull(block) {
+    try {
+        return findDefaultBlockExitOrThrow(block);
+    }
+    catch (e) {
+        return undefined;
+    }
+}
+exports.findDefaultBlockExitOnOrNull = findDefaultBlockExitOnOrNull;
+function findDefaultBlockExitOrThrow(block) {
+    const exit = lodash_1.find(block.exits, blockExit => blockExit.default || blockExit.test == null);
     if (exit == null) {
         throw new __1.ValidationException(`Unable to find default exit on block ${block.uuid}`);
     }
     return exit;
 }
-exports.findDefaultBlockExitOn = findDefaultBlockExitOn;
+exports.findDefaultBlockExitOrThrow = findDefaultBlockExitOrThrow;
 function isLastBlock({ exits }) {
     return exits.every(e => e.destination_block == null);
 }
@@ -104,14 +141,12 @@ function wrapInExprSyntaxWhenAbsent(expr) {
 }
 exports.wrapInExprSyntaxWhenAbsent = wrapInExprSyntaxWhenAbsent;
 function setContactProperty(block, context) {
-    if (__1.isSetContactPropertyConfig(block.config)) {
-        const setContactProperty = block.config.set_contact_property;
-        if (Array.isArray(setContactProperty)) {
-            setContactProperty.forEach(property => setSingleContactProperty(property, context));
-        }
-        else if (__1.isSetContactProperty(setContactProperty)) {
-            setSingleContactProperty(setContactProperty, context);
-        }
+    const setContactProperty = block.config.set_contact_property;
+    if (Array.isArray(setContactProperty)) {
+        setContactProperty.forEach(property => setSingleContactProperty(property, context));
+    }
+    else if (setContactProperty != null) {
+        setSingleContactProperty(setContactProperty, context);
     }
 }
 exports.setContactProperty = setContactProperty;
