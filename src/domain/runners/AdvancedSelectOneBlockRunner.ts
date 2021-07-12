@@ -19,17 +19,16 @@
 
 import {
   ADVANCED_SELECT_ONE_PROMPT_KEY,
-  findFirstTruthyEvaluatingBlockExitOn,
+  findDefaultBlockExitOrThrow,
+  firstTrueOrNullBlockExitOrThrow,
   IAdvancedSelectOneBlock,
   IAdvancedSelectOnePromptConfig,
   IBlockExit,
-  IBlockExitTestRequired,
   IBlockInteraction,
   IBlockRunner,
   IContext,
   setContactProperty,
 } from '../..'
-import {last} from 'lodash'
 
 export class AdvancedSelectOneBlockRunner implements IBlockRunner {
   constructor(public block: IAdvancedSelectOneBlock, public context: IContext) {}
@@ -51,7 +50,12 @@ export class AdvancedSelectOneBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExit> {
-    setContactProperty(this.block, this.context)
-    return findFirstTruthyEvaluatingBlockExitOn(this.block, this.context) ?? (last(this.block.exits) as IBlockExitTestRequired)
+    try {
+      setContactProperty(this.block, this.context)
+      return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
+    } catch (e) {
+      console.error(e)
+      return findDefaultBlockExitOrThrow(this.block)
+    }
   }
 }

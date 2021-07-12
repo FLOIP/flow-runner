@@ -17,8 +17,6 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlockWithTestExits, ISelectOneResponseBlockConfig} from '../..'
+import {IBlock, ISelectOneResponseBlockConfig} from '../..'
 
-export interface ISelectManyResponseBlock extends IBlockWithTestExits {
-  config: ISelectOneResponseBlockConfig
-}
+export interface ISelectManyResponseBlock extends IBlock<ISelectOneResponseBlockConfig> {}

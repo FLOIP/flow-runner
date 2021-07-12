@@ -29,7 +29,7 @@ import {
   ValidationException,
 } from '../..'
 
-export type TGenericPrompt = IPrompt<IPromptConfig<any>>
+export type TGenericPrompt = IPrompt
 
 /**
  * Abstract implementation of {@link IPrompt}, intended to be consumed as a common parent for concrete {@link IPrompt}

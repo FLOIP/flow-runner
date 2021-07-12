@@ -1,5 +1,5 @@
 import { IBlock, IFlowRunner, IPrompt, IPromptConfig, IRichCursorInputRequired, PromptValidationException } from '../..';
-export declare type TGenericPrompt = IPrompt<IPromptConfig<any>>;
+export declare type TGenericPrompt = IPrompt;
 export declare abstract class BasePrompt<T extends IPromptConfig<T['value']>> implements IPrompt<T> {
     config: T;
     interactionId: string;

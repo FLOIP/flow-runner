@@ -18,6 +18,8 @@
  **/
 
 import {
+  findDefaultBlockExitOrThrow,
+  firstTrueOrNullBlockExitOrThrow,
   IBlockExit,
   IBlockInteraction,
   IBlockRunner,
@@ -60,14 +62,17 @@ export class OpenResponseBlockRunner implements IBlockRunner {
       prompt: blockConfig.prompt,
       isResponseRequired: true,
       maxResponseCharacters: maxResponseCharacters,
-
       value: value as IOpenPromptConfig['value'],
     }
   }
 
   async run(): Promise<IBlockExit> {
-    setContactProperty(this.block, this.context)
-    // todo: should there be a BaseBlockRunner that defaults to returning first exit?
-    return this.block.exits[0]
+    try {
+      setContactProperty(this.block, this.context)
+      return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
+    } catch (e) {
+      console.error(e)
+      return findDefaultBlockExitOrThrow(this.block)
+    }
   }
 }

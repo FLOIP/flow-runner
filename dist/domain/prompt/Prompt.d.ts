@@ -1,4 +1,4 @@
-import { PromptConstructor } from '../..';
+import { IPromptConfig, PromptConstructor } from '../..';
 export declare class Prompt {
     private static VALUES;
     static readonly MESSAGE: Prompt;
@@ -6,10 +6,10 @@ export declare class Prompt {
     static readonly SELECT_ONE: Prompt;
     static readonly SELECT_MANY: Prompt;
     static readonly OPEN: Prompt;
-    promptConstructor: PromptConstructor<unknown>;
+    promptConstructor: PromptConstructor<IPromptConfig>;
     promptKey: string;
     private constructor();
-    static addCustomPrompt(promptConstructor: PromptConstructor<any>, promptKey: string): void;
+    static addCustomPrompt<T extends IPromptConfig>(promptConstructor: PromptConstructor<T>, promptKey: string): void;
     static reset(): void;
     static valueOf(promptKey: string): Prompt | undefined;
     static values(): Prompt[];

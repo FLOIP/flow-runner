@@ -17,7 +17,15 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {evaluateToString, IBlockExit, IBlockRunner, IContext, IPrintBlock} from '../..'
+import {
+  evaluateToString,
+  findDefaultBlockExitOrThrow,
+  firstTrueOrNullBlockExitOrThrow,
+  IBlockExit,
+  IBlockRunner,
+  IContext,
+  IPrintBlock,
+} from '../..'
 
 /**
  * Block runner for `ConsoleIO\Print` - Prints a message to standard output, by evaluating an expression.
@@ -30,9 +38,12 @@ export class PrintBlockRunner implements IBlockRunner {
   }
 
   async run(): Promise<IBlockExit> {
-    this.console.log(this.block.type, evaluateToString(this.block.config.message, this.context))
-
-    // todo: should we also write this as the value of the block interaction like the output block?
-    return this.block.exits[0]
+    try {
+      this.console.log(this.block.type, evaluateToString(this.block.config.message, this.context))
+      return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
+    } catch (e) {
+      console.error(e)
+      return findDefaultBlockExitOrThrow(this.block)
+    }
   }
 }

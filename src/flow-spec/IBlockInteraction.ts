@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-export interface IBlockInteraction {
+export interface IBlockInteraction<VALUE = unknown> {
   // UUID64
   uuid: string
 
@@ -29,7 +29,7 @@ export interface IBlockInteraction {
   entry_at: string
   exit_at?: string
   has_response: boolean
-  value?: unknown
+  value?: VALUE
   details: IBlockInteractionDetails
   selected_exit_id?: string
   type: string

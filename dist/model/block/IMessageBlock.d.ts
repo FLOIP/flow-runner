@@ -1,5 +1,4 @@
 import { IBlock, IMessageBlockConfig } from '../..';
-export interface IMessageBlock extends IBlock {
-    config: IMessageBlockConfig;
+export interface IMessageBlock extends IBlock<IMessageBlockConfig> {
 }
 //# sourceMappingURL=IMessageBlock.d.ts.map

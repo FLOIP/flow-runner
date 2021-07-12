@@ -775,7 +775,7 @@ export namespace FlowRunner {
       return this
     }
 
-    addCustomPrompt<T>(constructor: PromptConstructor<T>, promptKey: string): FlowRunner.Builder {
+    addCustomPrompt<T extends IPromptConfig>(constructor: PromptConstructor<T>, promptKey: string): FlowRunner.Builder {
       Prompt.addCustomPrompt(constructor, promptKey)
       return this
     }

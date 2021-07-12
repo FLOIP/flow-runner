@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ContextService = exports.contextService = exports.isNested = exports.isLastBlockOn = exports.getActiveFlowFrom = exports.getActiveFlowIdFrom = exports.findNestedFlowIdFor = exports.findBlockOnActiveFlowWith = exports.findFlowWith = exports.findInteractionWith = exports.createContextDataObjectFor = void 0;
+exports.ContextService = exports.isNested = exports.isLastBlockOn = exports.getActiveFlowFrom = exports.getActiveFlowIdFrom = exports.findNestedFlowIdFor = exports.findBlockOnActiveFlowWith = exports.findFlowWith = exports.findInteractionWith = exports.createContextDataObjectFor = void 0;
 const tslib_1 = require("tslib");
 const __1 = require("..");
 const lodash_1 = require("lodash");
@@ -80,16 +80,6 @@ function isNested({ nested_flow_block_interaction_id_stack }) {
     return nested_flow_block_interaction_id_stack.length > 0;
 }
 exports.isNested = isNested;
-exports.contextService = {
-    findInteractionWith,
-    findFlowWith,
-    findBlockOnActiveFlowWith,
-    findNestedFlowIdFor,
-    getActiveFlowIdFrom,
-    getActiveFlowFrom,
-    isLastBlockOn,
-    isNested,
-};
 exports.ContextService = {
     findInteractionWith,
     findFlowWith,

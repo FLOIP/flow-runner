@@ -3,7 +3,7 @@ import {read} from 'yaml-import'
 import {cloneDeep} from 'lodash'
 
 export interface IDataset {
-  _prompts: IPromptConfig<any>[]
+  _prompts: IPromptConfig[]
   contexts: IContext[]
   _defaults: object
   _flows: IFlow[]

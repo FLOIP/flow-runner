@@ -256,7 +256,12 @@ describe('BacktrackingBehaviour', () => {
                 backtracking.context.flows = [
                     {
                         uuid: 'flow-123',
-                        name: "test", interaction_timeout: 300, languages: [], supported_modes: [], last_modified: "2016-12-25 13:42:05.234598", first_block_id: "0",
+                        name: 'test',
+                        interaction_timeout: 300,
+                        languages: [],
+                        supported_modes: [],
+                        last_modified: '2016-12-25 13:42:05.234598',
+                        first_block_id: '0',
                         blocks: [
                             { uuid: 'block-123', type: 'test', name: 'test', ui_metadata: { canvas_coordinates: { x: 10, y: 10 } }, exits: [] },
                             { uuid: 'block-234', type: 'test', name: 'test', ui_metadata: { canvas_coordinates: { x: 10, y: 10 } }, exits: [], config: { flow_id: 'flow-234' } },
@@ -266,12 +271,22 @@ describe('BacktrackingBehaviour', () => {
                     },
                     {
                         uuid: 'flow-234',
-                        name: "test", interaction_timeout: 300, languages: [], supported_modes: [], last_modified: "2016-12-25 13:42:05.234598", first_block_id: "0",
+                        name: 'test',
+                        interaction_timeout: 300,
+                        languages: [],
+                        supported_modes: [],
+                        last_modified: '2016-12-25 13:42:05.234598',
+                        first_block_id: '0',
                         blocks: [{ uuid: 'block-567' }, { uuid: 'block-678' }, { uuid: 'block-789', config: { flow_id: 'flow-345' } }],
                     },
                     {
                         uuid: 'flow-345',
-                        name: "test", interaction_timeout: 300, languages: [], supported_modes: [], last_modified: "2016-12-25 13:42:05.234598", first_block_id: "0",
+                        name: 'test',
+                        interaction_timeout: 300,
+                        languages: [],
+                        supported_modes: [],
+                        last_modified: '2016-12-25 13:42:05.234598',
+                        first_block_id: '0',
                         blocks: [{ uuid: 'block-890' }, { uuid: 'block-901' }, { uuid: 'block-012' }],
                     },
                 ];

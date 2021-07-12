@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SetGroupMembershipBlockRunner = void 0;
 const tslib_1 = require("tslib");
 const __1 = require("../..");
-const EXIT_SUCCESS = 0;
 class SetGroupMembershipBlockRunner {
     constructor(block, context) {
         this.block = block;
@@ -16,20 +15,17 @@ class SetGroupMembershipBlockRunner {
     }
     run(_cursor) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const { exits } = this.block;
-            const { contact, groups } = this.context;
-            const { group_key, is_member } = this.block.config;
-            const group = groups.find(group => group.group_key === group_key);
+            const group = this.context.groups.find(group => group.group_key === this.block.config.group_key);
             if (group == null) {
-                throw new __1.ValidationException(`Cannot add contact to non-existent group ${group_key}`);
+                throw new __1.ValidationException(`Cannot add contact to non-existent group ${this.block.config.group_key}`);
             }
-            if (is_member) {
-                contact.addGroup(group);
+            if (this.block.config.is_member) {
+                this.context.contact.addGroup(group);
             }
             else {
-                contact.delGroup(group);
+                this.context.contact.delGroup(group);
             }
-            return exits[EXIT_SUCCESS];
+            return __1.findDefaultBlockExitOrThrow(this.block);
         });
     }
 }

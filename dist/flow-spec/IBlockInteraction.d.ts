@@ -1,11 +1,11 @@
-export interface IBlockInteraction {
+export interface IBlockInteraction<VALUE = unknown> {
     uuid: string;
     block_id: string;
     flow_id: string;
     entry_at: string;
     exit_at?: string;
     has_response: boolean;
-    value?: unknown;
+    value?: VALUE;
     details: IBlockInteractionDetails;
     selected_exit_id?: string;
     type: string;

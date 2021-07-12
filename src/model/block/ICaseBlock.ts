@@ -17,9 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlock, IBlockExitTestRequired, ICaseBlockConfig} from '../..'
+import {IBlock, IBlockExit, ICaseBlockConfig} from '../..'
 
-export interface ICaseBlock extends IBlock {
-  config: ICaseBlockConfig
-  exits: IBlockExitTestRequired[]
+export interface ICaseBlock extends IBlock<ICaseBlockConfig> {
+  exits: IBlockExit[]
 }

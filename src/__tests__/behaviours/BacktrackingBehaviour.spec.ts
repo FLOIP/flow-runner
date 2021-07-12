@@ -15,7 +15,6 @@ import {
   IEntity,
   IFlow,
   IPrompt,
-  IPromptConfig,
   IRunFlowBlockConfig,
   NON_INTERACTIVE_BLOCK_TYPES,
 } from '../..'
@@ -28,7 +27,7 @@ describe('BacktrackingBehaviour', () => {
       {vendor_metadata: {}} as IContext,
       {navigateTo: async (_b, _c) => ({interaction: {} as IBlockInteraction, prompt: undefined})},
       {
-        buildPromptFor: async (_b: IBlock, _i: IBlockInteraction): Promise<IPrompt<IPromptConfig<any>> | undefined> => undefined,
+        buildPromptFor: async (_b: IBlock, _i: IBlockInteraction): Promise<IPrompt | undefined> => undefined,
       }
     )
   })
@@ -350,7 +349,12 @@ describe('BacktrackingBehaviour', () => {
         backtracking.context.flows = [
           {
             uuid: 'flow-123',
-            name:"test", interaction_timeout:300, languages: [], supported_modes: [], last_modified: "2016-12-25 13:42:05.234598", first_block_id: "0",
+            name: 'test',
+            interaction_timeout: 300,
+            languages: [],
+            supported_modes: [],
+            last_modified: '2016-12-25 13:42:05.234598',
+            first_block_id: '0',
             blocks: [
               {uuid: 'block-123', type: 'test', name: 'test', ui_metadata: {canvas_coordinates: {x: 10, y: 10}}, exits: []},
               {uuid: 'block-234', type: 'test', name: 'test', ui_metadata: {canvas_coordinates: {x: 10, y: 10}}, exits: [], config: {flow_id: 'flow-234'} as IRunFlowBlockConfig},
@@ -360,12 +364,22 @@ describe('BacktrackingBehaviour', () => {
           },
           {
             uuid: 'flow-234',
-            name:"test", interaction_timeout:300, languages: [], supported_modes: [], last_modified: "2016-12-25 13:42:05.234598", first_block_id: "0",
+            name: 'test',
+            interaction_timeout: 300,
+            languages: [],
+            supported_modes: [],
+            last_modified: '2016-12-25 13:42:05.234598',
+            first_block_id: '0',
             blocks: [{uuid: 'block-567'}, {uuid: 'block-678'}, {uuid: 'block-789', config: {flow_id: 'flow-345'} as IRunFlowBlockConfig}],
           },
           {
             uuid: 'flow-345',
-            name:"test", interaction_timeout:300, languages: [], supported_modes: [], last_modified: "2016-12-25 13:42:05.234598", first_block_id: "0",
+            name: 'test',
+            interaction_timeout: 300,
+            languages: [],
+            supported_modes: [],
+            last_modified: '2016-12-25 13:42:05.234598',
+            first_block_id: '0',
             blocks: [{uuid: 'block-890'}, {uuid: 'block-901'}, {uuid: 'block-012'}],
           },
         ] as IFlow[]
@@ -531,7 +545,7 @@ describe('BacktrackingBehaviour', () => {
   })
 
   describe('peek', () => {
-    let pseudoPrompt: IPrompt<any>
+    let pseudoPrompt: IPrompt
 
     beforeEach(() => {
       backtracking.context = {
@@ -546,7 +560,7 @@ describe('BacktrackingBehaviour', () => {
         flows: [{uuid: 'flow-123', blocks: [{uuid: 'block-123'} as IBlock]} as IFlow] as IFlow[],
       } as IContext
 
-      pseudoPrompt = {} as IPrompt<any>
+      pseudoPrompt = {} as IPrompt
 
       jest.spyOn(backtracking.promptBuilder, 'buildPromptFor').mockReturnValue(Promise.resolve(pseudoPrompt))
     })

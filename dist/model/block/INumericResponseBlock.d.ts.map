@@ -1,1 +1,1 @@
-{"version":3,"file":"INumericResponseBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/INumericResponseBlock.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,MAAM,EAAE,mBAAmB,EAAC,MAAM,OAAO,CAAA;AAEjD,MAAM,WAAW,qBAAsB,SAAQ,MAAM;IACnD,MAAM,EAAE,mBAAmB,CAAA;CAC5B"}
+{"version":3,"file":"INumericResponseBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/INumericResponseBlock.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,MAAM,EAAE,mBAAmB,EAAC,MAAM,OAAO,CAAA;AAEjD,MAAM,WAAW,qBAAsB,SAAQ,MAAM,CAAC,mBAAmB,CAAC;CAAG"}

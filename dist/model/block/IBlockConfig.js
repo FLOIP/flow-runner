@@ -2,15 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isSetContactProperty = exports.isSetContactPropertyConfig = void 0;
 function isSetContactPropertyConfig(thing) {
-    if (typeof thing === 'object' && thing !== null) {
-        if ('set_contact_property' in thing) {
-            const setContactProperty = thing.set_contact_property;
-            if (Array.isArray(setContactProperty)) {
-                return setContactProperty.every(isSetContactProperty);
-            }
-            else {
-                return isSetContactProperty(setContactProperty);
-            }
+    if (typeof thing === 'object' && thing !== null && 'set_contact_property' in thing) {
+        const setContactProperty = thing.set_contact_property;
+        if (Array.isArray(setContactProperty)) {
+            return setContactProperty.every(isSetContactProperty);
+        }
+        else {
+            return isSetContactProperty(setContactProperty);
         }
     }
     return false;

@@ -46,7 +46,7 @@ describe('SelectManyPrompt', () => {
         }));
     });
 });
-const verifyValidationThrows = (invoker, ErrorType, msg, choices) => {
+function verifyValidationThrows(invoker, ErrorType, msg, choices) {
     try {
         invoker();
         expect(true).toBeFalsy();
@@ -56,5 +56,5 @@ const verifyValidationThrows = (invoker, ErrorType, msg, choices) => {
         expect(e.message).toEqual(msg);
         expect(e.choices).toEqual(choices);
     }
-};
+}
 //# sourceMappingURL=SelectManyPrompt.spec.js.map

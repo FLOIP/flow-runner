@@ -23,7 +23,7 @@ describe('BasePrompt', () => {
   describe('default state', () => {
     describe('error', () => {
       it('should default its error state to empty to simply UI rendering', async () => {
-        const config: IPromptConfig<any> = dataset._prompts[0]
+        const config: IPromptConfig = dataset._prompts[0]
         const ctx = dataset.contexts[1] as IContextInputRequired
         const runner = new FlowRunner(ctx)
         const prompt = new MessagePrompt(config as IMessagePromptConfig, 'abc-123', runner)
@@ -35,7 +35,7 @@ describe('BasePrompt', () => {
 
   describe('fulfill', () => {
     it('should set provided value onto itself', async () => {
-      const config: IPromptConfig<any> = dataset._prompts[0]
+      const config: IPromptConfig = dataset._prompts[0]
       const ctx = dataset.contexts[1] as IContextInputRequired
       const runner = new FlowRunner(ctx)
       const prompt = new MessagePrompt(config as IMessagePromptConfig, 'abc-123', runner)
@@ -48,7 +48,7 @@ describe('BasePrompt', () => {
     })
 
     it('should return result of calling run on its runner', async () => {
-      const config: IPromptConfig<any> = dataset._prompts[0]
+      const config: IPromptConfig = dataset._prompts[0]
       const ctx = dataset.contexts[1] as IContextInputRequired
       const runner = new FlowRunner(ctx)
       const prompt = new MessagePrompt(config as IMessagePromptConfig, 'abc-123', runner)
@@ -63,7 +63,7 @@ describe('BasePrompt', () => {
 
   describe('block', () => {
     it('should return block when block exists on runner', () => {
-      const config: IPromptConfig<any> = dataset._prompts[0]
+      const config: IPromptConfig = dataset._prompts[0]
       const firstInteractionId = '09894745-38ba-456f-aab4-720b7d09d5b3'
       const ctx = dataset.contexts[1] as IContextInputRequired
       const runner = new FlowRunner(ctx)
@@ -78,13 +78,13 @@ describe('BasePrompt', () => {
     })
 
     it('should return null when block absent on runner (and not raise)', () => {
-      const config: IPromptConfig<any> = dataset._prompts[0]
+      const config: IPromptConfig = dataset._prompts[0]
       const ctx = dataset.contexts[1] as IContextInputRequired
       const runner = new FlowRunner(ctx)
       const firstInteractionId = '09894745-38ba-456f-aab4-720b7d09d5b3'
       const prompt = new MessagePrompt(config as IMessagePromptConfig, firstInteractionId, runner)
 
-      findInteractionWith(firstInteractionId, ctx)!.block_id = 'some-absent-block'
+      findInteractionWith(firstInteractionId, ctx).block_id = 'some-absent-block'
       expect(prompt.block).toBeUndefined()
     })
   })

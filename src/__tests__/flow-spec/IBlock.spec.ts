@@ -3,15 +3,15 @@ import {
   createFormattedDate,
   findFirstTruthyEvaluatingBlockExitOn,
   generateCachedProxyForBlockName,
-  IBlockExitTestRequired,
-  IBlockWithTestExits,
+  IBlockExit,
   IContact,
   IContext,
   IEvalContextBlock,
+  SetContactProperty,
   wrapInExprSyntaxWhenAbsent,
 } from '../..'
 import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
-import {setContactProperty, IBlock, createEvalContactFrom} from '../../flow-spec/IBlock'
+import {createEvalContactFrom, IBlock, setContactProperty} from '../../flow-spec/IBlock'
 import {ISetContactPropertyBlockConfig} from '../../model/block/IBlockConfig'
 import Contact from '../../flow-spec/Contact'
 import IContactProperty from '../../flow-spec/IContactProperty'
@@ -34,6 +34,7 @@ describe('IBlock', () => {
     dummyContext = {contact: {} as IContact} as IContext
   })
 
+  // TODO: Remove, as this is deprecated
   describe('findFirstTruthyEvaluatingBlockExitOn', () => {
     it('should return first truthy exit', async () => {
       const exit = findFirstTruthyEvaluatingBlockExitOn(
@@ -44,8 +45,8 @@ describe('IBlock', () => {
             {test: '@(true = true)'},
             {test: '@(true = false)'},
             {test: '@(true = false)'},
-          ] as IBlockExitTestRequired[],
-        } as IBlockWithTestExits,
+          ] as IBlockExit[],
+        } as IBlock,
         dummyContext
       )
 
@@ -62,14 +63,20 @@ describe('IBlock', () => {
             {test: '@(true = true)'},
             {test: '@(true = false)'},
             {test: '@(true = false)'},
-          ] as IBlockExitTestRequired[],
-        } as IBlockWithTestExits,
+          ] as IBlockExit[],
+        } as IBlock,
         dummyContext
       )
 
       expect(exit).toEqual({test: '@(true = true)'})
     })
   })
+
+  // TODO: Add tests for firstTrueBlockExitOrNull
+  // TODO: Add tests for firstTrueOrNullBlockExitOrThrow
+  // TODO: Add tests for findDefaultBlockExitOrNull
+  // TODO: Add tests for findDefaultBlockExitOrThrow
+  // TODO: Add tests for findDefaultBlockExitOn
 
   describe('generateCachedProxyForBlockName', () => {
     it('should return an object resembling the one provided', async () => {
@@ -89,7 +96,6 @@ describe('IBlock', () => {
       it('should return undefined when unable to find property on target', async () => {
         const sampleTarget = {name: 'Bert', age: '40-something'}
         const proxy = generateCachedProxyForBlockName(sampleTarget, {} as IContext)
-        // @ts-ignore
         expect(proxy.unknown).toBeUndefined()
       })
 
@@ -216,14 +222,14 @@ describe('IBlock', () => {
             {
               property_key: 'foo',
               property_value: 'bar',
-            } as ISetContactPropertyBlockConfig,
+            } as SetContactProperty,
             {
               property_key: 'baz',
               property_value: 'qux',
-            } as ISetContactPropertyBlockConfig,
+            } as SetContactProperty,
           ],
         },
-      } as IBlock
+      } as IBlock<ISetContactPropertyBlockConfig>
       setContactProperty(block, context)
       const property1 = context.contact.getProperty('foo')
       expect(typeof property1).toBe('object')

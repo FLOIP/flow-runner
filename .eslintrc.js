@@ -101,6 +101,8 @@ module.exports = {
       },
     ],
 
+    'prettier/prettier': "warn",
+
     /*************************
      * Modified ESLint rules *
      *************************/

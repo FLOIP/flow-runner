@@ -1,4 +1,5 @@
-export interface IAdvancedSelectOneBlockConfig {
+import { ISetContactPropertyBlockConfig } from '../..';
+export interface IAdvancedSelectOneBlockConfig extends ISetContactPropertyBlockConfig {
     prompt: string;
     primary_field: string;
     secondary_fields: string[];
