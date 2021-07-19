@@ -8,6 +8,7 @@ export interface SetContactProperty {
  * This update shall happen immediately prior to following the exit node out of the block.
  * This is specified via the optional set_contact_property object within the Block config
  */
-export interface IBlockConfig {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface IBlockConfig extends Record<string, any> {
   set_contact_property?: SetContactProperty
 }

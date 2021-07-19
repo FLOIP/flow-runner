@@ -133,8 +133,7 @@
         "secondary_fields",
         "choice_row_fields",
         "choice_rows"
-      ],
-      "additionalProperties": false
+      ]
     },
     "SetContactProperty": {
       "type": "object",

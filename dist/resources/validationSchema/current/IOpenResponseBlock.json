@@ -125,8 +125,7 @@
       },
       "required": [
         "prompt"
-      ],
-      "additionalProperties": false
+      ]
     },
     "SetContactProperty": {
       "type": "object",

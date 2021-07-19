@@ -115,8 +115,7 @@
         "prompt",
         "accuracy_threshold_meters",
         "accuracy_timeout_seconds"
-      ],
-      "additionalProperties": false
+      ]
     },
     "SetContactProperty": {
       "type": "object",

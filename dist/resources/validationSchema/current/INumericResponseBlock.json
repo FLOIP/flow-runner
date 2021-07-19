@@ -123,8 +123,7 @@
         "prompt",
         "validation_minimum",
         "validation_maximum"
-      ],
-      "additionalProperties": false
+      ]
     },
     "SetContactProperty": {
       "type": "object",

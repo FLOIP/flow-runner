@@ -105,8 +105,7 @@
       },
       "required": [
         "message"
-      ],
-      "additionalProperties": false
+      ]
     },
     "SetContactProperty": {
       "type": "object",

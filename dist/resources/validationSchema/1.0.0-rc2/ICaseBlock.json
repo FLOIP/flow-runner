@@ -95,7 +95,6 @@
     },
     "ICaseBlockConfig": {
       "type": "object",
-      "additionalProperties": false,
       "properties": {
         "set_contact_property": {
           "$ref": "#/definitions/SetContactProperty"

@@ -114,8 +114,7 @@
       "required": [
         "format_string",
         "destination_variables"
-      ],
-      "additionalProperties": false
+      ]
     },
     "SetContactProperty": {
       "type": "object",

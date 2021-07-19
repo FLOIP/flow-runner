@@ -112,8 +112,7 @@
       "required": [
         "group_key",
         "is_member"
-      ],
-      "additionalProperties": false
+      ]
     },
     "SetContactProperty": {
       "type": "object",
