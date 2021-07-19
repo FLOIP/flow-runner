@@ -19,12 +19,12 @@ class OutputBlockRunner {
                 cursor.interaction.value = __1.evaluateToString(this.block.config.value, __1.createEvalContextFrom(this.context));
                 cursor.interaction.has_response = true;
                 __1.setContactProperty(this.block, this.context);
+                return __1.firstTrueOrNullBlockExitOrThrow(this.block, this.context);
             }
             catch (e) {
                 console.error(e);
                 return __1.findDefaultBlockExitOrThrow(this.block);
             }
-            return __1.firstTrueBlockExitOrThrow(this.block, this.context);
         });
     }
 }

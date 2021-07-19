@@ -50,7 +50,7 @@
         "exits": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2272-2275-939705591-2252-2275-939705591-2113-4566-939705591-0-12821%3Cdef-interface-328790075-1275-1502-328790075-0-1503%3E%3E"
+            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757%3Cdef-interface-328790075-1266-1477-328790075-0-1478%3E%3E"
           },
           "description": "a list of all the exits for the block. Exits must contain the required keys below, and can contain additional keys based on the Block type"
         }
@@ -97,17 +97,7 @@
       "type": "object",
       "properties": {
         "set_contact_property": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SetContactProperty"
-            },
-            {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/SetContactProperty"
-              }
-            }
-          ]
+          "$ref": "#/definitions/SetContactProperty"
         },
         "prompt": {
           "type": "string"
@@ -126,17 +116,13 @@
               "minimum": 0
             }
           },
-          "required": [
-            "max_digits"
-          ],
           "additionalProperties": false
         }
       },
       "required": [
         "prompt",
         "validation_minimum",
-        "validation_maximum",
-        "ivr"
+        "validation_maximum"
       ],
       "additionalProperties": false
     },
@@ -156,7 +142,7 @@
       ],
       "additionalProperties": false
     },
-    "IBlockExit<structure-939705591-2272-2275-939705591-2252-2275-939705591-2113-4566-939705591-0-12821<def-interface-328790075-1275-1502-328790075-0-1503>>": {
+    "IBlockExit<structure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757<def-interface-328790075-1266-1477-328790075-0-1478>>": {
       "type": "object",
       "properties": {
         "uuid": {

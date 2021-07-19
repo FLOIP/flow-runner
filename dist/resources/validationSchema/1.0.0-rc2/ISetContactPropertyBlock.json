@@ -4,6 +4,7 @@
   "definitions": {
     "ISetContactPropertyBlock": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "uuid": {
           "type": "string",
@@ -49,7 +50,7 @@
         "exits": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/IBlockExit"
+            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757%3Cdef-interface-1020156375-1271-1367-1020156375-0-2157%3E%3E"
           },
           "description": "a list of all the exits for the block. Exits must contain the required keys below, and can contain additional keys based on the Block type"
         }
@@ -61,8 +62,7 @@
         "type",
         "ui_metadata",
         "uuid"
-      ],
-      "additionalProperties": false
+      ]
     },
     "IBlockUIMetadata": {
       "type": "object",
@@ -97,19 +97,12 @@
       "type": "object",
       "properties": {
         "set_contact_property": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SetContactProperty"
-            },
-            {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/SetContactProperty"
-              }
-            }
-          ]
+          "$ref": "#/definitions/SetContactProperty"
         }
       },
+      "required": [
+        "set_contact_property"
+      ],
       "additionalProperties": false
     },
     "SetContactProperty": {
@@ -128,7 +121,7 @@
       ],
       "additionalProperties": false
     },
-    "IBlockExit": {
+    "IBlockExit<structure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757<def-interface-1020156375-1271-1367-1020156375-0-2157>>": {
       "type": "object",
       "properties": {
         "uuid": {
@@ -155,6 +148,7 @@
         },
         "config": {
           "type": "object",
+          "additionalProperties": false,
           "description": "This contains additional information required for each mode supported by the block. Details are provided within the Block documentation"
         },
         "default": {

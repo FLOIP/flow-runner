@@ -17,17 +17,17 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {ISetContactPropertyBlockConfig} from '../..'
+import {IBlockConfig} from './IBlockConfig'
 
-export interface INumericBlockConfig extends ISetContactPropertyBlockConfig {
+export interface INumericBlockConfig extends IBlockConfig {
   prompt: string
   validation_minimum: number
   validation_maximum: number
 
-  ivr: {
+  ivr?: {
     /**
      * @minimum 0
      */
-    max_digits: number
+    max_digits?: number
   }
 }

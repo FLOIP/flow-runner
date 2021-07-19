@@ -1,8 +1,8 @@
-import { ISetContactPropertyBlockConfig } from '../..';
-export interface IOpenResponseBlockConfig extends ISetContactPropertyBlockConfig {
+import { IBlockConfig } from './IBlockConfig';
+export interface IOpenResponseBlockConfig extends IBlockConfig {
     prompt: string;
     ivr?: {
-        max_duration_seconds: number;
+        max_duration_seconds?: number;
     };
     text?: {
         max_response_characters?: number;

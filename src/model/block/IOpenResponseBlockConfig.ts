@@ -17,16 +17,16 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {ISetContactPropertyBlockConfig} from '../..'
+import {IBlockConfig} from './IBlockConfig'
 
-export interface IOpenResponseBlockConfig extends ISetContactPropertyBlockConfig {
+export interface IOpenResponseBlockConfig extends IBlockConfig {
   prompt: string
 
   ivr?: {
     /**
      * @minimum 0
      */
-    max_duration_seconds: number
+    max_duration_seconds?: number
   }
 
   text?: {

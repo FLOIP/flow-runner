@@ -16,9 +16,29 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
+import {SetContactProperty} from './IBlockConfig'
 
-import {IBlockConfig} from './IBlockConfig'
+export interface ISetContactPropertyBlockConfig {
+  set_contact_property: SetContactProperty
+}
 
-export interface IPrintBlockConfig extends IBlockConfig {
-  message: string
+export function isSetContactPropertyConfig(thing: unknown): thing is ISetContactPropertyBlockConfig {
+  if (typeof thing === 'object' && thing !== null && 'set_contact_property' in thing) {
+    const setContactProperty = (thing as ISetContactPropertyBlockConfig).set_contact_property
+    return isSetContactProperty(setContactProperty)
+  }
+  return false
+}
+
+export function isSetContactProperty(thing: unknown): thing is SetContactProperty {
+  if (typeof thing === 'object' && thing !== null) {
+    // noinspection SuspiciousTypeOfGuard
+    return (
+      'property_key' in thing &&
+      'property_value' in thing &&
+      typeof (thing as SetContactProperty).property_key === 'string' &&
+      typeof (thing as SetContactProperty).property_value === 'string'
+    )
+  }
+  return false
 }

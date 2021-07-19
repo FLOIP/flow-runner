@@ -15,17 +15,22 @@ class SetGroupMembershipBlockRunner {
     }
     run(_cursor) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const group = this.context.groups.find(group => group.group_key === this.block.config.group_key);
-            if (group == null) {
-                throw new __1.ValidationException(`Cannot add contact to non-existent group ${this.block.config.group_key}`);
+            try {
+                const group = this.context.groups.find(group => group.group_key === this.block.config.group_key);
+                __1.assertNotNull(group, () => `Cannot add contact to non-existent group ${this.block.config.group_key}`, errorMessage => new __1.ValidationException(errorMessage));
+                if (this.block.config.is_member) {
+                    this.context.contact.addGroup(group);
+                }
+                else {
+                    this.context.contact.delGroup(group);
+                }
+                __1.setContactProperty(this.block, this.context);
+                return __1.firstTrueOrNullBlockExitOrThrow(this.block, this.context);
             }
-            if (this.block.config.is_member) {
-                this.context.contact.addGroup(group);
+            catch (e) {
+                console.error(e);
+                return __1.findDefaultBlockExitOrThrow(this.block);
             }
-            else {
-                this.context.contact.delGroup(group);
-            }
-            return __1.findDefaultBlockExitOrThrow(this.block);
         });
     }
 }

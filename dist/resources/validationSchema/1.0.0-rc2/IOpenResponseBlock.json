@@ -4,6 +4,7 @@
   "definitions": {
     "IOpenResponseBlock": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "uuid": {
           "type": "string",
@@ -49,7 +50,7 @@
         "exits": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/IBlockExit"
+            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757%3Cdef-interface-248324177-1266-1521-248324177-0-1522%3E%3E"
           },
           "description": "a list of all the exits for the block. Exits must contain the required keys below, and can contain additional keys based on the Block type"
         }
@@ -61,8 +62,7 @@
         "type",
         "ui_metadata",
         "uuid"
-      ],
-      "additionalProperties": false
+      ]
     },
     "IBlockUIMetadata": {
       "type": "object",
@@ -97,17 +97,7 @@
       "type": "object",
       "properties": {
         "set_contact_property": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SetContactProperty"
-            },
-            {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/SetContactProperty"
-              }
-            }
-          ]
+          "$ref": "#/definitions/SetContactProperty"
         },
         "prompt": {
           "type": "string"
@@ -120,9 +110,6 @@
               "minimum": 0
             }
           },
-          "required": [
-            "max_duration_seconds"
-          ],
           "additionalProperties": false
         },
         "text": {
@@ -157,7 +144,7 @@
       ],
       "additionalProperties": false
     },
-    "IBlockExit": {
+    "IBlockExit<structure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757<def-interface-248324177-1266-1521-248324177-0-1522>>": {
       "type": "object",
       "properties": {
         "uuid": {
@@ -184,6 +171,7 @@
         },
         "config": {
           "type": "object",
+          "additionalProperties": false,
           "description": "This contains additional information required for each mode supported by the block. Details are provided within the Block documentation"
         },
         "default": {

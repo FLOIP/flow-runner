@@ -13,7 +13,7 @@
         "exits": {
           "description": "a list of all the exits for the block. Exits must contain the required keys below, and can contain additional keys based on the Block type",
           "items": {
-            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2272-2275-939705591-2252-2275-939705591-2113-4566-939705591-0-12821%3E"
+            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757%3E"
           },
           "type": "array"
         },
@@ -67,9 +67,15 @@
     },
     "IBlockConfig": {
       "additionalProperties": false,
+      "description": "All blocks have a standard capability to specify how a contact property should be updated. This update shall happen immediately prior to following the exit node out of the block. This is specified via the optional set_contact_property object within the Block config",
+      "properties": {
+        "set_contact_property": {
+          "$ref": "#/definitions/SetContactProperty"
+        }
+      },
       "type": "object"
     },
-    "IBlockExit<structure-939705591-2272-2275-939705591-2252-2275-939705591-2113-4566-939705591-0-12821>": {
+    "IBlockExit<structure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757>": {
       "additionalProperties": false,
       "description": "Block Exit: https://floip.gitbook.io/flow-specification/flows#exit-node-specification",
       "properties": {
@@ -347,6 +353,22 @@
         "content_type",
         "modes",
         "value"
+      ],
+      "type": "object"
+    },
+    "SetContactProperty": {
+      "additionalProperties": false,
+      "properties": {
+        "property_key": {
+          "type": "string"
+        },
+        "property_value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "property_key",
+        "property_value"
       ],
       "type": "object"
     },

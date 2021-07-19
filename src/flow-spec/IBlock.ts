@@ -27,10 +27,10 @@ import {
   IContext,
   ICursor,
   IFlow,
-  ISetContactPropertyBlockConfig,
   SetContactProperty,
   ValidationException,
 } from '..'
+import {ISetContactPropertyBlockConfig} from '../model/block/ISetContactPropertyBlockConfig'
 import {cloneDeep, extend, find, get, has, startsWith} from 'lodash'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
 import {createFormattedDate} from '../domain/DateFormat'
@@ -317,14 +317,12 @@ export function wrapInExprSyntaxWhenAbsent(expr: string): string {
 /**
  * Set a property on the contact contained in the flow context.
  */
-export function setContactProperty<BLOCK_CONFIG extends ISetContactPropertyBlockConfig>(
+export function setContactProperty<BLOCK_CONFIG extends IBlockConfig | ISetContactPropertyBlockConfig>(
   block: IBlock<BLOCK_CONFIG>,
   context: IContext
 ): void {
   const setContactProperty = block.config.set_contact_property
-  if (Array.isArray(setContactProperty)) {
-    setContactProperty.forEach(property => setSingleContactProperty(property, context))
-  } else if (setContactProperty != null) {
+  if (setContactProperty != null) {
     setSingleContactProperty(setContactProperty, context)
   }
 }

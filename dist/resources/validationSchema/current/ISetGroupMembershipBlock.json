@@ -49,7 +49,7 @@
         "exits": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2272-2275-939705591-2252-2275-939705591-2113-4566-939705591-0-12821%3Cdef-interface-1869300599-43-180-1869300599-0-181%3E%3E"
+            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757%3Cdef-interface-1869300599-43-180-1869300599-0-181%3E%3E"
           },
           "description": "a list of all the exits for the block. Exits must contain the required keys below, and can contain additional keys based on the Block type"
         }
@@ -96,6 +96,9 @@
     "ISetGroupMembershipBlockConfig": {
       "type": "object",
       "properties": {
+        "set_contact_property": {
+          "$ref": "#/definitions/SetContactProperty"
+        },
         "group_key": {
           "type": "string"
         },
@@ -112,7 +115,23 @@
       ],
       "additionalProperties": false
     },
-    "IBlockExit<structure-939705591-2272-2275-939705591-2252-2275-939705591-2113-4566-939705591-0-12821<def-interface-1869300599-43-180-1869300599-0-181>>": {
+    "SetContactProperty": {
+      "type": "object",
+      "properties": {
+        "property_key": {
+          "type": "string"
+        },
+        "property_value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "property_key",
+        "property_value"
+      ],
+      "additionalProperties": false
+    },
+    "IBlockExit<structure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757<def-interface-1869300599-43-180-1869300599-0-181>>": {
       "type": "object",
       "properties": {
         "uuid": {

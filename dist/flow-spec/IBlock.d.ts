@@ -1,4 +1,5 @@
-import { IBlockConfig, IBlockExit, IContact, IContext, ISetContactPropertyBlockConfig } from '..';
+import { IBlockConfig, IBlockExit, IContact, IContext } from '..';
+import { ISetContactPropertyBlockConfig } from '../model/block/ISetContactPropertyBlockConfig';
 export interface IBlockUIMetadataCanvasCoordinates {
     x: number;
     y: number;
@@ -41,7 +42,7 @@ export declare function createEvalContactFrom(contact: IContact): IContact;
 export declare function evaluateToBool(expr: string, ctx: object): boolean;
 export declare function evaluateToString(expr: string, ctx: object): string;
 export declare function wrapInExprSyntaxWhenAbsent(expr: string): string;
-export declare function setContactProperty<BLOCK_CONFIG extends ISetContactPropertyBlockConfig>(block: IBlock<BLOCK_CONFIG>, context: IContext): void;
+export declare function setContactProperty<BLOCK_CONFIG extends IBlockConfig | ISetContactPropertyBlockConfig>(block: IBlock<BLOCK_CONFIG>, context: IContext): void;
 export interface IBlockService {
     findBlockExitWith(uuid: string, block: IBlock): IBlockExit;
     findFirstTruthyEvaluatingBlockExitOn(block: IBlock, context: IContext): IBlockExit | undefined;

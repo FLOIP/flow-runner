@@ -142,10 +142,7 @@ function wrapInExprSyntaxWhenAbsent(expr) {
 exports.wrapInExprSyntaxWhenAbsent = wrapInExprSyntaxWhenAbsent;
 function setContactProperty(block, context) {
     const setContactProperty = block.config.set_contact_property;
-    if (Array.isArray(setContactProperty)) {
-        setContactProperty.forEach(property => setSingleContactProperty(property, context));
-    }
-    else if (setContactProperty != null) {
+    if (setContactProperty != null) {
         setSingleContactProperty(setContactProperty, context);
     }
 }
