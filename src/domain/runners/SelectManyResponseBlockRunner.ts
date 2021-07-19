@@ -27,6 +27,7 @@ import {
   ISelectManyPromptConfig,
   ISelectOneResponseBlock,
   SELECT_MANY_PROMPT_KEY,
+  setContactProperty,
 } from '../..'
 
 /**
@@ -69,6 +70,7 @@ export class SelectManyResponseBlockRunner implements IBlockRunner {
 
   async run(): Promise<IBlockExit> {
     try {
+      setContactProperty(this.block, this.context)
       return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
     } catch (e) {
       console.error(e)
