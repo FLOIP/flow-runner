@@ -6,6 +6,16 @@ import {ISelectOneResponseBlock} from '../../model/block/ISelectOneResponseBlock
 import {ISelectManyResponseBlock} from '../../model/block/ISelectManyResponseBlock'
 import {IOpenResponseBlock} from '../../model/block/IOpenResponseBlock'
 import {INumericResponseBlock} from '../../model/block/INumericResponseBlock'
+import {IBlock} from '../../flow-spec/IBlock'
+
+function folderPathFromSpecificationVersion(version: string): string | null {
+  if (version == '1.0.0-rc1') {
+    return '../../../dist/resources/validationSchema/1.0.0-rc1/'
+  } else if (version == '1.0.0-rc2') {
+    return '../../../dist/resources/validationSchema/1.0.0-rc2/'
+  }
+  return null
+}
 
 /**
  * Validate a Flow Spec container and return a set of errors (if they exist).
@@ -20,17 +30,14 @@ export function getFlowStructureErrors(container: IContainer): ErrorObject<strin
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let flowSpecJsonSchema: any
 
-  if (container.specification_version == '1.0.0-rc1') {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc1/flowSpecJsonSchema.json')
-  } else if (container.specification_version == '1.0.0-rc2') {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc2/flowSpecJsonSchema.json')
+  const folderPath = folderPathFromSpecificationVersion(container.specification_version)
+  if (folderPath != null) {
+    flowSpecJsonSchema = require(folderPath + 'flowSpecJsonSchema.json')
   } else {
     return [
       {
         keyword: 'version',
-        dataPath: '/containers/0/specification_version',
+        dataPath: '/containers',
         schemaPath: '#/properties/specification_version/valid',
         params: [],
         propertyName: 'specification_version',
@@ -40,10 +47,16 @@ export function getFlowStructureErrors(container: IContainer): ErrorObject<strin
   }
 
   const ajv = new Ajv()
-  ajvFormat(ajv) // we need this to use AJV format such as 'date-time' (https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
+  // we need this to use AJV format such as 'date-time' (https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
+  ajvFormat(ajv)
   const validate = ajv.compile(flowSpecJsonSchema)
   if (!validate(container)) {
     return validate.errors
+  }
+
+  const blockSpecificErrors = checkIndividualBlocks(container)
+  if (blockSpecificErrors && blockSpecificErrors.length > 0) {
+    return blockSpecificErrors
   }
 
   const missingResources = checkAllResourcesPresent(container)
@@ -51,7 +64,7 @@ export function getFlowStructureErrors(container: IContainer): ErrorObject<strin
     return [
       {
         keyword: 'missing',
-        dataPath: '/containers/0/resources',
+        dataPath: '/container/resources',
         schemaPath: '#/properties/resources',
         params: [],
         propertyName: 'resources',
@@ -61,6 +74,74 @@ export function getFlowStructureErrors(container: IContainer): ErrorObject<strin
   }
 
   return null
+}
+
+/**
+ * Detailed checking of individual blocks, based on their unique jsonSchema requirements
+ */
+function checkIndividualBlocks(container: IContainer): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
+  let errors: any[] = []
+  container.flows.forEach((flow, flowIndex) => {
+    flow.blocks.forEach((block, blockIndex) => {
+      errors = errors.concat(checkIndividualBlock(block, container, blockIndex, flowIndex))
+    })
+  })
+  return errors
+}
+
+function checkIndividualBlock(block: IBlock, container: IContainer, blockIndex: number, flowIndex: number): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
+  const schemaFileName = blockTypeToInterfaceName(block.type)
+  if (schemaFileName != null) {
+    const ajv = new Ajv()
+    ajvFormat(ajv)
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const jsonSchema = require(folderPathFromSpecificationVersion(container.specification_version) + schemaFileName + '.json')
+    const validate = ajv.compile(jsonSchema)
+    if (!validate(block)) {
+      return validate.errors?.map(error => {
+        error.dataPath = '/container/flows/' + flowIndex + '/blocks/' + blockIndex + error.dataPath
+        return error
+      })
+    }
+  }
+  return []
+}
+
+function blockTypeToInterfaceName(type: string): string | null {
+  switch (type) {
+    case 'Core.Log':
+      return 'ILogBlock'
+    case 'Core.Case':
+      return 'ICaseBlock'
+    case 'Core.RunBlock':
+      return 'IRunFlowBlock'
+    case 'Core.Output':
+      return 'IOutputBlock'
+    case 'Core.SetContactProperty':
+      return 'ISetContactPropertyBlock'
+    case 'Core.SetGroupMembership':
+      return 'ISetGroupMembershipBlock'
+    case 'ConsoleIO.Print':
+      return 'IPrintBlock'
+    case 'ConsoleIO.Read':
+      return 'IReadBlock'
+    case 'MobilePrimitives.Message':
+      return 'IMessageBlock'
+    case 'MobilePrimitives.SelectOneResponse':
+      return 'ISelectOneResponseBlock'
+    case 'MobilePrimitives.SelectManyResponses':
+      return 'ISelectManyResponseBlock'
+    case 'MobilePrimitives.NumericResponse':
+      return 'INumericResponseBlock'
+    case 'MobilePrimitives.OpenResponse':
+      return 'IOpenResponseBlock'
+    case 'SmartDevices.LocationResponse':
+      return 'ILocationResponseBlock'
+    case 'SmartDevices.PhotoResponse':
+      return 'IPhotoResponseBlock'
+    default:
+      return null
+  }
 }
 
 /**

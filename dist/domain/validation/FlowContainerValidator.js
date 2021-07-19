@@ -4,19 +4,26 @@ exports.getFlowStructureErrors = void 0;
 const tslib_1 = require("tslib");
 const ajv_1 = tslib_1.__importDefault(require("ajv"));
 const ajv_formats_1 = tslib_1.__importDefault(require("ajv-formats"));
+function folderPathFromSpecificationVersion(version) {
+    if (version == '1.0.0-rc1') {
+        return '../../../dist/resources/validationSchema/1.0.0-rc1/';
+    }
+    else if (version == '1.0.0-rc2') {
+        return '../../../dist/resources/validationSchema/1.0.0-rc2/';
+    }
+    return null;
+}
 function getFlowStructureErrors(container) {
     let flowSpecJsonSchema;
-    if (container.specification_version == '1.0.0-rc1') {
-        flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc1/flowSpecJsonSchema.json');
-    }
-    else if (container.specification_version == '1.0.0-rc2') {
-        flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc2/flowSpecJsonSchema.json');
+    const folderPath = folderPathFromSpecificationVersion(container.specification_version);
+    if (folderPath != null) {
+        flowSpecJsonSchema = require(folderPath + 'flowSpecJsonSchema.json');
     }
     else {
         return [
             {
                 keyword: 'version',
-                dataPath: '/containers/0/specification_version',
+                dataPath: '/containers',
                 schemaPath: '#/properties/specification_version/valid',
                 params: [],
                 propertyName: 'specification_version',
@@ -30,12 +37,16 @@ function getFlowStructureErrors(container) {
     if (!validate(container)) {
         return validate.errors;
     }
+    const blockSpecificErrors = checkIndividualBlocks(container);
+    if (blockSpecificErrors && blockSpecificErrors.length > 0) {
+        return blockSpecificErrors;
+    }
     const missingResources = checkAllResourcesPresent(container);
     if (missingResources != null) {
         return [
             {
                 keyword: 'missing',
-                dataPath: '/containers/0/resources',
+                dataPath: '/container/resources',
                 schemaPath: '#/properties/resources',
                 params: [],
                 propertyName: 'resources',
@@ -46,6 +57,68 @@ function getFlowStructureErrors(container) {
     return null;
 }
 exports.getFlowStructureErrors = getFlowStructureErrors;
+function checkIndividualBlocks(container) {
+    let errors = [];
+    container.flows.forEach((flow, flowIndex) => {
+        flow.blocks.forEach((block, blockIndex) => {
+            errors = errors.concat(checkIndividualBlock(block, container, blockIndex, flowIndex));
+        });
+    });
+    return errors;
+}
+function checkIndividualBlock(block, container, blockIndex, flowIndex) {
+    var _a;
+    const schemaFileName = blockTypeToInterfaceName(block.type);
+    if (schemaFileName != null) {
+        const ajv = new ajv_1.default();
+        ajv_formats_1.default(ajv);
+        const jsonSchema = require(folderPathFromSpecificationVersion(container.specification_version) + schemaFileName + '.json');
+        const validate = ajv.compile(jsonSchema);
+        if (!validate(block)) {
+            return (_a = validate.errors) === null || _a === void 0 ? void 0 : _a.map(error => {
+                error.dataPath = '/container/flows/' + flowIndex + '/blocks/' + blockIndex + error.dataPath;
+                return error;
+            });
+        }
+    }
+    return [];
+}
+function blockTypeToInterfaceName(type) {
+    switch (type) {
+        case 'Core.Log':
+            return 'ILogBlock';
+        case 'Core.Case':
+            return 'ICaseBlock';
+        case 'Core.RunBlock':
+            return 'IRunFlowBlock';
+        case 'Core.Output':
+            return 'IOutputBlock';
+        case 'Core.SetContactProperty':
+            return 'ISetContactPropertyBlock';
+        case 'Core.SetGroupMembership':
+            return 'ISetGroupMembershipBlock';
+        case 'ConsoleIO.Print':
+            return 'IPrintBlock';
+        case 'ConsoleIO.Read':
+            return 'IReadBlock';
+        case 'MobilePrimitives.Message':
+            return 'IMessageBlock';
+        case 'MobilePrimitives.SelectOneResponse':
+            return 'ISelectOneResponseBlock';
+        case 'MobilePrimitives.SelectManyResponses':
+            return 'ISelectManyResponseBlock';
+        case 'MobilePrimitives.NumericResponse':
+            return 'INumericResponseBlock';
+        case 'MobilePrimitives.OpenResponse':
+            return 'IOpenResponseBlock';
+        case 'SmartDevices.LocationResponse':
+            return 'ILocationResponseBlock';
+        case 'SmartDevices.PhotoResponse':
+            return 'IPhotoResponseBlock';
+        default:
+            return null;
+    }
+}
 function checkAllResourcesPresent(container) {
     const resourcesRequested = [];
     container.flows.forEach(flow => {
