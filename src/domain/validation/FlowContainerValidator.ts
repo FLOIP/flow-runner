@@ -26,7 +26,7 @@ function folderPathFromSpecificationVersion(version: string): string | null {
  * @returns null if there are no errors, or a set of validation errors
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getFlowStructureErrors(container: IContainer): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
+export function getFlowStructureErrors(container: IContainer, shouldValidateBlocks = true): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let flowSpecJsonSchema: any
 
@@ -54,9 +54,11 @@ export function getFlowStructureErrors(container: IContainer): ErrorObject<strin
     return validate.errors
   }
 
-  const blockSpecificErrors = checkIndividualBlocks(container)
-  if (blockSpecificErrors && blockSpecificErrors.length > 0) {
-    return blockSpecificErrors
+  if (shouldValidateBlocks) {
+    const blockSpecificErrors = checkIndividualBlocks(container)
+    if (blockSpecificErrors && blockSpecificErrors.length > 0) {
+      return blockSpecificErrors
+    }
   }
 
   const missingResources = checkAllResourcesPresent(container)
