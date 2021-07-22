@@ -29,11 +29,13 @@ function folderPathFromSpecificationVersion(version: string): string | null {
 export function getFlowStructureErrors(container: IContainer, shouldValidateBlocks = true): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let flowSpecJsonSchema: any
-
-  const folderPath = folderPathFromSpecificationVersion(container.specification_version)
-  if (folderPath != null) {
-    flowSpecJsonSchema = require(folderPath + 'flowSpecJsonSchema.json')
-  } else {
+  if (container.specification_version == '1.0.0-rc1') {
+    flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc1/flowSpecJsonSchema.json');
+  }
+  else if (container.specification_version == '1.0.0-rc2') {
+    flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc2/flowSpecJsonSchema.json');
+  }
+  else {
     return [
       {
         keyword: 'version',
