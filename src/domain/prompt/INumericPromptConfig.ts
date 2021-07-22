@@ -24,6 +24,6 @@ import {IPromptConfig} from '../..'
  */
 export interface INumericPromptConfig extends IPromptConfig<number | null> {
   kind: string
-  min?: number
-  max?: number
+  min?: number | null
+  max?: number | null
 }

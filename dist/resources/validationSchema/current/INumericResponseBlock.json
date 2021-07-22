@@ -50,7 +50,7 @@
         "exits": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757%3Cdef-interface-328790075-1266-1479-328790075-0-1480%3E%3E"
+            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757%3Cdef-interface-328790075-1266-1500-328790075-0-1501%3E%3E"
           },
           "description": "a list of all the exits for the block. Exits must contain the required keys below, and can contain additional keys based on the Block type"
         }
@@ -103,16 +103,25 @@
           "type": "string"
         },
         "validation_minimum": {
-          "type": "number"
+          "type": [
+            "number",
+            "null"
+          ]
         },
         "validation_maximum": {
-          "type": "number"
+          "type": [
+            "number",
+            "null"
+          ]
         },
         "ivr": {
           "type": "object",
           "properties": {
             "max_digits": {
-              "type": "number",
+              "type": [
+                "number",
+                "null"
+              ],
               "minimum": 0
             }
           },
@@ -139,7 +148,7 @@
       ],
       "additionalProperties": false
     },
-    "IBlockExit<structure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757<def-interface-328790075-1266-1479-328790075-0-1480>>": {
+    "IBlockExit<structure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757<def-interface-328790075-1266-1500-328790075-0-1501>>": {
       "type": "object",
       "properties": {
         "uuid": {
