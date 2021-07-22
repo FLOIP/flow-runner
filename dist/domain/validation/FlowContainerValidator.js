@@ -15,9 +15,11 @@ function folderPathFromSpecificationVersion(version) {
 }
 function getFlowStructureErrors(container, shouldValidateBlocks = true) {
     let flowSpecJsonSchema;
-    const folderPath = folderPathFromSpecificationVersion(container.specification_version);
-    if (folderPath != null) {
-        flowSpecJsonSchema = require(folderPath + 'flowSpecJsonSchema.json');
+    if (container.specification_version == '1.0.0-rc1') {
+        flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc1/flowSpecJsonSchema.json');
+    }
+    else if (container.specification_version == '1.0.0-rc2') {
+        flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc2/flowSpecJsonSchema.json');
     }
     else {
         return [
