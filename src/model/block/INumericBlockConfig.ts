@@ -21,8 +21,8 @@ import {IBlockConfig} from './IBlockConfig'
 
 export interface INumericBlockConfig extends IBlockConfig {
   prompt: string
-  validation_minimum: number
-  validation_maximum: number
+  validation_minimum?: number
+  validation_maximum?: number
 
   ivr?: {
     /**

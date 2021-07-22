@@ -13,7 +13,7 @@ function folderPathFromSpecificationVersion(version) {
     }
     return null;
 }
-function getFlowStructureErrors(container) {
+function getFlowStructureErrors(container, shouldValidateBlocks = true) {
     let flowSpecJsonSchema;
     const folderPath = folderPathFromSpecificationVersion(container.specification_version);
     if (folderPath != null) {
@@ -37,9 +37,11 @@ function getFlowStructureErrors(container) {
     if (!validate(container)) {
         return validate.errors;
     }
-    const blockSpecificErrors = checkIndividualBlocks(container);
-    if (blockSpecificErrors && blockSpecificErrors.length > 0) {
-        return blockSpecificErrors;
+    if (shouldValidateBlocks) {
+        const blockSpecificErrors = checkIndividualBlocks(container);
+        if (blockSpecificErrors && blockSpecificErrors.length > 0) {
+            return blockSpecificErrors;
+        }
     }
     const missingResources = checkAllResourcesPresent(container);
     if (missingResources != null) {
