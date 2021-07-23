@@ -25,8 +25,8 @@ function getFlowStructureErrors(container, shouldValidateBlocks = true) {
         return [
             {
                 keyword: 'version',
-                dataPath: '/containers',
-                schemaPath: '#/properties/specification_version/valid',
+                dataPath: '/container/specification_version',
+                schemaPath: '#/properties/specification_version',
                 params: [],
                 propertyName: 'specification_version',
                 message: 'Unsupported specification version',
