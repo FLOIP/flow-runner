@@ -85,7 +85,34 @@ function checkIndividualBlock(block, container, blockIndex, flowIndex) {
             });
         }
     }
+    const exitError = checkExitsOnBlock(block);
+    if (exitError != null) {
+        return [
+            {
+                keyword: 'invalid',
+                dataPath: '/container/flows/' + flowIndex + '/blocks/' + blockIndex + '/exits',
+                schemaPath: '#/properties/exits',
+                params: [],
+                propertyName: 'exits',
+                message: exitError,
+            },
+        ];
+    }
     return [];
+}
+function checkExitsOnBlock(block) {
+    if (block.exits.length < 1) {
+        return 'There must be at least one exit.';
+    }
+    if (block.exits[block.exits.length - 1].default != true) {
+        return 'The last exit must be a default exit.';
+    }
+    if (block.exits.slice(0, -1).reduce(function (prev, current, _i) {
+        return prev || current.default == true;
+    }, false)) {
+        return 'There must not be more than one default exit.';
+    }
+    return null;
 }
 function blockTypeToInterfaceName(type) {
     switch (type) {
