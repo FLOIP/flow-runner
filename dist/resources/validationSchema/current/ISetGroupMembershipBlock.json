@@ -49,7 +49,7 @@
         "exits": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757%3Cdef-interface-1869300599-43-180-1869300599-0-181%3E%3E"
+            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757%3Cdef-interface-1869300599-43-563-1869300599-0-564%3E%3E"
           },
           "description": "a list of all the exits for the block. Exits must contain the required keys below, and can contain additional keys based on the Block type"
         }
@@ -100,13 +100,16 @@
           "$ref": "#/definitions/SetContactProperty"
         },
         "group_key": {
-          "type": "string"
+          "type": "string",
+          "description": "An identifier for the group that membership will be set within."
         },
         "group_name": {
-          "type": "string"
+          "type": "string",
+          "description": "A human-readable label in addition to the group_key, in cases where the group_name needs to be displayed to the Contact."
         },
         "is_member": {
-          "type": "boolean"
+          "type": "string",
+          "description": "Determines the membership state: falsy to remove the contact from the group, truthy to add, and null for no change to the existing membership."
         }
       },
       "required": [
@@ -130,7 +133,7 @@
       ],
       "additionalProperties": false
     },
-    "IBlockExit<structure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757<def-interface-1869300599-43-180-1869300599-0-181>>": {
+    "IBlockExit<structure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757<def-interface-1869300599-43-563-1869300599-0-564>>": {
       "type": "object",
       "properties": {
         "uuid": {
