@@ -19,4 +19,7 @@
 
 import {IBlock, ISelectOneResponseBlockConfig} from '../..'
 
-export interface ISelectManyResponseBlock extends IBlock<ISelectOneResponseBlockConfig> {}
+export interface ISelectManyResponseBlock extends IBlock<ISelectOneResponseBlockConfig> {
+  minimum_choices?: number
+  maximum_choices?: number
+}
