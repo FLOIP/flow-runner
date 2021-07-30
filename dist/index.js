@@ -92,6 +92,7 @@ tslib_1.__exportStar(require("./model/block/IRunFlowBlockConfig"), exports);
 tslib_1.__exportStar(require("./model/block/ISelectOneResponseBlock"), exports);
 tslib_1.__exportStar(require("./model/block/ISelectOneResponseBlockConfig"), exports);
 tslib_1.__exportStar(require("./model/block/ISelectManyResponseBlock"), exports);
+tslib_1.__exportStar(require("./model/block/ISelectManyResponseBlockConfig"), exports);
 tslib_1.__exportStar(require("./model/block/ISetGroupMembershipBlock"), exports);
 tslib_1.__exportStar(require("./model/block/ISetGroupMembershipBlockConfig"), exports);
 tslib_1.__exportStar(require("./model/block/ISetContactPropertyBlock"), exports);

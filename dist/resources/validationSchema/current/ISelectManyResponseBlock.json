@@ -44,13 +44,13 @@
           "description": "A specific string designating the type or \"subclass\" of this Block. This must be one of the Block type names within the specification, such as Core.RunFlow or MobilePrimitives.Message."
         },
         "config": {
-          "$ref": "#/definitions/ISelectOneResponseBlockConfig",
+          "$ref": "#/definitions/ISelectManyResponseBlockConfig",
           "description": "Additional parameters that are specific to the type of the block. Details are provided within the Block documentation."
         },
         "exits": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757%3Cdef-interface-225191395-1266-1408-225191395-0-1453%3E%3E"
+            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757%3Cdef-interface-1295016864-1300-1445-1295016864-0-1446%3E%3E"
           },
           "description": "a list of all the exits for the block. Exits must contain the required keys below, and can contain additional keys based on the Block type"
         }
@@ -93,7 +93,7 @@
       "additionalProperties": false,
       "description": "Coordinates indicating location of this block on the Flow Builder's canvas"
     },
-    "ISelectOneResponseBlockConfig": {
+    "ISelectManyResponseBlockConfig": {
       "type": "object",
       "properties": {
         "set_contact_property": {
@@ -110,11 +110,17 @@
           "additionalProperties": {
             "type": "string"
           }
+        },
+        "minimum_choices": {
+          "type": "number"
+        },
+        "maximum_choices": {
+          "type": "number"
         }
       },
       "required": [
-        "prompt",
-        "choices"
+        "choices",
+        "prompt"
       ]
     },
     "SetContactProperty": {
@@ -133,7 +139,7 @@
       ],
       "additionalProperties": false
     },
-    "IBlockExit<structure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757<def-interface-225191395-1266-1408-225191395-0-1453>>": {
+    "IBlockExit<structure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757<def-interface-1295016864-1300-1445-1295016864-0-1446>>": {
       "type": "object",
       "properties": {
         "uuid": {
