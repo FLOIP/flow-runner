@@ -17,6 +17,9 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlock, ISelectManyResponseBlockConfig} from '../..'
+import {ISelectOneResponseBlockConfig} from './ISelectOneResponseBlockConfig'
 
-export interface ISelectManyResponseBlock extends IBlock<ISelectManyResponseBlockConfig> {}
+export interface ISelectManyResponseBlockConfig extends ISelectOneResponseBlockConfig {
+  minimum_choices?: number
+  maximum_choices?: number
+}
