@@ -20,6 +20,12 @@
 import {ISelectOneResponseBlockConfig} from './ISelectOneResponseBlockConfig'
 
 export interface ISelectManyResponseBlockConfig extends ISelectOneResponseBlockConfig {
+  /**
+   * @minimum 1
+   */
   minimum_choices?: number
+  /**
+   * @minimum 1
+   */
   maximum_choices?: number
 }
