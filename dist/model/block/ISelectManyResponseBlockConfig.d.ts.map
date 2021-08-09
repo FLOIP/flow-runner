@@ -1,0 +1,1 @@
+{"version":3,"file":"ISelectManyResponseBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/ISelectManyResponseBlockConfig.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,6BAA6B,EAAC,MAAM,iCAAiC,CAAA;AAE7E,MAAM,WAAW,8BAA+B,SAAQ,6BAA6B;IAInF,eAAe,CAAC,EAAE,MAAM,CAAA;IAIxB,eAAe,CAAC,EAAE,MAAM,CAAA;CACzB"}
