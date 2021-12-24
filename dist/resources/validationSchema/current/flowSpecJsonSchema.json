@@ -344,6 +344,7 @@
           "type": "array"
         },
         "value": {
+          "pattern": "^[a-zA-Z_]\\w*$",
           "type": "string"
         }
       },
