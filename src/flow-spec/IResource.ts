@@ -5,6 +5,9 @@ export interface IResourceValue {
   content_type: string
   mime_type?: string
   modes: SupportedMode[]
+  /**
+   * @pattern ^[a-zA-Z_]\w*$
+   */
   value: string
 }
 
