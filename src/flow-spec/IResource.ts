@@ -6,7 +6,8 @@ export interface IResourceValue {
   mime_type?: string
   modes: SupportedMode[]
   /**
-   * @pattern ^[a-zA-Z_]\w*$
+   * Value will accept text and file path (eg: my-path/the_file.mp3)
+   * @pattern ^[\w\\\/.-]+$
    */
   value: string
 }

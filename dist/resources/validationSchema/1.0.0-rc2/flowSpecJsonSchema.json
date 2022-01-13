@@ -344,7 +344,8 @@
           "type": "array"
         },
         "value": {
-          "pattern": "^[a-zA-Z_]\\w*$",
+          "description": "Value will accept text and file path (eg: my-path/the_file.mp3)",
+          "pattern": "^[\\w\\\\\\/.-]+$",
           "type": "string"
         }
       },
