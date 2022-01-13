@@ -7,7 +7,7 @@ export interface IResourceValue {
   modes: SupportedMode[]
   /**
    * Value will accept alphanumerics, white spaces, file path, expressions, conditions,
-   * @pattern ^[\w\s\\\/@:,.+*^<>=()"'-]+$
+   * @pattern ^[\w \\\/@:,.+*^<>=()"'-]+$
    */
   value: string
 }
