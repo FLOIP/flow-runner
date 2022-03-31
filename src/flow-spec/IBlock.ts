@@ -29,8 +29,8 @@ import {
   IFlow,
   SetContactProperty,
   ValidationException,
+  ISetContactPropertyBlockConfig,
 } from '..'
-import {ISetContactPropertyBlockConfig} from '../model/block/ISetContactPropertyBlockConfig'
 import {cloneDeep, extend, find, get, has, startsWith} from 'lodash'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
 import {createFormattedDate} from '../domain/DateFormat'

@@ -17,8 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlock} from '../..'
-import {IPhotoResponseBlockConfig} from './IPhotoResponseBlockConfig'
+import {IBlock, IPhotoResponseBlockConfig} from '../..'
 
 export interface IPhotoResponseBlock extends IBlock {
   config: IPhotoResponseBlockConfig
