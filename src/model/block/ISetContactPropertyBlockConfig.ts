@@ -16,15 +16,17 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-import {SetContactProperty} from './IBlockConfig'
+import {IBlockConfig, SetContactProperty} from './IBlockConfig'
 
-export interface ISetContactPropertyBlockConfig {
+export interface ISetContactPropertyBlockConfig extends IBlockConfig {}
+
+export interface ISetContactPropertyBlockConfigRequired extends ISetContactPropertyBlockConfig {
   set_contact_property: SetContactProperty
 }
 
-export function isSetContactPropertyConfig(thing: unknown): thing is ISetContactPropertyBlockConfig {
+export function isSetContactPropertyConfig(thing: unknown): thing is ISetContactPropertyBlockConfigRequired {
   if (typeof thing === 'object' && thing !== null && 'set_contact_property' in thing) {
-    const setContactProperty = (thing as ISetContactPropertyBlockConfig).set_contact_property
+    const setContactProperty = (thing as ISetContactPropertyBlockConfigRequired).set_contact_property
     return isSetContactProperty(setContactProperty)
   }
   return false

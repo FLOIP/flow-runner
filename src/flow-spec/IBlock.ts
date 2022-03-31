@@ -317,7 +317,7 @@ export function wrapInExprSyntaxWhenAbsent(expr: string): string {
 /**
  * Set a property on the contact contained in the flow context.
  */
-export function setContactProperty<BLOCK_CONFIG extends IBlockConfig | ISetContactPropertyBlockConfig>(
+export function setContactProperty<BLOCK_CONFIG extends ISetContactPropertyBlockConfig>(
   block: IBlock<BLOCK_CONFIG>,
   context: IContext
 ): void {
