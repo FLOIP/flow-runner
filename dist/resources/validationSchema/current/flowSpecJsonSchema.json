@@ -13,7 +13,7 @@
         "exits": {
           "description": "a list of all the exits for the block. Exits must contain the required keys below, and can contain additional keys based on the Block type",
           "items": {
-            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757%3E"
+            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4626-939705591-0-12758%3E"
           },
           "type": "array"
         },
@@ -58,7 +58,6 @@
       "required": [
         "uuid",
         "name",
-        "ui_metadata",
         "type",
         "config",
         "exits"
@@ -74,7 +73,7 @@
       },
       "type": "object"
     },
-    "IBlockExit<structure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757>": {
+    "IBlockExit<structure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4626-939705591-0-12758>": {
       "additionalProperties": false,
       "description": "Block Exit: https://floip.gitbook.io/flow-specification/flows#exit-node-specification",
       "properties": {
@@ -345,7 +344,7 @@
         },
         "value": {
           "description": "Value will accept alphanumerics, white spaces, file path, expressions, conditions,",
-          "pattern": "^[\\w \\\\\\/@:,.+*^<>=()\"'-]+$",
+          "pattern": "^[\\w \\\\\\/@:,.!?+*^<>=()\"'-]+$",
           "type": "string"
         }
       },
