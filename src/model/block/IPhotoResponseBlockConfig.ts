@@ -20,8 +20,5 @@
 import {IBlockConfig} from '../..'
 
 export interface IPhotoResponseBlockConfig extends IBlockConfig {
-  /**
-   *
-   */
   prompt: string
 }
