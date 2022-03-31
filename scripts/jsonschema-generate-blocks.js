@@ -11,7 +11,7 @@ let config = {
   type: '', // will be set later
 }
 
-const output_path = 'dist/resources/'
+const output_path = 'dist/resources/validationSchema/current/'
 
 fs.readdir(path, (err, files) => {
   const blockTypes = files.filter(file => file.includes('Block.ts'))

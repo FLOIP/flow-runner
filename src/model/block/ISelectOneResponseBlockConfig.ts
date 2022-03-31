@@ -17,12 +17,11 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {ISetContactPropertyBlockConfig} from '../..'
+import {IBlockConfig} from '../..'
 
-export interface ISelectOneResponseBlockConfig extends ISetContactPropertyBlockConfig {
+export interface ISelectOneResponseBlockConfig extends IBlockConfig {
   prompt: string
   question_prompt?: string
-  choices_prompt?: string
   choices: StringMapType
 }
 

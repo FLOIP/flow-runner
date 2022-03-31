@@ -7,6 +7,7 @@ import {
   IContext,
   IRichCursor,
   ISetGroupMembershipBlock,
+  setContactProperty,
   ValidationException,
 } from '../..'
 
@@ -34,7 +35,7 @@ export class SetGroupMembershipBlockRunner implements IBlockRunner {
       } else {
         this.context.contact.delGroup(group)
       }
-
+      setContactProperty(this.block, this.context)
       return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
     } catch (e) {
       console.error(e)

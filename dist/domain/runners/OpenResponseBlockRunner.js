@@ -28,12 +28,12 @@ class OpenResponseBlockRunner {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 __1.setContactProperty(this.block, this.context);
+                return __1.firstTrueOrNullBlockExitOrThrow(this.block, this.context);
             }
             catch (e) {
                 console.error(e);
                 return __1.findDefaultBlockExitOrThrow(this.block);
             }
-            return __1.firstTrueBlockExitOrThrow(this.block, this.context);
         });
     }
 }

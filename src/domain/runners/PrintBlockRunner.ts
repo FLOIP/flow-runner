@@ -25,6 +25,7 @@ import {
   IBlockRunner,
   IContext,
   IPrintBlock,
+  setContactProperty,
 } from '../..'
 
 /**
@@ -40,6 +41,7 @@ export class PrintBlockRunner implements IBlockRunner {
   async run(): Promise<IBlockExit> {
     try {
       this.console.log(this.block.type, evaluateToString(this.block.config.message, this.context))
+      setContactProperty(this.block, this.context)
       return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
     } catch (e) {
       console.error(e)

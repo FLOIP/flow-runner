@@ -1,3 +1,3 @@
-import {IBlock, ISetContactPropertyBlockConfig} from '../..'
+import {IBlock, ISetContactPropertyBlockConfigRequired} from '../..'
 
-export interface ISetContactPropertyBlock extends IBlock<ISetContactPropertyBlockConfig> {}
+export interface ISetContactPropertyBlock extends IBlock<ISetContactPropertyBlockConfigRequired> {}

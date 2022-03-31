@@ -68,6 +68,7 @@ buck-out/
 
 # Generated files
 .idea/**/contentModel.xml
+eslint_report.xml
 
 # Sensitive or high-churn files
 .idea/**/dataSources/

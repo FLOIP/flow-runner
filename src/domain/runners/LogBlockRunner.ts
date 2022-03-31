@@ -25,6 +25,7 @@ import {
   IBlockRunner,
   IContext,
   ILogBlock,
+  setContactProperty,
 } from '../..'
 import {createFormattedDate} from '../DateFormat'
 
@@ -46,6 +47,7 @@ export class LogBlockRunner implements IBlockRunner {
   async run(): Promise<IBlockExit> {
     try {
       this.context.logs[createFormattedDate()] = evaluateToString(this.block.config.message, this.context)
+      setContactProperty(this.block, this.context)
       return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
     } catch (e) {
       console.error(e)

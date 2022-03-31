@@ -7,12 +7,11 @@ import {
   IContact,
   IContext,
   IEvalContextBlock,
-  SetContactProperty,
   wrapInExprSyntaxWhenAbsent,
 } from '../..'
 import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
 import {createEvalContactFrom, IBlock, setContactProperty} from '../../flow-spec/IBlock'
-import {ISetContactPropertyBlockConfig} from '../../model/block/IBlockConfig'
+import {ISetContactPropertyBlockConfig} from '../../model/block/ISetContactPropertyBlockConfig'
 import Contact from '../../flow-spec/Contact'
 import IContactProperty from '../../flow-spec/IContactProperty'
 import {IContactGroup} from '../../flow-spec/IContactGroup'
@@ -188,48 +187,18 @@ describe('IBlock', () => {
         type: 'test',
         name: 'test',
         exits: [],
+        ui_metadata: {canvas_coordinates: {x: 10, y: 10}},
         config: {
           set_contact_property: {
             property_key: 'foo',
             property_value: 'bar',
-          } as ISetContactPropertyBlockConfig,
-        },
+          },
+        } as ISetContactPropertyBlockConfig,
       } as IBlock
       setContactProperty(block, context)
       const property = context.contact.getProperty('foo')
       expect(typeof property).toBe('object')
       expect((property as IContactProperty).__value__).toBe('bar')
-    })
-
-    it('should set an array of contact properties', () => {
-      dataset = createDefaultDataset()
-      const context = Object.assign({}, cloneDeep(dataset.contexts[1]))
-      context.contact = new Contact()
-      const block = {
-        uuid: 'block-123',
-        type: 'test',
-        name: 'test',
-        exits: [],
-        config: {
-          set_contact_property: [
-            {
-              property_key: 'foo',
-              property_value: 'bar',
-            } as SetContactProperty,
-            {
-              property_key: 'baz',
-              property_value: 'qux',
-            } as SetContactProperty,
-          ],
-        },
-      } as IBlock<ISetContactPropertyBlockConfig>
-      setContactProperty(block, context)
-      const property1 = context.contact.getProperty('foo')
-      expect(typeof property1).toBe('object')
-      expect((property1 as IContactProperty).__value__).toBe('bar')
-      const property2 = context.contact.getProperty('baz')
-      expect(typeof property2).toBe('object')
-      expect((property2 as IContactProperty).__value__).toBe('qux')
     })
   })
 

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setContactProperty = exports.wrapInExprSyntaxWhenAbsent = exports.evaluateToString = exports.evaluateToBool = exports.createEvalContactFrom = exports.createEvalContextFrom = exports.generateCachedProxyForBlockName = exports.isLastBlock = exports.findDefaultBlockExitOrThrow = exports.findDefaultBlockExitOnOrNull = exports.firstTrueBlockExitOrThrow = exports.firstTrueBlockExitOrNull = exports.findFirstTruthyEvaluatingBlockExitOn = exports.findBlockExitWith = void 0;
+exports.setContactProperty = exports.wrapInExprSyntaxWhenAbsent = exports.evaluateToString = exports.evaluateToBool = exports.createEvalContactFrom = exports.createEvalContextFrom = exports.generateCachedProxyForBlockName = exports.isLastBlock = exports.findDefaultBlockExitOrThrow = exports.findDefaultBlockExitOnOrNull = exports.firstTrueOrNullBlockExitOrThrow = exports.firstTrueBlockExitOrNull = exports.findFirstTruthyEvaluatingBlockExitOn = exports.findBlockExitWith = void 0;
 const __1 = require("..");
 const lodash_1 = require("lodash");
 const expression_evaluator_1 = require("@floip/expression-evaluator");
@@ -24,21 +24,21 @@ function findFirstTruthyEvaluatingBlockExitOn(block, context) {
 exports.findFirstTruthyEvaluatingBlockExitOn = findFirstTruthyEvaluatingBlockExitOn;
 function firstTrueBlockExitOrNull(block, context) {
     try {
-        return firstTrueBlockExitOrThrow(block, context);
+        return firstTrueOrNullBlockExitOrThrow(block, context);
     }
     catch (e) {
         return undefined;
     }
 }
 exports.firstTrueBlockExitOrNull = firstTrueBlockExitOrNull;
-function firstTrueBlockExitOrThrow(block, context) {
+function firstTrueOrNullBlockExitOrThrow(block, context) {
     const blockExit = _firstBlockExit(context, block);
     if (blockExit == null) {
         throw new __1.ValidationException(`All block exits evaluated to false. Block: ${block.uuid}`);
     }
     return blockExit;
 }
-exports.firstTrueBlockExitOrThrow = firstTrueBlockExitOrThrow;
+exports.firstTrueOrNullBlockExitOrThrow = firstTrueOrNullBlockExitOrThrow;
 function _firstBlockExit(context, block) {
     var _a;
     try {
@@ -142,10 +142,7 @@ function wrapInExprSyntaxWhenAbsent(expr) {
 exports.wrapInExprSyntaxWhenAbsent = wrapInExprSyntaxWhenAbsent;
 function setContactProperty(block, context) {
     const setContactProperty = block.config.set_contact_property;
-    if (Array.isArray(setContactProperty)) {
-        setContactProperty.forEach(property => setSingleContactProperty(property, context));
-    }
-    else if (setContactProperty != null) {
+    if (setContactProperty != null) {
         setSingleContactProperty(setContactProperty, context);
     }
 }

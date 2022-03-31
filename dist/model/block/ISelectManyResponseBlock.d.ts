@@ -1,4 +1,4 @@
-import { IBlock, ISelectOneResponseBlockConfig } from '../..';
-export interface ISelectManyResponseBlock extends IBlock<ISelectOneResponseBlockConfig> {
+import { IBlock, ISelectManyResponseBlockConfig } from '../..';
+export interface ISelectManyResponseBlock extends IBlock<ISelectManyResponseBlockConfig> {
 }
 //# sourceMappingURL=ISelectManyResponseBlock.d.ts.map

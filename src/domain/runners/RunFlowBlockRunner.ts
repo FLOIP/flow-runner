@@ -25,6 +25,7 @@ import {
   IBlockRunner,
   IContext,
   IRunFlowBlockConfig,
+  setContactProperty,
 } from '../..'
 
 /**
@@ -50,6 +51,7 @@ export class RunFlowBlockRunner implements IBlockRunner {
 
   async run(): Promise<IBlockExit> {
     try {
+      setContactProperty(this.block, this.context)
       return firstTrueOrNullBlockExitOrThrow(this.block, this.context)
     } catch (e) {
       console.error(e)

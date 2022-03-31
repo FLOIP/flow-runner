@@ -5,6 +5,10 @@ export interface IResourceValue {
   content_type: string
   mime_type?: string
   modes: SupportedMode[]
+  /**
+   * Value will accept alphanumerics, white spaces, file path, expressions, conditions,
+   * @pattern ^[\w \\\/@:,.!?+*^<>=()"'-]+$
+   */
   value: string
 }
 
