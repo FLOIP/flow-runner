@@ -100,7 +100,7 @@ export interface IBlock<BLOCK_CONFIG = IBlockConfig, BLOCK_EXIT_CONFIG = {}> {
   /**
    * A set of key-value records describing information about how blocks are displayed on a UI/flowchart editor
    */
-  ui_metadata: IBlockUIMetadata
+  ui_metadata?: IBlockUIMetadata
 
   /**
    * A specific string designating the type or "subclass" of this Block.
