@@ -1,5 +1,4 @@
-import { IBlock } from '../..';
-import { IPhotoResponseBlockConfig } from './IPhotoResponseBlockConfig';
+import { IBlock, IPhotoResponseBlockConfig } from '../..';
 export interface IPhotoResponseBlock extends IBlock {
     config: IPhotoResponseBlockConfig;
 }

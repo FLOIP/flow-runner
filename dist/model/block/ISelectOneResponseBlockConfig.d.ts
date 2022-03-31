@@ -1,4 +1,4 @@
-import { IBlockConfig } from './IBlockConfig';
+import { IBlockConfig } from '../..';
 export interface ISelectOneResponseBlockConfig extends IBlockConfig {
     prompt: string;
     question_prompt?: string;

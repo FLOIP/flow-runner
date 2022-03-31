@@ -92,8 +92,10 @@ export * from './model/block/ISelectManyResponseBlockConfig';
 export * from './model/block/ISetGroupMembershipBlock';
 export * from './model/block/ISetGroupMembershipBlockConfig';
 export * from './model/block/ISetContactPropertyBlock';
+export * from './model/block/ISetContactPropertyBlockConfig';
 export * from './model/block/ILocationResponseBlock';
 export * from './model/block/ILocationResponseBlockConfig';
 export * from './model/block/IPhotoResponseBlock';
+export * from './model/block/IPhotoResponseBlockConfig';
 export { Prompt } from './domain/prompt/Prompt';
 //# sourceMappingURL=index.d.ts.map

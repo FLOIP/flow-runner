@@ -1,4 +1,4 @@
-import { IBlockConfig } from './IBlockConfig';
+import { IBlockConfig } from '../..';
 export interface ISetGroupMembershipBlockConfig extends IBlockConfig {
     group_key: string;
     group_name?: string;

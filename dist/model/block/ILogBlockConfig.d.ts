@@ -1,4 +1,4 @@
-import { IBlockConfig } from './IBlockConfig';
+import { IBlockConfig } from '../..';
 export interface ILogBlockConfig extends IBlockConfig {
     message: string;
 }

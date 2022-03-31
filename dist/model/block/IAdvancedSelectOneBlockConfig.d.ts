@@ -1,4 +1,4 @@
-import { IBlockConfig } from './IBlockConfig';
+import { IBlockConfig } from '../..';
 export interface IAdvancedSelectOneBlockConfig extends IBlockConfig {
     prompt: string;
     primary_field: string;

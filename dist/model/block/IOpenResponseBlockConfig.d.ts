@@ -1,4 +1,4 @@
-import { IBlockConfig } from './IBlockConfig';
+import { IBlockConfig } from '../..';
 export interface IOpenResponseBlockConfig extends IBlockConfig {
     prompt: string;
     ivr?: {

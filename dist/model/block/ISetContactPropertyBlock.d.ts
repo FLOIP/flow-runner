@@ -1,5 +1,4 @@
-import { IBlock } from '../..';
-import { ISetContactPropertyBlockConfig } from './ISetContactPropertyBlockConfig';
-export interface ISetContactPropertyBlock extends IBlock<ISetContactPropertyBlockConfig> {
+import { IBlock, ISetContactPropertyBlockConfigRequired } from '../..';
+export interface ISetContactPropertyBlock extends IBlock<ISetContactPropertyBlockConfigRequired> {
 }
 //# sourceMappingURL=ISetContactPropertyBlock.d.ts.map

@@ -1,7 +1,4 @@
-export interface SetContactProperty {
-    property_key: string;
-    property_value: string;
-}
+import { SetContactProperty } from '../..';
 export interface IBlockConfig extends Record<string, any> {
     set_contact_property?: SetContactProperty;
 }

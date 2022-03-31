@@ -1,4 +1,4 @@
-import { IBlockConfig } from './IBlockConfig';
+import { IBlockConfig } from '../..';
 export interface INumericBlockConfig extends IBlockConfig {
     prompt: string;
     validation_minimum?: number;

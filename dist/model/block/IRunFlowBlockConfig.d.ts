@@ -1,4 +1,4 @@
-import { IBlockConfig } from './IBlockConfig';
+import { IBlockConfig } from '../..';
 export interface IRunFlowBlockConfig extends IBlockConfig {
     flow_id: string;
 }

@@ -96,9 +96,11 @@ tslib_1.__exportStar(require("./model/block/ISelectManyResponseBlockConfig"), ex
 tslib_1.__exportStar(require("./model/block/ISetGroupMembershipBlock"), exports);
 tslib_1.__exportStar(require("./model/block/ISetGroupMembershipBlockConfig"), exports);
 tslib_1.__exportStar(require("./model/block/ISetContactPropertyBlock"), exports);
+tslib_1.__exportStar(require("./model/block/ISetContactPropertyBlockConfig"), exports);
 tslib_1.__exportStar(require("./model/block/ILocationResponseBlock"), exports);
 tslib_1.__exportStar(require("./model/block/ILocationResponseBlockConfig"), exports);
 tslib_1.__exportStar(require("./model/block/IPhotoResponseBlock"), exports);
+tslib_1.__exportStar(require("./model/block/IPhotoResponseBlockConfig"), exports);
 var Prompt_1 = require("./domain/prompt/Prompt");
 Object.defineProperty(exports, "Prompt", { enumerable: true, get: function () { return Prompt_1.Prompt; } });
 //# sourceMappingURL=index.js.map

@@ -1,4 +1,4 @@
-import { IBlockConfig } from './IBlockConfig';
+import { IBlockConfig } from '../..';
 export interface ILocationResponseBlockConfig extends IBlockConfig {
     prompt: string;
     accuracy_threshold_meters: number;

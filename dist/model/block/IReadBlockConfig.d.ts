@@ -1,4 +1,4 @@
-import { IBlockConfig } from './IBlockConfig';
+import { IBlockConfig } from '../..';
 export interface IReadBlockConfig extends IBlockConfig {
     format_string: string;
     destination_variables: string[];
