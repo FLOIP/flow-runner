@@ -59,7 +59,6 @@
         "exits",
         "name",
         "type",
-        "ui_metadata",
         "uuid"
       ],
       "additionalProperties": false

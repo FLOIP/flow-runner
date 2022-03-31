@@ -44,13 +44,13 @@
           "description": "A specific string designating the type or \"subclass\" of this Block. This must be one of the Block type names within the specification, such as Core.RunFlow or MobilePrimitives.Message."
         },
         "config": {
-          "$ref": "#/definitions/ISetContactPropertyBlockConfig",
+          "$ref": "#/definitions/ISetContactPropertyBlockConfigRequired",
           "description": "Additional parameters that are specific to the type of the block. Details are provided within the Block documentation."
         },
         "exits": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757%3Cdef-interface-1020156375-1271-1367-1020156375-0-2157%3E%3E"
+            "$ref": "#/definitions/IBlockExit%3Cstructure-939705591-2272-2275-939705591-2252-2275-939705591-2113-4567-939705591-0-12684%3Cdef-interface-1020156375-1418-1561-1020156375-0-2367%3E%3E"
           },
           "description": "a list of all the exits for the block. Exits must contain the required keys below, and can contain additional keys based on the Block type"
         }
@@ -60,7 +60,6 @@
         "exits",
         "name",
         "type",
-        "ui_metadata",
         "uuid"
       ]
     },
@@ -93,7 +92,7 @@
       "additionalProperties": false,
       "description": "Coordinates indicating location of this block on the Flow Builder's canvas"
     },
-    "ISetContactPropertyBlockConfig": {
+    "ISetContactPropertyBlockConfigRequired": {
       "type": "object",
       "properties": {
         "set_contact_property": {
@@ -102,8 +101,7 @@
       },
       "required": [
         "set_contact_property"
-      ],
-      "additionalProperties": false
+      ]
     },
     "SetContactProperty": {
       "type": "object",
@@ -121,7 +119,7 @@
       ],
       "additionalProperties": false
     },
-    "IBlockExit<structure-939705591-2331-2334-939705591-2311-2334-939705591-2172-4625-939705591-0-12757<def-interface-1020156375-1271-1367-1020156375-0-2157>>": {
+    "IBlockExit<structure-939705591-2272-2275-939705591-2252-2275-939705591-2113-4567-939705591-0-12684<def-interface-1020156375-1418-1561-1020156375-0-2367>>": {
       "type": "object",
       "properties": {
         "uuid": {

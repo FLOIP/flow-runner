@@ -1,4 +1,4 @@
-import {IBlockConfig} from './IBlockConfig'
+import {IBlockConfig} from '../..'
 
 export interface ISetGroupMembershipBlockConfig extends IBlockConfig {
   /**
@@ -10,8 +10,12 @@ export interface ISetGroupMembershipBlockConfig extends IBlockConfig {
    */
   group_name?: string
   /**
-   * Determines the membership state: falsy to remove the contact from the group,
-   * truthy to add, and null for no change to the existing membership.
+   * Determines the membership state:
+   * - falsy to remove the contact from the group,
+   * - truthy to add,
+   * - and null for no change to the existing membership.
+   *
+   * Its type is string because it may contain expressions too.
    */
   is_member: string
 }

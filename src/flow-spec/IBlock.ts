@@ -29,8 +29,8 @@ import {
   IFlow,
   SetContactProperty,
   ValidationException,
+  ISetContactPropertyBlockConfig,
 } from '..'
-import {ISetContactPropertyBlockConfig} from '../model/block/ISetContactPropertyBlockConfig'
 import {cloneDeep, extend, find, get, has, startsWith} from 'lodash'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
 import {createFormattedDate} from '../domain/DateFormat'
@@ -100,7 +100,7 @@ export interface IBlock<BLOCK_CONFIG = IBlockConfig, BLOCK_EXIT_CONFIG = {}> {
   /**
    * A set of key-value records describing information about how blocks are displayed on a UI/flowchart editor
    */
-  ui_metadata: IBlockUIMetadata
+  ui_metadata?: IBlockUIMetadata
 
   /**
    * A specific string designating the type or "subclass" of this Block.
@@ -317,7 +317,7 @@ export function wrapInExprSyntaxWhenAbsent(expr: string): string {
 /**
  * Set a property on the contact contained in the flow context.
  */
-export function setContactProperty<BLOCK_CONFIG extends IBlockConfig | ISetContactPropertyBlockConfig>(
+export function setContactProperty<BLOCK_CONFIG extends ISetContactPropertyBlockConfig>(
   block: IBlock<BLOCK_CONFIG>,
   context: IContext
 ): void {

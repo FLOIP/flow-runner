@@ -17,11 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlockConfig} from './IBlockConfig'
+import {IBlockConfig} from '../..'
 
 export interface IPhotoResponseBlockConfig extends IBlockConfig {
-  /**
-   *
-   */
   prompt: string
 }

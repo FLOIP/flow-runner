@@ -1,7 +1,4 @@
-export interface SetContactProperty {
-  property_key: string
-  property_value: string
-}
+import {SetContactProperty} from '../..'
 
 /**
  * All blocks have a standard capability to specify how a contact property should be updated.
