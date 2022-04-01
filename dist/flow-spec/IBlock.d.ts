@@ -6,7 +6,7 @@ export interface IBlockUIMetadataCanvasCoordinates {
 export interface IBlockUIMetadata extends Record<string, any> {
     canvas_coordinates: IBlockUIMetadataCanvasCoordinates;
 }
-export interface IBlock<BLOCK_CONFIG = IBlockConfig, BLOCK_EXIT_CONFIG = {}> {
+export interface IBlock<BLOCK_CONFIG = IBlockConfig> {
     uuid: string;
     name: string;
     label?: string;
@@ -16,7 +16,7 @@ export interface IBlock<BLOCK_CONFIG = IBlockConfig, BLOCK_EXIT_CONFIG = {}> {
     ui_metadata?: IBlockUIMetadata;
     type: string;
     config: BLOCK_CONFIG;
-    exits: IBlockExit<BLOCK_EXIT_CONFIG>[];
+    exits: IBlockExit[];
 }
 export declare function findBlockExitWith(uuid: string, block: IBlock): IBlockExit;
 export declare function findFirstTruthyEvaluatingBlockExitOn(block: IBlock, context: IContext): IBlockExit | undefined;
