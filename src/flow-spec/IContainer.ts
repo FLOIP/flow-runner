@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IFlow, IResource} from '..'
+import {IFlow} from '..'
 
 /**
  * Flow Containers hold a group of related Flows: https://floip.gitbook.io/flow-specification/flows#flows
@@ -55,9 +55,4 @@ export interface IContainer {
    * A list of the Flows within the Container (see below)
    */
   flows: IFlow[]
-
-  /**
-   * A set of the Resources needed for executing the Flows in the Container, keyed by resource uuid.
-   */
-  resources: IResource[]
 }
