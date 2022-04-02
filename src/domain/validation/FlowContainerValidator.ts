@@ -1,4 +1,4 @@
-import {IContainer} from '../..'
+import {IContainer, IResources} from '../..'
 import Ajv, {ErrorObject} from 'ajv'
 import ajvFormat from 'ajv-formats'
 import {IMessageBlock} from '../../model/block/IMessageBlock'
@@ -26,16 +26,17 @@ function folderPathFromSpecificationVersion(version: string): string | null {
  * @returns null if there are no errors, or a set of validation errors
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getFlowStructureErrors(container: IContainer, shouldValidateBlocks = true): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
+export function getFlowStructureErrors(
+  container: IContainer,
+  shouldValidateBlocks = true
+): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let flowSpecJsonSchema: any
   if (container.specification_version == '1.0.0-rc1') {
-    flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc1/flowSpecJsonSchema.json');
-  }
-  else if (container.specification_version == '1.0.0-rc2') {
-    flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc2/flowSpecJsonSchema.json');
-  }
-  else {
+    flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc1/flowSpecJsonSchema.json')
+  } else if (container.specification_version == '1.0.0-rc2') {
+    flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc2/flowSpecJsonSchema.json')
+  } else {
     return [
       {
         keyword: 'version',
@@ -93,7 +94,12 @@ function checkIndividualBlocks(container: IContainer): ErrorObject<string, Recor
   return errors
 }
 
-function checkIndividualBlock(block: IBlock, container: IContainer, blockIndex: number, flowIndex: number): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
+function checkIndividualBlock(
+  block: IBlock,
+  container: IContainer,
+  blockIndex: number,
+  flowIndex: number
+): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
   const schemaFileName = blockTypeToInterfaceName(block.type)
   if (schemaFileName != null) {
     const ajv = new Ajv()
@@ -188,7 +194,9 @@ function blockTypeToInterfaceName(type: string): string | null {
  */
 function checkAllResourcesPresent(container: IContainer): string[] | null {
   const resourcesRequested: string[] = []
+  const allResources: IResources = []
   container.flows.forEach(flow => {
+    allResources.push(...flow.resources)
     flow.blocks.forEach(block => {
       if (block.type == 'MobilePrimitives.Message') {
         const b = block as IMessageBlock
@@ -228,7 +236,7 @@ function checkAllResourcesPresent(container: IContainer): string[] | null {
   })
 
   const missingResources: string[] = []
-  const allResourceStrings = container.resources.map(r => r.uuid)
+  const allResourceStrings = allResources.map(r => r.uuid)
 
   resourcesRequested.forEach(resourcesString => {
     if (!allResourceStrings.includes(resourcesString)) {
