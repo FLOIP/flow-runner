@@ -154,7 +154,7 @@ describe('Validation Usage Tests', () => {
 
     const container = JSON.parse(flowJson)
     const errors = getFlowStructureErrors(container)
-    // console.log(response);
+
     expect(errors).toEqual([
       {
         dataPath: '/resources/1/values/0/value',
@@ -360,7 +360,7 @@ describe('Validation Usage Tests', () => {
 
       const container = JSON.parse(flowJson)
       const errors = getFlowStructureErrors(container)
-      // console.log(response);
+
       expect(errors).toEqual([
         {
           dataPath: '/container/flows/0/blocks/1/exits',
