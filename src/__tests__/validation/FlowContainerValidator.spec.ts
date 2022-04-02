@@ -155,11 +155,18 @@ describe('Validation Usage Tests', () => {
     const container = JSON.parse(flowJson)
     const errors = getFlowStructureErrors(container)
     // console.log(response);
-    expect(errors).toEqual(null)
+    expect(errors).toEqual([
+      {
+        dataPath: '/resources/1/values/0/value',
+        keyword: 'pattern',
+        message: 'should match pattern "^[\\w \\\\\\/@:,.!?+*^<>=()"\'-]+$"',
+        params: {pattern: '^[\\w \\\\\\/@:,.!?+*^<>=()"\'-]+$'},
+        schemaPath: '#/properties/value/pattern',
+      },
+    ])
   }),
-
-  test('Find Too Many Default Exits', async () => {
-    const flowJson = `{
+    test('Find Too Many Default Exits', async () => {
+      const flowJson = `{
         "specification_version": "1.0.0-rc2",
         "uuid": "e0616de8-68c5-4918-b375-f5eb9fcc1695",
         "name": "Museum of Interop Reception",
@@ -275,7 +282,7 @@ describe('Validation Usage Tests', () => {
             "values": [
               {
                 "language_id": "22",
-                "value": "",
+                "value": "anything",
                 "content_type": "TEXT",
                 "modes": [
                   "SMS"
@@ -298,26 +305,62 @@ describe('Validation Usage Tests', () => {
           },
           {
             "uuid": "4d6712c4-64d7-4dc2-91c6-f49f765be197",
-            "values": []
+            "values": [
+              {
+                "language_id": "22",
+                "content_type": "TEXT",
+                "modes": [
+                  "SMS"
+                ],
+                "value": "anything"
+              }
+            ]
           },
           {
             "uuid": "90ef94ee-0f69-4c7d-9874-e57ec51c300f",
-            "values": []
+            "values": [
+              {
+                "language_id": "22",
+                "content_type": "TEXT",
+                "modes": [
+                  "SMS"
+                ],
+                "value": "anything"
+              }
+            ]
           },
           {
             "uuid": "997f78cb-c79d-4017-98fb-1f0734e13020",
-            "values": []
+            "values": [
+              {
+                "language_id": "22",
+                "content_type": "TEXT",
+                "modes": [
+                  "SMS"
+                ],
+                "value": "anything"
+              }
+            ]
           },
           {
             "uuid": "1cdf8be2-18af-4967-b255-ea360a8fa4a7",
-            "values": []
+            "values": [
+              {
+                "language_id": "22",
+                "content_type": "TEXT",
+                "modes": [
+                  "SMS"
+                ],
+                "value": "anything"
+              }
+            ]
           }
         ]
       }`
 
-    const container = JSON.parse(flowJson)
-    const errors = getFlowStructureErrors(container)
-    // console.log(response);
+      const container = JSON.parse(flowJson)
+      const errors = getFlowStructureErrors(container)
+      // console.log(response);
       expect(errors).toEqual([
         {
           dataPath: '/container/flows/0/blocks/1/exits',
@@ -328,5 +371,5 @@ describe('Validation Usage Tests', () => {
           schemaPath: '#/properties/exits',
         },
       ])
-  })
+    })
 })

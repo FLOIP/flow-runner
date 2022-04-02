@@ -44,7 +44,7 @@ export class ResourceResolver implements IResourceResolver {
       return new Resource(resourceId, [createTextResourceVariantWith(resourceId, this.context)], this.context)
     }
 
-    const resource = getActiveFlowFrom(this.context).resources.find(({uuid}) => uuid === resourceId)
+    const resource = getActiveFlowFrom(this.context)?.resources?.find(({uuid}) => uuid === resourceId)
 
     if (resource == null) {
       throw new ResourceNotFoundException(
