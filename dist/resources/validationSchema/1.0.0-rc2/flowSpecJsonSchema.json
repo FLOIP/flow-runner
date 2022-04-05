@@ -344,9 +344,9 @@
         },
         "value": {
           "description": "Value will accept alphanumerics, white spaces, file path, expressions, conditions,",
+          "format": "floip-expression",
           "pattern": "^[\\w \\\\\\/@:,.!?+*^<>=()\"'-]+$",
-          "type": "string",
-          "format": "floip-expression"
+          "type": "string"
         }
       },
       "required": [
@@ -364,6 +364,7 @@
           "type": "string"
         },
         "property_value": {
+          "format": "floip-expression",
           "type": "string"
         }
       },

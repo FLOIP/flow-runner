@@ -107,7 +107,8 @@
           "type": "string"
         },
         "property_value": {
-          "type": "string"
+          "type": "string",
+          "format": "floip-expression"
         }
       },
       "required": [
