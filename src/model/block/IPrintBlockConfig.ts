@@ -20,5 +20,8 @@
 import {IBlockConfig} from '../..'
 
 export interface IPrintBlockConfig extends IBlockConfig {
+  /**
+   * @format floip-expression
+   */
   message: string
 }

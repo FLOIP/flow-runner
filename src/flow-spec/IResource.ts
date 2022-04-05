@@ -8,6 +8,7 @@ export interface IResourceValue {
   /**
    * Value will accept alphanumerics, white spaces, file path, expressions, conditions,
    * @pattern ^[\w \\\/@:,.!?+*^<>=()"'-]+$
+   * @format floip-expression
    */
   value: string
 }
