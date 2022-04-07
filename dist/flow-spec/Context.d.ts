@@ -1,4 +1,4 @@
-import { DeliveryStatus, IBlockInteraction, IContact, IContext, ICursor, IFlow, IResourceWithContext, IResource, IResources, IReversibleUpdateOperation, SupportedMode, IGroup } from '..';
+import { DeliveryStatus, IBlockInteraction, IContact, IContext, ICursor, IFlow, IResourceWithContext, IReversibleUpdateOperation, SupportedMode, IGroup } from '..';
 export declare class Context implements IContext {
     id: string;
     created_at: string;
@@ -15,7 +15,6 @@ export declare class Context implements IContext {
     reversible_operations: IReversibleUpdateOperation[];
     flows: IFlow[];
     first_flow_id: string;
-    resources: IResources;
     entry_at?: string;
     exit_at?: string;
     user_id?: string;
@@ -29,7 +28,7 @@ export declare class Context implements IContext {
     };
     constructor(id: string, created_at: string, delivery_status: DeliveryStatus, mode: SupportedMode, language_id: string, contact: IContact, groups: IGroup[], session_vars: {
         [k: string]: unknown;
-    }, interactions: IBlockInteraction[], nested_flow_block_interaction_id_stack: string[], reversible_operations: IReversibleUpdateOperation[], flows: IFlow[], first_flow_id: string, resources: IResources, entry_at?: string, exit_at?: string, user_id?: string, org_id?: string, cursor?: ICursor, vendor_metadata?: {
+    }, interactions: IBlockInteraction[], nested_flow_block_interaction_id_stack: string[], reversible_operations: IReversibleUpdateOperation[], flows: IFlow[], first_flow_id: string, entry_at?: string, exit_at?: string, user_id?: string, org_id?: string, cursor?: ICursor, vendor_metadata?: {
         [k: string]: unknown;
     }, logs?: {
         [k: string]: string;
@@ -53,7 +52,6 @@ export declare namespace Context {
         reversible_operations: IReversibleUpdateOperation[];
         flows?: IFlow[];
         first_flow_id?: string;
-        resources?: IResource[];
         entry_at?: string;
         exit_at?: string;
         user_id?: string;
@@ -80,7 +78,6 @@ export declare namespace Context {
         setReversibleOperations(reversible_operations: IReversibleUpdateOperation[]): Context.Builder;
         setFlows(flows: IFlow[]): Context.Builder;
         setFirstFlowId(first_flow_id: string): Context.Builder;
-        setResources(resources: IResource[]): Context.Builder;
         setEntryAt(entry_at: string): Context.Builder;
         setExitAt(exit_at: string): Context.Builder;
         setUserId(user_id: string): Context.Builder;

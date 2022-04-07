@@ -1,5 +1,5 @@
 import { NonBreakingUpdateOperation } from 'sp2';
-import { DeliveryStatus, IBlock, IBlockInteraction, IContact, IFlow, IGroup, IIdGenerator, IPrompt, IPromptConfig, IResource, IResources, SupportedMode } from '..';
+import { DeliveryStatus, IBlock, IBlockInteraction, IContact, IFlow, IGroup, IIdGenerator, IPrompt, IPromptConfig, SupportedMode } from '..';
 export interface ICursor {
     interactionId: string;
     promptConfig?: IPromptConfig;
@@ -50,7 +50,6 @@ export interface IContext {
     cursor?: ICursor;
     flows: IFlow[];
     first_flow_id: string;
-    resources: IResources;
     vendor_metadata: {
         [k: string]: unknown;
     };
@@ -64,7 +63,7 @@ export interface IContextWithCursor extends IContext {
 export interface IContextInputRequired extends IContext {
     cursor: ICursorInputRequired;
 }
-export declare function createContextDataObjectFor(contact: IContact, groups: IGroup[], userId: string, orgId: string, flows: IFlow[], languageId: string, mode?: SupportedMode, resources?: IResource[], idGenerator?: IIdGenerator): Promise<IContext>;
+export declare function createContextDataObjectFor(contact: IContact, groups: IGroup[], userId: string, orgId: string, flows: IFlow[], languageId: string, mode?: SupportedMode, idGenerator?: IIdGenerator): Promise<IContext>;
 export declare function findInteractionWith(uuid: string, { interactions }: IContext): IBlockInteraction;
 export declare function findFlowWith(uuid: string, { flows }: IContext): IFlow;
 export declare function findBlockOnActiveFlowWith(uuid: string, ctx: IContext): IBlock;

@@ -5,8 +5,9 @@ const __1 = require("..");
 describe('ResourceResolver', () => {
     let resolver;
     let ctx;
+    const firstFlowUuid = 'flow-123';
     beforeEach(() => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-        ctx = yield __1.createContextDataObjectFor({ id: 'contact-123', name: 'Bert' }, [{ group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup' }], 'user-123', 'org-123', [{ uuid: 'flow-123' }], 'eng', __1.SupportedMode.OFFLINE);
+        ctx = yield __1.createContextDataObjectFor({ id: 'contact-123', name: 'Bert' }, [{ group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup' }], 'user-123', 'org-123', [{ uuid: firstFlowUuid }], 'eng', __1.SupportedMode.OFFLINE);
         resolver = new __1.ResourceResolver(ctx);
     }));
     describe('resolve', () => {
@@ -31,7 +32,7 @@ describe('ResourceResolver', () => {
         describe('when resource with uuid present', () => {
             it('should return resource with UUID provided', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
                 const expected = { uuid: 'known000-0000-0000-0000-resource0123', values: [] };
-                ctx.resources = [
+                ctx.flows[0].resources = [
                     { uuid: 'notknown-0000-0000-0000-resource0654', values: [] },
                     expected,
                     { uuid: 'notknown-0000-0000-0000-resource0123', values: [] },
@@ -70,10 +71,15 @@ describe('ResourceResolver', () => {
                     Object.assign(resolver.context, {
                         mode,
                         language_id: languageId,
-                        resources: [
+                        flows: [
                             {
-                                uuid: 'known000-0000-0000-0000-resource0123',
-                                values: variants,
+                                uuid: firstFlowUuid,
+                                resources: [
+                                    {
+                                        uuid: 'known000-0000-0000-0000-resource0123',
+                                        values: variants,
+                                    },
+                                ],
                             },
                         ],
                     });

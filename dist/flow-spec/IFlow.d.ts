@@ -1,4 +1,4 @@
-import { IBlock, ILanguage, SupportedMode } from '..';
+import { IBlock, ILanguage, IResource, SupportedMode } from '..';
 export interface IFlow {
     uuid: string;
     name: string;
@@ -11,6 +11,7 @@ export interface IFlow {
     blocks: IBlock[];
     first_block_id: string;
     exit_block_id?: string;
+    resources: IResource[];
 }
 export declare function findBlockWith(uuid: string, { blocks }: IFlow): IBlock;
 export interface IFlowService {

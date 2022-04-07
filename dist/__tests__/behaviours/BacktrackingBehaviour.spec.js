@@ -268,6 +268,7 @@ describe('BacktrackingBehaviour', () => {
                             { uuid: 'block-345', type: 'test', name: 'test', ui_metadata: { canvas_coordinates: { x: 10, y: 10 } }, exits: [] },
                             { uuid: 'block-456', type: 'test', name: 'test', ui_metadata: { canvas_coordinates: { x: 10, y: 10 } }, exits: [] },
                         ],
+                        resources: [],
                     },
                     {
                         uuid: 'flow-234',
@@ -278,6 +279,7 @@ describe('BacktrackingBehaviour', () => {
                         last_modified: '2016-12-25 13:42:05.234598',
                         first_block_id: '0',
                         blocks: [{ uuid: 'block-567' }, { uuid: 'block-678' }, { uuid: 'block-789', config: { flow_id: 'flow-345' } }],
+                        resources: [],
                     },
                     {
                         uuid: 'flow-345',
@@ -288,6 +290,7 @@ describe('BacktrackingBehaviour', () => {
                         last_modified: '2016-12-25 13:42:05.234598',
                         first_block_id: '0',
                         blocks: [{ uuid: 'block-890' }, { uuid: 'block-901' }, { uuid: 'block-012' }],
+                        resources: [],
                     },
                 ];
                 backtracking.context.interactions = lodash_1.cloneDeep(interactions);

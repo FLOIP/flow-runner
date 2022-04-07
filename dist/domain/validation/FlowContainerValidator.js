@@ -4,6 +4,7 @@ exports.getFlowStructureErrors = void 0;
 const tslib_1 = require("tslib");
 const ajv_1 = tslib_1.__importDefault(require("ajv"));
 const ajv_formats_1 = tslib_1.__importDefault(require("ajv-formats"));
+const fs = require('fs');
 function folderPathFromSpecificationVersion(version) {
     if (version == '1.0.0-rc1') {
         return '../../../dist/resources/validationSchema/1.0.0-rc1/';
@@ -14,14 +15,8 @@ function folderPathFromSpecificationVersion(version) {
     return null;
 }
 function getFlowStructureErrors(container, shouldValidateBlocks = true) {
-    let flowSpecJsonSchema;
-    if (container.specification_version == '1.0.0-rc1') {
-        flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc1/flowSpecJsonSchema.json');
-    }
-    else if (container.specification_version == '1.0.0-rc2') {
-        flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc2/flowSpecJsonSchema.json');
-    }
-    else {
+    const filePath = `dist/resources/validationSchema/${container.specification_version}/flowSpecJsonSchema.json`;
+    if (!fs.existsSync(filePath)) {
         return [
             {
                 keyword: 'version',
@@ -33,6 +28,7 @@ function getFlowStructureErrors(container, shouldValidateBlocks = true) {
             },
         ];
     }
+    const flowSpecJsonSchema = require(`../../../${filePath}`);
     const ajv = new ajv_1.default();
     ajv_formats_1.default(ajv);
     const validate = ajv.compile(flowSpecJsonSchema);
@@ -152,7 +148,9 @@ function blockTypeToInterfaceName(type) {
 }
 function checkAllResourcesPresent(container) {
     const resourcesRequested = [];
+    const allResources = [];
     container.flows.forEach(flow => {
+        allResources.push(...flow.resources);
         flow.blocks.forEach(block => {
             if (block.type == 'MobilePrimitives.Message') {
                 const b = block;
@@ -187,7 +185,7 @@ function checkAllResourcesPresent(container) {
         });
     });
     const missingResources = [];
-    const allResourceStrings = container.resources.map(r => r.uuid);
+    const allResourceStrings = allResources.map(r => r.uuid);
     resourcesRequested.forEach(resourcesString => {
         if (!allResourceStrings.includes(resourcesString)) {
             missingResources.push(resourcesString);

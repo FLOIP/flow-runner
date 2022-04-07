@@ -4,7 +4,7 @@ exports.ContextService = exports.isNested = exports.isLastBlockOn = exports.getA
 const tslib_1 = require("tslib");
 const __1 = require("..");
 const lodash_1 = require("lodash");
-function createContextDataObjectFor(contact, groups, userId, orgId, flows, languageId, mode = __1.SupportedMode.OFFLINE, resources = [], idGenerator = new __1.IdGeneratorUuidV4()) {
+function createContextDataObjectFor(contact, groups, userId, orgId, flows, languageId, mode = __1.SupportedMode.OFFLINE, idGenerator = new __1.IdGeneratorUuidV4()) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         return {
             id: yield idGenerator.generate(),
@@ -22,7 +22,6 @@ function createContextDataObjectFor(contact, groups, userId, orgId, flows, langu
             reversible_operations: [],
             flows,
             first_flow_id: flows[0].uuid,
-            resources,
             vendor_metadata: {},
             logs: {},
         };

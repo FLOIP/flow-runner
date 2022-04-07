@@ -1,4 +1,4 @@
-import { IFlow, IResource } from '..';
+import { IFlow } from '..';
 export interface IContainer {
     specification_version: string;
     uuid: string;
@@ -6,6 +6,5 @@ export interface IContainer {
     description?: string;
     vendor_metadata?: object;
     flows: IFlow[];
-    resources: IResource[];
 }
 //# sourceMappingURL=IContainer.d.ts.map
