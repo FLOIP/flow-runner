@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const __1 = require("../..");
 const IDataset_1 = require("../fixtures/IDataset");
+const lodash_1 = require("lodash");
 describe('SelectManyPrompt', () => {
     let dataset;
     beforeEach(() => {
@@ -54,7 +55,7 @@ function verifyValidationThrows(invoker, ErrorType, msg, choices) {
     catch (e) {
         expect(e).toBeInstanceOf(ErrorType);
         expect(e.message).toEqual(msg);
-        expect(e.choices).toEqual(choices);
+        expect(lodash_1.get(e, 'choices')).toEqual(choices);
     }
 }
 //# sourceMappingURL=SelectManyPrompt.spec.js.map

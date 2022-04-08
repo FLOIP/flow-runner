@@ -11,6 +11,7 @@ import {
   ValidationException,
 } from '../..'
 import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
+import {get} from 'lodash'
 
 describe('SelectManyPrompt', () => {
   let dataset: IDataset
@@ -86,7 +87,7 @@ function verifyValidationThrows(invoker: Function, ErrorType: Function, msg: str
     expect(true).toBeFalsy()
   } catch (e) {
     expect(e).toBeInstanceOf(ErrorType)
-    expect(e.message).toEqual(msg)
-    expect(e.choices).toEqual(choices)
+    expect((e as Error).message).toEqual(msg)
+    expect(get(e, 'choices')).toEqual(choices)
   }
 }
