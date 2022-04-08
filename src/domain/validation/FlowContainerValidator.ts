@@ -7,16 +7,15 @@ import {ISelectManyResponseBlock} from '../../model/block/ISelectManyResponseBlo
 import {IOpenResponseBlock} from '../../model/block/IOpenResponseBlock'
 import {INumericResponseBlock} from '../../model/block/INumericResponseBlock'
 import {IBlock} from '../../flow-spec/IBlock'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const fs = require('fs')
+import fs from 'fs'
 
-function folderPathFromSpecificationVersion(version: string): string | null {
-  if (version == '1.0.0-rc1') {
-    return '../../../dist/resources/validationSchema/1.0.0-rc1/'
-  } else if (version == '1.0.0-rc2') {
-    return '../../../dist/resources/validationSchema/1.0.0-rc2/'
+function filePathFromSpecificationVersion(version: string, schemaFileName: string): string {
+  const filePath = `dist/resources/validationSchema/${version}/${schemaFileName}.json`
+  if (!fs.existsSync(filePath)) {
+    return ''
   }
-  return null
+
+  return `../../../${filePath}`
 }
 
 /**
@@ -104,7 +103,7 @@ function checkIndividualBlock(
     const ajv = new Ajv()
     ajvFormat(ajv)
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const jsonSchema = require(folderPathFromSpecificationVersion(container.specification_version) + schemaFileName + '.json')
+    const jsonSchema = require(filePathFromSpecificationVersion(container.specification_version, schemaFileName))
     const validate = ajv.compile(jsonSchema)
     if (!validate(block)) {
       return validate.errors?.map(error => {
