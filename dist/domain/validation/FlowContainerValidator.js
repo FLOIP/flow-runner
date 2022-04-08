@@ -4,19 +4,17 @@ exports.getFlowStructureErrors = void 0;
 const tslib_1 = require("tslib");
 const ajv_1 = tslib_1.__importDefault(require("ajv"));
 const ajv_formats_1 = tslib_1.__importDefault(require("ajv-formats"));
-const fs = require('fs');
-function folderPathFromSpecificationVersion(version) {
-    if (version == '1.0.0-rc1') {
-        return '../../../dist/resources/validationSchema/1.0.0-rc1/';
+const fs_1 = tslib_1.__importDefault(require("fs"));
+function filePathFromSpecificationVersion(version, schemaFileName) {
+    const filePath = `dist/resources/validationSchema/${version}/${schemaFileName}.json`;
+    if (!fs_1.default.existsSync(filePath)) {
+        return '';
     }
-    else if (version == '1.0.0-rc2') {
-        return '../../../dist/resources/validationSchema/1.0.0-rc2/';
-    }
-    return null;
+    return `../../../${filePath}`;
 }
 function getFlowStructureErrors(container, shouldValidateBlocks = true) {
     const filePath = `dist/resources/validationSchema/${container.specification_version}/flowSpecJsonSchema.json`;
-    if (!fs.existsSync(filePath)) {
+    if (!fs_1.default.existsSync(filePath)) {
         return [
             {
                 keyword: 'version',
@@ -72,7 +70,7 @@ function checkIndividualBlock(block, container, blockIndex, flowIndex) {
     if (schemaFileName != null) {
         const ajv = new ajv_1.default();
         ajv_formats_1.default(ajv);
-        const jsonSchema = require(folderPathFromSpecificationVersion(container.specification_version) + schemaFileName + '.json');
+        const jsonSchema = require(filePathFromSpecificationVersion(container.specification_version, schemaFileName));
         const validate = ajv.compile(jsonSchema);
         if (!validate(block)) {
             return (_a = validate.errors) === null || _a === void 0 ? void 0 : _a.map(error => {
