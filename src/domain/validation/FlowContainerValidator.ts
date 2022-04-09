@@ -1,4 +1,4 @@
-import {IContainer, IResources} from '../..'
+import {IContainer, ILogBlock, IResources} from '../..'
 import Ajv, {ErrorObject} from 'ajv'
 import ajvFormat from 'ajv-formats'
 import {IMessageBlock} from '../../model/block/IMessageBlock'
@@ -214,7 +214,7 @@ function checkAllResourcesPresent(container: IContainer): string[] | null {
   }
 
   container.flows.forEach(flow => {
-    if (container.specification_version > '1.0.0-rc4') {
+    if (container.specification_version >= '1.0.0-rc4') {
       allResources.push(...flow.resources)
     }
 
@@ -268,6 +268,11 @@ function collectResourceUuidsFromBlock(block: IBlock): string[] {
   if (block.type == 'MobilePrimitives.NumericResponse') {
     const b = block as INumericResponseBlock
     uuids.push(b.config.prompt)
+  }
+
+  if (block.type == 'Core.Log') {
+    const b = block as ILogBlock
+    uuids.push(b.config.message)
   }
 
   return uuids
