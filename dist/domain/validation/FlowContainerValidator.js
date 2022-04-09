@@ -167,7 +167,7 @@ function checkAllResourcesPresent(container) {
         allResources = [];
     }
     container.flows.forEach(flow => {
-        if (container.specification_version > '1.0.0-rc4') {
+        if (container.specification_version >= '1.0.0-rc4') {
             allResources.push(...flow.resources);
         }
         flow.blocks.forEach(block => {
@@ -214,6 +214,10 @@ function collectResourceUuidsFromBlock(block) {
     if (block.type == 'MobilePrimitives.NumericResponse') {
         const b = block;
         uuids.push(b.config.prompt);
+    }
+    if (block.type == 'Core.Log') {
+        const b = block;
+        uuids.push(b.config.message);
     }
     return uuids;
 }
