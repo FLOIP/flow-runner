@@ -4,6 +4,7 @@ exports.getFlowStructureErrors = void 0;
 const tslib_1 = require("tslib");
 const ajv_1 = tslib_1.__importDefault(require("ajv"));
 const ajv_formats_1 = tslib_1.__importDefault(require("ajv-formats"));
+const lodash_1 = require("lodash");
 const validRCs = ['1.0.0-rc1', '1.0.0-rc2', '1.0.0-rc3', '1.0.0-rc4'];
 function filePathFromSpecificationVersion(version, schemaFileName) {
     if (!validRCs.includes(version)) {
@@ -39,16 +40,30 @@ function getFlowStructureErrors(container, shouldValidateBlocks = true) {
     }
     const missingResources = checkAllResourcesPresent(container);
     if (missingResources != null) {
-        return [
-            {
-                keyword: 'missing',
-                dataPath: '/container/resources',
-                schemaPath: '#/properties/resources',
-                params: [],
-                propertyName: 'resources',
-                message: 'Resources specified in block configurations are missing from resources: ' + missingResources.join(','),
-            },
-        ];
+        if (container.specification_version < '1.0.0-rc4') {
+            return [
+                {
+                    keyword: 'missing',
+                    dataPath: '/container/resources',
+                    schemaPath: '#/properties/resources',
+                    params: [],
+                    propertyName: 'resources',
+                    message: 'Resources specified in block configurations are missing from resources: ' + missingResources.join(','),
+                },
+            ];
+        }
+        else {
+            return [
+                {
+                    keyword: 'missing',
+                    dataPath: '/flows/*/resources',
+                    schemaPath: '#/properties/resources',
+                    params: [],
+                    propertyName: 'resources',
+                    message: 'Resources specified in block configurations are missing from resources: ' + missingResources.join(','),
+                },
+            ];
+        }
     }
     return null;
 }
@@ -144,54 +159,62 @@ function blockTypeToInterfaceName(type) {
 }
 function checkAllResourcesPresent(container) {
     const resourcesRequested = [];
-    const allResources = [];
+    let allResources = [];
+    if (container.specification_version < '1.0.0-rc4') {
+        allResources = lodash_1.get(container, 'resources');
+    }
+    else {
+        allResources = [];
+    }
     container.flows.forEach(flow => {
-        allResources.push(...flow.resources);
+        if (container.specification_version > '1.0.0-rc4') {
+            allResources.push(...flow.resources);
+        }
         flow.blocks.forEach(block => {
-            if (block.type == 'MobilePrimitives.Message') {
-                const b = block;
-                resourcesRequested.push(b.config.prompt);
-            }
-            if (block.type == 'MobilePrimitives.SelectOneResponse') {
-                const b = block;
-                if (b.config.prompt != undefined) {
-                    resourcesRequested.push(b.config.prompt);
-                }
-                if (b.config.question_prompt != undefined) {
-                    resourcesRequested.push(b.config.question_prompt);
-                }
-            }
-            if (block.type == 'MobilePrimitives.SelectManyResponse') {
-                const b = block;
-                if (b.config.prompt != undefined) {
-                    resourcesRequested.push(b.config.prompt);
-                }
-                if (b.config.question_prompt != undefined) {
-                    resourcesRequested.push(b.config.question_prompt);
-                }
-            }
-            if (block.type == 'MobilePrimitives.OpenResponse') {
-                const b = block;
-                resourcesRequested.push(b.config.prompt);
-            }
-            if (block.type == 'MobilePrimitives.NumericResponse') {
-                const b = block;
-                resourcesRequested.push(b.config.prompt);
-            }
+            resourcesRequested.push(...collectResourceUuidsFromBlock(block));
         });
     });
-    const missingResources = [];
     const allResourceStrings = allResources.map(r => r.uuid);
-    resourcesRequested.forEach(resourcesString => {
-        if (!allResourceStrings.includes(resourcesString)) {
-            missingResources.push(resourcesString);
-        }
-    });
+    const missingResources = lodash_1.difference(resourcesRequested, allResourceStrings);
     if (missingResources.length > 0) {
         return missingResources;
     }
     else {
         return null;
     }
+}
+function collectResourceUuidsFromBlock(block) {
+    const uuids = [];
+    if (block.type == 'MobilePrimitives.Message') {
+        const b = block;
+        uuids.push(b.config.prompt);
+    }
+    if (block.type == 'MobilePrimitives.SelectOneResponse') {
+        const b = block;
+        if (b.config.prompt != undefined) {
+            uuids.push(b.config.prompt);
+        }
+        if (b.config.question_prompt != undefined) {
+            uuids.push(b.config.question_prompt);
+        }
+    }
+    if (block.type == 'MobilePrimitives.SelectManyResponse') {
+        const b = block;
+        if (b.config.prompt != undefined) {
+            uuids.push(b.config.prompt);
+        }
+        if (b.config.question_prompt != undefined) {
+            uuids.push(b.config.question_prompt);
+        }
+    }
+    if (block.type == 'MobilePrimitives.OpenResponse') {
+        const b = block;
+        uuids.push(b.config.prompt);
+    }
+    if (block.type == 'MobilePrimitives.NumericResponse') {
+        const b = block;
+        uuids.push(b.config.prompt);
+    }
+    return uuids;
 }
 //# sourceMappingURL=FlowContainerValidator.js.map
