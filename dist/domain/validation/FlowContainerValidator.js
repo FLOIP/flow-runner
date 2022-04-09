@@ -4,17 +4,15 @@ exports.getFlowStructureErrors = void 0;
 const tslib_1 = require("tslib");
 const ajv_1 = tslib_1.__importDefault(require("ajv"));
 const ajv_formats_1 = tslib_1.__importDefault(require("ajv-formats"));
-const fs_1 = tslib_1.__importDefault(require("fs"));
+const validRCs = ['1.0.0-rc1', '1.0.0-rc2', '1.0.0-rc3', '1.0.0-rc4'];
 function filePathFromSpecificationVersion(version, schemaFileName) {
-    const filePath = `dist/resources/validationSchema/${version}/${schemaFileName}.json`;
-    if (!fs_1.default.existsSync(filePath)) {
+    if (!validRCs.includes(version)) {
         return '';
     }
-    return `../../../${filePath}`;
+    return `../../../dist/resources/validationSchema/${version}/${schemaFileName}.json`;
 }
 function getFlowStructureErrors(container, shouldValidateBlocks = true) {
-    const filePath = `dist/resources/validationSchema/${container.specification_version}/flowSpecJsonSchema.json`;
-    if (!fs_1.default.existsSync(filePath)) {
+    if (!validRCs.includes(container.specification_version)) {
         return [
             {
                 keyword: 'version',
@@ -26,7 +24,7 @@ function getFlowStructureErrors(container, shouldValidateBlocks = true) {
             },
         ];
     }
-    const flowSpecJsonSchema = require(`../../../${filePath}`);
+    const flowSpecJsonSchema = require(`../../../dist/resources/validationSchema/${container.specification_version}/flowSpecJsonSchema.json`);
     const ajv = new ajv_1.default();
     ajv_formats_1.default(ajv);
     const validate = ajv.compile(flowSpecJsonSchema);
