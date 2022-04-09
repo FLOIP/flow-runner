@@ -7,6 +7,7 @@ import {ISelectManyResponseBlock} from '../../model/block/ISelectManyResponseBlo
 import {IOpenResponseBlock} from '../../model/block/IOpenResponseBlock'
 import {INumericResponseBlock} from '../../model/block/INumericResponseBlock'
 import {IBlock} from '../../flow-spec/IBlock'
+import {get, difference} from 'lodash'
 
 const validRCs = ['1.0.0-rc1', '1.0.0-rc2', '1.0.0-rc3', '1.0.0-rc4']
 
@@ -63,16 +64,29 @@ export function getFlowStructureErrors(
 
   const missingResources = checkAllResourcesPresent(container)
   if (missingResources != null) {
-    return [
-      {
-        keyword: 'missing',
-        dataPath: '/container/resources',
-        schemaPath: '#/properties/resources',
-        params: [],
-        propertyName: 'resources',
-        message: 'Resources specified in block configurations are missing from resources: ' + missingResources.join(','),
-      },
-    ]
+    if (container.specification_version < '1.0.0-rc4') {
+      return [
+        {
+          keyword: 'missing',
+          dataPath: '/container/resources',
+          schemaPath: '#/properties/resources',
+          params: [],
+          propertyName: 'resources',
+          message: 'Resources specified in block configurations are missing from resources: ' + missingResources.join(','),
+        },
+      ]
+    } else {
+      return [
+        {
+          keyword: 'missing',
+          dataPath: '/flows/*/resources',
+          schemaPath: '#/properties/resources',
+          params: [],
+          propertyName: 'resources',
+          message: 'Resources specified in block configurations are missing from resources: ' + missingResources.join(','),
+        },
+      ]
+    }
   }
 
   return null
@@ -185,65 +199,67 @@ function blockTypeToInterfaceName(type: string): string | null {
 }
 
 /**
- * Check that all resources asked for within blocks are available in the Resources array of the container
+ * Check that all resources asked for within blocks are available in the Resources array
  * @param container Flow package container
  * @returns null if all resources are available, otherwise an array of the missing resource UUIDs
  */
 function checkAllResourcesPresent(container: IContainer): string[] | null {
   const resourcesRequested: string[] = []
-  const allResources: IResources = []
+  // resources is no more accessible for IContainer, but we still need to validate RC2 resource
+  const allResources: IResources = get(container, 'resources')
   container.flows.forEach(flow => {
-    allResources.push(...flow.resources)
+    // allResources.push(container.resources)
     flow.blocks.forEach(block => {
-      if (block.type == 'MobilePrimitives.Message') {
-        const b = block as IMessageBlock
-        resourcesRequested.push(b.config.prompt)
-      }
-
-      if (block.type == 'MobilePrimitives.SelectOneResponse') {
-        const b = block as ISelectOneResponseBlock
-        if (b.config.prompt != undefined) {
-          resourcesRequested.push(b.config.prompt)
-        }
-        if (b.config.question_prompt != undefined) {
-          resourcesRequested.push(b.config.question_prompt)
-        }
-      }
-
-      if (block.type == 'MobilePrimitives.SelectManyResponse') {
-        const b = block as ISelectManyResponseBlock
-        if (b.config.prompt != undefined) {
-          resourcesRequested.push(b.config.prompt)
-        }
-        if (b.config.question_prompt != undefined) {
-          resourcesRequested.push(b.config.question_prompt)
-        }
-      }
-
-      if (block.type == 'MobilePrimitives.OpenResponse') {
-        const b = block as IOpenResponseBlock
-        resourcesRequested.push(b.config.prompt)
-      }
-
-      if (block.type == 'MobilePrimitives.NumericResponse') {
-        const b = block as INumericResponseBlock
-        resourcesRequested.push(b.config.prompt)
-      }
+      resourcesRequested.push(...collectResourceUuidsFromBlock(block))
     })
   })
 
-  const missingResources: string[] = []
   const allResourceStrings = allResources.map(r => r.uuid)
-
-  resourcesRequested.forEach(resourcesString => {
-    if (!allResourceStrings.includes(resourcesString)) {
-      missingResources.push(resourcesString)
-    }
-  })
+  const missingResources: string[] = difference(resourcesRequested, allResourceStrings)
 
   if (missingResources.length > 0) {
     return missingResources
   } else {
     return null
   }
+}
+
+function collectResourceUuidsFromBlock(block: IBlock): string[] {
+  const uuids: string[] = []
+  if (block.type == 'MobilePrimitives.Message') {
+    const b = block as IMessageBlock
+    uuids.push(b.config.prompt)
+  }
+
+  if (block.type == 'MobilePrimitives.SelectOneResponse') {
+    const b = block as ISelectOneResponseBlock
+    if (b.config.prompt != undefined) {
+      uuids.push(b.config.prompt)
+    }
+    if (b.config.question_prompt != undefined) {
+      uuids.push(b.config.question_prompt)
+    }
+  }
+
+  if (block.type == 'MobilePrimitives.SelectManyResponse') {
+    const b = block as ISelectManyResponseBlock
+    if (b.config.prompt != undefined) {
+      uuids.push(b.config.prompt)
+    }
+    if (b.config.question_prompt != undefined) {
+      uuids.push(b.config.question_prompt)
+    }
+  }
+
+  if (block.type == 'MobilePrimitives.OpenResponse') {
+    const b = block as IOpenResponseBlock
+    uuids.push(b.config.prompt)
+  }
+
+  if (block.type == 'MobilePrimitives.NumericResponse') {
+    const b = block as INumericResponseBlock
+    uuids.push(b.config.prompt)
+  }
+
+  return uuids
 }
