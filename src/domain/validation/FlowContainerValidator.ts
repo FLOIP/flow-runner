@@ -205,10 +205,19 @@ function blockTypeToInterfaceName(type: string): string | null {
  */
 function checkAllResourcesPresent(container: IContainer): string[] | null {
   const resourcesRequested: string[] = []
-  // resources is no more accessible for IContainer, but we still need to validate RC2 resource
-  const allResources: IResources = get(container, 'resources')
+  let allResources: IResources = []
+  if (container.specification_version < '1.0.0-rc4') {
+    // for these version, resources is no longer accessible in IContainer, but we still want to check them if requested
+    allResources = get(container, 'resources') as IResources
+  } else {
+    allResources = []
+  }
+
   container.flows.forEach(flow => {
-    // allResources.push(container.resources)
+    if (container.specification_version > '1.0.0-rc4') {
+      allResources.push(...flow.resources)
+    }
+
     flow.blocks.forEach(block => {
       resourcesRequested.push(...collectResourceUuidsFromBlock(block))
     })
