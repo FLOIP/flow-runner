@@ -7,15 +7,15 @@ import {ISelectManyResponseBlock} from '../../model/block/ISelectManyResponseBlo
 import {IOpenResponseBlock} from '../../model/block/IOpenResponseBlock'
 import {INumericResponseBlock} from '../../model/block/INumericResponseBlock'
 import {IBlock} from '../../flow-spec/IBlock'
-import fs from 'fs'
+
+const validRCs = ['1.0.0-rc1', '1.0.0-rc2', '1.0.0-rc3', '1.0.0-rc4']
 
 function filePathFromSpecificationVersion(version: string, schemaFileName: string): string {
-  const filePath = `dist/resources/validationSchema/${version}/${schemaFileName}.json`
-  if (!fs.existsSync(filePath)) {
+  if (!validRCs.includes(version)) {
     return ''
   }
 
-  return `../../../${filePath}`
+  return `../../../dist/resources/validationSchema/${version}/${schemaFileName}.json`
 }
 
 /**
@@ -31,8 +31,7 @@ export function getFlowStructureErrors(
   container: IContainer,
   shouldValidateBlocks = true
 ): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
-  const filePath = `dist/resources/validationSchema/${container.specification_version}/flowSpecJsonSchema.json`
-  if (!fs.existsSync(filePath)) {
+  if (!validRCs.includes(container.specification_version)) {
     return [
       {
         keyword: 'version',
@@ -46,7 +45,7 @@ export function getFlowStructureErrors(
   }
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const flowSpecJsonSchema = require(`../../../${filePath}`)
+  const flowSpecJsonSchema = require(`../../../dist/resources/validationSchema/${container.specification_version}/flowSpecJsonSchema.json`)
   const ajv = new Ajv()
   // we need this to use AJV format such as 'date-time' (https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
   ajvFormat(ajv)
