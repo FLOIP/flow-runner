@@ -5,15 +5,17 @@ const tslib_1 = require("tslib");
 const ajv_1 = tslib_1.__importDefault(require("ajv"));
 const ajv_formats_1 = tslib_1.__importDefault(require("ajv-formats"));
 const lodash_1 = require("lodash");
-const validRCs = ['1.0.0-rc1', '1.0.0-rc2', '1.0.0-rc3', '1.0.0-rc4'];
-function filePathFromSpecificationVersion(version, schemaFileName) {
-    if (!validRCs.includes(version)) {
-        return '';
+function getJsonSchemaFrom(version, schemaFileName) {
+    try {
+        return require(`../../../dist/resources/validationSchema/${version}/${schemaFileName}.json`);
     }
-    return `../../../dist/resources/validationSchema/${version}/${schemaFileName}.json`;
+    catch (_e) {
+        return null;
+    }
 }
 function getFlowStructureErrors(container, shouldValidateBlocks = true) {
-    if (!validRCs.includes(container.specification_version)) {
+    const flowSpecJsonSchema = getJsonSchemaFrom(container.specification_version, 'flowSpecJsonSchema');
+    if (flowSpecJsonSchema == null) {
         return [
             {
                 keyword: 'version',
@@ -25,7 +27,6 @@ function getFlowStructureErrors(container, shouldValidateBlocks = true) {
             },
         ];
     }
-    const flowSpecJsonSchema = require(`../../../dist/resources/validationSchema/${container.specification_version}/flowSpecJsonSchema.json`);
     const ajv = new ajv_1.default();
     ajv_formats_1.default(ajv);
     const validate = ajv.compile(flowSpecJsonSchema);
@@ -40,30 +41,16 @@ function getFlowStructureErrors(container, shouldValidateBlocks = true) {
     }
     const missingResources = checkAllResourcesPresent(container);
     if (missingResources != null) {
-        if (container.specification_version < '1.0.0-rc4') {
-            return [
-                {
-                    keyword: 'missing',
-                    dataPath: '/container/resources',
-                    schemaPath: '#/properties/resources',
-                    params: [],
-                    propertyName: 'resources',
-                    message: 'Resources specified in block configurations are missing from resources: ' + missingResources.join(','),
-                },
-            ];
-        }
-        else {
-            return [
-                {
-                    keyword: 'missing',
-                    dataPath: '/flows/*/resources',
-                    schemaPath: '#/properties/resources',
-                    params: [],
-                    propertyName: 'resources',
-                    message: 'Resources specified in block configurations are missing from resources: ' + missingResources.join(','),
-                },
-            ];
-        }
+        return [
+            {
+                keyword: 'missing',
+                dataPath: '/flows/*/resources',
+                schemaPath: '#/properties/resources',
+                params: [],
+                propertyName: 'resources',
+                message: 'Resources specified in block configurations are missing from resources: ' + missingResources.join(','),
+            },
+        ];
     }
     return null;
 }
@@ -83,8 +70,20 @@ function checkIndividualBlock(block, container, blockIndex, flowIndex) {
     if (schemaFileName != null) {
         const ajv = new ajv_1.default();
         ajv_formats_1.default(ajv);
-        const jsonSchema = require(filePathFromSpecificationVersion(container.specification_version, schemaFileName));
-        const validate = ajv.compile(jsonSchema);
+        const blockJsonSchema = getJsonSchemaFrom(container.specification_version, schemaFileName);
+        if (blockJsonSchema == null) {
+            return [
+                {
+                    keyword: 'version',
+                    dataPath: '/container/specification_version',
+                    schemaPath: '#/properties/specification_version',
+                    params: [],
+                    propertyName: 'specification_version',
+                    message: 'Unsupported specification version',
+                },
+            ];
+        }
+        const validate = ajv.compile(blockJsonSchema);
         if (!validate(block)) {
             return (_a = validate.errors) === null || _a === void 0 ? void 0 : _a.map(error => {
                 error.dataPath = '/container/flows/' + flowIndex + '/blocks/' + blockIndex + error.dataPath;
