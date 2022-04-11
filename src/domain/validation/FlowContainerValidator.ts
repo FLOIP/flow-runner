@@ -7,7 +7,7 @@ import {ISelectManyResponseBlock} from '../../model/block/ISelectManyResponseBlo
 import {IOpenResponseBlock} from '../../model/block/IOpenResponseBlock'
 import {INumericResponseBlock} from '../../model/block/INumericResponseBlock'
 import {IBlock} from '../../flow-spec/IBlock'
-import {get, difference} from 'lodash'
+import {difference} from 'lodash'
 
 function getJsonSchemaFrom(version: string, schemaFileName: string): AnySchema | null {
   try {
@@ -202,19 +202,10 @@ function blockTypeToInterfaceName(type: string): string | null {
  */
 function checkAllResourcesPresent(container: IContainer): string[] | null {
   const resourcesRequested: string[] = []
-  let allResources: IResources = []
-  if (container.specification_version < '1.0.0-rc4') {
-    // for these version, resources is no longer accessible in IContainer, but we still want to check them if requested
-    allResources = get(container, 'resources') as IResources
-  } else {
-    allResources = []
-  }
+  const allResources: IResources = []
 
   container.flows.forEach(flow => {
-    if (container.specification_version >= '1.0.0-rc4') {
-      allResources.push(...flow.resources)
-    }
-
+    allResources.push(...flow.resources)
     flow.blocks.forEach(block => {
       resourcesRequested.push(...collectResourceUuidsFromBlock(block))
     })
