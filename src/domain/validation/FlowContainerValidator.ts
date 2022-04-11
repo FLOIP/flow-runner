@@ -1,5 +1,5 @@
 import {IContainer, ILogBlock, IResources} from '../..'
-import Ajv, {ErrorObject} from 'ajv'
+import Ajv, {AnySchema, ErrorObject} from 'ajv'
 import ajvFormat from 'ajv-formats'
 import {IMessageBlock} from '../../model/block/IMessageBlock'
 import {ISelectOneResponseBlock} from '../../model/block/ISelectOneResponseBlock'
@@ -9,14 +9,13 @@ import {INumericResponseBlock} from '../../model/block/INumericResponseBlock'
 import {IBlock} from '../../flow-spec/IBlock'
 import {get, difference} from 'lodash'
 
-const validRCs = ['1.0.0-rc1', '1.0.0-rc2', '1.0.0-rc3', '1.0.0-rc4']
-
-function filePathFromSpecificationVersion(version: string, schemaFileName: string): string {
-  if (!validRCs.includes(version)) {
-    return ''
+function getJsonSchemaFrom(version: string, schemaFileName: string): AnySchema | null {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    return require(`../../../dist/resources/validationSchema/${version}/${schemaFileName}.json`)
+  } catch (_e) {
+    return null
   }
-
-  return `../../../dist/resources/validationSchema/${version}/${schemaFileName}.json`
 }
 
 /**
@@ -32,7 +31,8 @@ export function getFlowStructureErrors(
   container: IContainer,
   shouldValidateBlocks = true
 ): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
-  if (!validRCs.includes(container.specification_version)) {
+  const flowSpecJsonSchema = getJsonSchemaFrom(container.specification_version, 'flowSpecJsonSchema')
+  if (flowSpecJsonSchema == null) {
     return [
       {
         keyword: 'version',
@@ -45,8 +45,6 @@ export function getFlowStructureErrors(
     ]
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const flowSpecJsonSchema = require(`../../../dist/resources/validationSchema/${container.specification_version}/flowSpecJsonSchema.json`)
   const ajv = new Ajv()
   // we need this to use AJV format such as 'date-time' (https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
   ajvFormat(ajv)
@@ -64,29 +62,16 @@ export function getFlowStructureErrors(
 
   const missingResources = checkAllResourcesPresent(container)
   if (missingResources != null) {
-    if (container.specification_version < '1.0.0-rc4') {
-      return [
-        {
-          keyword: 'missing',
-          dataPath: '/container/resources',
-          schemaPath: '#/properties/resources',
-          params: [],
-          propertyName: 'resources',
-          message: 'Resources specified in block configurations are missing from resources: ' + missingResources.join(','),
-        },
-      ]
-    } else {
-      return [
-        {
-          keyword: 'missing',
-          dataPath: '/flows/*/resources',
-          schemaPath: '#/properties/resources',
-          params: [],
-          propertyName: 'resources',
-          message: 'Resources specified in block configurations are missing from resources: ' + missingResources.join(','),
-        },
-      ]
-    }
+    return [
+      {
+        keyword: 'missing',
+        dataPath: '/flows/*/resources',
+        schemaPath: '#/properties/resources',
+        params: [],
+        propertyName: 'resources',
+        message: 'Resources specified in block configurations are missing from resources: ' + missingResources.join(','),
+      },
+    ]
   }
 
   return null
@@ -116,8 +101,20 @@ function checkIndividualBlock(
     const ajv = new Ajv()
     ajvFormat(ajv)
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const jsonSchema = require(filePathFromSpecificationVersion(container.specification_version, schemaFileName))
-    const validate = ajv.compile(jsonSchema)
+    const blockJsonSchema = getJsonSchemaFrom(container.specification_version, schemaFileName)
+    if (blockJsonSchema == null) {
+      return [
+        {
+          keyword: 'version',
+          dataPath: '/container/specification_version',
+          schemaPath: '#/properties/specification_version',
+          params: [],
+          propertyName: 'specification_version',
+          message: 'Unsupported specification version',
+        },
+      ]
+    }
+    const validate = ajv.compile(blockJsonSchema)
     if (!validate(block)) {
       return validate.errors?.map(error => {
         error.dataPath = '/container/flows/' + flowIndex + '/blocks/' + blockIndex + error.dataPath
