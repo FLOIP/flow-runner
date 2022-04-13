@@ -1,10 +1,10 @@
-export interface IBlockExit<BLOCK_EXIT_CONFIG = {}> {
+export interface IBlockExit {
     uuid: string;
     name: string;
     destination_block?: string;
     semantic_label?: string;
     test?: string;
-    config: BLOCK_EXIT_CONFIG;
+    vendor_metadata?: Record<string, any>;
     default?: boolean;
 }
 //# sourceMappingURL=IBlockExit.d.ts.map

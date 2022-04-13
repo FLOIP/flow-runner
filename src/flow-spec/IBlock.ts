@@ -54,7 +54,7 @@ export interface IBlockUIMetadata extends Record<string, any> {
 /**
  * Block Structure: https://floip.gitbook.io/flow-specification/flows#blocks
  */
-export interface IBlock<BLOCK_CONFIG = IBlockConfig, BLOCK_EXIT_CONFIG = {}> {
+export interface IBlock<BLOCK_CONFIG = IBlockConfig> {
   /**
    * A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)
    *
@@ -117,7 +117,7 @@ export interface IBlock<BLOCK_CONFIG = IBlockConfig, BLOCK_EXIT_CONFIG = {}> {
    * a list of all the exits for the block.
    * Exits must contain the required keys below, and can contain additional keys based on the Block type
    */
-  exits: IBlockExit<BLOCK_EXIT_CONFIG>[]
+  exits: IBlockExit[]
 }
 
 export function findBlockExitWith(uuid: string, block: IBlock): IBlockExit {
