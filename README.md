@@ -8,7 +8,7 @@ Some common examples of this are in mobile services using voice-based or SMS-bas
 phones. Flows follow the "flowchart" paradigm, consisting of actions (nodes) and connections between actions, which can
 incorporate decision-making logic.
 
-More details and definitions of components within this ecosystem at: https://floip.gitbooks.io/flow-specification/content/
+More details and definitions of components within this ecosystem at: https://floip.gitbook.io/flow-specification/
 
 ## What is a runner?
 
