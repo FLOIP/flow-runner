@@ -12,11 +12,12 @@ class ResourceResolver {
         this.context = context;
     }
     resolve(resourceId) {
+        var _a, _b;
         const { mode, language_id } = this.context;
         if (!isUUID(resourceId)) {
             return new __1.Resource(resourceId, [__1.createTextResourceVariantWith(resourceId, this.context)], this.context);
         }
-        const resource = this.context.resources.find(({ uuid }) => uuid === resourceId);
+        const resource = (_b = (_a = __1.getActiveFlowFrom(this.context)) === null || _a === void 0 ? void 0 : _a.resources) === null || _b === void 0 ? void 0 : _b.find(({ uuid }) => uuid === resourceId);
         if (resource == null) {
             throw new __1.ResourceNotFoundException(`No resource matching ${JSON.stringify(resourceId)} for ${JSON.stringify({
                 mode,

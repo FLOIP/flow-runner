@@ -62,7 +62,7 @@ describe('FlowRunner/runActiveBlockOn', () => {
     try {
       await runner.runActiveBlockOn(richCursor, block)
     } catch (e) {
-      expect(e.toString()).toEqual('Error: Unable to run against previously processed prompt')
+      expect((e as Error).toString()).toEqual('Error: Unable to run against previously processed prompt')
     }
   })
 

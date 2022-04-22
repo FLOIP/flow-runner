@@ -4,24 +4,18 @@ exports.getFlowStructureErrors = void 0;
 const tslib_1 = require("tslib");
 const ajv_1 = tslib_1.__importDefault(require("ajv"));
 const ajv_formats_1 = tslib_1.__importDefault(require("ajv-formats"));
-function folderPathFromSpecificationVersion(version) {
-    if (version == '1.0.0-rc1') {
-        return '../../../dist/resources/validationSchema/1.0.0-rc1/';
+const lodash_1 = require("lodash");
+function getJsonSchemaFrom(version, schemaFileName) {
+    try {
+        return require(`../../../dist/resources/validationSchema/${version}/${schemaFileName}.json`);
     }
-    else if (version == '1.0.0-rc2') {
-        return '../../../dist/resources/validationSchema/1.0.0-rc2/';
+    catch (_e) {
+        return null;
     }
-    return null;
 }
 function getFlowStructureErrors(container, shouldValidateBlocks = true) {
-    let flowSpecJsonSchema;
-    if (container.specification_version == '1.0.0-rc1') {
-        flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc1/flowSpecJsonSchema.json');
-    }
-    else if (container.specification_version == '1.0.0-rc2') {
-        flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc2/flowSpecJsonSchema.json');
-    }
-    else {
+    const flowSpecJsonSchema = getJsonSchemaFrom(container.specification_version, 'flowSpecJsonSchema');
+    if (flowSpecJsonSchema == null) {
         return [
             {
                 keyword: 'version',
@@ -50,7 +44,7 @@ function getFlowStructureErrors(container, shouldValidateBlocks = true) {
         return [
             {
                 keyword: 'missing',
-                dataPath: '/container/resources',
+                dataPath: '/flows/*/resources',
                 schemaPath: '#/properties/resources',
                 params: [],
                 propertyName: 'resources',
@@ -76,8 +70,20 @@ function checkIndividualBlock(block, container, blockIndex, flowIndex) {
     if (schemaFileName != null) {
         const ajv = new ajv_1.default();
         ajv_formats_1.default(ajv);
-        const jsonSchema = require(folderPathFromSpecificationVersion(container.specification_version) + schemaFileName + '.json');
-        const validate = ajv.compile(jsonSchema);
+        const blockJsonSchema = getJsonSchemaFrom(container.specification_version, schemaFileName);
+        if (blockJsonSchema == null) {
+            return [
+                {
+                    keyword: 'version',
+                    dataPath: '/container/specification_version',
+                    schemaPath: '#/properties/specification_version',
+                    params: [],
+                    propertyName: 'specification_version',
+                    message: 'Unsupported specification version',
+                },
+            ];
+        }
+        const validate = ajv.compile(blockJsonSchema);
         if (!validate(block)) {
             return (_a = validate.errors) === null || _a === void 0 ? void 0 : _a.map(error => {
                 error.dataPath = '/container/flows/' + flowIndex + '/blocks/' + blockIndex + error.dataPath;
@@ -152,52 +158,66 @@ function blockTypeToInterfaceName(type) {
 }
 function checkAllResourcesPresent(container) {
     const resourcesRequested = [];
+    let allResources = [];
+    if (container.specification_version < '1.0.0-rc4') {
+        allResources = lodash_1.get(container, 'resources');
+    }
+    else {
+        allResources = [];
+    }
     container.flows.forEach(flow => {
+        if (container.specification_version >= '1.0.0-rc4') {
+            allResources.push(...flow.resources);
+        }
         flow.blocks.forEach(block => {
-            if (block.type == 'MobilePrimitives.Message') {
-                const b = block;
-                resourcesRequested.push(b.config.prompt);
-            }
-            if (block.type == 'MobilePrimitives.SelectOneResponse') {
-                const b = block;
-                if (b.config.prompt != undefined) {
-                    resourcesRequested.push(b.config.prompt);
-                }
-                if (b.config.question_prompt != undefined) {
-                    resourcesRequested.push(b.config.question_prompt);
-                }
-            }
-            if (block.type == 'MobilePrimitives.SelectManyResponse') {
-                const b = block;
-                if (b.config.prompt != undefined) {
-                    resourcesRequested.push(b.config.prompt);
-                }
-                if (b.config.question_prompt != undefined) {
-                    resourcesRequested.push(b.config.question_prompt);
-                }
-            }
-            if (block.type == 'MobilePrimitives.OpenResponse') {
-                const b = block;
-                resourcesRequested.push(b.config.prompt);
-            }
-            if (block.type == 'MobilePrimitives.NumericResponse') {
-                const b = block;
-                resourcesRequested.push(b.config.prompt);
-            }
+            resourcesRequested.push(...collectResourceUuidsFromBlock(block));
         });
     });
-    const missingResources = [];
-    const allResourceStrings = container.resources.map(r => r.uuid);
-    resourcesRequested.forEach(resourcesString => {
-        if (!allResourceStrings.includes(resourcesString)) {
-            missingResources.push(resourcesString);
-        }
-    });
+    const allResourceStrings = allResources.map(r => r.uuid);
+    const missingResources = lodash_1.difference(resourcesRequested, allResourceStrings);
     if (missingResources.length > 0) {
         return missingResources;
     }
     else {
         return null;
     }
+}
+function collectResourceUuidsFromBlock(block) {
+    const uuids = [];
+    if (block.type == 'MobilePrimitives.Message') {
+        const b = block;
+        uuids.push(b.config.prompt);
+    }
+    if (block.type == 'MobilePrimitives.SelectOneResponse') {
+        const b = block;
+        if (b.config.prompt != undefined) {
+            uuids.push(b.config.prompt);
+        }
+        if (b.config.question_prompt != undefined) {
+            uuids.push(b.config.question_prompt);
+        }
+    }
+    if (block.type == 'MobilePrimitives.SelectManyResponse') {
+        const b = block;
+        if (b.config.prompt != undefined) {
+            uuids.push(b.config.prompt);
+        }
+        if (b.config.question_prompt != undefined) {
+            uuids.push(b.config.question_prompt);
+        }
+    }
+    if (block.type == 'MobilePrimitives.OpenResponse') {
+        const b = block;
+        uuids.push(b.config.prompt);
+    }
+    if (block.type == 'MobilePrimitives.NumericResponse') {
+        const b = block;
+        uuids.push(b.config.prompt);
+    }
+    if (block.type == 'Core.Log') {
+        const b = block;
+        uuids.push(b.config.message);
+    }
+    return uuids;
 }
 //# sourceMappingURL=FlowContainerValidator.js.map

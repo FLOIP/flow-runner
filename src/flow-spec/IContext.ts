@@ -31,8 +31,6 @@ import {
   IIdGenerator,
   IPrompt,
   IPromptConfig,
-  IResource,
-  IResources,
   IRunFlowBlockConfig,
   isLastBlock,
   SupportedMode,
@@ -115,7 +113,6 @@ export interface IContext {
 
   flows: IFlow[]
   first_flow_id: string
-  resources: IResources
   vendor_metadata: {[k: string]: unknown}
 
   logs: {[k: string]: string}
@@ -137,7 +134,6 @@ export async function createContextDataObjectFor(
   flows: IFlow[],
   languageId: string,
   mode: SupportedMode = SupportedMode.OFFLINE,
-  resources: IResource[] = [],
   idGenerator: IIdGenerator = new IdGeneratorUuidV4()
 ): Promise<IContext> {
   return {
@@ -160,7 +156,6 @@ export async function createContextDataObjectFor(
     flows,
     first_flow_id: flows[0].uuid,
 
-    resources,
     vendor_metadata: {},
 
     logs: {},

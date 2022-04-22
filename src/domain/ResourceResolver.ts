@@ -17,7 +17,15 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {createTextResourceVariantWith, IContext, IResourceWithContext, IResourceResolver, Resource, ResourceNotFoundException} from '..'
+import {
+  createTextResourceVariantWith,
+  getActiveFlowFrom,
+  IContext,
+  IResourceWithContext,
+  IResourceResolver,
+  Resource,
+  ResourceNotFoundException,
+} from '..'
 import {intersection} from 'lodash'
 
 const UUID_MATCHER = /[\d\w]{8}(-[\d\w]{4}){3}-[\d\w]{12}/i
@@ -36,7 +44,7 @@ export class ResourceResolver implements IResourceResolver {
       return new Resource(resourceId, [createTextResourceVariantWith(resourceId, this.context)], this.context)
     }
 
-    const resource = this.context.resources.find(({uuid}) => uuid === resourceId)
+    const resource = getActiveFlowFrom(this.context)?.resources?.find(({uuid}) => uuid === resourceId)
 
     if (resource == null) {
       throw new ResourceNotFoundException(

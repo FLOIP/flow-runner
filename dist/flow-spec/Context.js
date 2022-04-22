@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Context = void 0;
 const __1 = require("..");
 class Context {
-    constructor(id, created_at, delivery_status, mode, language_id, contact, groups, session_vars, interactions, nested_flow_block_interaction_id_stack, reversible_operations, flows, first_flow_id, resources, entry_at, exit_at, user_id, org_id, cursor, vendor_metadata = {}, logs = {}) {
+    constructor(id, created_at, delivery_status, mode, language_id, contact, groups, session_vars, interactions, nested_flow_block_interaction_id_stack, reversible_operations, flows, first_flow_id, entry_at, exit_at, user_id, org_id, cursor, vendor_metadata = {}, logs = {}) {
         this.vendor_metadata = {};
         this.logs = {};
         this.logs = logs;
@@ -13,7 +13,6 @@ class Context {
         this.user_id = user_id;
         this.exit_at = exit_at;
         this.entry_at = entry_at;
-        this.resources = resources;
         this.first_flow_id = first_flow_id;
         this.flows = flows;
         this.reversible_operations = reversible_operations;
@@ -98,10 +97,6 @@ exports.Context = Context;
             this.first_flow_id = first_flow_id;
             return this;
         }
-        setResources(resources) {
-            this.resources = resources;
-            return this;
-        }
         setEntryAt(entry_at) {
             this.entry_at = entry_at;
             return this;
@@ -137,8 +132,7 @@ exports.Context = Context;
             __1.assertNotNull(this.groups, () => 'Context.Builder.setGroups() must be called before build()');
             __1.assertNotNull(this.flows, () => 'Context.Builder.setFlows() must be called before build()');
             __1.assertNotNull(this.first_flow_id, () => 'Context.Builder.setFirstFlowId() must be called before build()');
-            __1.assertNotNull(this.resources, () => 'Context.Builder.setResources() must be called before build()');
-            return new Context(this.id, this.created_at, this.delivery_status, this.mode, this.language_id, this.contact, this.groups, this.session_vars, this.interactions, this.nested_flow_block_interaction_id_stack, this.reversible_operations, this.flows, this.first_flow_id, this.resources, this.entry_at, this.exit_at, this.user_id, this.org_id, this.cursor, this.vendor_metadata, this.logs);
+            return new Context(this.id, this.created_at, this.delivery_status, this.mode, this.language_id, this.contact, this.groups, this.session_vars, this.interactions, this.nested_flow_block_interaction_id_stack, this.reversible_operations, this.flows, this.first_flow_id, this.entry_at, this.exit_at, this.user_id, this.org_id, this.cursor, this.vendor_metadata, this.logs);
         }
     }
     Context.Builder = Builder;

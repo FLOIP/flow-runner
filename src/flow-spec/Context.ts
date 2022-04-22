@@ -28,8 +28,6 @@ import {
   ICursor,
   IFlow,
   IResourceWithContext,
-  IResource,
-  IResources,
   IReversibleUpdateOperation,
   ResourceResolver,
   SupportedMode,
@@ -51,7 +49,6 @@ export class Context implements IContext {
   public reversible_operations: IReversibleUpdateOperation[]
   public flows: IFlow[]
   public first_flow_id: string
-  public resources: IResources
   public entry_at?: string
   public exit_at?: string
   public user_id?: string
@@ -74,7 +71,6 @@ export class Context implements IContext {
     reversible_operations: IReversibleUpdateOperation[],
     flows: IFlow[],
     first_flow_id: string,
-    resources: IResources,
     entry_at?: string,
     exit_at?: string,
     user_id?: string,
@@ -90,7 +86,6 @@ export class Context implements IContext {
     this.user_id = user_id
     this.exit_at = exit_at
     this.entry_at = entry_at
-    this.resources = resources
     this.first_flow_id = first_flow_id
     this.flows = flows
     this.reversible_operations = reversible_operations
@@ -131,7 +126,6 @@ export namespace Context {
     reversible_operations: IReversibleUpdateOperation[] = []
     flows?: IFlow[]
     first_flow_id?: string
-    resources?: IResource[]
     entry_at?: string
     exit_at?: string
     user_id?: string
@@ -205,11 +199,6 @@ export namespace Context {
       return this
     }
 
-    setResources(resources: IResource[]): Context.Builder {
-      this.resources = resources
-      return this
-    }
-
     setEntryAt(entry_at: string): Context.Builder {
       this.entry_at = entry_at
       return this
@@ -252,7 +241,6 @@ export namespace Context {
       assertNotNull(this.groups, () => 'Context.Builder.setGroups() must be called before build()')
       assertNotNull(this.flows, () => 'Context.Builder.setFlows() must be called before build()')
       assertNotNull(this.first_flow_id, () => 'Context.Builder.setFirstFlowId() must be called before build()')
-      assertNotNull(this.resources, () => 'Context.Builder.setResources() must be called before build()')
 
       return new Context(
         this.id,
@@ -268,7 +256,6 @@ export namespace Context {
         this.reversible_operations,
         this.flows,
         this.first_flow_id,
-        this.resources,
         this.entry_at,
         this.exit_at,
         this.user_id,

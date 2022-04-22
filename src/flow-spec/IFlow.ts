@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlock, ILanguage, SupportedMode, ValidationException} from '..'
+import {IBlock, ILanguage, IResource, SupportedMode, ValidationException} from '..'
 import {find} from 'lodash'
 
 /**
@@ -102,6 +102,11 @@ export interface IFlow {
    * @pattern ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
    */
   exit_block_id?: string
+
+  /**
+   * A set of the Resources needed for executing the Flow, keyed by resource uuid.
+   */
+  resources: IResource[]
 }
 
 export function findBlockWith(uuid: string, {blocks}: IFlow): IBlock {

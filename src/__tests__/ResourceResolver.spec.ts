@@ -18,6 +18,7 @@ import {
 describe('ResourceResolver', () => {
   let resolver: IResourceResolver
   let ctx: IContext
+  const firstFlowUuid = 'flow-123'
 
   beforeEach(async () => {
     ctx = await createContextDataObjectFor(
@@ -25,7 +26,7 @@ describe('ResourceResolver', () => {
       [{group_key: 'mygroup', label: 'mygroup', __value__: 'mygroup'} as IGroup],
       'user-123',
       'org-123',
-      [{uuid: 'flow-123'} as IFlow],
+      [{uuid: firstFlowUuid} as IFlow],
       'eng',
       SupportedMode.OFFLINE
     )
@@ -59,8 +60,7 @@ describe('ResourceResolver', () => {
     describe('when resource with uuid present', () => {
       it('should return resource with UUID provided', async () => {
         const expected: IResource = {uuid: 'known000-0000-0000-0000-resource0123', values: []}
-
-        ctx.resources = [
+        ctx.flows[0].resources = [
           {uuid: 'notknown-0000-0000-0000-resource0654', values: []},
           expected,
           {uuid: 'notknown-0000-0000-0000-resource0123', values: []},
@@ -120,10 +120,15 @@ describe('ResourceResolver', () => {
           Object.assign(resolver.context, {
             mode,
             language_id: languageId,
-            resources: [
+            flows: [
               {
-                uuid: 'known000-0000-0000-0000-resource0123',
-                values: variants,
+                uuid: firstFlowUuid,
+                resources: [
+                  {
+                    uuid: 'known000-0000-0000-0000-resource0123',
+                    values: variants,
+                  },
+                ],
               },
             ],
           } as Partial<IContext>)

@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import {every, flatMap, noop} from 'lodash'
+import {every, noop} from 'lodash'
 import {createDefaultDataset, IDataset} from './fixtures/IDataset'
 import {deserialize, plainToClass, serialize} from 'class-transformer'
 
@@ -11,7 +11,6 @@ import {
   IContact,
   IContext,
   IGroup,
-  IResources,
   IRichCursorInputRequired,
   SelectOnePrompt,
   SupportedMode,
@@ -112,8 +111,6 @@ describe('FlowRunner', () => {
       it('should hit Cats branch', async () => {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const {flows}: IContext = require('./fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
-        // our server-side implementation currently returns
-        const resources: IResources = flatMap(flows, 'resources')
 
         const context = await createContextDataObjectFor(
           {id: '1'} as IContact,
@@ -122,8 +119,7 @@ describe('FlowRunner', () => {
           'org-1234',
           flows,
           'en_US',
-          SupportedMode.OFFLINE,
-          resources
+          SupportedMode.OFFLINE
         )
 
         const runner = new FlowRunner(context)
@@ -139,8 +135,6 @@ describe('FlowRunner', () => {
       it('should hit Dogs branch', async () => {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const {flows}: IContext = require('./fixtures/2019-10-12-VMO-1484-case-branching-improperly.json')
-        // our server-side implementation currently returns
-        const resources: IResources = flatMap(flows, 'resources')
 
         const context = await createContextDataObjectFor(
           {id: '1'} as IContact,
@@ -149,8 +143,7 @@ describe('FlowRunner', () => {
           'org-1234',
           flows,
           'en_US',
-          SupportedMode.OFFLINE,
-          resources
+          SupportedMode.OFFLINE
         )
 
         const runner = new FlowRunner(context)
@@ -168,7 +161,7 @@ describe('FlowRunner', () => {
     describe('nested flow', () => {
       it('should run', async () => {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const {flows, resources}: IContext = require('./fixtures/2020-04-14-run-flow-unable-to-find-flow.json')
+        const {flows}: IContext = require('./fixtures/2020-04-14-run-flow-unable-to-find-flow.json')
 
         const context = await createContextDataObjectFor(
           {id: '1'} as IContact,
@@ -177,8 +170,7 @@ describe('FlowRunner', () => {
           'org-1234',
           flows,
           'en_US',
-          SupportedMode.OFFLINE,
-          resources
+          SupportedMode.OFFLINE
         )
 
         const runner = new FlowRunner(context)

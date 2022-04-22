@@ -1,5 +1,5 @@
-import {IContainer} from '../..'
-import Ajv, {ErrorObject} from 'ajv'
+import {IContainer, ILogBlock, IResources} from '../..'
+import Ajv, {AnySchema, ErrorObject} from 'ajv'
 import ajvFormat from 'ajv-formats'
 import {IMessageBlock} from '../../model/block/IMessageBlock'
 import {ISelectOneResponseBlock} from '../../model/block/ISelectOneResponseBlock'
@@ -7,14 +7,15 @@ import {ISelectManyResponseBlock} from '../../model/block/ISelectManyResponseBlo
 import {IOpenResponseBlock} from '../../model/block/IOpenResponseBlock'
 import {INumericResponseBlock} from '../../model/block/INumericResponseBlock'
 import {IBlock} from '../../flow-spec/IBlock'
+import {difference} from 'lodash'
 
-function folderPathFromSpecificationVersion(version: string): string | null {
-  if (version == '1.0.0-rc1') {
-    return '../../../dist/resources/validationSchema/1.0.0-rc1/'
-  } else if (version == '1.0.0-rc2') {
-    return '../../../dist/resources/validationSchema/1.0.0-rc2/'
+function getJsonSchemaFrom(version: string, schemaFileName: string): AnySchema | null {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    return require(`../../../dist/resources/validationSchema/${version}/${schemaFileName}.json`)
+  } catch (_e) {
+    return null
   }
-  return null
 }
 
 /**
@@ -26,16 +27,12 @@ function folderPathFromSpecificationVersion(version: string): string | null {
  * @returns null if there are no errors, or a set of validation errors
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getFlowStructureErrors(container: IContainer, shouldValidateBlocks = true): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let flowSpecJsonSchema: any
-  if (container.specification_version == '1.0.0-rc1') {
-    flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc1/flowSpecJsonSchema.json');
-  }
-  else if (container.specification_version == '1.0.0-rc2') {
-    flowSpecJsonSchema = require('../../../dist/resources/validationSchema/1.0.0-rc2/flowSpecJsonSchema.json');
-  }
-  else {
+export function getFlowStructureErrors(
+  container: IContainer,
+  shouldValidateBlocks = true
+): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
+  const flowSpecJsonSchema = getJsonSchemaFrom(container.specification_version, 'flowSpecJsonSchema')
+  if (flowSpecJsonSchema == null) {
     return [
       {
         keyword: 'version',
@@ -68,7 +65,7 @@ export function getFlowStructureErrors(container: IContainer, shouldValidateBloc
     return [
       {
         keyword: 'missing',
-        dataPath: '/container/resources',
+        dataPath: '/flows/*/resources',
         schemaPath: '#/properties/resources',
         params: [],
         propertyName: 'resources',
@@ -93,14 +90,31 @@ function checkIndividualBlocks(container: IContainer): ErrorObject<string, Recor
   return errors
 }
 
-function checkIndividualBlock(block: IBlock, container: IContainer, blockIndex: number, flowIndex: number): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
+function checkIndividualBlock(
+  block: IBlock,
+  container: IContainer,
+  blockIndex: number,
+  flowIndex: number
+): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
   const schemaFileName = blockTypeToInterfaceName(block.type)
   if (schemaFileName != null) {
     const ajv = new Ajv()
     ajvFormat(ajv)
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const jsonSchema = require(folderPathFromSpecificationVersion(container.specification_version) + schemaFileName + '.json')
-    const validate = ajv.compile(jsonSchema)
+    const blockJsonSchema = getJsonSchemaFrom(container.specification_version, schemaFileName)
+    if (blockJsonSchema == null) {
+      return [
+        {
+          keyword: 'version',
+          dataPath: '/container/specification_version',
+          schemaPath: '#/properties/specification_version',
+          params: [],
+          propertyName: 'specification_version',
+          message: 'Unsupported specification version',
+        },
+      ]
+    }
+    const validate = ajv.compile(blockJsonSchema)
     if (!validate(block)) {
       return validate.errors?.map(error => {
         error.dataPath = '/container/flows/' + flowIndex + '/blocks/' + blockIndex + error.dataPath
@@ -182,63 +196,72 @@ function blockTypeToInterfaceName(type: string): string | null {
 }
 
 /**
- * Check that all resources asked for within blocks are available in the Resources array of the container
+ * Check that all resources asked for within blocks are available in the Resources array
  * @param container Flow package container
  * @returns null if all resources are available, otherwise an array of the missing resource UUIDs
  */
 function checkAllResourcesPresent(container: IContainer): string[] | null {
   const resourcesRequested: string[] = []
+  const allResources: IResources = []
+
   container.flows.forEach(flow => {
+    allResources.push(...flow.resources)
     flow.blocks.forEach(block => {
-      if (block.type == 'MobilePrimitives.Message') {
-        const b = block as IMessageBlock
-        resourcesRequested.push(b.config.prompt)
-      }
-
-      if (block.type == 'MobilePrimitives.SelectOneResponse') {
-        const b = block as ISelectOneResponseBlock
-        if (b.config.prompt != undefined) {
-          resourcesRequested.push(b.config.prompt)
-        }
-        if (b.config.question_prompt != undefined) {
-          resourcesRequested.push(b.config.question_prompt)
-        }
-      }
-
-      if (block.type == 'MobilePrimitives.SelectManyResponse') {
-        const b = block as ISelectManyResponseBlock
-        if (b.config.prompt != undefined) {
-          resourcesRequested.push(b.config.prompt)
-        }
-        if (b.config.question_prompt != undefined) {
-          resourcesRequested.push(b.config.question_prompt)
-        }
-      }
-
-      if (block.type == 'MobilePrimitives.OpenResponse') {
-        const b = block as IOpenResponseBlock
-        resourcesRequested.push(b.config.prompt)
-      }
-
-      if (block.type == 'MobilePrimitives.NumericResponse') {
-        const b = block as INumericResponseBlock
-        resourcesRequested.push(b.config.prompt)
-      }
+      resourcesRequested.push(...collectResourceUuidsFromBlock(block))
     })
   })
 
-  const missingResources: string[] = []
-  const allResourceStrings = container.resources.map(r => r.uuid)
-
-  resourcesRequested.forEach(resourcesString => {
-    if (!allResourceStrings.includes(resourcesString)) {
-      missingResources.push(resourcesString)
-    }
-  })
+  const allResourceStrings = allResources.map(r => r.uuid)
+  const missingResources: string[] = difference(resourcesRequested, allResourceStrings)
 
   if (missingResources.length > 0) {
     return missingResources
   } else {
     return null
   }
+}
+
+function collectResourceUuidsFromBlock(block: IBlock): string[] {
+  const uuids: string[] = []
+  if (block.type == 'MobilePrimitives.Message') {
+    const b = block as IMessageBlock
+    uuids.push(b.config.prompt)
+  }
+
+  if (block.type == 'MobilePrimitives.SelectOneResponse') {
+    const b = block as ISelectOneResponseBlock
+    if (b.config.prompt != undefined) {
+      uuids.push(b.config.prompt)
+    }
+    if (b.config.question_prompt != undefined) {
+      uuids.push(b.config.question_prompt)
+    }
+  }
+
+  if (block.type == 'MobilePrimitives.SelectManyResponse') {
+    const b = block as ISelectManyResponseBlock
+    if (b.config.prompt != undefined) {
+      uuids.push(b.config.prompt)
+    }
+    if (b.config.question_prompt != undefined) {
+      uuids.push(b.config.question_prompt)
+    }
+  }
+
+  if (block.type == 'MobilePrimitives.OpenResponse') {
+    const b = block as IOpenResponseBlock
+    uuids.push(b.config.prompt)
+  }
+
+  if (block.type == 'MobilePrimitives.NumericResponse') {
+    const b = block as INumericResponseBlock
+    uuids.push(b.config.prompt)
+  }
+
+  if (block.type == 'Core.Log') {
+    const b = block as ILogBlock
+    uuids.push(b.config.message)
+  }
+
+  return uuids
 }
