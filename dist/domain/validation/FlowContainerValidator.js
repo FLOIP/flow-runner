@@ -4,6 +4,7 @@ exports.getFlowStructureErrors = void 0;
 const tslib_1 = require("tslib");
 const ajv_1 = tslib_1.__importDefault(require("ajv"));
 const ajv_formats_1 = tslib_1.__importDefault(require("ajv-formats"));
+const expression_parser_1 = require("@floip/expression-parser");
 const lodash_1 = require("lodash");
 function getJsonSchemaFrom(version, schemaFileName) {
     try {
@@ -12,6 +13,23 @@ function getJsonSchemaFrom(version, schemaFileName) {
     catch (_e) {
         return null;
     }
+}
+function createAjvInstance(schema) {
+    const ajv = new ajv_1.default();
+    ajv_formats_1.default(ajv);
+    ajv.addFormat('floip-expression', {
+        type: 'string',
+        validate: (x) => {
+            try {
+                expression_parser_1.parse(x);
+            }
+            catch (e) {
+                return false;
+            }
+            return true;
+        },
+    });
+    return ajv.compile(schema);
 }
 function getFlowStructureErrors(container, shouldValidateBlocks = true) {
     const flowSpecJsonSchema = getJsonSchemaFrom(container.specification_version, 'flowSpecJsonSchema');
@@ -27,9 +45,7 @@ function getFlowStructureErrors(container, shouldValidateBlocks = true) {
             },
         ];
     }
-    const ajv = new ajv_1.default();
-    ajv_formats_1.default(ajv);
-    const validate = ajv.compile(flowSpecJsonSchema);
+    const validate = createAjvInstance(flowSpecJsonSchema);
     if (!validate(container)) {
         return validate.errors;
     }
@@ -68,8 +84,6 @@ function checkIndividualBlock(block, container, blockIndex, flowIndex) {
     var _a;
     const schemaFileName = blockTypeToInterfaceName(block.type);
     if (schemaFileName != null) {
-        const ajv = new ajv_1.default();
-        ajv_formats_1.default(ajv);
         const blockJsonSchema = getJsonSchemaFrom(container.specification_version, schemaFileName);
         if (blockJsonSchema == null) {
             return [
@@ -83,7 +97,7 @@ function checkIndividualBlock(block, container, blockIndex, flowIndex) {
                 },
             ];
         }
-        const validate = ajv.compile(blockJsonSchema);
+        const validate = createAjvInstance(blockJsonSchema);
         if (!validate(block)) {
             return (_a = validate.errors) === null || _a === void 0 ? void 0 : _a.map(error => {
                 error.dataPath = '/container/flows/' + flowIndex + '/blocks/' + blockIndex + error.dataPath;
@@ -158,17 +172,9 @@ function blockTypeToInterfaceName(type) {
 }
 function checkAllResourcesPresent(container) {
     const resourcesRequested = [];
-    let allResources = [];
-    if (container.specification_version < '1.0.0-rc4') {
-        allResources = lodash_1.get(container, 'resources');
-    }
-    else {
-        allResources = [];
-    }
+    const allResources = [];
     container.flows.forEach(flow => {
-        if (container.specification_version >= '1.0.0-rc4') {
-            allResources.push(...flow.resources);
-        }
+        allResources.push(...flow.resources);
         flow.blocks.forEach(block => {
             resourcesRequested.push(...collectResourceUuidsFromBlock(block));
         });
