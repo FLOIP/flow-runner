@@ -16,6 +16,8 @@ export interface ISetGroupMembershipBlockConfig extends IBlockConfig {
    * - and null for no change to the existing membership.
    *
    * Its type is string because it may contain expressions too.
+   *
+   * @format floip-expression
    */
   is_member: string
 }

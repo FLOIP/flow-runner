@@ -19,5 +19,8 @@
 import {IBlockConfig} from '../..'
 
 export interface IOutputBlockConfig extends IBlockConfig {
+  /**
+   * @format floip-expression
+   */
   value: string
 }

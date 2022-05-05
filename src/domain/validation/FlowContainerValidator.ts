@@ -1,6 +1,7 @@
 import {IContainer, ILogBlock, IResources} from '../..'
 import Ajv, {AnySchema, ErrorObject} from 'ajv'
 import ajvFormat from 'ajv-formats'
+import {parse as floipExpressionParser} from '@floip/expression-parser'
 import {IMessageBlock} from '../../model/block/IMessageBlock'
 import {ISelectOneResponseBlock} from '../../model/block/ISelectOneResponseBlock'
 import {ISelectManyResponseBlock} from '../../model/block/ISelectManyResponseBlock'
@@ -16,6 +17,30 @@ function getJsonSchemaFrom(version: string, schemaFileName: string): AnySchema |
   } catch (_e) {
     return null
   }
+}
+
+function createAjvInstance(schema: any) {
+  const ajv = new Ajv()
+
+  /*
+   * We need this to use AJV format such as 'date-time'
+   * https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
+   */
+  ajvFormat(ajv)
+
+  ajv.addFormat('floip-expression', {
+    type: 'string',
+    validate: (x: string) => {
+      try {
+        floipExpressionParser(x)
+      } catch (e) {
+        return false
+      }
+      return true
+    },
+  })
+
+  return ajv.compile(schema)
 }
 
 /**
@@ -45,10 +70,7 @@ export function getFlowStructureErrors(
     ]
   }
 
-  const ajv = new Ajv()
-  // we need this to use AJV format such as 'date-time' (https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
-  ajvFormat(ajv)
-  const validate = ajv.compile(flowSpecJsonSchema)
+  const validate = createAjvInstance(flowSpecJsonSchema)
   if (!validate(container)) {
     return validate.errors
   }
@@ -98,8 +120,6 @@ function checkIndividualBlock(
 ): ErrorObject<string, Record<string, any>, unknown>[] | null | undefined {
   const schemaFileName = blockTypeToInterfaceName(block.type)
   if (schemaFileName != null) {
-    const ajv = new Ajv()
-    ajvFormat(ajv)
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const blockJsonSchema = getJsonSchemaFrom(container.specification_version, schemaFileName)
     if (blockJsonSchema == null) {
@@ -114,7 +134,7 @@ function checkIndividualBlock(
         },
       ]
     }
-    const validate = ajv.compile(blockJsonSchema)
+    const validate = createAjvInstance(blockJsonSchema)
     if (!validate(block)) {
       return validate.errors?.map(error => {
         error.dataPath = '/container/flows/' + flowIndex + '/blocks/' + blockIndex + error.dataPath

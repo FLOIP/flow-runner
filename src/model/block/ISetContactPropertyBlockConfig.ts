@@ -20,6 +20,9 @@ import {IBlockConfig} from '../..'
 
 export interface SetContactProperty {
   property_key: string
+  /**
+   * @format floip-expression
+   */
   property_value: string
 }
 

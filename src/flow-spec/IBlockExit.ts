@@ -51,6 +51,8 @@ export interface IBlockExit {
   /**
    * For blocks that evaluate conditions, this is an expression that determines whether this exit will be selected
    * as the path out of the block. The first exit with an expression that evaluates to a "truthy" value will be chosen.
+   *
+   * @format floip-expression
    */
   test?: string
 
