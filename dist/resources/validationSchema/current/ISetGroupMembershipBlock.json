@@ -108,7 +108,8 @@
         },
         "is_member": {
           "type": "string",
-          "description": "Determines the membership state:\n- falsy to remove the contact from the group,\n- truthy to add,\n- and null for no change to the existing membership.\n\nIts type is string because it may contain expressions too."
+          "description": "Determines the membership state:\n- falsy to remove the contact from the group,\n- truthy to add,\n- and null for no change to the existing membership.\n\nIts type is string because it may contain expressions too.",
+          "format": "floip-expression"
         }
       },
       "required": [
@@ -123,7 +124,8 @@
           "type": "string"
         },
         "property_value": {
-          "type": "string"
+          "type": "string",
+          "format": "floip-expression"
         }
       },
       "required": [
@@ -155,7 +157,8 @@
         },
         "test": {
           "type": "string",
-          "description": "For blocks that evaluate conditions, this is an expression that determines whether this exit will be selected as the path out of the block. The first exit with an expression that evaluates to a \"truthy\" value will be chosen."
+          "description": "For blocks that evaluate conditions, this is an expression that determines whether this exit will be selected as the path out of the block. The first exit with an expression that evaluates to a \"truthy\" value will be chosen.",
+          "format": "floip-expression"
         },
         "vendor_metadata": {
           "type": "object",

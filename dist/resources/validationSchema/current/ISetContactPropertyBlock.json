@@ -110,7 +110,8 @@
           "type": "string"
         },
         "property_value": {
-          "type": "string"
+          "type": "string",
+          "format": "floip-expression"
         }
       },
       "required": [
@@ -142,7 +143,8 @@
         },
         "test": {
           "type": "string",
-          "description": "For blocks that evaluate conditions, this is an expression that determines whether this exit will be selected as the path out of the block. The first exit with an expression that evaluates to a \"truthy\" value will be chosen."
+          "description": "For blocks that evaluate conditions, this is an expression that determines whether this exit will be selected as the path out of the block. The first exit with an expression that evaluates to a \"truthy\" value will be chosen.",
+          "format": "floip-expression"
         },
         "vendor_metadata": {
           "type": "object",
