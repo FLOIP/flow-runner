@@ -13,8 +13,8 @@ tslib_1.__exportStar(require("./domain/exceptions/NotImplementedException"), exp
 tslib_1.__exportStar(require("./domain/exceptions/PromptValidationException"), exports);
 tslib_1.__exportStar(require("./domain/exceptions/ResourceNotFoundException"), exports);
 tslib_1.__exportStar(require("./domain/exceptions/ValidationException"), exports);
-tslib_1.__exportStar(require("./domain/prompt/AdvancedSelectOnePrompt"), exports);
 tslib_1.__exportStar(require("./domain/prompt/BasePrompt"), exports);
+tslib_1.__exportStar(require("./domain/prompt/AdvancedSelectOnePrompt"), exports);
 tslib_1.__exportStar(require("./domain/prompt/IAdvancedSelectOnePromptConfig"), exports);
 tslib_1.__exportStar(require("./domain/prompt/IMessagePromptConfig"), exports);
 tslib_1.__exportStar(require("./domain/prompt/INumericPromptConfig"), exports);
