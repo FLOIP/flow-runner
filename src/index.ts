@@ -33,6 +33,7 @@ export * from './domain/exceptions/PromptValidationException'
 export * from './domain/exceptions/ResourceNotFoundException'
 export * from './domain/exceptions/ValidationException'
 
+// BasePrompt needs to go first or flow-builder will give 'Uncaught TypeError: Class extends value undefined is not a constructor or null'
 export * from './domain/prompt/BasePrompt'
 export * from './domain/prompt/AdvancedSelectOnePrompt'
 export * from './domain/prompt/IAdvancedSelectOnePromptConfig'
