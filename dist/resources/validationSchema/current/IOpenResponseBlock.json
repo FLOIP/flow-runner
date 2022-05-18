@@ -107,16 +107,9 @@
             "max_duration_seconds": {
               "type": "number",
               "minimum": 0
-            }
-          },
-          "additionalProperties": false
-        },
-        "text": {
-          "type": "object",
-          "properties": {
-            "max_response_characters": {
-              "type": "number",
-              "minimum": 0
+            },
+            "end_recording_digits": {
+              "type": "string"
             }
           },
           "additionalProperties": false
