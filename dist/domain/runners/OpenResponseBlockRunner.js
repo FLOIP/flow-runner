@@ -11,15 +11,10 @@ class OpenResponseBlockRunner {
     initialize({ value }) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const blockConfig = this.block.config;
-            let maxResponseCharacters;
-            if (blockConfig.text != null) {
-                maxResponseCharacters = blockConfig.text.max_response_characters;
-            }
             return {
                 kind: __1.OPEN_PROMPT_KEY,
                 prompt: blockConfig.prompt,
                 isResponseRequired: true,
-                maxResponseCharacters: maxResponseCharacters,
                 value: value,
             };
         });
