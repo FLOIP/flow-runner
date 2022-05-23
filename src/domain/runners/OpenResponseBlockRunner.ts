@@ -52,16 +52,10 @@ export class OpenResponseBlockRunner implements IBlockRunner {
   async initialize({value}: IBlockInteraction): Promise<IOpenPromptConfig> {
     const blockConfig = this.block.config
 
-    let maxResponseCharacters
-    if (blockConfig.text != null) {
-      maxResponseCharacters = blockConfig.text.max_response_characters
-    }
-
     return {
       kind: OPEN_PROMPT_KEY,
       prompt: blockConfig.prompt,
       isResponseRequired: true,
-      maxResponseCharacters: maxResponseCharacters,
       value: value as IOpenPromptConfig['value'],
     }
   }
