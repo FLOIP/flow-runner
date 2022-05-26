@@ -107,6 +107,9 @@
             "max_duration_seconds": {
               "type": "number",
               "minimum": 0
+            },
+            "end_recording_digits": {
+              "type": "string"
             }
           },
           "additionalProperties": false

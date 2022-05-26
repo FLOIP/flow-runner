@@ -27,12 +27,6 @@ export interface IOpenResponseBlockConfig extends IBlockConfig {
      * @minimum 0
      */
     max_duration_seconds?: number
-  }
-
-  text?: {
-    /**
-     * @minimum 0
-     */
-    max_response_characters?: number
+    end_recording_digits?: string
   }
 }
