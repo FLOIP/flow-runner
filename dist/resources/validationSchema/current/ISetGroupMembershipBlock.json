@@ -93,29 +93,36 @@
       "description": "Coordinates indicating location of this block on the Flow Builder's canvas"
     },
     "ISetGroupMembershipBlockConfig": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/IAddOrRemoveGroupMembership"
+        },
+        {
+          "$ref": "#/definitions/IClearGroupMembership"
+        }
+      ]
+    },
+    "IAddOrRemoveGroupMembership": {
       "type": "object",
       "properties": {
         "set_contact_property": {
           "$ref": "#/definitions/SetContactProperty"
         },
-        "group_key": {
-          "type": "string",
-          "description": "An identifier for the group that membership will be set within."
-        },
-        "group_name": {
-          "type": "string",
-          "description": "A human-readable label in addition to the group_key, in cases where the group_name needs to be displayed to the Contact."
-        },
         "is_member": {
-          "type": "string",
-          "description": "Determines the membership state:\n- falsy to remove the contact from the group,\n- truthy to add,\n- and null for no change to the existing membership.\n\nIts type is string because it may contain expressions too.",
-          "format": "floip-expression"
+          "type": "boolean"
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/IGroupMembership"
+          }
         }
       },
       "required": [
-        "group_key",
-        "is_member"
-      ]
+        "is_member",
+        "groups"
+      ],
+      "description": "Adding or removing contact from group(s)"
     },
     "SetContactProperty": {
       "type": "object",
@@ -133,6 +140,38 @@
         "property_value"
       ],
       "additionalProperties": false
+    },
+    "IGroupMembership": {
+      "type": "object",
+      "properties": {
+        "group_key": {
+          "type": "string"
+        },
+        "group_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "group_key",
+        "group_name"
+      ],
+      "additionalProperties": false
+    },
+    "IClearGroupMembership": {
+      "type": "object",
+      "properties": {
+        "set_contact_property": {
+          "$ref": "#/definitions/SetContactProperty"
+        },
+        "clear": {
+          "type": "boolean",
+          "const": true
+        }
+      },
+      "required": [
+        "clear"
+      ],
+      "description": "Removing contact from all groups"
     },
     "IBlockExit": {
       "type": "object",

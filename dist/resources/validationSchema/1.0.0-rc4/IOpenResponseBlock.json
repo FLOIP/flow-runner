@@ -113,16 +113,6 @@
             }
           },
           "additionalProperties": false
-        },
-        "text": {
-          "type": "object",
-          "properties": {
-            "max_response_characters": {
-              "type": "number",
-              "minimum": 0
-            }
-          },
-          "additionalProperties": false
         }
       },
       "required": [
