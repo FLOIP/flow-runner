@@ -8,16 +8,13 @@ export interface IGroupMembership {
 /**
  * Adding or removing contact from group(s)
  */
-export interface IAddOrRemoveGroupMembership extends IBlockConfig {
-  is_member: boolean
-  groups: IGroupMembership[]
+export interface ISetGroupMembershipBlockConfig extends IBlockConfig {
+  /**
+   * When `clear` is present and set `true`, this will remove the contact
+   * from all groups. In this case, the other fields, i.e., `is_member`
+   * and `groups` will be ignored.
+   */
+  clear?: boolean
+  is_member?: boolean
+  groups?: IGroupMembership[]
 }
-
-/**
- * Removing contact from all groups
- */
-export interface IClearGroupMembership extends IBlockConfig {
-  clear: true
-}
-
-export type ISetGroupMembershipBlockConfig = IAddOrRemoveGroupMembership | IClearGroupMembership
