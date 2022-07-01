@@ -68,10 +68,14 @@
       "properties": {
         "canvas_coordinates": {
           "$ref": "#/definitions/IBlockUIMetadataCanvasCoordinates"
+        },
+        "should_auto_update_name": {
+          "type": "boolean"
         }
       },
       "required": [
-        "canvas_coordinates"
+        "canvas_coordinates",
+        "should_auto_update_name"
       ],
       "description": "A set of key-value records describing information about how blocks are displayed on a UI/flowchart editor"
     },

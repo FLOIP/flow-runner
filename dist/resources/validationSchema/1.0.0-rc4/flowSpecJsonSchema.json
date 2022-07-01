@@ -120,10 +120,14 @@
       "properties": {
         "canvas_coordinates": {
           "$ref": "#/definitions/IBlockUIMetadataCanvasCoordinates"
+        },
+        "should_auto_update_name": {
+          "type": "boolean"
         }
       },
       "required": [
-        "canvas_coordinates"
+        "canvas_coordinates",
+        "should_auto_update_name"
       ],
       "type": "object"
     },
