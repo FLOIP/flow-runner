@@ -187,7 +187,10 @@ describe('IBlock', () => {
         type: 'test',
         name: 'test',
         exits: [],
-        ui_metadata: {canvas_coordinates: {x: 10, y: 10}},
+        ui_metadata: {
+          canvas_coordinates: {x: 10, y: 10},
+          should_auto_update_name: true,
+        },
         config: {
           set_contact_property: {
             property_key: 'foo',

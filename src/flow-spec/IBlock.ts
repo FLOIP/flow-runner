@@ -49,6 +49,7 @@ export interface IBlockUIMetadataCanvasCoordinates {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface IBlockUIMetadata extends Record<string, any> {
   canvas_coordinates: IBlockUIMetadataCanvasCoordinates
+  should_auto_update_name: boolean
 }
 
 /**
