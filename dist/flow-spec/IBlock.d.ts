@@ -5,7 +5,7 @@ export interface IBlockUIMetadataCanvasCoordinates {
 }
 export interface IBlockUIMetadata extends Record<string, any> {
     canvas_coordinates: IBlockUIMetadataCanvasCoordinates;
-    should_auto_update_name: boolean;
+    should_auto_update_name?: boolean;
 }
 export interface IBlock<BLOCK_CONFIG = IBlockConfig> {
     uuid: string;

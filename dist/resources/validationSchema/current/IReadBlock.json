@@ -70,12 +70,12 @@
           "$ref": "#/definitions/IBlockUIMetadataCanvasCoordinates"
         },
         "should_auto_update_name": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "There is a scenario we want to update the block.name when the block.label is changed, in that case we will use this field"
         }
       },
       "required": [
-        "canvas_coordinates",
-        "should_auto_update_name"
+        "canvas_coordinates"
       ],
       "description": "A set of key-value records describing information about how blocks are displayed on a UI/flowchart editor"
     },
