@@ -29,13 +29,13 @@ export interface SetContactProperty {
 export interface ISetContactPropertyBlockConfig extends IBlockConfig {}
 
 export interface ISetContactPropertyBlockConfigRequired extends ISetContactPropertyBlockConfig {
-  set_contact_property: SetContactProperty
+  set_contact_property: SetContactProperty[]
 }
 
 export function isSetContactPropertyConfig(thing: unknown): thing is ISetContactPropertyBlockConfigRequired {
   if (typeof thing === 'object' && thing !== null && 'set_contact_property' in thing) {
     const setContactProperty = (thing as ISetContactPropertyBlockConfigRequired).set_contact_property
-    return isSetContactProperty(setContactProperty)
+    return Array.isArray(setContactProperty) && setContactProperty.every(item => isSetContactProperty(item))
   }
   return false
 }

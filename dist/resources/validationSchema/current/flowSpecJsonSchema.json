@@ -65,10 +65,13 @@
       "type": "object"
     },
     "IBlockConfig": {
-      "description": "All blocks have a standard capability to specify how a contact property should be updated. This update shall happen immediately prior to following the exit node out of the block. This is specified via the optional set_contact_property object within the Block config",
+      "description": "All blocks have a standard capability to specify how a contact property should be updated. This update shall happen immediately prior to following the exit node out of the block. This is specified via the optional set_contact_property parameter within the Block config that has a list of contact properties to change and their new values.",
       "properties": {
         "set_contact_property": {
-          "$ref": "#/definitions/SetContactProperty"
+          "items": {
+            "$ref": "#/definitions/SetContactProperty"
+          },
+          "type": "array"
         }
       },
       "type": "object"

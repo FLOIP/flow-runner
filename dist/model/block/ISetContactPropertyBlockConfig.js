@@ -4,7 +4,7 @@ exports.isSetContactProperty = exports.isSetContactPropertyConfig = void 0;
 function isSetContactPropertyConfig(thing) {
     if (typeof thing === 'object' && thing !== null && 'set_contact_property' in thing) {
         const setContactProperty = thing.set_contact_property;
-        return isSetContactProperty(setContactProperty);
+        return Array.isArray(setContactProperty) && setContactProperty.every(item => isSetContactProperty(item));
     }
     return false;
 }

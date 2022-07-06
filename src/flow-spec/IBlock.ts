@@ -319,16 +319,13 @@ export function wrapInExprSyntaxWhenAbsent(expr: string): string {
 }
 
 /**
- * Set a property on the contact contained in the flow context.
+ * Set properties on the contact contained in the flow context.
  */
 export function setContactProperty<BLOCK_CONFIG extends ISetContactPropertyBlockConfig>(
   block: IBlock<BLOCK_CONFIG>,
   context: IContext
 ): void {
-  const setContactProperty = block.config.set_contact_property
-  if (setContactProperty != null) {
-    setSingleContactProperty(setContactProperty, context)
-  }
+  block.config.set_contact_property?.forEach(setContactProperty => setSingleContactProperty(setContactProperty, context))
 }
 
 function setSingleContactProperty(property: SetContactProperty, context: IContext): void {

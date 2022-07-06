@@ -192,10 +192,12 @@ describe('IBlock', () => {
           should_auto_update_name: true,
         },
         config: {
-          set_contact_property: {
-            property_key: 'foo',
-            property_value: 'bar',
-          },
+          set_contact_property: [
+            {
+              property_key: 'foo',
+              property_value: 'bar',
+            },
+          ],
         } as ISetContactPropertyBlockConfig,
       } as IBlock
       setContactProperty(block, context)
