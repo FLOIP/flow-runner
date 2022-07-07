@@ -4,7 +4,16 @@ export interface IBlockUIMetadataCanvasCoordinates {
     y: number;
 }
 export interface IBlockUIMetadata extends Record<string, any> {
-    canvas_coordinates: IBlockUIMetadataCanvasCoordinates;
+    canvas_coordinates?: IBlockUIMetadataCanvasCoordinates;
+}
+export interface IBlockVendorMetadata extends Record<string, any> {
+    floip: IBlockVendorMetadataFloip;
+}
+export interface IBlockVendorMetadataFloip extends Record<string, any> {
+    ui_metadata: IFloipUIMetadata;
+}
+export interface IFloipUIMetadata extends Record<string, any> {
+    branching_type: string;
     should_auto_update_name?: boolean;
 }
 export interface IBlock<BLOCK_CONFIG = IBlockConfig> {
@@ -13,7 +22,7 @@ export interface IBlock<BLOCK_CONFIG = IBlockConfig> {
     label?: string;
     semantic_label?: string;
     tags?: Array<string>;
-    vendor_metadata?: Record<string, any>;
+    vendor_metadata?: IBlockVendorMetadata;
     ui_metadata?: IBlockUIMetadata;
     type: string;
     config: BLOCK_CONFIG;

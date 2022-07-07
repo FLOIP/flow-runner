@@ -31,7 +31,7 @@
           "description": "an arbitrary list of strings for categorization of the block's content, meaning, etc. This has a similar purpose to semantic_label, but the assumption is that many related blocks might have the same tags."
         },
         "vendor_metadata": {
-          "type": "object",
+          "$ref": "#/definitions/IBlockVendorMetadata",
           "description": "A set of key-value elements that is not controlled by the Specification, but could be relevant to a specific vendor/platform/implementation."
         },
         "ui_metadata": {
@@ -63,11 +63,33 @@
       ],
       "additionalProperties": false
     },
-    "IBlockUIMetadata": {
+    "IBlockVendorMetadata": {
       "type": "object",
       "properties": {
-        "canvas_coordinates": {
-          "$ref": "#/definitions/IBlockUIMetadataCanvasCoordinates"
+        "floip": {
+          "$ref": "#/definitions/IBlockVendorMetadataFloip"
+        }
+      },
+      "required": [
+        "floip"
+      ]
+    },
+    "IBlockVendorMetadataFloip": {
+      "type": "object",
+      "properties": {
+        "ui_metadata": {
+          "$ref": "#/definitions/IFloipUIMetadata"
+        }
+      },
+      "required": [
+        "ui_metadata"
+      ]
+    },
+    "IFloipUIMetadata": {
+      "type": "object",
+      "properties": {
+        "branching_type": {
+          "type": "string"
         },
         "should_auto_update_name": {
           "type": "boolean",
@@ -75,8 +97,16 @@
         }
       },
       "required": [
-        "canvas_coordinates"
-      ],
+        "branching_type"
+      ]
+    },
+    "IBlockUIMetadata": {
+      "type": "object",
+      "properties": {
+        "canvas_coordinates": {
+          "$ref": "#/definitions/IBlockUIMetadataCanvasCoordinates"
+        }
+      },
       "description": "A set of key-value records describing information about how blocks are displayed on a UI/flowchart editor"
     },
     "IBlockUIMetadataCanvasCoordinates": {
