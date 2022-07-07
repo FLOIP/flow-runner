@@ -48,7 +48,19 @@ export interface IBlockUIMetadataCanvasCoordinates {
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface IBlockUIMetadata extends Record<string, any> {
-  canvas_coordinates: IBlockUIMetadataCanvasCoordinates
+  canvas_coordinates?: IBlockUIMetadataCanvasCoordinates
+}
+
+export interface IBlockVendorMetadata extends Record<string, any> {
+  floip: IBlockVendorMetadataFloip
+}
+
+export interface IBlockVendorMetadataFloip extends Record<string, any> {
+  ui_metadata: IFloipUIMetadata
+}
+
+export interface IFloipUIMetadata extends Record<string, any> {
+  branching_type: string,
   /**
    * There is a scenario we want to update the block.name when the block.label is changed, in that case we will use this field
    */
@@ -99,7 +111,7 @@ export interface IBlock<BLOCK_CONFIG = IBlockConfig> {
    * but could be relevant to a specific vendor/platform/implementation.
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  vendor_metadata?: Record<string, any>
+  vendor_metadata?: IBlockVendorMetadata
 
   /**
    * A set of key-value records describing information about how blocks are displayed on a UI/flowchart editor
