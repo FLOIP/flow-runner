@@ -3,6 +3,7 @@ import {
   createFormattedDate,
   findFirstTruthyEvaluatingBlockExitOn,
   generateCachedProxyForBlockName,
+  IBlockConfig,
   IBlockExit,
   IContact,
   IContext,
@@ -11,7 +12,6 @@ import {
 } from '../..'
 import {createDefaultDataset, IDataset} from '../fixtures/IDataset'
 import {createEvalContactFrom, IBlock, setContactProperty} from '../../flow-spec/IBlock'
-import {ISetContactPropertyBlockConfig} from '../../model/block/ISetContactPropertyBlockConfig'
 import Contact from '../../flow-spec/Contact'
 import IContactProperty from '../../flow-spec/IContactProperty'
 import {IContactGroup} from '../../flow-spec/IContactGroup'
@@ -198,7 +198,7 @@ describe('IBlock', () => {
               property_value: 'bar',
             },
           ],
-        } as ISetContactPropertyBlockConfig,
+        } as IBlockConfig,
       } as IBlock
       setContactProperty(block, context)
       const property = context.contact.getProperty('foo')

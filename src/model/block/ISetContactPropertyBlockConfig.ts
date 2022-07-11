@@ -26,21 +26,19 @@ export interface SetContactProperty {
   property_value: string
 }
 
-export interface ISetContactPropertyBlockConfig extends IBlockConfig {}
-
-export interface ISetContactPropertyBlockConfigRequired extends ISetContactPropertyBlockConfig {
+export interface ISetContactPropertyBlockConfig extends IBlockConfig {
   set_contact_property: SetContactProperty[]
 }
 
-export function isSetContactPropertyConfig(thing: unknown): thing is ISetContactPropertyBlockConfigRequired {
+export function isSetContactPropertyConfig(thing: unknown): thing is ISetContactPropertyBlockConfig {
   if (typeof thing === 'object' && thing !== null && 'set_contact_property' in thing) {
-    const setContactProperty = (thing as ISetContactPropertyBlockConfigRequired).set_contact_property
-    return Array.isArray(setContactProperty) && setContactProperty.every(item => isSetContactProperty(item))
+    const setContactProperty = (thing as ISetContactPropertyBlockConfig).set_contact_property
+    return Array.isArray(setContactProperty) && setContactProperty.every(item => isSetSingleContactProperty(item))
   }
   return false
 }
 
-export function isSetContactProperty(thing: unknown): thing is SetContactProperty {
+export function isSetSingleContactProperty(thing: unknown): thing is SetContactProperty {
   if (typeof thing === 'object' && thing !== null) {
     // noinspection SuspiciousTypeOfGuard
     return (
