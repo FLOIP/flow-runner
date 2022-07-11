@@ -1,4 +1,4 @@
-import { IBlockConfig, IBlockExit, IContact, IContext, ISetContactPropertyBlockConfig } from '..';
+import { IBlockConfig, IBlockExit, IContact, IContext } from '..';
 export interface IBlockUIMetadataCanvasCoordinates {
     x: number;
     y: number;
@@ -51,7 +51,7 @@ export declare function createEvalContactFrom(contact: IContact): IContact;
 export declare function evaluateToBool(expr: string, ctx: object): boolean;
 export declare function evaluateToString(expr: string, ctx: object): string;
 export declare function wrapInExprSyntaxWhenAbsent(expr: string): string;
-export declare function setContactProperty<BLOCK_CONFIG extends ISetContactPropertyBlockConfig>(block: IBlock<BLOCK_CONFIG>, context: IContext): void;
+export declare function setContactProperty(block: IBlock, context: IContext): void;
 export interface IBlockService {
     findBlockExitWith(uuid: string, block: IBlock): IBlockExit;
     findFirstTruthyEvaluatingBlockExitOn(block: IBlock, context: IContext): IBlockExit | undefined;
@@ -64,6 +64,6 @@ export interface IBlockService {
     generateCachedProxyForBlockName(target: object, ctx: IContext): object;
     createEvalContextFrom(context: IContext): object;
     evaluateToBool(expr: string, ctx: object): boolean;
-    setContactProperty<BLOCK_CONFIG extends ISetContactPropertyBlockConfig>(block: IBlock<BLOCK_CONFIG>, context: IContext): void;
+    setContactProperty<BLOCK_CONFIG extends IBlockConfig>(block: IBlock<BLOCK_CONFIG>, context: IContext): void;
 }
 //# sourceMappingURL=IBlock.d.ts.map

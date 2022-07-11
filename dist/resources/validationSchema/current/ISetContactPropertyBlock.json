@@ -44,7 +44,7 @@
           "description": "A specific string designating the type or \"subclass\" of this Block. This must be one of the Block type names within the specification, such as Core.RunFlow or MobilePrimitives.Message."
         },
         "config": {
-          "$ref": "#/definitions/ISetContactPropertyBlockConfigRequired",
+          "$ref": "#/definitions/ISetContactPropertyBlockConfig",
           "description": "Additional parameters that are specific to the type of the block. Details are provided within the Block documentation."
         },
         "exits": {
@@ -126,7 +126,7 @@
       "additionalProperties": false,
       "description": "Coordinates indicating location of this block on the Flow Builder's canvas"
     },
-    "ISetContactPropertyBlockConfigRequired": {
+    "ISetContactPropertyBlockConfig": {
       "type": "object",
       "properties": {
         "set_contact_property": {
