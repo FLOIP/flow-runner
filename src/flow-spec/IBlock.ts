@@ -48,7 +48,22 @@ export interface IBlockUIMetadataCanvasCoordinates {
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface IBlockUIMetadata extends Record<string, any> {
-  canvas_coordinates: IBlockUIMetadataCanvasCoordinates
+  canvas_coordinates?: IBlockUIMetadataCanvasCoordinates
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface IBlockVendorMetadata extends Record<string, any> {
+  floip: IBlockVendorMetadataFloip
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface IBlockVendorMetadataFloip extends Record<string, any> {
+  ui_metadata: IFloipUIMetadata
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface IFloipUIMetadata extends Record<string, any> {
+  branching_type: string
   /**
    * There is a scenario we want to update the block.name when the block.label is changed, in that case we will use this field
    */
@@ -71,7 +86,7 @@ export interface IBlock<BLOCK_CONFIG = IBlockConfig> {
    * This must be restricted to word characters so that it can be used as a variable name in expressions.
    * When blocks write results output, they write to a variable corresponding the name of the block.
    *
-   * @pattern ^[a-zA-Z_]\w*$
+   * @pattern ^[a-zA-Z_]\w+$
    */
   name: string
 
@@ -98,8 +113,7 @@ export interface IBlock<BLOCK_CONFIG = IBlockConfig> {
    * A set of key-value elements that is not controlled by the Specification,
    * but could be relevant to a specific vendor/platform/implementation.
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  vendor_metadata?: Record<string, any>
+  vendor_metadata?: IBlockVendorMetadata
 
   /**
    * A set of key-value records describing information about how blocks are displayed on a UI/flowchart editor
