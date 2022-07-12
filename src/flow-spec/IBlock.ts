@@ -29,7 +29,6 @@ import {
   IFlow,
   SetContactProperty,
   ValidationException,
-  ISetContactPropertyBlockConfig,
 } from '..'
 import {cloneDeep, extend, find, get, has, startsWith} from 'lodash'
 import {EvaluatorFactory} from '@floip/expression-evaluator'
@@ -333,16 +332,10 @@ export function wrapInExprSyntaxWhenAbsent(expr: string): string {
 }
 
 /**
- * Set a property on the contact contained in the flow context.
+ * Set properties on the contact contained in the flow context.
  */
-export function setContactProperty<BLOCK_CONFIG extends ISetContactPropertyBlockConfig>(
-  block: IBlock<BLOCK_CONFIG>,
-  context: IContext
-): void {
-  const setContactProperty = block.config.set_contact_property
-  if (setContactProperty != null) {
-    setSingleContactProperty(setContactProperty, context)
-  }
+export function setContactProperty(block: IBlock, context: IContext): void {
+  block.config.set_contact_property?.forEach(setContactProperty => setSingleContactProperty(setContactProperty, context))
 }
 
 function setSingleContactProperty(property: SetContactProperty, context: IContext): void {
@@ -372,5 +365,5 @@ export interface IBlockService {
 
   evaluateToBool(expr: string, ctx: object): boolean
 
-  setContactProperty<BLOCK_CONFIG extends ISetContactPropertyBlockConfig>(block: IBlock<BLOCK_CONFIG>, context: IContext): void
+  setContactProperty<BLOCK_CONFIG extends IBlockConfig>(block: IBlock<BLOCK_CONFIG>, context: IContext): void
 }

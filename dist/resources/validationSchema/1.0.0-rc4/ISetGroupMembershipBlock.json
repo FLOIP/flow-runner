@@ -130,7 +130,10 @@
       "type": "object",
       "properties": {
         "set_contact_property": {
-          "$ref": "#/definitions/SetContactProperty"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SetContactProperty"
+          }
         },
         "clear": {
           "type": "boolean",

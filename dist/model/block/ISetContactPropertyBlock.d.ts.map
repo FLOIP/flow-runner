@@ -1,1 +1,1 @@
-{"version":3,"file":"ISetContactPropertyBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/ISetContactPropertyBlock.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,MAAM,EAAE,sCAAsC,EAAC,MAAM,OAAO,CAAA;AAEpE,MAAM,WAAW,wBAAyB,SAAQ,MAAM,CAAC,sCAAsC,CAAC;CAAG"}
+{"version":3,"file":"ISetContactPropertyBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/ISetContactPropertyBlock.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,MAAM,EAAE,8BAA8B,EAAC,MAAM,OAAO,CAAA;AAE5D,MAAM,WAAW,wBAAyB,SAAQ,MAAM,CAAC,8BAA8B,CAAC;CAAG"}
