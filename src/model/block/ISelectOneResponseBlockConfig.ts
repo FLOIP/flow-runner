@@ -19,10 +19,17 @@
 
 import {IBlockConfig} from '../..'
 
-export interface ISelectOneResponseBlockConfig extends IBlockConfig {
+export type ISelectOneResponseBlockConfig = SelectOneConfigWithPrompt | SelectOneConfigWithQuestionPrompt
+
+type SelectOneConfigWithPrompt = IBlockConfig & {
+  choices: Record<string, string>
   prompt: string
-  question_prompt?: string
-  choices: StringMapType
 }
 
-type StringMapType = {[k: string]: string}
+type SelectOneConfigWithQuestionPrompt = IBlockConfig & {
+  choices: Record<string, string>
+  question_prompt: string
+
+  /** prompt is optional if question_prompt is provided */
+  prompt?: string
+}
