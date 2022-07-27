@@ -20,12 +20,8 @@
 import {IBlockConfig} from '../..'
 
 export interface ISelectOneResponseBlockConfig extends IBlockConfig {
-  /** @format uuid */
-  prompt?: string
-
-  /** @format uuid */
-  question_prompt?: string
-
+  prompt?: Uuid
+  question_prompt?: Uuid
   choices: Record<string, Choice>
   ivr?: IvrConfig
 }
@@ -34,9 +30,7 @@ interface Choice {
   name: string
   ivr_test?: IvrTest
   text_tests?: TextTest[]
-
-  /** @format uuid */
-  prompt: string
+  prompt: Uuid
 }
 
 interface IvrTest {
@@ -52,7 +46,9 @@ interface TextTest {
 }
 
 interface IvrConfig {
-  /** @format uuids */
-  digit_prompts?: string[]
+  digit_prompts?: Uuid[]
   randomize_choice_order?: boolean
 }
+
+/** @pattern ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$ */
+type Uuid = string
