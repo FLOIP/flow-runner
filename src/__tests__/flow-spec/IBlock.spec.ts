@@ -195,7 +195,7 @@ describe('IBlock', () => {
           set_contact_property: [
             {
               property_key: 'foo',
-              property_value: 'bar',
+              property_value: 'bar with spaces',
             },
           ],
         } as IBlockConfig,
@@ -203,7 +203,7 @@ describe('IBlock', () => {
       setContactProperty(block, context)
       const property = context.contact.getProperty('foo')
       expect(typeof property).toBe('object')
-      expect((property as IContactProperty).__value__).toBe('bar')
+      expect((property as IContactProperty).__value__).toBe('bar with spaces')
     })
   })
 
