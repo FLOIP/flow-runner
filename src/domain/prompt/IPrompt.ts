@@ -50,7 +50,7 @@ export interface IPrompt<PromptConfigType extends IPromptConfig<PromptConfigType
 export interface IPromptConfig<VALUE_TYPE = unknown> extends IBasePromptConfig {
   kind: string
   isResponseRequired: boolean
-  prompt: string
+  prompt?: string
   value?: VALUE_TYPE
 }
 

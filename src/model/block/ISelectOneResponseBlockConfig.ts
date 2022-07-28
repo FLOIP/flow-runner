@@ -19,7 +19,6 @@
 
 import {IBlockConfig} from '../..'
 
-
 /** @pattern ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$ */
 type Uuid = string
 
@@ -30,7 +29,7 @@ export interface ISelectOneResponseBlockConfig extends IBlockConfig {
   ivr?: IvrConfig
 }
 
-interface Choice {
+export interface Choice {
   name: string
   ivr_test?: IvrTest
   text_tests?: TextTest[]

@@ -29,7 +29,7 @@ export class SelectOnePrompt extends BasePrompt<ISelectOnePromptConfig> {
   validate(choiceKey?: string | null): boolean {
     const {isResponseRequired, choices} = this.config
 
-    if (isResponseRequired && choices.find(({key}) => key === choiceKey) == null) {
+    if (isResponseRequired && choices.find(({prompt}) => prompt === choiceKey) == null) {
       throw new ValidationException('Value provided must be in list of choices')
     }
 
