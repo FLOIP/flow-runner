@@ -146,7 +146,7 @@
         "choices": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Choice"
+            "$ref": "#/definitions/IChoice"
           }
         },
         "ivr": {
@@ -195,7 +195,7 @@
       ],
       "additionalProperties": false
     },
-    "Choice": {
+    "IChoice": {
       "type": "object",
       "properties": {
         "name": {

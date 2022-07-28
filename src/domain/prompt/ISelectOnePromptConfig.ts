@@ -18,7 +18,7 @@
  **/
 
 import {IPromptConfig} from '../..'
-import {Choice} from '../../model/block/ISelectOneResponseBlockConfig'
+import {IChoice} from '../../model/block/ISelectOneResponseBlockConfig'
 
 // todo: can our value type use some fancy keyof magic to say we need a value that's of the type of one of the {key} props in choices?
 /**
@@ -26,6 +26,6 @@ import {Choice} from '../../model/block/ISelectOneResponseBlockConfig'
  */
 export interface ISelectOnePromptConfig extends IPromptConfig<string | null> {
   kind: string
-  choices: Choice[]
+  choices: IChoice[]
   emptyChoicesMessage?: string
 }

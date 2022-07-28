@@ -17,12 +17,12 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {Choice, IPromptConfig} from '../..'
+import {IChoice, IPromptConfig} from '../..'
 
 /**
  * Interface for defining an {@link IPromptConfig} resolving to a {@link SelectManyPrompt}.
  */
-export interface ISelectManyPromptConfig extends IPromptConfig<Choice['prompt'][] | null> {
+export interface ISelectManyPromptConfig extends IPromptConfig<IChoice['prompt'][] | null> {
   kind: string
-  choices: Choice[]
+  choices: IChoice[]
 }

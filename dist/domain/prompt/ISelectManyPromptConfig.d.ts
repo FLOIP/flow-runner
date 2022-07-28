@@ -1,6 +1,6 @@
-import { Choice, IPromptConfig } from '../..';
-export interface ISelectManyPromptConfig extends IPromptConfig<Choice['prompt'][] | null> {
+import { IChoice, IPromptConfig } from '../..';
+export interface ISelectManyPromptConfig extends IPromptConfig<IChoice['prompt'][] | null> {
     kind: string;
-    choices: Choice[];
+    choices: IChoice[];
 }
 //# sourceMappingURL=ISelectManyPromptConfig.d.ts.map

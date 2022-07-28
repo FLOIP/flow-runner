@@ -3,10 +3,10 @@ declare type Uuid = string;
 export interface ISelectOneResponseBlockConfig extends IBlockConfig {
     prompt?: Uuid;
     question_prompt?: Uuid;
-    choices: Choice[];
+    choices: IChoice[];
     ivr?: IvrConfig;
 }
-export interface Choice {
+export interface IChoice {
     name: string;
     ivr_test?: IvrTest;
     text_tests?: TextTest[];
