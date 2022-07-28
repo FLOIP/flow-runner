@@ -42,7 +42,7 @@ export class SelectManyPrompt extends BasePrompt<ISelectManyPromptConfig> {
       throw new ValidationException(INVALID_AT_LEAST_ONE_SELECTION_REQUIRED)
     }
 
-    const invalidChoices = difference(selections, map(choices, 'key'))
+    const invalidChoices = difference(selections, map(choices, 'prompt'))
     if (invalidChoices.length !== 0) {
       throw new InvalidChoiceException<IChoice['prompt']>(INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK, invalidChoices)
     }
