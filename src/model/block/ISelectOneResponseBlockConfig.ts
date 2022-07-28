@@ -19,10 +19,14 @@
 
 import {IBlockConfig} from '../..'
 
+
+/** @pattern ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$ */
+type Uuid = string
+
 export interface ISelectOneResponseBlockConfig extends IBlockConfig {
   prompt?: Uuid
   question_prompt?: Uuid
-  choices: Record<string, Choice>
+  choices: Choice[]
   ivr?: IvrConfig
 }
 
@@ -49,6 +53,3 @@ interface IvrConfig {
   digit_prompts?: Uuid[]
   randomize_choice_order?: boolean
 }
-
-/** @pattern ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$ */
-type Uuid = string
