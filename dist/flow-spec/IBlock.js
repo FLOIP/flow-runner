@@ -146,7 +146,7 @@ function setContactProperty(block, context) {
 }
 exports.setContactProperty = setContactProperty;
 function setSingleContactProperty(property, context) {
-    const value = evaluateToString(property.property_value, createEvalContextFrom(context));
+    const value = expression_evaluator_1.EvaluatorFactory.create().evaluate(property.property_value, createEvalContextFrom(context));
     context.contact.setProperty(property.property_key, value);
 }
 //# sourceMappingURL=IBlock.js.map
