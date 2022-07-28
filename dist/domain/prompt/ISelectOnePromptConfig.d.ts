@@ -1,11 +1,8 @@
 import { IPromptConfig } from '../..';
+import { Choice } from '../../model/block/ISelectOneResponseBlockConfig';
 export interface ISelectOnePromptConfig extends IPromptConfig<string | null> {
     kind: string;
-    choices: IChoice[];
+    choices: Choice[];
     emptyChoicesMessage?: string;
-}
-export interface IChoice {
-    key: string;
-    value: string;
 }
 //# sourceMappingURL=ISelectOnePromptConfig.d.ts.map

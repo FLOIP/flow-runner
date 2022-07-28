@@ -59,11 +59,7 @@ export class SelectManyResponseBlockRunner implements IBlockRunner {
       kind: SELECT_MANY_PROMPT_KEY,
       prompt,
       isResponseRequired: true,
-      choices: Object.keys(choices).map(key => ({
-        key,
-        value: choices[key],
-      })),
-
+      choices,
       value: value as ISelectManyPromptConfig['value'],
     }
   }

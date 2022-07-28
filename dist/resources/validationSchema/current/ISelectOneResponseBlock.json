@@ -136,20 +136,37 @@
           }
         },
         "prompt": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
         },
         "question_prompt": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
         },
         "choices": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Choice"
           }
+        },
+        "ivr": {
+          "type": "object",
+          "properties": {
+            "digit_prompts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+              }
+            },
+            "randomize_choice_order": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "required": [
-        "prompt",
         "choices"
       ]
     },
@@ -167,6 +184,55 @@
       "required": [
         "property_key",
         "property_value"
+      ],
+      "additionalProperties": false
+    },
+    "Choice": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "ivr_test": {
+          "type": "object",
+          "properties": {
+            "test_expression": {
+              "type": "string",
+              "format": "floip-expression"
+            }
+          },
+          "required": [
+            "test_expression"
+          ],
+          "additionalProperties": false
+        },
+        "text_tests": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "language": {
+                "type": "string"
+              },
+              "test_expression": {
+                "type": "string",
+                "format": "floip-expression"
+              }
+            },
+            "required": [
+              "test_expression"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "prompt": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      },
+      "required": [
+        "name",
+        "prompt"
       ],
       "additionalProperties": false
     },
