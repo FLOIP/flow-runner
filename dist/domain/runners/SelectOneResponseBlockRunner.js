@@ -15,10 +15,7 @@ class SelectOneResponseBlockRunner {
                 kind: __1.SELECT_ONE_PROMPT_KEY,
                 prompt,
                 isResponseRequired: true,
-                choices: Object.keys(choices).map(key => ({
-                    key,
-                    value: choices[key],
-                })),
+                choices,
                 value: value,
             };
         });

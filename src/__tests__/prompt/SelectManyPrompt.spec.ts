@@ -59,7 +59,7 @@ describe('SelectManyPrompt', () => {
       })
 
       it('should raise when no selections are provided', async () => {
-        const selections: IChoice['key'][] = []
+        const selections: IChoice['prompt'][] = []
         verifyValidationThrows(prompt.validate.bind(prompt, selections), ValidationException, INVALID_AT_LEAST_ONE_SELECTION_REQUIRED)
       })
     })
@@ -78,7 +78,7 @@ describe('SelectManyPrompt', () => {
   })
 })
 
-function verifyValidationThrows(invoker: Function, ErrorType: Function, msg: string, choices?: IChoice['key'][]): void {
+function verifyValidationThrows(invoker: Function, ErrorType: Function, msg: string, choices?: IChoice['prompt'][]): void {
   try {
     invoker()
 

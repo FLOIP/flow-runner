@@ -31,7 +31,7 @@ export const SELECT_MANY_PROMPT_KEY = 'SelectMany'
 export class SelectManyPrompt extends BasePrompt<ISelectManyPromptConfig> {
   /* TODO: This will return true, or throw an error, but it seems like it should return a false instead of throwing error.
       Consider making a validateOrThrow and a and a validate, where validate only returns true/false. */
-  validate(selections: IChoice['key'][]): boolean {
+  validate(selections: IChoice['prompt'][]): boolean {
     const {isResponseRequired, choices} = this.config
 
     if (!isResponseRequired) {
@@ -42,9 +42,9 @@ export class SelectManyPrompt extends BasePrompt<ISelectManyPromptConfig> {
       throw new ValidationException(INVALID_AT_LEAST_ONE_SELECTION_REQUIRED)
     }
 
-    const invalidChoices = difference(selections, map(choices, 'key'))
+    const invalidChoices = difference(selections, map(choices, 'prompt'))
     if (invalidChoices.length !== 0) {
-      throw new InvalidChoiceException<IChoice['key']>(INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK, invalidChoices)
+      throw new InvalidChoiceException<IChoice['prompt']>(INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK, invalidChoices)
     }
 
     return true

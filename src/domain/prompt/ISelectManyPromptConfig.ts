@@ -22,7 +22,7 @@ import {IChoice, IPromptConfig} from '../..'
 /**
  * Interface for defining an {@link IPromptConfig} resolving to a {@link SelectManyPrompt}.
  */
-export interface ISelectManyPromptConfig extends IPromptConfig<IChoice['key'][] | null> {
+export interface ISelectManyPromptConfig extends IPromptConfig<IChoice['prompt'][] | null> {
   kind: string
   choices: IChoice[]
 }

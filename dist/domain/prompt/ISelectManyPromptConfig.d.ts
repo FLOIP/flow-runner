@@ -1,5 +1,5 @@
 import { IChoice, IPromptConfig } from '../..';
-export interface ISelectManyPromptConfig extends IPromptConfig<IChoice['key'][] | null> {
+export interface ISelectManyPromptConfig extends IPromptConfig<IChoice['prompt'][] | null> {
     kind: string;
     choices: IChoice[];
 }

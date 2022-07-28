@@ -125,7 +125,7 @@ describe('FlowRunner', () => {
         const runner = new FlowRunner(context)
         let {prompt}: IRichCursorInputRequired = (await runner.run())!
         // cats
-        prompt.value = (prompt as SelectOnePrompt).config.choices[1].key
+        prompt.value = (prompt as SelectOnePrompt).config.choices[1].prompt
 
         prompt = (await runner.run())!.prompt
         // the next prompt is the cats message
@@ -150,7 +150,7 @@ describe('FlowRunner', () => {
         let {prompt}: IRichCursorInputRequired = (await runner.run())!
 
         // dogs
-        prompt.value = (prompt as SelectOnePrompt).config.choices[0].key
+        prompt.value = (prompt as SelectOnePrompt).config.choices[0].prompt
         prompt = (await runner.run())!.prompt
 
         // the next prompt is the dogs message

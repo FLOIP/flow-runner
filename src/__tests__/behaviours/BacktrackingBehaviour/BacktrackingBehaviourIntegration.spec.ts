@@ -35,7 +35,7 @@ describe.skip('FlowRunner integration', () => {
     let {prompt}: IRichCursorInputRequired = (await runner.run())!
 
     // yes, more children
-    prompt.value = (prompt as SelectOnePrompt).config.choices[0].key
+    prompt.value = (prompt as SelectOnePrompt).config.choices[0].prompt
     prompt = (await runner.run())!.prompt
 
     // age
@@ -43,7 +43,7 @@ describe.skip('FlowRunner integration', () => {
     prompt = (await runner.run())!.prompt
 
     // yes, enjoy reading
-    prompt.value = (prompt as SelectOnePrompt).config.choices[0].key
+    prompt.value = (prompt as SelectOnePrompt).config.choices[0].prompt
     prompt = (await runner.run())!.prompt
 
     // books per year
@@ -55,7 +55,7 @@ describe.skip('FlowRunner integration', () => {
     prompt = (await runner.run())!.prompt
 
     // no, end of children
-    prompt.value = (prompt as SelectOnePrompt).config.choices[1].key
+    prompt.value = (prompt as SelectOnePrompt).config.choices[1].prompt
     const backtracking: IBackTrackingBehaviour = runner.behaviours.backtracking as IBackTrackingBehaviour
     prompt = await backtracking.peek(5)
 
