@@ -39,19 +39,19 @@ export interface IChoice {
   prompt: Uuid
 }
 
-interface IvrTest {
+export interface IvrTest {
   /** @format floip-expression */
   test_expression: string
 }
 
-interface TextTest {
+export interface TextTest {
   language?: string
 
   /** @format floip-expression */
   test_expression: string
 }
 
-interface IvrConfig {
+export interface IvrConfig {
   digit_prompts?: Uuid[]
   randomize_choice_order?: boolean
 }

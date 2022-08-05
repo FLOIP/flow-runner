@@ -12,14 +12,14 @@ export interface IChoice {
     text_tests?: TextTest[];
     prompt: Uuid;
 }
-interface IvrTest {
+export interface IvrTest {
     test_expression: string;
 }
-interface TextTest {
+export interface TextTest {
     language?: string;
     test_expression: string;
 }
-interface IvrConfig {
+export interface IvrConfig {
     digit_prompts?: Uuid[];
     randomize_choice_order?: boolean;
 }
