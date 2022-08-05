@@ -25,6 +25,9 @@ type Uuid = string
 export interface ISelectOneResponseBlockConfig extends IBlockConfig {
   prompt?: Uuid
   question_prompt?: Uuid
+  /**
+   * @minItems 1
+   */
   choices: IChoice[]
   ivr?: IvrConfig
 }
