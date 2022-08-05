@@ -147,7 +147,8 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/IChoice"
-          }
+          },
+          "minItems": 1
         },
         "ivr": {
           "type": "object",
