@@ -17,7 +17,30 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-import {IBlock, ISelectOneResponseBlockConfig} from '../..'
+import {IBlock, IBlockVendorMetadata, IBlockVendorMetadataFloip, IFloipUIMetadata, ISelectOneResponseBlockConfig} from '../..'
+
+export interface ISelectOneResponseFloipUiMetadataChoice {
+  voice_options: {
+    voice_use_expression: boolean
+    voice_key_press: string
+    voice_expression: string | null
+  }
+  text_options: Record<string, string[]>
+}
+
+export type SelectOneResponseFloipUiMetadataChoiceByPrompt = Record<string, ISelectOneResponseFloipUiMetadataChoice>
+
+export interface ISelectOneResponseFloipUiMetadata extends IFloipUIMetadata {
+  choices: SelectOneResponseFloipUiMetadataChoiceByPrompt
+}
+
+export interface ISelectOneResponseBlockVendorMetadataFloip extends IBlockVendorMetadataFloip {
+  ui_metadata: ISelectOneResponseFloipUiMetadata
+}
+
+export interface ISelectOneResponseBlockVendorMetadata extends IBlockVendorMetadata {
+  floip: ISelectOneResponseBlockVendorMetadataFloip
+}
 
 // todo: currently we don't perform any other behaviour than test evaluation on SelectOne
-export interface ISelectOneResponseBlock extends IBlock<ISelectOneResponseBlockConfig> {}
+export interface ISelectOneResponseBlock extends IBlock<ISelectOneResponseBlockConfig, ISelectOneResponseBlockVendorMetadata> {}

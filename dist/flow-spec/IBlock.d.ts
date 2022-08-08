@@ -16,13 +16,13 @@ export interface IFloipUIMetadata extends Record<string, any> {
     branching_type: string;
     should_auto_update_name?: boolean;
 }
-export interface IBlock<BLOCK_CONFIG = IBlockConfig> {
+export interface IBlock<BLOCK_CONFIG = IBlockConfig, BLOCK_VENDOR_METADATA = IBlockVendorMetadata> {
     uuid: string;
     name: string;
     label?: string;
     semantic_label?: string;
     tags?: Array<string>;
-    vendor_metadata?: IBlockVendorMetadata;
+    vendor_metadata?: BLOCK_VENDOR_METADATA;
     ui_metadata?: IBlockUIMetadata;
     type: string;
     config: BLOCK_CONFIG;

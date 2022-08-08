@@ -32,7 +32,7 @@
           "description": "an arbitrary list of strings for categorization of the block's content, meaning, etc. This has a similar purpose to semantic_label, but the assumption is that many related blocks might have the same tags."
         },
         "vendor_metadata": {
-          "$ref": "#/definitions/IBlockVendorMetadata",
+          "$ref": "#/definitions/ISelectOneResponseBlockVendorMetadata",
           "description": "A set of key-value elements that is not controlled by the Specification, but could be relevant to a specific vendor/platform/implementation."
         },
         "ui_metadata": {
@@ -63,29 +63,29 @@
         "uuid"
       ]
     },
-    "IBlockVendorMetadata": {
+    "ISelectOneResponseBlockVendorMetadata": {
       "type": "object",
       "properties": {
         "floip": {
-          "$ref": "#/definitions/IBlockVendorMetadataFloip"
+          "$ref": "#/definitions/ISelectOneResponseBlockVendorMetadataFloip"
         }
       },
       "required": [
         "floip"
       ]
     },
-    "IBlockVendorMetadataFloip": {
+    "ISelectOneResponseBlockVendorMetadataFloip": {
       "type": "object",
       "properties": {
         "ui_metadata": {
-          "$ref": "#/definitions/IFloipUIMetadata"
+          "$ref": "#/definitions/ISelectOneResponseFloipUiMetadata"
         }
       },
       "required": [
         "ui_metadata"
       ]
     },
-    "IFloipUIMetadata": {
+    "ISelectOneResponseFloipUiMetadata": {
       "type": "object",
       "properties": {
         "branching_type": {
@@ -94,11 +94,63 @@
         "should_auto_update_name": {
           "type": "boolean",
           "description": "There is a scenario we want to update the block.name when the block.label is changed, in that case we will use this field"
+        },
+        "choices": {
+          "$ref": "#/definitions/SelectOneResponseFloipUiMetadataChoiceByPrompt"
         }
       },
       "required": [
-        "branching_type"
+        "branching_type",
+        "choices"
       ]
+    },
+    "SelectOneResponseFloipUiMetadataChoiceByPrompt": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/ISelectOneResponseFloipUiMetadataChoice"
+      }
+    },
+    "ISelectOneResponseFloipUiMetadataChoice": {
+      "type": "object",
+      "properties": {
+        "voice_options": {
+          "type": "object",
+          "properties": {
+            "voice_use_expression": {
+              "type": "boolean"
+            },
+            "voice_key_press": {
+              "type": "string"
+            },
+            "voice_expression": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "voice_use_expression",
+            "voice_key_press",
+            "voice_expression"
+          ],
+          "additionalProperties": false
+        },
+        "text_options": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": [
+        "voice_options",
+        "text_options"
+      ],
+      "additionalProperties": false
     },
     "IBlockUIMetadata": {
       "type": "object",

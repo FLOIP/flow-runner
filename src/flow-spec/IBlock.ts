@@ -72,7 +72,7 @@ export interface IFloipUIMetadata extends Record<string, any> {
 /**
  * Block Structure: https://floip.gitbook.io/flow-specification/flows#blocks
  */
-export interface IBlock<BLOCK_CONFIG = IBlockConfig> {
+export interface IBlock<BLOCK_CONFIG = IBlockConfig, BLOCK_VENDOR_METADATA = IBlockVendorMetadata> {
   /**
    * A globally unique identifier for this Block.  (See UUID Format: https://floip.gitbook.io/flow-specification/flows#uuid-format)
    *
@@ -112,7 +112,7 @@ export interface IBlock<BLOCK_CONFIG = IBlockConfig> {
    * A set of key-value elements that is not controlled by the Specification,
    * but could be relevant to a specific vendor/platform/implementation.
    */
-  vendor_metadata?: IBlockVendorMetadata
+  vendor_metadata?: BLOCK_VENDOR_METADATA
 
   /**
    * A set of key-value records describing information about how blocks are displayed on a UI/flowchart editor
