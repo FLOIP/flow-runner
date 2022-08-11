@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SetGroupMembershipBlockRunner = void 0;
 const tslib_1 = require("tslib");
 const __1 = require("../..");
+/**
+ * Adds or removes a group from the contact.
+ */
 class SetGroupMembershipBlockRunner {
     constructor(block, context) {
         this.block = block;
