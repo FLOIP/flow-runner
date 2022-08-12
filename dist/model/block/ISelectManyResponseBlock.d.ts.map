@@ -1,1 +1,1 @@
-{"version":3,"file":"ISelectManyResponseBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/ISelectManyResponseBlock.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,MAAM,EAAE,8BAA8B,EAAC,MAAM,OAAO,CAAA;AAE5D,MAAM,WAAW,wBAAyB,SAAQ,MAAM,CAAC,8BAA8B,CAAC;CAAG"}
+{"version":3,"file":"ISelectManyResponseBlock.d.ts","sourceRoot":"","sources":["../../../src/model/block/ISelectManyResponseBlock.ts"],"names":[],"mappings":"AAAA;;;;;;;;;;;;;;;;;IAiBI;AAEJ,OAAO,EAAC,MAAM,EAAE,8BAA8B,EAAC,MAAM,OAAO,CAAA;AAE5D,MAAM,WAAW,wBAAyB,SAAQ,MAAM,CAAC,8BAA8B,CAAC;CAAG"}

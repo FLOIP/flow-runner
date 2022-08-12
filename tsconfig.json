@@ -22,7 +22,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "dist",
-    "removeComments": true,
+    "removeComments": false,
     "rootDir": "src",
     "sourceMap": true,
     "strict": true,

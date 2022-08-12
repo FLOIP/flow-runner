@@ -8,6 +8,7 @@ const expression_parser_1 = require("@floip/expression-parser");
 const lodash_1 = require("lodash");
 function getJsonSchemaFrom(version, schemaFileName) {
     try {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         return require(`../../../dist/resources/validationSchema/${version}/${schemaFileName}.json`);
     }
     catch (_e) {
@@ -16,6 +17,10 @@ function getJsonSchemaFrom(version, schemaFileName) {
 }
 function createAjvInstance(schema) {
     const ajv = new ajv_1.default();
+    /*
+     * We need this to use AJV format such as 'date-time'
+     * https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
+     */
     ajv_formats_1.default(ajv);
     ajv.addFormat('floip-expression', {
         type: 'string',
@@ -31,6 +36,15 @@ function createAjvInstance(schema) {
     });
     return ajv.compile(schema);
 }
+/**
+ * Validate a Flow Spec container and return a set of errors (if they exist).
+ * This checks that the structure of the container is valid according to the flow spec.
+ * It does not check that the configuration of blocks is complete and ready to run/publish the flow;
+ * for this see getFlowCompletenessErrors()
+ * @param container : The result of calling JSON.parse() on flow spec container json
+ * @returns null if there are no errors, or a set of validation errors
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getFlowStructureErrors(container, shouldValidateBlocks = true) {
     const flowSpecJsonSchema = getJsonSchemaFrom(container.specification_version, 'flowSpecJsonSchema');
     if (flowSpecJsonSchema == null) {
@@ -71,6 +85,9 @@ function getFlowStructureErrors(container, shouldValidateBlocks = true) {
     return null;
 }
 exports.getFlowStructureErrors = getFlowStructureErrors;
+/**
+ * Detailed checking of individual blocks, based on their unique jsonSchema requirements
+ */
 function checkIndividualBlocks(container) {
     let errors = [];
     container.flows.forEach((flow, flowIndex) => {
@@ -84,6 +101,7 @@ function checkIndividualBlock(block, container, blockIndex, flowIndex) {
     var _a;
     const schemaFileName = blockTypeToInterfaceName(block.type);
     if (schemaFileName != null) {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const blockJsonSchema = getJsonSchemaFrom(container.specification_version, schemaFileName);
         if (blockJsonSchema == null) {
             return [
@@ -105,6 +123,7 @@ function checkIndividualBlock(block, container, blockIndex, flowIndex) {
             });
         }
     }
+    // Check that exits has at least one exit, and that the Default exit is listed last
     const exitError = checkExitsOnBlock(block);
     if (exitError != null) {
         return [
@@ -170,6 +189,11 @@ function blockTypeToInterfaceName(type) {
             return null;
     }
 }
+/**
+ * Check that all resources asked for within blocks are available in the Resources array
+ * @param container Flow package container
+ * @returns null if all resources are available, otherwise an array of the missing resource UUIDs
+ */
 function checkAllResourcesPresent(container) {
     const resourcesRequested = [];
     const allResources = [];

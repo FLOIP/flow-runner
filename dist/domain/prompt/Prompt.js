@@ -2,7 +2,22 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Prompt = void 0;
 const __1 = require("../..");
+/**
+ * This is a custom Dynamic Enum for Prompts, that allows adding of custom values at runtime, by calling
+ * `Prompt.addCustomPrompt()`.
+ */
 class Prompt {
+    /**
+     * Construct a prompt, and supply the Prompt constructor for easy instantiation.
+     *
+     * We do not want the library user of FlowRunner to call this, so FlowRunner should add all custom Prompts via a
+     * builder pattern.
+     *
+     * @param promptConstructor The constructor for the Prompt instance.
+     * @param promptKey The key for the given prompt
+     * @private
+     */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constructor(promptConstructor, promptKey) {
         this.promptConstructor = promptConstructor;
         this.promptKey = promptKey;
@@ -13,12 +28,18 @@ class Prompt {
             Prompt.VALUES.push(this);
         }
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     static addCustomPrompt(promptConstructor, promptKey) {
         new Prompt(promptConstructor, promptKey);
     }
+    /** Remove custom prompts from the Enum Class */
     static reset() {
         Prompt.VALUES = [Prompt.MESSAGE, Prompt.NUMERIC, Prompt.SELECT_ONE, Prompt.SELECT_MANY, Prompt.OPEN];
     }
+    /**
+     * Get a prompt, by the key
+     * @param promptKey you can pass IPromptConfig.kind
+     */
     static valueOf(promptKey) {
         var _a;
         return (_a = Prompt.VALUES.filter(prompt => prompt.promptKey === promptKey)) === null || _a === void 0 ? void 0 : _a[0];

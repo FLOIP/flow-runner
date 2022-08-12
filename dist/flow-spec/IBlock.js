@@ -1,4 +1,22 @@
 "use strict";
+/**
+ * Flow Interoperability Project (flowinterop.org)
+ * Flow Runner
+ * Copyright (c) 2019, 2020 Viamo Inc.
+ * Authored by: Brett Zabos (brett.zabos@viamo.io)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ **/
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setContactProperty = exports.wrapInExprSyntaxWhenAbsent = exports.evaluateToString = exports.evaluateToBool = exports.createEvalContactFrom = exports.createEvalContextFrom = exports.generateCachedProxyForBlockName = exports.isLastBlock = exports.findDefaultBlockExitOrThrow = exports.findDefaultBlockExitOnOrNull = exports.firstTrueOrNullBlockExitOrThrow = exports.firstTrueBlockExitOrNull = exports.findFirstTruthyEvaluatingBlockExitOn = exports.findBlockExitWith = void 0;
 const __1 = require("..");
@@ -13,6 +31,11 @@ function findBlockExitWith(uuid, block) {
     return exit;
 }
 exports.findBlockExitWith = findBlockExitWith;
+/**
+ * @param block
+ * @param context
+ * @deprecated Use firstTrueOrNullBlockExitOrThrow or firstTrueBlockExitOrNull
+ */
 function findFirstTruthyEvaluatingBlockExitOn(block, context) {
     const { exits } = block;
     if (exits.length === 0) {
@@ -60,6 +83,8 @@ function findDefaultBlockExitOnOrNull(block) {
 }
 exports.findDefaultBlockExitOnOrNull = findDefaultBlockExitOnOrNull;
 function findDefaultBlockExitOrThrow(block) {
+    /* We have to test against null, as some default exits are being sent with a value of null
+        (MessageBlock, SetGroupMembershipBlock, CaseBlock)*/
     const exit = lodash_1.find(block.exits, blockExit => blockExit.default || blockExit.test == null);
     if (exit == null) {
         throw new __1.ValidationException(`Unable to find default exit on block ${block.uuid}`);
@@ -72,15 +97,28 @@ function isLastBlock({ exits }) {
 }
 exports.isLastBlock = isLastBlock;
 function generateCachedProxyForBlockName(target, ctx) {
+    // create a proxy that traps get() and attempts a lookup of blocks by name
     return new Proxy(target, {
         get(target, prop, _receiver) {
             if (prop in target) {
+                // todo: why are we using ...arguments here?
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                // eslint-disable-next-line prefer-rest-params
                 return Reflect.get(...arguments);
             }
+            // fetch our basic representation of a block stored on the context
             const evalBlock = lodash_1.get(ctx, `session_vars.block_interactions_by_block_name.${prop.toString()}`);
             if (evalBlock == null) {
                 return;
             }
+            // extend our basic block repr with the value from block interaction
+            // block interactions are logically immutable, but we yank this later to
+            //   (a) mitigate storing `.value`s redundantly
+            //   (b) allow post-processing using behaviours
+            // if we did want to cache the value as well, we'd need to
+            //   (a) implement the value portion in runOneBlock() rather than navigateTo() and
+            //   (b) remove the two lines below to simply return `evalBlock` ref
             const { value } = __1.findInteractionWith(evalBlock.__interactionId, ctx);
             return lodash_1.extend({ value, __value__: value }, evalBlock);
         },
@@ -90,12 +128,14 @@ function generateCachedProxyForBlockName(target, ctx) {
     });
 }
 exports.generateCachedProxyForBlockName = generateCachedProxyForBlockName;
+// todo: push eval stuff into `Expression.evaluate()` abstraction for evalContext + result handling 👇
 function createEvalContextFrom(context) {
     const { contact, cursor, mode, language_id: language } = context;
     let flow;
     let block;
     let prompt;
     if (cursor != null) {
+        // because evalContext.block references the current block we're working on
         flow = __1.getActiveFlowFrom(context);
         block = __1.findBlockWith(__1.findInteractionWith(cursor.interactionId, context).block_id, flow);
         prompt = cursor.promptConfig;
@@ -110,7 +150,9 @@ function createEvalContextFrom(context) {
     return {
         contact: createEvalContactFrom(contact),
         channel: { mode },
-        flow: generateCachedProxyForBlockName(Object.assign(Object.assign({}, flow), { language }), context),
+        flow: generateCachedProxyForBlockName(Object.assign(Object.assign({}, flow), { 
+            // todo: why isn't this languageId?
+            language }), context),
         block: Object.assign(Object.assign({}, block), { value: prompt != null ? prompt.value : undefined }),
         date: {
             today: DateFormat_1.createFormattedDate(today),
@@ -121,6 +163,12 @@ function createEvalContextFrom(context) {
     };
 }
 exports.createEvalContextFrom = createEvalContextFrom;
+/**
+ * Create a contact for use in evaluation context.
+ * This creates a copy of the passed contact and removes, from the contacts list
+ * of groups, any groups that have been marked as deleted.
+ * @param contact
+ */
 function createEvalContactFrom(contact) {
     var _a, _b;
     const evalContact = lodash_1.cloneDeep(contact);
@@ -140,6 +188,9 @@ function wrapInExprSyntaxWhenAbsent(expr) {
     return lodash_1.startsWith(expr, '@(') ? expr : `@(${expr})`;
 }
 exports.wrapInExprSyntaxWhenAbsent = wrapInExprSyntaxWhenAbsent;
+/**
+ * Set properties on the contact contained in the flow context.
+ */
 function setContactProperty(block, context) {
     var _a;
     (_a = block.config.set_contact_property) === null || _a === void 0 ? void 0 : _a.forEach(setContactProperty => setSingleContactProperty(setContactProperty, context));

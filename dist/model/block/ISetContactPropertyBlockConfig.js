@@ -11,6 +11,7 @@ function isSetContactPropertyConfig(thing) {
 exports.isSetContactPropertyConfig = isSetContactPropertyConfig;
 function isSetSingleContactProperty(thing) {
     if (typeof thing === 'object' && thing !== null) {
+        // noinspection SuspiciousTypeOfGuard
         return ('property_key' in thing &&
             'property_value' in thing &&
             typeof thing.property_key === 'string' &&

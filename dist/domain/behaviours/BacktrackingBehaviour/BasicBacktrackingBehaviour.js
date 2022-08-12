@@ -1,4 +1,22 @@
 "use strict";
+/**
+ * Flow Interoperability Project (flowinterop.org)
+ * Flow Runner
+ * Copyright (c) 2019, 2020 Viamo Inc.
+ * Authored by: Brett Zabos (brett.zabos@viamo.io)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ **/
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BasicBacktrackingBehaviour = exports.PeekDirection = void 0;
 const tslib_1 = require("tslib");
@@ -9,6 +27,10 @@ var PeekDirection;
     PeekDirection["RIGHT"] = "RIGHT";
     PeekDirection["LEFT"] = "LEFT";
 })(PeekDirection = exports.PeekDirection || (exports.PeekDirection = {}));
+/**
+ * Basic implementation of time-travel. Solely provides ability to preview what's happened in the past, while any
+ * modifications will clear the past's future.
+ */
 class BasicBacktrackingBehaviour {
     constructor(context, navigator, promptBuilder) {
         this.context = context;
@@ -16,17 +38,25 @@ class BasicBacktrackingBehaviour {
         this.promptBuilder = promptBuilder;
     }
     rebuildIndex() {
+        // do nothing for now
     }
     seek(steps = 0, context = this.context) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const { interaction: prevIntx } = yield this.peek(steps, context);
+            // then generate a cursor from desired interaction && set cursor on context
             return (yield this.jumpTo(prevIntx, context));
         });
     }
     jumpTo(destinationInteraction, context = this.context) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const discarded = context.interactions.splice(lodash_1.findLastIndex(context.interactions, destinationInteraction), context.interactions.length);
+            // jump context.interactions back in time
+            const discarded = context.interactions.splice(
+            // truncate intx list to pull us back in time; include provided intx
+            lodash_1.findLastIndex(context.interactions, destinationInteraction), context.interactions.length);
+            // step out of nested flows that we've truncated
+            // todo: migrate to also use applyReversibleDataOperation()
             lodash_1.forEachRight(discarded, intx => intx.uuid === lodash_1.last(context.nested_flow_block_interaction_id_stack) ? context.nested_flow_block_interaction_id_stack.pop() : null);
+            // can only reverse from the end, so we only compare the last.
             lodash_1.forEachRight(discarded, ({ uuid }) => {
                 var _a;
                 while (((_a = lodash_1.last(context.reversible_operations)) === null || _a === void 0 ? void 0 : _a.interactionId) === uuid) {
@@ -49,6 +79,7 @@ class BasicBacktrackingBehaviour {
             throw new __1.ValidationException(`Unknown \`direction\` provided to findInteractiveInteractionAt() -
         ${JSON.stringify(direction)}`);
         }
+        // setup for while-loop
         let _steps = steps + 1;
         const intx = _find(context.interactions, ({ type }) => !lodash_1.includes(__1.NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0);
         if (intx == null || _steps > 0) {
@@ -58,14 +89,19 @@ class BasicBacktrackingBehaviour {
     }
     peek(steps = 0, context = this.context, direction = PeekDirection.LEFT) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            // keep a trace of all interactions we attempt to make a prompt from
             const attemptedPrompts = [];
             let prompt;
+            // we'll keep trying to backtrack to an interactive prompt until we run out
+            // of interactions -- when that happens, we should catch an exception
             while (prompt == null) {
                 try {
+                    // attempt to build a prompt from the next interaction
                     const intx = this._findInteractiveInteractionAt(steps, context, direction);
                     const block = __1.findBlockWith(intx.block_id, __1.findFlowWith(intx.flow_id, context));
                     const prompt = yield this.promptBuilder.buildPromptFor(block, intx);
                     if (prompt == null) {
+                        // we weren't able to build a prompt
                         attemptedPrompts.push({ intx, block });
                     }
                     else {
@@ -74,6 +110,7 @@ class BasicBacktrackingBehaviour {
                             prompt: Object.assign(prompt, { value: intx.value }),
                         };
                     }
+                    // we'll try stepping over the interaction that had no prompt
                     ++steps;
                 }
                 catch (e) {
@@ -98,6 +135,7 @@ class BasicBacktrackingBehaviour {
         });
     }
     postInteractionComplete(_interaction, _context) {
+        // do nothing
     }
 }
 exports.BasicBacktrackingBehaviour = BasicBacktrackingBehaviour;

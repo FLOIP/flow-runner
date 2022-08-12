@@ -1,1 +1,1 @@
-{"version":3,"file":"IPrintBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/IPrintBlockConfig.ts"],"names":[],"mappings":"AAmBA,OAAO,EAAC,YAAY,EAAC,MAAM,OAAO,CAAA;AAElC,MAAM,WAAW,iBAAkB,SAAQ,YAAY;IAIrD,OAAO,EAAE,MAAM,CAAA;CAChB"}
+{"version":3,"file":"IPrintBlockConfig.d.ts","sourceRoot":"","sources":["../../../src/model/block/IPrintBlockConfig.ts"],"names":[],"mappings":"AAAA;;;;;;;;;;;;;;;;;IAiBI;AAEJ,OAAO,EAAC,YAAY,EAAC,MAAM,OAAO,CAAA;AAElC,MAAM,WAAW,iBAAkB,SAAQ,YAAY;IACrD;;OAEG;IACH,OAAO,EAAE,MAAM,CAAA;CAChB"}

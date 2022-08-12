@@ -1,4 +1,7 @@
 import { IBlockExit, IBlockRunner, IContext, IRichCursor, ISetGroupMembershipBlock } from '../..';
+/**
+ * Adds or removes a group from the contact.
+ */
 export declare class SetGroupMembershipBlockRunner implements IBlockRunner {
     block: ISetGroupMembershipBlock;
     context: IContext;

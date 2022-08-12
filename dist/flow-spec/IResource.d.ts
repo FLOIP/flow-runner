@@ -4,6 +4,11 @@ export interface IResourceValue {
     content_type: string;
     mime_type?: string;
     modes: SupportedMode[];
+    /**
+     * Value will accept alphanumerics, white spaces, file path, expressions, conditions,
+     * @pattern ^[\w \\\/@:,.!?+*^<>=()"'-]+$
+     * @format floip-expression
+     */
     value: string;
 }
 export interface IResource {
