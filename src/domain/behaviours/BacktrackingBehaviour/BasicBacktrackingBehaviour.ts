@@ -143,7 +143,7 @@ export class BasicBacktrackingBehaviour implements IBasicBackTrackingBehaviour {
 
   async peek(steps = 0, context: IContext = this.context, direction = PeekDirection.LEFT): Promise<IRichCursorInputRequired> {
     // keep a trace of all interactions we attempt to make a prompt from
-    const attemptedPrompts = []
+    const attemptedPrompts: any[] = []
     let prompt
 
     // we'll keep trying to backtrack to an interactive prompt until we run out
