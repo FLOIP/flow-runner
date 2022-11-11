@@ -381,7 +381,7 @@
         "value": {
           "description": "Value will accept alphanumerics, white spaces, file path, expressions, conditions,",
           "format": "floip-expression",
-          "pattern": "^[\\w \\r\\n\\\\\\/@:,.!?+*^<>=()\"'-]+$",
+          "pattern": "^[\\w \\r\\n\\\\\\/@:,.!?+*^<>=()\"'-]*$",
           "type": "string"
         }
       },
