@@ -129,3 +129,12 @@ fabric.properties
 /.env.local
 /.idea/eslintPlugin.xml
 /tsconfig.tsbuildinfo
+
+# Yarn 2
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
