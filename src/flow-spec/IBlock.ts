@@ -272,14 +272,22 @@ export function createEvalContextFrom(context: IContext): object {
     prompt = cursor.promptConfig
   }
 
-  const today = new Date()
-  const tomorrow = new Date()
-  const yesterday = new Date()
+  // now is todays full date + time
+  const now = new Date()
 
-  tomorrow.setDate(today.getDate() + 1)
-  tomorrow.setHours(0, 0, 0, 0)
-  yesterday.setDate(today.getDate() - 1)
-  yesterday.setHours(0, 0, 0, 0)
+  // today is just today's day, at midnight
+  const today = new Date(now)
+  today.setHours(0, 0, 0, 0);
+
+  // tomorrow and yesterday also midnight
+  const tomorrow = new Date(now)
+  const yesterday = new Date(now)
+
+  tomorrow.setDate(now.getDate() + 1)
+  tomorrow.setHours(0, 0, 0, 0);
+
+  yesterday.setDate(now.getDate() - 1)
+  yesterday.setHours(0, 0, 0, 0);
 
   return {
     contact: createEvalContactFrom(contact),
