@@ -120,7 +120,7 @@ export interface IEvalContextBlock {
     value: unknown;
     text: string;
 }
-export declare type TEvalContextBlockMap = {
+export type TEvalContextBlockMap = {
     [k: string]: IEvalContextBlock;
 };
 export declare function generateCachedProxyForBlockName(target: object, ctx: IContext): TEvalContextBlockMap;

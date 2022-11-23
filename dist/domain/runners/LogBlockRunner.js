@@ -43,13 +43,13 @@ class LogBlockRunner {
     run() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                this.context.logs[DateFormat_1.createFormattedDate()] = __1.evaluateToString(this.block.config.message, this.context);
-                __1.setContactProperty(this.block, this.context);
-                return __1.firstTrueOrNullBlockExitOrThrow(this.block, this.context);
+                this.context.logs[(0, DateFormat_1.createFormattedDate)()] = (0, __1.evaluateToString)(this.block.config.message, this.context);
+                (0, __1.setContactProperty)(this.block, this.context);
+                return (0, __1.firstTrueOrNullBlockExitOrThrow)(this.block, this.context);
             }
             catch (e) {
                 console.error(e);
-                return __1.findDefaultBlockExitOrThrow(this.block);
+                return (0, __1.findDefaultBlockExitOrThrow)(this.block);
             }
         });
     }

@@ -21,12 +21,12 @@ function createAjvInstance(schema) {
      * We need this to use AJV format such as 'date-time'
      * https://json-schema.org/draft/2019-09/json-schema-validation.html#rfc.section.7)
      */
-    ajv_formats_1.default(ajv);
+    (0, ajv_formats_1.default)(ajv);
     ajv.addFormat('floip-expression', {
         type: 'string',
         validate: (x) => {
             try {
-                expression_parser_1.parse(x);
+                (0, expression_parser_1.parse)(x);
             }
             catch (e) {
                 return false;
@@ -204,7 +204,7 @@ function checkAllResourcesPresent(container) {
         });
     });
     const allResourceStrings = allResources.map(r => r.uuid);
-    const missingResources = lodash_1.difference(resourcesRequested, allResourceStrings);
+    const missingResources = (0, lodash_1.difference)(resourcesRequested, allResourceStrings);
     if (missingResources.length > 0) {
         return missingResources;
     }

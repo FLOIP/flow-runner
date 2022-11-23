@@ -24,7 +24,7 @@ const lodash_1 = require("lodash");
 const expression_evaluator_1 = require("@floip/expression-evaluator");
 const DateFormat_1 = require("../domain/DateFormat");
 function findBlockExitWith(uuid, block) {
-    const exit = lodash_1.find(block.exits, { uuid });
+    const exit = (0, lodash_1.find)(block.exits, { uuid });
     if (exit == null) {
         throw new __1.ValidationException('Unable to find exit on block');
     }
@@ -42,7 +42,7 @@ function findFirstTruthyEvaluatingBlockExitOn(block, context) {
         throw new __1.ValidationException(`Unable to find exits on block ${block.uuid}`);
     }
     const evalContext = createEvalContextFrom(context);
-    return lodash_1.find(exits, ({ test, default: isDefault = false }) => !isDefault && evaluateToBool(String(test), evalContext));
+    return (0, lodash_1.find)(exits, ({ test, default: isDefault = false }) => !isDefault && evaluateToBool(String(test), evalContext));
 }
 exports.findFirstTruthyEvaluatingBlockExitOn = findFirstTruthyEvaluatingBlockExitOn;
 function firstTrueBlockExitOrNull(block, context) {
@@ -66,7 +66,7 @@ function _firstBlockExit(context, block) {
     var _a;
     try {
         const evalContext = createEvalContextFrom(context);
-        return ((_a = lodash_1.find(block.exits, blockExit => evaluateToBool(String(blockExit.test), evalContext))) !== null && _a !== void 0 ? _a : findDefaultBlockExitOnOrNull(block));
+        return ((_a = (0, lodash_1.find)(block.exits, blockExit => evaluateToBool(String(blockExit.test), evalContext))) !== null && _a !== void 0 ? _a : findDefaultBlockExitOnOrNull(block));
     }
     catch (e) {
         console.error(e);
@@ -85,7 +85,7 @@ exports.findDefaultBlockExitOnOrNull = findDefaultBlockExitOnOrNull;
 function findDefaultBlockExitOrThrow(block) {
     /* We have to test against null, as some default exits are being sent with a value of null
         (MessageBlock, SetGroupMembershipBlock, CaseBlock)*/
-    const exit = lodash_1.find(block.exits, blockExit => blockExit.default || blockExit.test == null);
+    const exit = (0, lodash_1.find)(block.exits, blockExit => blockExit.default || blockExit.test == null);
     if (exit == null) {
         throw new __1.ValidationException(`Unable to find default exit on block ${block.uuid}`);
     }
@@ -108,7 +108,7 @@ function generateCachedProxyForBlockName(target, ctx) {
                 return Reflect.get(...arguments);
             }
             // fetch our basic representation of a block stored on the context
-            const evalBlock = lodash_1.get(ctx, `session_vars.block_interactions_by_block_name.${prop.toString()}`);
+            const evalBlock = (0, lodash_1.get)(ctx, `session_vars.block_interactions_by_block_name.${prop.toString()}`);
             if (evalBlock == null) {
                 return;
             }
@@ -119,11 +119,11 @@ function generateCachedProxyForBlockName(target, ctx) {
             // if we did want to cache the value as well, we'd need to
             //   (a) implement the value portion in runOneBlock() rather than navigateTo() and
             //   (b) remove the two lines below to simply return `evalBlock` ref
-            const { value } = __1.findInteractionWith(evalBlock.__interactionId, ctx);
-            return lodash_1.extend({ value, __value__: value }, evalBlock);
+            const { value } = (0, __1.findInteractionWith)(evalBlock.__interactionId, ctx);
+            return (0, lodash_1.extend)({ value, __value__: value }, evalBlock);
         },
         has(target, prop) {
-            return prop in target || lodash_1.has(ctx, `session_vars.block_interactions_by_block_name.${prop.toString()}`);
+            return prop in target || (0, lodash_1.has)(ctx, `session_vars.block_interactions_by_block_name.${prop.toString()}`);
         },
     });
 }
@@ -136,8 +136,8 @@ function createEvalContextFrom(context) {
     let prompt;
     if (cursor != null) {
         // because evalContext.block references the current block we're working on
-        flow = __1.getActiveFlowFrom(context);
-        block = __1.findBlockWith(__1.findInteractionWith(cursor.interactionId, context).block_id, flow);
+        flow = (0, __1.getActiveFlowFrom)(context);
+        block = (0, __1.findBlockWith)((0, __1.findInteractionWith)(cursor.interactionId, context).block_id, flow);
         prompt = cursor.promptConfig;
     }
     const today = new Date();
@@ -155,10 +155,10 @@ function createEvalContextFrom(context) {
             language }), context),
         block: Object.assign(Object.assign({}, block), { value: prompt != null ? prompt.value : undefined }),
         date: {
-            today: DateFormat_1.createFormattedDate(today),
-            tomorrow: DateFormat_1.createFormattedDate(tomorrow),
-            yesterday: DateFormat_1.createFormattedDate(yesterday),
-            __value__: DateFormat_1.createFormattedDate(today),
+            today: (0, DateFormat_1.createFormattedDate)(today),
+            tomorrow: (0, DateFormat_1.createFormattedDate)(tomorrow),
+            yesterday: (0, DateFormat_1.createFormattedDate)(yesterday),
+            __value__: (0, DateFormat_1.createFormattedDate)(today),
         },
     };
 }
@@ -171,7 +171,7 @@ exports.createEvalContextFrom = createEvalContextFrom;
  */
 function createEvalContactFrom(contact) {
     var _a, _b;
-    const evalContact = lodash_1.cloneDeep(contact);
+    const evalContact = (0, lodash_1.cloneDeep)(contact);
     evalContact.groups = (_b = (_a = evalContact.groups) === null || _a === void 0 ? void 0 : _a.filter(group => group.deleted_at === null)) !== null && _b !== void 0 ? _b : [];
     return evalContact;
 }
@@ -185,7 +185,7 @@ function evaluateToString(expr, ctx) {
 }
 exports.evaluateToString = evaluateToString;
 function wrapInExprSyntaxWhenAbsent(expr) {
-    return lodash_1.startsWith(expr, '@(') ? expr : `@(${expr})`;
+    return (0, lodash_1.startsWith)(expr, '@(') ? expr : `@(${expr})`;
 }
 exports.wrapInExprSyntaxWhenAbsent = wrapInExprSyntaxWhenAbsent;
 /**

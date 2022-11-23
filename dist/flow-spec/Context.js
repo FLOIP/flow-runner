@@ -60,7 +60,7 @@ exports.Context = Context;
     // noinspection JSUnusedGlobalSymbols
     class Builder {
         constructor() {
-            this.created_at = __1.createFormattedDate();
+            this.created_at = (0, __1.createFormattedDate)();
             this.delivery_status = __1.DeliveryStatus.QUEUED;
             this.mode = __1.SupportedMode.OFFLINE;
             this.session_vars = {};
@@ -151,12 +151,12 @@ exports.Context = Context;
             return this;
         }
         build() {
-            __1.assertNotNull(this.id, () => 'Context.Builder.setId() must be called before build()');
-            __1.assertNotNull(this.language_id, () => 'Context.Builder.setLanguageId() must be called before build()');
-            __1.assertNotNull(this.contact, () => 'Context.Builder.setContact() must be called before build()');
-            __1.assertNotNull(this.groups, () => 'Context.Builder.setGroups() must be called before build()');
-            __1.assertNotNull(this.flows, () => 'Context.Builder.setFlows() must be called before build()');
-            __1.assertNotNull(this.first_flow_id, () => 'Context.Builder.setFirstFlowId() must be called before build()');
+            (0, __1.assertNotNull)(this.id, () => 'Context.Builder.setId() must be called before build()');
+            (0, __1.assertNotNull)(this.language_id, () => 'Context.Builder.setLanguageId() must be called before build()');
+            (0, __1.assertNotNull)(this.contact, () => 'Context.Builder.setContact() must be called before build()');
+            (0, __1.assertNotNull)(this.groups, () => 'Context.Builder.setGroups() must be called before build()');
+            (0, __1.assertNotNull)(this.flows, () => 'Context.Builder.setFlows() must be called before build()');
+            (0, __1.assertNotNull)(this.first_flow_id, () => 'Context.Builder.setFirstFlowId() must be called before build()');
             return new Context(this.id, this.created_at, this.delivery_status, this.mode, this.language_id, this.contact, this.groups, this.session_vars, this.interactions, this.nested_flow_block_interaction_id_stack, this.reversible_operations, this.flows, this.first_flow_id, this.entry_at, this.exit_at, this.user_id, this.org_id, this.cursor, this.vendor_metadata, this.logs);
         }
     }

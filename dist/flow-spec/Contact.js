@@ -29,8 +29,8 @@ class Contact {
             __value__: value,
             value: value,
             contact_property_field_name: name,
-            created_at: __1.createFormattedDate(),
-            updated_at: __1.createFormattedDate(),
+            created_at: (0, __1.createFormattedDate)(),
+            updated_at: (0, __1.createFormattedDate)(),
             deleted_at: undefined,
         };
         this[name] = prop;
@@ -45,7 +45,7 @@ class Contact {
     addGroup(newGroup) {
         const existingGroup = this.groups.find(group => group.group_key === newGroup.group_key);
         if (existingGroup) {
-            existingGroup.updated_at = __1.createFormattedDate();
+            existingGroup.updated_at = (0, __1.createFormattedDate)();
             // make sure this group isn't marked as deleted
             existingGroup.deleted_at = undefined;
         }
@@ -56,7 +56,7 @@ class Contact {
     delGroup(toRemove) {
         const group = this.groups.find(group => group.group_key === toRemove.group_key);
         if (group) {
-            const now = __1.createFormattedDate();
+            const now = (0, __1.createFormattedDate)();
             group.deleted_at = now;
             group.updated_at = now;
         }

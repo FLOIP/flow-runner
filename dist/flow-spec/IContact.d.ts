@@ -16,9 +16,9 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-declare type ContactPropertyResolver = (...args: string[]) => IContactProperty | undefined;
-declare type ContactGroupResolver = (group: IGroup) => void;
-export declare type IContactPropertyType = IContactProperty | ContactPropertyResolver | ContactGroupResolver | string | IContactGroup[] | undefined;
+type ContactPropertyResolver = (...args: string[]) => IContactProperty | undefined;
+type ContactGroupResolver = (group: IGroup) => void;
+export type IContactPropertyType = IContactProperty | ContactPropertyResolver | ContactGroupResolver | string | IContactGroup[] | undefined;
 import { IContactProperty, IContactGroup, IGroup } from '..';
 export interface IContact {
     id: IContactPropertyType;
