@@ -24,6 +24,7 @@
     "outDir": "dist",
     "removeComments": false,
     "rootDir": "src",
+    "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "strictFunctionTypes": true,
