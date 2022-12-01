@@ -51,7 +51,7 @@ class MessageBlockRunner {
     }
     run() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return __1.firstTrueOrNullBlockExitOrThrow(this.block, this.context);
+            return (0, __1.firstTrueOrNullBlockExitOrThrow)(this.block, this.context);
         });
     }
 }

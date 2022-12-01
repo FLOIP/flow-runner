@@ -13,8 +13,8 @@ class Group {
 }
 exports.Group = Group;
 class ContactGroup extends Group {
-    constructor(groupKeyOrGroup, updated_at = __1.createFormattedDate(), deleted_at, label) {
-        if (__1.isGroup(groupKeyOrGroup)) {
+    constructor(groupKeyOrGroup, updated_at = (0, __1.createFormattedDate)(), deleted_at, label) {
+        if ((0, __1.isGroup)(groupKeyOrGroup)) {
             super(groupKeyOrGroup.group_key, groupKeyOrGroup.label);
         }
         else {

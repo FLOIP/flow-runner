@@ -26,7 +26,7 @@ function createContextDataObjectFor(contact, groups, userId, orgId, flows, langu
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         return {
             id: yield idGenerator.generate(),
-            created_at: __1.createFormattedDate(),
+            created_at: (0, __1.createFormattedDate)(),
             delivery_status: __1.DeliveryStatus.QUEUED,
             user_id: userId,
             org_id: orgId,
@@ -47,7 +47,7 @@ function createContextDataObjectFor(contact, groups, userId, orgId, flows, langu
 }
 exports.createContextDataObjectFor = createContextDataObjectFor;
 function findInteractionWith(uuid, { interactions }) {
-    const interaction = lodash_1.findLast(interactions, { uuid });
+    const interaction = (0, lodash_1.findLast)(interactions, { uuid });
     if (interaction == null) {
         throw new __1.ValidationException(`Unable to find interaction on context: ${uuid} in [${interactions.map(i => i.uuid)}]`);
     }
@@ -55,7 +55,7 @@ function findInteractionWith(uuid, { interactions }) {
 }
 exports.findInteractionWith = findInteractionWith;
 function findFlowWith(uuid, { flows }) {
-    const flow = lodash_1.find(flows, { uuid });
+    const flow = (0, lodash_1.find)(flows, { uuid });
     if (flow == null) {
         throw new __1.ValidationException(`Unable to find flow on context: ${uuid} in ${flows.map(f => f.uuid)}`);
     }
@@ -63,12 +63,12 @@ function findFlowWith(uuid, { flows }) {
 }
 exports.findFlowWith = findFlowWith;
 function findBlockOnActiveFlowWith(uuid, ctx) {
-    return __1.findBlockWith(uuid, getActiveFlowFrom(ctx));
+    return (0, __1.findBlockWith)(uuid, getActiveFlowFrom(ctx));
 }
 exports.findBlockOnActiveFlowWith = findBlockOnActiveFlowWith;
 function findNestedFlowIdFor(interaction, ctx) {
     const flow = findFlowWith(interaction.flow_id, ctx);
-    const runFlowBlock = __1.findBlockWith(interaction.block_id, flow);
+    const runFlowBlock = (0, __1.findBlockWith)(interaction.block_id, flow);
     const flowId = runFlowBlock.config.flow_id;
     if (flowId == null) {
         throw new __1.ValidationException('Unable to find nested flowId on Core.RunFlow');
@@ -81,7 +81,7 @@ function getActiveFlowIdFrom(ctx) {
     if (nested_flow_block_interaction_id_stack.length === 0) {
         return first_flow_id;
     }
-    const interaction = findInteractionWith(lodash_1.last(nested_flow_block_interaction_id_stack), ctx);
+    const interaction = findInteractionWith((0, lodash_1.last)(nested_flow_block_interaction_id_stack), ctx);
     return findNestedFlowIdFor(interaction, ctx);
 }
 exports.getActiveFlowIdFrom = getActiveFlowIdFrom;
@@ -90,7 +90,7 @@ function getActiveFlowFrom(ctx) {
 }
 exports.getActiveFlowFrom = getActiveFlowFrom;
 function isLastBlockOn(ctx, block) {
-    return !isNested(ctx) && __1.isLastBlock(block);
+    return !isNested(ctx) && (0, __1.isLastBlock)(block);
 }
 exports.isLastBlockOn = isLastBlockOn;
 function isNested({ nested_flow_block_interaction_id_stack }) {

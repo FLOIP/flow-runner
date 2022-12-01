@@ -85,12 +85,12 @@ function isStack(subject) {
 }
 exports.isStack = isStack;
 function isIteration(subject) {
-    return lodash_1.isArray(subject) && !isEntity(subject) && !isStack(subject);
+    return (0, lodash_1.isArray)(subject) && !isEntity(subject) && !isStack(subject);
 }
 exports.isIteration = isIteration;
 function forceGet(key, stack) {
     // stacks are nested, so we just make a 2nd pass to cover all commas at once
-    return lodash_1.get(stack, key.join().replace(DEFAULT_JOIN_SEPARATOR_MATCHER, '.'));
+    return (0, lodash_1.get)(stack, key.join().replace(DEFAULT_JOIN_SEPARATOR_MATCHER, '.'));
 }
 exports.forceGet = forceGet;
 function getEntityAt(key, stack) {
@@ -107,7 +107,7 @@ function isStackEmpty({ stack }) {
 exports.isStackEmpty = isStackEmpty;
 function getIterationFor(key, stack) {
     const containingStack = getStackFor(key, stack);
-    const iterationNumber = lodash_1.last(key)[exports.STACK_KEY_ITERATION_NUMBER];
+    const iterationNumber = (0, lodash_1.last)(key)[exports.STACK_KEY_ITERATION_NUMBER];
     const iteration = containingStack.stack[iterationNumber];
     if (!isIteration(iteration)) {
         throw new __1.ValidationException(`Unable to find iteration one up from ${key}`);
@@ -140,7 +140,7 @@ function _replaceAt(i, entity, iter) {
 }
 exports._replaceAt = _replaceAt;
 function _append(item, stack) {
-    const length = lodash_1.last(stack.stack).push(item);
+    const length = (0, lodash_1.last)(stack.stack).push(item);
     if (stack.stack.length === 1 && length === 1) {
         stack.head = _findHeadOn(stack);
     }
@@ -160,7 +160,7 @@ exports._loop = _loop;
  * Remove tail end of current iteration _after_ cursor and up hierarchy as well. */
 function deepTruncateIterationsFrom(key, stack) {
     truncateIterationFrom(key, stack);
-    getStackFor(key, stack).stack.splice(lodash_1.last(key)[exports.STACK_KEY_ITERATION_NUMBER] + 1, Number.MAX_VALUE);
+    getStackFor(key, stack).stack.splice((0, lodash_1.last)(key)[exports.STACK_KEY_ITERATION_NUMBER] + 1, Number.MAX_VALUE);
     if (key.length <= 1) {
         return;
     }
@@ -175,11 +175,11 @@ function truncateIterationFrom(key, stack) {
         return [];
     }
     // get iter + splice from that index
-    return getIterationFor(key, stack).splice(lodash_1.last(key)[exports.STACK_KEY_ITERATION_INDEX] + 1, Number.MAX_VALUE);
+    return getIterationFor(key, stack).splice((0, lodash_1.last)(key)[exports.STACK_KEY_ITERATION_INDEX] + 1, Number.MAX_VALUE);
 }
 exports.truncateIterationFrom = truncateIterationFrom;
 function cloneKeyAndMoveTo(stackKey, key, stack) {
-    const duplicateKey = lodash_1.cloneDeep(key);
+    const duplicateKey = (0, lodash_1.cloneDeep)(key);
     const duplicateKeyAtNewPosition = [...duplicateKey.slice(0, -1), stackKey];
     // todo: how is forceGet() typed as Item -- this could be `undefined`
     const x = forceGet(duplicateKeyAtNewPosition, stack);
@@ -197,7 +197,7 @@ function moveStackIndexTo(dest, key) {
 }
 exports.moveStackIndexTo = moveStackIndexTo;
 function createStackKeyForLastIterAndLastIndexOf({ stack }) {
-    return createStackKey(Math.max(stack.length - 1, 0), Math.max(lodash_1.last(stack).length - 1, 0));
+    return createStackKey(Math.max(stack.length - 1, 0), Math.max((0, lodash_1.last)(stack).length - 1, 0));
 }
 exports.createStackKeyForLastIterAndLastIndexOf = createStackKeyForLastIterAndLastIndexOf;
 /**
@@ -229,7 +229,7 @@ function shallowIndexOfRightFrom(key, stack, matcher) {
     if (isEntity(subject) && matcher(subject)) {
         return key;
     }
-    const deepestStackKey = lodash_1.last(key);
+    const deepestStackKey = (0, lodash_1.last)(key);
     const i = deepestStackKey[exports.STACK_KEY_ITERATION_INDEX];
     if (i <= 0) {
         return;
@@ -249,8 +249,8 @@ function deepFindFrom(key, stack, matcher, originalKey = key) {
 }
 exports.deepFindFrom = deepFindFrom;
 function deepIndexOfFrom(key, stack, matcher, originalKey = key) {
-    const duplicateKey = lodash_1.cloneDeep(key);
-    let { [exports.STACK_KEY_ITERATION_INDEX]: nextIndex, [exports.STACK_KEY_ITERATION_NUMBER]: nextIter } = lodash_1.last(duplicateKey);
+    const duplicateKey = (0, lodash_1.cloneDeep)(key);
+    let { [exports.STACK_KEY_ITERATION_INDEX]: nextIndex, [exports.STACK_KEY_ITERATION_NUMBER]: nextIter } = (0, lodash_1.last)(duplicateKey);
     const isNextIndexOutOfBounds = stack.stack[nextIter].length <= ++nextIndex;
     // we're at original depth; don't step outside this iteration
     const isOutOfBounds = key.join() === originalKey.join() ? isNextIndexOutOfBounds : isNextIndexOutOfBounds && stack.stack.length <= ++nextIter;

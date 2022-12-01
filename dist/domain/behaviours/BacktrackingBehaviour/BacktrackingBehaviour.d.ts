@@ -31,8 +31,8 @@ export interface IBacktrackingContext {
 export interface IContextBacktrackingPlatformMetadata {
     backtracking: IBacktrackingContext;
 }
-declare type BacktrackingCursor = IBacktrackingContext['cursor'];
-declare type BacktrackingIntxStack = IBacktrackingContext['interactionStack'];
+type BacktrackingCursor = IBacktrackingContext['cursor'];
+type BacktrackingIntxStack = IBacktrackingContext['interactionStack'];
 export interface IBackTrackingBehaviour extends IBehaviour {
     rebuildIndex(): void;
     jumpTo(interaction: IBlockInteraction, context: IContext): Promise<IRichCursor>;

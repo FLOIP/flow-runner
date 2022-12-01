@@ -15,5 +15,5 @@ export interface IResource {
     uuid: string;
     values: IResourceValue[];
 }
-export declare type IResources = IResource[];
+export type IResources = IResource[];
 //# sourceMappingURL=IResource.d.ts.map

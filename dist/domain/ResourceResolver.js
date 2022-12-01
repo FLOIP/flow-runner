@@ -33,16 +33,16 @@ class ResourceResolver {
         var _a, _b;
         const { mode, language_id } = this.context;
         if (!isUUID(resourceId)) {
-            return new __1.Resource(resourceId, [__1.createTextResourceVariantWith(resourceId, this.context)], this.context);
+            return new __1.Resource(resourceId, [(0, __1.createTextResourceVariantWith)(resourceId, this.context)], this.context);
         }
-        const resource = (_b = (_a = __1.getActiveFlowFrom(this.context)) === null || _a === void 0 ? void 0 : _a.resources) === null || _b === void 0 ? void 0 : _b.find(({ uuid }) => uuid === resourceId);
+        const resource = (_b = (_a = (0, __1.getActiveFlowFrom)(this.context)) === null || _a === void 0 ? void 0 : _a.resources) === null || _b === void 0 ? void 0 : _b.find(({ uuid }) => uuid === resourceId);
         if (resource == null) {
             throw new __1.ResourceNotFoundException(`No resource matching ${JSON.stringify(resourceId)} for ${JSON.stringify({
                 mode,
                 language_id,
             })}`);
         }
-        const values = resource.values.filter(def => def.language_id === language_id && lodash_1.intersection(def.modes, [mode]).length > 0);
+        const values = resource.values.filter(def => def.language_id === language_id && (0, lodash_1.intersection)(def.modes, [mode]).length > 0);
         return new __1.Resource(resourceId, values, this.context);
     }
 }

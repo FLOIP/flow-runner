@@ -16,20 +16,20 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-export declare type IterationIndex = number;
-export declare type IterationNumber = number;
-export declare type StackKey = ['stack', IterationNumber, IterationIndex];
-export declare type Key = StackKey[];
+export type IterationIndex = number;
+export type IterationNumber = number;
+export type StackKey = ['stack', IterationNumber, IterationIndex];
+export type Key = StackKey[];
 export interface IEntity {
     uuid: string;
 }
-export declare type Iteration = (IEntity | IStack)[];
+export type Iteration = (IEntity | IStack)[];
 export interface IStack {
     stack: Iteration[];
     head?: IEntity;
 }
-export declare type Item = IEntity | Iteration | IStack;
-export declare type IEntityMatcher = (x: IEntity) => boolean;
+export type Item = IEntity | Iteration | IStack;
+export type IEntityMatcher = (x: IEntity) => boolean;
 export declare const STACK_KEY_ITERATION_NUMBER = 1;
 export declare const STACK_KEY_ITERATION_INDEX = 2;
 export declare function createStack(firstIteration?: Iteration): IStack;
