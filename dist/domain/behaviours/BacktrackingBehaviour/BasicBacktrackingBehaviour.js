@@ -52,18 +52,18 @@ class BasicBacktrackingBehaviour {
             // jump context.interactions back in time
             const discarded = context.interactions.splice(
             // truncate intx list to pull us back in time; include provided intx
-            lodash_1.findLastIndex(context.interactions, destinationInteraction), context.interactions.length);
+            (0, lodash_1.findLastIndex)(context.interactions, destinationInteraction), context.interactions.length);
             // step out of nested flows that we've truncated
             // todo: migrate to also use applyReversibleDataOperation()
-            lodash_1.forEachRight(discarded, intx => intx.uuid === lodash_1.last(context.nested_flow_block_interaction_id_stack) ? context.nested_flow_block_interaction_id_stack.pop() : null);
+            (0, lodash_1.forEachRight)(discarded, intx => intx.uuid === (0, lodash_1.last)(context.nested_flow_block_interaction_id_stack) ? context.nested_flow_block_interaction_id_stack.pop() : null);
             // can only reverse from the end, so we only compare the last.
-            lodash_1.forEachRight(discarded, ({ uuid }) => {
+            (0, lodash_1.forEachRight)(discarded, ({ uuid }) => {
                 var _a;
-                while (((_a = lodash_1.last(context.reversible_operations)) === null || _a === void 0 ? void 0 : _a.interactionId) === uuid) {
+                while (((_a = (0, lodash_1.last)(context.reversible_operations)) === null || _a === void 0 ? void 0 : _a.interactionId) === uuid) {
                     __1.FlowRunner.prototype.reverseLastDataOperation(context);
                 }
             });
-            const destinationBlock = __1.findBlockOnActiveFlowWith(destinationInteraction.block_id, context);
+            const destinationBlock = (0, __1.findBlockOnActiveFlowWith)(destinationInteraction.block_id, context);
             this.jumpContext = { discardedInteractions: discarded, destinationInteraction };
             const richCursor = yield this.navigator.navigateTo(destinationBlock, context);
             this.jumpContext = undefined;
@@ -81,7 +81,7 @@ class BasicBacktrackingBehaviour {
         }
         // setup for while-loop
         let _steps = steps + 1;
-        const intx = _find(context.interactions, ({ type }) => !lodash_1.includes(__1.NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0);
+        const intx = _find(context.interactions, ({ type }) => !(0, lodash_1.includes)(__1.NON_INTERACTIVE_BLOCK_TYPES, type) && --_steps === 0);
         if (intx == null || _steps > 0) {
             throw new __1.ValidationException(`Unable to backtrack to an interaction that far back ${JSON.stringify({ steps })}`);
         }
@@ -98,7 +98,7 @@ class BasicBacktrackingBehaviour {
                 try {
                     // attempt to build a prompt from the next interaction
                     const intx = this._findInteractiveInteractionAt(steps, context, direction);
-                    const block = __1.findBlockWith(intx.block_id, __1.findFlowWith(intx.flow_id, context));
+                    const block = (0, __1.findBlockWith)(intx.block_id, (0, __1.findFlowWith)(intx.flow_id, context));
                     const prompt = yield this.promptBuilder.buildPromptFor(block, intx);
                     if (prompt == null) {
                         // we weren't able to build a prompt

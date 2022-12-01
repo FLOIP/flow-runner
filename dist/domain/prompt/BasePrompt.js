@@ -63,10 +63,10 @@ class BasePrompt {
     }
     get block() {
         const ctx = this.runner.context;
-        const intx = __1.findInteractionWith(this.interactionId, ctx);
-        const flow = __1.findFlowWith(intx.flow_id, ctx);
+        const intx = (0, __1.findInteractionWith)(this.interactionId, ctx);
+        const flow = (0, __1.findFlowWith)(intx.flow_id, ctx);
         try {
-            return __1.findBlockWith(intx.block_id, flow);
+            return (0, __1.findBlockWith)(intx.block_id, flow);
         }
         catch (e) {
             if (!(e instanceof __1.ValidationException)) {

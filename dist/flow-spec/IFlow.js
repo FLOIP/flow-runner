@@ -22,7 +22,7 @@ exports.findBlockWith = void 0;
 const __1 = require("..");
 const lodash_1 = require("lodash");
 function findBlockWith(uuid, { blocks }) {
-    const block = lodash_1.find(blocks, { uuid });
+    const block = (0, lodash_1.find)(blocks, { uuid });
     if (block == null) {
         throw new __1.ValidationException('Unable to find block on flow');
     }

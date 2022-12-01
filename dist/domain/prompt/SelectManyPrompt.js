@@ -39,7 +39,7 @@ class SelectManyPrompt extends __1.BasePrompt {
         if (selections.length === 0) {
             throw new __1.ValidationException(exports.INVALID_AT_LEAST_ONE_SELECTION_REQUIRED);
         }
-        const invalidChoices = lodash_1.difference(selections, lodash_1.map(choices, 'prompt'));
+        const invalidChoices = (0, lodash_1.difference)(selections, (0, lodash_1.map)(choices, 'prompt'));
         if (invalidChoices.length !== 0) {
             throw new __1.InvalidChoiceException(exports.INVALID_ALL_SELECTIONS_MUST_EXIST_ON_BLOCK, invalidChoices);
         }

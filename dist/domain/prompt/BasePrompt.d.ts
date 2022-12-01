@@ -17,7 +17,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 import { IBlock, IFlowRunner, IPrompt, IPromptConfig, IRichCursorInputRequired, PromptValidationException } from '../..';
-export declare type TGenericPrompt = IPrompt;
+export type TGenericPrompt = IPrompt;
 /**
  * Abstract implementation of {@link IPrompt}, intended to be consumed as a common parent for concrete {@link IPrompt}
  * implementations.

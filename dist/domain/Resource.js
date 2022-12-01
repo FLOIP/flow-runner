@@ -72,7 +72,7 @@ class Resource {
         return this._getValueByContentType(__1.SupportedContentType.IMAGE);
     }
     getText() {
-        return expression_evaluator_1.EvaluatorFactory.create().evaluate(this._getValueByContentType(__1.SupportedContentType.TEXT), __1.createEvalContextFrom(this.context));
+        return expression_evaluator_1.EvaluatorFactory.create().evaluate(this._getValueByContentType(__1.SupportedContentType.TEXT), (0, __1.createEvalContextFrom)(this.context));
     }
     getVideo() {
         return this._getValueByContentType(__1.SupportedContentType.VIDEO);

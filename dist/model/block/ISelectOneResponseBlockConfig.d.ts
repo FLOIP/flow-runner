@@ -18,7 +18,7 @@
  **/
 import { IBlockConfig } from '../..';
 /** @pattern ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$ */
-declare type Uuid = string;
+type Uuid = string;
 export interface ISelectOneResponseBlockConfig extends IBlockConfig {
     prompt?: Uuid;
     question_prompt?: Uuid;
