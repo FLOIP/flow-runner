@@ -236,6 +236,7 @@ export function generateCachedProxyForBlockName(target: object, ctx: IContext): 
       }
 
       // fetch our basic representation of a block stored on the context
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const evalBlock = get(ctx, `session_vars.block_interactions_by_block_name.${prop.toString()}`) as any
       if (evalBlock == null) {
         return
