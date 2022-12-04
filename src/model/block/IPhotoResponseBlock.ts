@@ -20,5 +20,6 @@
 import {IBlock, IPhotoResponseBlockConfig} from '../..'
 
 export interface IPhotoResponseBlock extends IBlock {
+  type: 'SmartDevices.PhotoResponse'
   config: IPhotoResponseBlockConfig
 }

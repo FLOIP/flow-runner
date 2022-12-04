@@ -19,6 +19,6 @@
 
 import {IAdvancedSelectOneBlockConfig, IBlock} from '../..'
 
-export const ADVANCED_SELECT_ONE_BLOCK_TYPE = 'MobilePrimitives.Extended.AdvancedSelectOne'
-
-export interface IAdvancedSelectOneBlock extends IBlock<IAdvancedSelectOneBlockConfig> {}
+export interface IAdvancedSelectOneBlock extends IBlock<IAdvancedSelectOneBlockConfig> {
+  type: 'MobilePrimitives.Extended.AdvancedSelectOne'
+}

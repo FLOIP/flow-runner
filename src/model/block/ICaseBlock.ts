@@ -20,5 +20,6 @@
 import {IBlock, IBlockExit, ICaseBlockConfig} from '../..'
 
 export interface ICaseBlock extends IBlock<ICaseBlockConfig> {
+  type: 'Core.Case'
   exits: IBlockExit[]
 }

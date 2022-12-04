@@ -20,4 +20,6 @@
 import {IBlock, ISelectOneResponseBlockConfig} from '../..'
 
 // todo: currently we don't perform any other behaviour than test evaluation on SelectOne
-export interface ISelectOneResponseBlock extends IBlock<ISelectOneResponseBlockConfig> {}
+export interface ISelectOneResponseBlock extends IBlock<ISelectOneResponseBlockConfig> {
+  type: 'MobilePrimitives.SelectOneResponse'
+}

@@ -19,4 +19,6 @@
 
 import {IBlock, IReadBlockConfig} from '../..'
 
-export interface IReadBlock extends IBlock<IReadBlockConfig> {}
+export interface IReadBlock extends IBlock<IReadBlockConfig> {
+  type: 'ConsoleIO.Read'
+}

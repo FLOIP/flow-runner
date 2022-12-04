@@ -19,4 +19,6 @@
 
 import {IBlock, ILogBlockConfig} from '../..'
 
-export interface ILogBlock extends IBlock<ILogBlockConfig> {}
+export interface ILogBlock extends IBlock<ILogBlockConfig> {
+  type: 'Core.Log'
+}

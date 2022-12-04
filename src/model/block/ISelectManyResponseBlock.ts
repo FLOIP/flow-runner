@@ -19,4 +19,6 @@
 
 import {IBlock, ISelectManyResponseBlockConfig} from '../..'
 
-export interface ISelectManyResponseBlock extends IBlock<ISelectManyResponseBlockConfig> {}
+export interface ISelectManyResponseBlock extends IBlock<ISelectManyResponseBlockConfig> {
+  type: 'MobilePrimitives.SelectManyResponses'
+}

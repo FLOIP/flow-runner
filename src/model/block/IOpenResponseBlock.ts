@@ -19,4 +19,6 @@
 
 import {IBlock, IOpenResponseBlockConfig} from '../..'
 
-export interface IOpenResponseBlock extends IBlock<IOpenResponseBlockConfig> {}
+export interface IOpenResponseBlock extends IBlock<IOpenResponseBlockConfig> {
+  type: 'MobilePrimitives.OpenResponse'
+}

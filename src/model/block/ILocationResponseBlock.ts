@@ -19,4 +19,6 @@
 
 import {IBlock, ILocationResponseBlockConfig} from '../..'
 
-export interface ILocationResponseBlock extends IBlock<ILocationResponseBlockConfig> {}
+export interface ILocationResponseBlock extends IBlock<ILocationResponseBlockConfig> {
+  type: 'SmartDevices.LocationResponse'
+}

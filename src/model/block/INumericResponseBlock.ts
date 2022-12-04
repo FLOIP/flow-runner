@@ -19,4 +19,6 @@
 
 import {IBlock, INumericBlockConfig} from '../..'
 
-export interface INumericResponseBlock extends IBlock<INumericBlockConfig> {}
+export interface INumericResponseBlock extends IBlock<INumericBlockConfig> {
+  type: 'MobilePrimitives.NumericResponse'
+}

@@ -19,4 +19,6 @@
 
 import {IBlock, IOutputBlockConfig} from '../..'
 
-export interface IOutputBlock extends IBlock<IOutputBlockConfig> {}
+export interface IOutputBlock extends IBlock<IOutputBlockConfig> {
+  type: 'Core.Output'
+}

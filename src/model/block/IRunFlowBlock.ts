@@ -19,4 +19,6 @@
 
 import {IBlock, IRunFlowBlockConfig} from '../..'
 
-export interface IRunFlowBlock extends IBlock<IRunFlowBlockConfig> {}
+export interface IRunFlowBlock extends IBlock<IRunFlowBlockConfig> {
+  type: 'Core.RunFlow'
+}

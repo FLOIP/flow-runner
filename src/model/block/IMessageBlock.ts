@@ -19,4 +19,6 @@
 
 import {IBlock, IMessageBlockConfig} from '../..'
 
-export interface IMessageBlock extends IBlock<IMessageBlockConfig> {}
+export interface IMessageBlock extends IBlock<IMessageBlockConfig> {
+  type: 'MobilePrimitives.Message'
+}

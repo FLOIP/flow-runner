@@ -19,4 +19,6 @@
 
 import {IBlock, IPrintBlockConfig} from '../..'
 
-export interface IPrintBlock extends IBlock<IPrintBlockConfig> {}
+export interface IPrintBlock extends IBlock<IPrintBlockConfig> {
+  type: 'ConsoleIO.Print'
+}
