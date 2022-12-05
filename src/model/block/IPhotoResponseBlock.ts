@@ -19,7 +19,9 @@
 
 import {IBlock, IPhotoResponseBlockConfig} from '../..'
 
+export const PHOTO_RESPONSE_BLOCK_TYPE = 'SmartDevices.PhotoResponse'
+
 export interface IPhotoResponseBlock extends IBlock {
-  type: 'SmartDevices.PhotoResponse'
+  type: typeof PHOTO_RESPONSE_BLOCK_TYPE
   config: IPhotoResponseBlockConfig
 }

@@ -19,6 +19,8 @@
 
 import {IBlock, ILogBlockConfig} from '../..'
 
+export const LOG_BLOCK_TYPE = 'Core.Log'
+
 export interface ILogBlock extends IBlock<ILogBlockConfig> {
-  type: 'Core.Log'
+  type: typeof LOG_BLOCK_TYPE
 }

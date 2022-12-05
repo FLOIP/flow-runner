@@ -19,6 +19,8 @@
 
 import {IBlock, IOutputBlockConfig} from '../..'
 
+export const OUTPUT_BLOCK_TYPE = 'Core.Output'
+
 export interface IOutputBlock extends IBlock<IOutputBlockConfig> {
-  type: 'Core.Output'
+  type: typeof OUTPUT_BLOCK_TYPE
 }

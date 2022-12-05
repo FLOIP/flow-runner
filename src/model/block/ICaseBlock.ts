@@ -19,7 +19,9 @@
 
 import {IBlock, IBlockExit, ICaseBlockConfig} from '../..'
 
+export const CASE_BLOCK_TYPE = 'Core.Case'
+
 export interface ICaseBlock extends IBlock<ICaseBlockConfig> {
-  type: 'Core.Case'
+  type: typeof CASE_BLOCK_TYPE
   exits: IBlockExit[]
 }

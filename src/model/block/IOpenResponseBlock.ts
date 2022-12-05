@@ -19,6 +19,8 @@
 
 import {IBlock, IOpenResponseBlockConfig} from '../..'
 
+export const OPEN_RESPONSE_BLOCK_TYPE = 'MobilePrimitives.OpenResponse'
+
 export interface IOpenResponseBlock extends IBlock<IOpenResponseBlockConfig> {
-  type: 'MobilePrimitives.OpenResponse'
+  type: typeof OPEN_RESPONSE_BLOCK_TYPE
 }

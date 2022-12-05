@@ -19,6 +19,8 @@
 
 import {IBlock, IReadBlockConfig} from '../..'
 
+export const READ_BLOCK_TYPE = 'ConsoleIO.Read'
+
 export interface IReadBlock extends IBlock<IReadBlockConfig> {
-  type: 'ConsoleIO.Read'
+  type: typeof READ_BLOCK_TYPE
 }

@@ -19,6 +19,8 @@
 
 import {IBlock, IMessageBlockConfig} from '../..'
 
+export const MESSAGE_BLOCK_TYPE = 'MobilePrimitives.Message'
+
 export interface IMessageBlock extends IBlock<IMessageBlockConfig> {
-  type: 'MobilePrimitives.Message'
+  type: typeof MESSAGE_BLOCK_TYPE
 }

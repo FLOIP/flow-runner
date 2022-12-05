@@ -19,6 +19,8 @@
 
 import {IBlock, IRunFlowBlockConfig} from '../..'
 
+export const RUN_FLOW_BLOCK_TYPE = 'Core.RunFlow'
+
 export interface IRunFlowBlock extends IBlock<IRunFlowBlockConfig> {
-  type: 'Core.RunFlow'
+  type: typeof RUN_FLOW_BLOCK_TYPE
 }

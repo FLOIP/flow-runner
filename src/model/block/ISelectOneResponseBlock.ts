@@ -19,7 +19,9 @@
 
 import {IBlock, ISelectOneResponseBlockConfig} from '../..'
 
+export const SELECT_ONE_RESPONSE_BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
+
 // todo: currently we don't perform any other behaviour than test evaluation on SelectOne
 export interface ISelectOneResponseBlock extends IBlock<ISelectOneResponseBlockConfig> {
-  type: 'MobilePrimitives.SelectOneResponse'
+  type: typeof SELECT_ONE_RESPONSE_BLOCK_TYPE
 }

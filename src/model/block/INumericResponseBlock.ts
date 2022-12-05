@@ -19,6 +19,8 @@
 
 import {IBlock, INumericBlockConfig} from '../..'
 
+export const NUMERIC_RESPONSE_BLOCK_TYPE = 'MobilePrimitives.NumericResponse'
+
 export interface INumericResponseBlock extends IBlock<INumericBlockConfig> {
-  type: 'MobilePrimitives.NumericResponse'
+  type: typeof NUMERIC_RESPONSE_BLOCK_TYPE
 }

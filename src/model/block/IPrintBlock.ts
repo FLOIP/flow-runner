@@ -19,6 +19,8 @@
 
 import {IBlock, IPrintBlockConfig} from '../..'
 
+export const PRINT_BLOCK_TYPE = 'ConsoleIO.Print'
+
 export interface IPrintBlock extends IBlock<IPrintBlockConfig> {
-  type: 'ConsoleIO.Print'
+  type: typeof PRINT_BLOCK_TYPE
 }

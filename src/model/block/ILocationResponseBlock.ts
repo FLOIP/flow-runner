@@ -19,6 +19,8 @@
 
 import {IBlock, ILocationResponseBlockConfig} from '../..'
 
+export const LOCATION_RESPONSE_BLOCK_TYPE = 'SmartDevices.LocationResponse'
+
 export interface ILocationResponseBlock extends IBlock<ILocationResponseBlockConfig> {
-  type: 'SmartDevices.LocationResponse'
+  type: typeof LOCATION_RESPONSE_BLOCK_TYPE
 }
