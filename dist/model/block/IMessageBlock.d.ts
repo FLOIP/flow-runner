@@ -17,6 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 import { IBlock, IMessageBlockConfig } from '../..';
+export declare const MESSAGE_BLOCK_TYPE = "MobilePrimitives.Message";
 export interface IMessageBlock extends IBlock<IMessageBlockConfig> {
+    type: typeof MESSAGE_BLOCK_TYPE;
 }
 //# sourceMappingURL=IMessageBlock.d.ts.map

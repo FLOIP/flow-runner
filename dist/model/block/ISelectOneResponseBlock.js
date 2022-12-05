@@ -18,4 +18,6 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SELECT_ONE_RESPONSE_BLOCK_TYPE = void 0;
+exports.SELECT_ONE_RESPONSE_BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse';
 //# sourceMappingURL=ISelectOneResponseBlock.js.map

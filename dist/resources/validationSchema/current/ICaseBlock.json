@@ -40,6 +40,7 @@
         },
         "type": {
           "type": "string",
+          "const": "Core.Case",
           "description": "A specific string designating the type or \"subclass\" of this Block. This must be one of the Block type names within the specification, such as Core.RunFlow or MobilePrimitives.Message."
         },
         "config": {

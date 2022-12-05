@@ -18,4 +18,6 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PRINT_BLOCK_TYPE = void 0;
+exports.PRINT_BLOCK_TYPE = 'ConsoleIO.Print';
 //# sourceMappingURL=IPrintBlock.js.map

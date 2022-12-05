@@ -17,6 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 import { IBlock, IOutputBlockConfig } from '../..';
+export declare const OUTPUT_BLOCK_TYPE = "Core.Output";
 export interface IOutputBlock extends IBlock<IOutputBlockConfig> {
+    type: typeof OUTPUT_BLOCK_TYPE;
 }
 //# sourceMappingURL=IOutputBlock.d.ts.map

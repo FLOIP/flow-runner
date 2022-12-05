@@ -34,22 +34,22 @@ const DEFAULT_BEHAVIOUR_TYPES = [
 /**
  * Block types that do not request additional input from an `IContact`
  */
-exports.NON_INTERACTIVE_BLOCK_TYPES = ['Core.Case', 'Core.RunFlow'];
+exports.NON_INTERACTIVE_BLOCK_TYPES = [__1.CASE_BLOCK_TYPE, __1.RUN_FLOW_BLOCK_TYPE];
 /**
  * A map of `IBlock.type` to an `TBlockRunnerFactory` function.
  */
 function createDefaultBlockRunnerStore() {
     return new BlockRunnerFactoryStore([
-        ['MobilePrimitives.Message', (block, ctx) => new __1.MessageBlockRunner(block, ctx)],
-        ['MobilePrimitives.OpenResponse', (block, ctx) => new __1.OpenResponseBlockRunner(block, ctx)],
-        ['MobilePrimitives.NumericResponse', (block, ctx) => new __1.NumericResponseBlockRunner(block, ctx)],
-        ['MobilePrimitives.SelectOneResponse', (block, ctx) => new __1.SelectOneResponseBlockRunner(block, ctx)],
-        ['MobilePrimitives.SelectManyResponse', (block, ctx) => new __1.SelectManyResponseBlockRunner(block, ctx)],
-        ['Core.Case', (block, ctx) => new __1.CaseBlockRunner(block, ctx)],
-        ['Core.Output', (block, ctx) => new __1.OutputBlockRunner(block, ctx)],
-        ['Core.Log', (block, ctx) => new __1.LogBlockRunner(block, ctx)],
-        ['ConsoleIO.Print', (block, ctx) => new __1.PrintBlockRunner(block, ctx)],
-        ['Core.RunFlow', (block, ctx) => new __1.RunFlowBlockRunner(block, ctx)],
+        [__1.MESSAGE_BLOCK_TYPE, (block, ctx) => new __1.MessageBlockRunner(block, ctx)],
+        [__1.OPEN_RESPONSE_BLOCK_TYPE, (block, ctx) => new __1.OpenResponseBlockRunner(block, ctx)],
+        [__1.NUMERIC_RESPONSE_BLOCK_TYPE, (block, ctx) => new __1.NumericResponseBlockRunner(block, ctx)],
+        [__1.SELECT_ONE_RESPONSE_BLOCK_TYPE, (block, ctx) => new __1.SelectOneResponseBlockRunner(block, ctx)],
+        [__1.SELECT_MANY_RESPONSE_BLOCK_TYPE, (block, ctx) => new __1.SelectManyResponseBlockRunner(block, ctx)],
+        [__1.CASE_BLOCK_TYPE, (block, ctx) => new __1.CaseBlockRunner(block, ctx)],
+        [__1.OUTPUT_BLOCK_TYPE, (block, ctx) => new __1.OutputBlockRunner(block, ctx)],
+        [__1.LOG_BLOCK_TYPE, (block, ctx) => new __1.LogBlockRunner(block, ctx)],
+        [__1.PRINT_BLOCK_TYPE, (block, ctx) => new __1.PrintBlockRunner(block, ctx)],
+        [__1.RUN_FLOW_BLOCK_TYPE, (block, ctx) => new __1.RunFlowBlockRunner(block, ctx)],
         [__1.SET_GROUP_MEMBERSHIP_BLOCK_TYPE, (block, ctx) => new __1.SetGroupMembershipBlockRunner(block, ctx)],
     ]);
 }
@@ -242,7 +242,7 @@ class FlowRunner {
                     // bail-- we're done.
                     continue;
                 }
-                if (block.type === 'Core.RunFlow') {
+                if (block.type === __1.RUN_FLOW_BLOCK_TYPE) {
                     richCursor = yield this.navigateTo(block, ctx);
                     block = this.stepInto(block, ctx);
                 }
@@ -431,7 +431,7 @@ class FlowRunner {
      * todo: would it be possible for stepping into and out of be handled by the RunFlow itself?
      *       Eg. these are esentially RunFlowRunner's .start() + .resume() equivalents */
     stepInto(runFlowBlock, ctx) {
-        if (runFlowBlock.type !== 'Core.RunFlow') {
+        if (runFlowBlock.type !== __1.RUN_FLOW_BLOCK_TYPE) {
             throw new __1.ValidationException('Unable to step into a non-Core.RunFlow block type');
         }
         const runFlowInteraction = (0, lodash_1.last)(ctx.interactions);

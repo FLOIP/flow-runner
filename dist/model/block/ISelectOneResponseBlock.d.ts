@@ -17,6 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 import { IBlock, ISelectOneResponseBlockConfig } from '../..';
+export declare const SELECT_ONE_RESPONSE_BLOCK_TYPE = "MobilePrimitives.SelectOneResponse";
 export interface ISelectOneResponseBlock extends IBlock<ISelectOneResponseBlockConfig> {
+    type: typeof SELECT_ONE_RESPONSE_BLOCK_TYPE;
 }
 //# sourceMappingURL=ISelectOneResponseBlock.d.ts.map

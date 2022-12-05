@@ -17,6 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 import { IBlock, IRunFlowBlockConfig } from '../..';
+export declare const RUN_FLOW_BLOCK_TYPE = "Core.RunFlow";
 export interface IRunFlowBlock extends IBlock<IRunFlowBlockConfig> {
+    type: typeof RUN_FLOW_BLOCK_TYPE;
 }
 //# sourceMappingURL=IRunFlowBlock.d.ts.map

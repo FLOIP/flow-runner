@@ -17,6 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 import { IBlock, INumericBlockConfig } from '../..';
+export declare const NUMERIC_RESPONSE_BLOCK_TYPE = "MobilePrimitives.NumericResponse";
 export interface INumericResponseBlock extends IBlock<INumericBlockConfig> {
+    type: typeof NUMERIC_RESPONSE_BLOCK_TYPE;
 }
 //# sourceMappingURL=INumericResponseBlock.d.ts.map

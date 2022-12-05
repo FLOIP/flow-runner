@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFlowStructureErrors = void 0;
 const tslib_1 = require("tslib");
+const __1 = require("../..");
 const ajv_1 = tslib_1.__importDefault(require("ajv"));
 const ajv_formats_1 = tslib_1.__importDefault(require("ajv-formats"));
 const expression_parser_1 = require("@floip/expression-parser");
@@ -155,35 +156,35 @@ function checkExitsOnBlock(block) {
 }
 function blockTypeToInterfaceName(type) {
     switch (type) {
-        case 'Core.Log':
+        case __1.LOG_BLOCK_TYPE:
             return 'ILogBlock';
-        case 'Core.Case':
+        case __1.CASE_BLOCK_TYPE:
             return 'ICaseBlock';
-        case 'Core.RunBlock':
+        case __1.RUN_FLOW_BLOCK_TYPE:
             return 'IRunFlowBlock';
-        case 'Core.Output':
+        case __1.OUTPUT_BLOCK_TYPE:
             return 'IOutputBlock';
-        case 'Core.SetContactProperty':
+        case __1.SET_CONTACT_PROPERTY_BLOCK_TYPE:
             return 'ISetContactPropertyBlock';
-        case 'Core.SetGroupMembership':
+        case __1.SET_GROUP_MEMBERSHIP_BLOCK_TYPE:
             return 'ISetGroupMembershipBlock';
-        case 'ConsoleIO.Print':
+        case __1.PRINT_BLOCK_TYPE:
             return 'IPrintBlock';
-        case 'ConsoleIO.Read':
+        case __1.READ_BLOCK_TYPE:
             return 'IReadBlock';
-        case 'MobilePrimitives.Message':
+        case __1.MESSAGE_BLOCK_TYPE:
             return 'IMessageBlock';
-        case 'MobilePrimitives.SelectOneResponse':
+        case __1.SELECT_ONE_RESPONSE_BLOCK_TYPE:
             return 'ISelectOneResponseBlock';
-        case 'MobilePrimitives.SelectManyResponses':
+        case __1.SELECT_MANY_RESPONSE_BLOCK_TYPE:
             return 'ISelectManyResponseBlock';
-        case 'MobilePrimitives.NumericResponse':
+        case __1.NUMERIC_RESPONSE_BLOCK_TYPE:
             return 'INumericResponseBlock';
-        case 'MobilePrimitives.OpenResponse':
+        case __1.OPEN_RESPONSE_BLOCK_TYPE:
             return 'IOpenResponseBlock';
-        case 'SmartDevices.LocationResponse':
+        case __1.LOCATION_RESPONSE_BLOCK_TYPE:
             return 'ILocationResponseBlock';
-        case 'SmartDevices.PhotoResponse':
+        case __1.PHOTO_RESPONSE_BLOCK_TYPE:
             return 'IPhotoResponseBlock';
         default:
             return null;
@@ -214,11 +215,11 @@ function checkAllResourcesPresent(container) {
 }
 function collectResourceUuidsFromBlock(block) {
     const uuids = [];
-    if (block.type == 'MobilePrimitives.Message') {
+    if (block.type == __1.MESSAGE_BLOCK_TYPE) {
         const b = block;
         uuids.push(b.config.prompt);
     }
-    if (block.type == 'MobilePrimitives.SelectOneResponse') {
+    if (block.type == __1.SELECT_ONE_RESPONSE_BLOCK_TYPE) {
         const b = block;
         if (b.config.prompt != undefined) {
             uuids.push(b.config.prompt);
@@ -227,7 +228,7 @@ function collectResourceUuidsFromBlock(block) {
             uuids.push(b.config.question_prompt);
         }
     }
-    if (block.type == 'MobilePrimitives.SelectManyResponse') {
+    if (block.type == __1.SELECT_MANY_RESPONSE_BLOCK_TYPE) {
         const b = block;
         if (b.config.prompt != undefined) {
             uuids.push(b.config.prompt);
@@ -236,15 +237,15 @@ function collectResourceUuidsFromBlock(block) {
             uuids.push(b.config.question_prompt);
         }
     }
-    if (block.type == 'MobilePrimitives.OpenResponse') {
+    if (block.type == __1.OPEN_RESPONSE_BLOCK_TYPE) {
         const b = block;
         uuids.push(b.config.prompt);
     }
-    if (block.type == 'MobilePrimitives.NumericResponse') {
+    if (block.type == __1.NUMERIC_RESPONSE_BLOCK_TYPE) {
         const b = block;
         uuids.push(b.config.prompt);
     }
-    if (block.type == 'Core.Log') {
+    if (block.type == __1.LOG_BLOCK_TYPE) {
         const b = block;
         uuids.push(b.config.message);
     }

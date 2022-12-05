@@ -17,7 +17,9 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 import { IBlock, IBlockExit, ICaseBlockConfig } from '../..';
+export declare const CASE_BLOCK_TYPE = "Core.Case";
 export interface ICaseBlock extends IBlock<ICaseBlockConfig> {
+    type: typeof CASE_BLOCK_TYPE;
     exits: IBlockExit[];
 }
 //# sourceMappingURL=ICaseBlock.d.ts.map

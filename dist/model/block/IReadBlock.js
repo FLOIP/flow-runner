@@ -18,4 +18,6 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.READ_BLOCK_TYPE = void 0;
+exports.READ_BLOCK_TYPE = 'ConsoleIO.Read';
 //# sourceMappingURL=IReadBlock.js.map

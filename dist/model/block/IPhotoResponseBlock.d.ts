@@ -17,7 +17,9 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 import { IBlock, IPhotoResponseBlockConfig } from '../..';
+export declare const PHOTO_RESPONSE_BLOCK_TYPE = "SmartDevices.PhotoResponse";
 export interface IPhotoResponseBlock extends IBlock {
+    type: typeof PHOTO_RESPONSE_BLOCK_TYPE;
     config: IPhotoResponseBlockConfig;
 }
 //# sourceMappingURL=IPhotoResponseBlock.d.ts.map

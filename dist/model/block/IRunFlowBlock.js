@@ -18,4 +18,6 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RUN_FLOW_BLOCK_TYPE = void 0;
+exports.RUN_FLOW_BLOCK_TYPE = 'Core.RunFlow';
 //# sourceMappingURL=IRunFlowBlock.js.map

@@ -17,6 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 import { IBlock, IPrintBlockConfig } from '../..';
+export declare const PRINT_BLOCK_TYPE = "ConsoleIO.Print";
 export interface IPrintBlock extends IBlock<IPrintBlockConfig> {
+    type: typeof PRINT_BLOCK_TYPE;
 }
 //# sourceMappingURL=IPrintBlock.d.ts.map

@@ -18,4 +18,6 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MESSAGE_BLOCK_TYPE = void 0;
+exports.MESSAGE_BLOCK_TYPE = 'MobilePrimitives.Message';
 //# sourceMappingURL=IMessageBlock.js.map

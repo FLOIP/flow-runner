@@ -17,6 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 import { IBlock, ILocationResponseBlockConfig } from '../..';
+export declare const LOCATION_RESPONSE_BLOCK_TYPE = "SmartDevices.LocationResponse";
 export interface ILocationResponseBlock extends IBlock<ILocationResponseBlockConfig> {
+    type: typeof LOCATION_RESPONSE_BLOCK_TYPE;
 }
 //# sourceMappingURL=ILocationResponseBlock.d.ts.map

@@ -17,6 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 import { IBlock, ILogBlockConfig } from '../..';
+export declare const LOG_BLOCK_TYPE = "Core.Log";
 export interface ILogBlock extends IBlock<ILogBlockConfig> {
+    type: typeof LOG_BLOCK_TYPE;
 }
 //# sourceMappingURL=ILogBlock.d.ts.map

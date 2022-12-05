@@ -17,6 +17,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 import { IBlock, IReadBlockConfig } from '../..';
+export declare const READ_BLOCK_TYPE = "ConsoleIO.Read";
 export interface IReadBlock extends IBlock<IReadBlockConfig> {
+    type: typeof READ_BLOCK_TYPE;
 }
 //# sourceMappingURL=IReadBlock.d.ts.map

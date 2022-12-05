@@ -4,7 +4,6 @@
   "definitions": {
     "IOutputBlock": {
       "type": "object",
-      "additionalProperties": false,
       "properties": {
         "uuid": {
           "type": "string",
@@ -41,6 +40,7 @@
         },
         "type": {
           "type": "string",
+          "const": "Core.Output",
           "description": "A specific string designating the type or \"subclass\" of this Block. This must be one of the Block type names within the specification, such as Core.RunFlow or MobilePrimitives.Message."
         },
         "config": {
@@ -61,7 +61,8 @@
         "name",
         "type",
         "uuid"
-      ]
+      ],
+      "additionalProperties": false
     },
     "IBlockVendorMetadata": {
       "type": "object",
