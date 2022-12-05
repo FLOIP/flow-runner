@@ -23,6 +23,7 @@ import {find, first, includes, last, lowerFirst, trimEnd} from 'lodash'
 import {
   assertNotNull,
   BasicBacktrackingBehaviour,
+  CASE_BLOCK_TYPE,
   CaseBlockRunner,
   ContextService,
   createFormattedDate,
@@ -57,16 +58,25 @@ import {
   IRunFlowBlock,
   ISelectOneResponseBlock,
   ISetGroupMembershipBlock,
+  LOG_BLOCK_TYPE,
   LogBlockRunner,
+  MESSAGE_BLOCK_TYPE,
   MessageBlockRunner,
+  NUMERIC_RESPONSE_BLOCK_TYPE,
   NumericResponseBlockRunner,
+  OPEN_RESPONSE_BLOCK_TYPE,
   OpenResponseBlockRunner,
+  OUTPUT_BLOCK_TYPE,
   OutputBlockRunner,
+  PRINT_BLOCK_TYPE,
   PrintBlockRunner,
   Prompt,
   PromptConstructor,
   ResourceResolver,
+  RUN_FLOW_BLOCK_TYPE,
   RunFlowBlockRunner,
+  SELECT_MANY_RESPONSE_BLOCK_TYPE,
+  SELECT_ONE_RESPONSE_BLOCK_TYPE,
   SelectManyResponseBlockRunner,
   SelectOneResponseBlockRunner,
   SET_GROUP_MEMBERSHIP_BLOCK_TYPE,
@@ -94,23 +104,23 @@ const DEFAULT_BEHAVIOUR_TYPES: IBehaviourConstructor[] = [
 /**
  * Block types that do not request additional input from an `IContact`
  */
-export const NON_INTERACTIVE_BLOCK_TYPES = ['Core.Case', 'Core.RunFlow']
+export const NON_INTERACTIVE_BLOCK_TYPES = [CASE_BLOCK_TYPE, RUN_FLOW_BLOCK_TYPE]
 
 /**
  * A map of `IBlock.type` to an `TBlockRunnerFactory` function.
  */
 export function createDefaultBlockRunnerStore(): IBlockRunnerFactoryStore {
   return new BlockRunnerFactoryStore([
-    ['MobilePrimitives.Message', (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
-    ['MobilePrimitives.OpenResponse', (block, ctx) => new OpenResponseBlockRunner(block as IOpenResponseBlock, ctx)],
-    ['MobilePrimitives.NumericResponse', (block, ctx) => new NumericResponseBlockRunner(block as INumericResponseBlock, ctx)],
-    ['MobilePrimitives.SelectOneResponse', (block, ctx) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
-    ['MobilePrimitives.SelectManyResponse', (block, ctx) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
-    ['Core.Case', (block, ctx) => new CaseBlockRunner(block as ICaseBlock, ctx)],
-    ['Core.Output', (block, ctx) => new OutputBlockRunner(block as IOutputBlock, ctx)],
-    ['Core.Log', (block, ctx) => new LogBlockRunner(block as ILogBlock, ctx)],
-    ['ConsoleIO.Print', (block, ctx) => new PrintBlockRunner(block as IPrintBlock, ctx)],
-    ['Core.RunFlow', (block, ctx) => new RunFlowBlockRunner(block as IRunFlowBlock, ctx)],
+    [MESSAGE_BLOCK_TYPE, (block, ctx) => new MessageBlockRunner(block as IMessageBlock, ctx)],
+    [OPEN_RESPONSE_BLOCK_TYPE, (block, ctx) => new OpenResponseBlockRunner(block as IOpenResponseBlock, ctx)],
+    [NUMERIC_RESPONSE_BLOCK_TYPE, (block, ctx) => new NumericResponseBlockRunner(block as INumericResponseBlock, ctx)],
+    [SELECT_ONE_RESPONSE_BLOCK_TYPE, (block, ctx) => new SelectOneResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
+    [SELECT_MANY_RESPONSE_BLOCK_TYPE, (block, ctx) => new SelectManyResponseBlockRunner(block as ISelectOneResponseBlock, ctx)],
+    [CASE_BLOCK_TYPE, (block, ctx) => new CaseBlockRunner(block as ICaseBlock, ctx)],
+    [OUTPUT_BLOCK_TYPE, (block, ctx) => new OutputBlockRunner(block as IOutputBlock, ctx)],
+    [LOG_BLOCK_TYPE, (block, ctx) => new LogBlockRunner(block as ILogBlock, ctx)],
+    [PRINT_BLOCK_TYPE, (block, ctx) => new PrintBlockRunner(block as IPrintBlock, ctx)],
+    [RUN_FLOW_BLOCK_TYPE, (block, ctx) => new RunFlowBlockRunner(block as IRunFlowBlock, ctx)],
     [SET_GROUP_MEMBERSHIP_BLOCK_TYPE, (block, ctx) => new SetGroupMembershipBlockRunner(block as ISetGroupMembershipBlock, ctx)],
   ])
 }
@@ -357,7 +367,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
         continue
       }
 
-      if (block.type === 'Core.RunFlow') {
+      if (block.type === RUN_FLOW_BLOCK_TYPE) {
         richCursor = await this.navigateTo(block, ctx)
         block = this.stepInto(block, ctx)
       }
@@ -585,7 +595,7 @@ export class FlowRunner implements IFlowRunner, IFlowNavigator, IPromptBuilder {
    * todo: would it be possible for stepping into and out of be handled by the RunFlow itself?
    *       Eg. these are esentially RunFlowRunner's .start() + .resume() equivalents */
   stepInto(runFlowBlock: IBlock, ctx: IContext): IBlock | undefined {
-    if (runFlowBlock.type !== 'Core.RunFlow') {
+    if (runFlowBlock.type !== RUN_FLOW_BLOCK_TYPE) {
       throw new ValidationException('Unable to step into a non-Core.RunFlow block type')
     }
 

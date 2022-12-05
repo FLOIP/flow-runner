@@ -1,4 +1,23 @@
-import {IContainer, ILogBlock, IResources} from '../..'
+import {
+  CASE_BLOCK_TYPE,
+  IContainer,
+  ILogBlock,
+  IResources,
+  LOCATION_RESPONSE_BLOCK_TYPE,
+  LOG_BLOCK_TYPE,
+  MESSAGE_BLOCK_TYPE,
+  NUMERIC_RESPONSE_BLOCK_TYPE,
+  OPEN_RESPONSE_BLOCK_TYPE,
+  OUTPUT_BLOCK_TYPE,
+  PHOTO_RESPONSE_BLOCK_TYPE,
+  PRINT_BLOCK_TYPE,
+  READ_BLOCK_TYPE,
+  RUN_FLOW_BLOCK_TYPE,
+  SELECT_MANY_RESPONSE_BLOCK_TYPE,
+  SELECT_ONE_RESPONSE_BLOCK_TYPE,
+  SET_CONTACT_PROPERTY_BLOCK_TYPE,
+  SET_GROUP_MEMBERSHIP_BLOCK_TYPE,
+} from '../..'
 import Ajv, {AnySchema, ErrorObject} from 'ajv'
 import ajvFormat from 'ajv-formats'
 import {parse as floipExpressionParser} from '@floip/expression-parser'
@@ -180,35 +199,35 @@ function checkExitsOnBlock(block: IBlock): string | null {
 
 function blockTypeToInterfaceName(type: string): string | null {
   switch (type) {
-    case 'Core.Log':
+    case LOG_BLOCK_TYPE:
       return 'ILogBlock'
-    case 'Core.Case':
+    case CASE_BLOCK_TYPE:
       return 'ICaseBlock'
-    case 'Core.RunBlock':
+    case RUN_FLOW_BLOCK_TYPE:
       return 'IRunFlowBlock'
-    case 'Core.Output':
+    case OUTPUT_BLOCK_TYPE:
       return 'IOutputBlock'
-    case 'Core.SetContactProperty':
+    case SET_CONTACT_PROPERTY_BLOCK_TYPE:
       return 'ISetContactPropertyBlock'
-    case 'Core.SetGroupMembership':
+    case SET_GROUP_MEMBERSHIP_BLOCK_TYPE:
       return 'ISetGroupMembershipBlock'
-    case 'ConsoleIO.Print':
+    case PRINT_BLOCK_TYPE:
       return 'IPrintBlock'
-    case 'ConsoleIO.Read':
+    case READ_BLOCK_TYPE:
       return 'IReadBlock'
-    case 'MobilePrimitives.Message':
+    case MESSAGE_BLOCK_TYPE:
       return 'IMessageBlock'
-    case 'MobilePrimitives.SelectOneResponse':
+    case SELECT_ONE_RESPONSE_BLOCK_TYPE:
       return 'ISelectOneResponseBlock'
-    case 'MobilePrimitives.SelectManyResponses':
+    case SELECT_MANY_RESPONSE_BLOCK_TYPE:
       return 'ISelectManyResponseBlock'
-    case 'MobilePrimitives.NumericResponse':
+    case NUMERIC_RESPONSE_BLOCK_TYPE:
       return 'INumericResponseBlock'
-    case 'MobilePrimitives.OpenResponse':
+    case OPEN_RESPONSE_BLOCK_TYPE:
       return 'IOpenResponseBlock'
-    case 'SmartDevices.LocationResponse':
+    case LOCATION_RESPONSE_BLOCK_TYPE:
       return 'ILocationResponseBlock'
-    case 'SmartDevices.PhotoResponse':
+    case PHOTO_RESPONSE_BLOCK_TYPE:
       return 'IPhotoResponseBlock'
     default:
       return null
@@ -243,12 +262,12 @@ function checkAllResourcesPresent(container: IContainer): string[] | null {
 
 function collectResourceUuidsFromBlock(block: IBlock): string[] {
   const uuids: string[] = []
-  if (block.type == 'MobilePrimitives.Message') {
+  if (block.type == MESSAGE_BLOCK_TYPE) {
     const b = block as IMessageBlock
     uuids.push(b.config.prompt)
   }
 
-  if (block.type == 'MobilePrimitives.SelectOneResponse') {
+  if (block.type == SELECT_ONE_RESPONSE_BLOCK_TYPE) {
     const b = block as ISelectOneResponseBlock
     if (b.config.prompt != undefined) {
       uuids.push(b.config.prompt)
@@ -258,7 +277,7 @@ function collectResourceUuidsFromBlock(block: IBlock): string[] {
     }
   }
 
-  if (block.type == 'MobilePrimitives.SelectManyResponse') {
+  if (block.type == SELECT_MANY_RESPONSE_BLOCK_TYPE) {
     const b = block as ISelectManyResponseBlock
     if (b.config.prompt != undefined) {
       uuids.push(b.config.prompt)
@@ -268,17 +287,17 @@ function collectResourceUuidsFromBlock(block: IBlock): string[] {
     }
   }
 
-  if (block.type == 'MobilePrimitives.OpenResponse') {
+  if (block.type == OPEN_RESPONSE_BLOCK_TYPE) {
     const b = block as IOpenResponseBlock
     uuids.push(b.config.prompt)
   }
 
-  if (block.type == 'MobilePrimitives.NumericResponse') {
+  if (block.type == NUMERIC_RESPONSE_BLOCK_TYPE) {
     const b = block as INumericResponseBlock
     uuids.push(b.config.prompt)
   }
 
-  if (block.type == 'Core.Log') {
+  if (block.type == LOG_BLOCK_TYPE) {
     const b = block as ILogBlock
     uuids.push(b.config.message)
   }
