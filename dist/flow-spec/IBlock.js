@@ -108,6 +108,7 @@ function generateCachedProxyForBlockName(target, ctx) {
                 return Reflect.get(...arguments);
             }
             // fetch our basic representation of a block stored on the context
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const evalBlock = (0, lodash_1.get)(ctx, `session_vars.block_interactions_by_block_name.${prop.toString()}`);
             if (evalBlock == null) {
                 return;

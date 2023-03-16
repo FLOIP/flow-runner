@@ -6,7 +6,7 @@ export interface IResourceValue {
     modes: SupportedMode[];
     /**
      * Value will accept alphanumerics, white spaces, file path, expressions, conditions,
-     * @pattern ^[\w \r\n\\\/@:,.!?+*^<>=()"'-]+$
+     * @pattern ^[\p{L} \r\n\\\/@:,.!?+*^<>=();"'-]+$
      * @format floip-expression
      */
     value: string;
