@@ -13,6 +13,7 @@
     "jsonschema:copy-rc4": "cp dist/resources/validationSchema/current/* dist/resources/validationSchema/1.0.0-rc4",
     "build": "tsc --declaration; yarn jsonschema:generate-container && yarn jsonschema:generate-blocks && yarn jsonschema:copy-rc4",
     "clean": "rm -f tsconfig.tsbuildinfo && rm -rf dist/__tests__ && rm -rf dist/domain && rm -rf dist/flow-spec && rm -rf dist/model",
+    "regenerate-all": "yarn clean && yarn build && yarn jsonschema:generate-blocks && mkdir dist/resources/validationSchema/1.0.0-rc4 && yarn jsonschema:copy-rc4",
     "deploy": "yarn version --minor",
     "deploy-rc": "yarn version --prerelease",
     "preversion": "yarn clean && yarn build && git add dist/ && git commit -m \"Build + package for release.\"",
