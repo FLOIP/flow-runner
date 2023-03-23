@@ -1,6 +1,6 @@
 {
   "name": "@floip/flow-runner",
-  "version": "1.0.12-rc4.17",
+  "version": "1.0.12-rc4.18",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "repository": "git@github.com:FLOIP/flow-runner.git",
