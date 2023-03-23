@@ -379,9 +379,8 @@
           "type": "array"
         },
         "value": {
-          "description": "Value will accept alphanumerics, white spaces, file path, expressions, conditions,",
           "format": "floip-expression",
-          "pattern": "^[\\w \\r\\n\\\\\\/@:,.!?+*^<>=()\"'-]+$",
+          "minLength": 1,
           "type": "string"
         }
       },
