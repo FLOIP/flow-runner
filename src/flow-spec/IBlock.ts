@@ -58,6 +58,7 @@ export interface IBlockVendorMetadata extends Record<string, any> {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface IBlockVendorMetadataFloip extends Record<string, any> {
   ui_metadata: IFloipUIMetadata
+  edit_block_name?: boolean
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -157,6 +157,9 @@
     },
     "IBlockVendorMetadataFloip": {
       "properties": {
+        "edit_block_name": {
+          "type": "boolean"
+        },
         "ui_metadata": {
           "$ref": "#/definitions/IFloipUIMetadata"
         }

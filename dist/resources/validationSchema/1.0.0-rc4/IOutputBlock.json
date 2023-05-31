@@ -79,6 +79,9 @@
       "properties": {
         "ui_metadata": {
           "$ref": "#/definitions/IFloipUIMetadata"
+        },
+        "edit_block_name": {
+          "type": "boolean"
         }
       },
       "required": [
