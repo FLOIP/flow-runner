@@ -35,7 +35,7 @@ export interface IBlockVendorMetadata extends Record<string, any> {
 }
 export interface IBlockVendorMetadataFloip extends Record<string, any> {
     ui_metadata: IFloipUIMetadata;
-    edit_block_name: boolean;
+    edit_block_name?: boolean;
 }
 export interface IFloipUIMetadata extends Record<string, any> {
     branching_type: string;
