@@ -101,13 +101,29 @@
         "user_added_groups": {
           "type": "array",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/IGroupMembership"
           }
         }
       },
       "required": [
         "branching_type"
       ]
+    },
+    "IGroupMembership": {
+      "type": "object",
+      "properties": {
+        "group_key": {
+          "type": "string"
+        },
+        "group_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "group_key",
+        "group_name"
+      ],
+      "additionalProperties": false
     },
     "IBlockUIMetadata": {
       "type": "object",
@@ -174,22 +190,6 @@
       "required": [
         "property_key",
         "property_value"
-      ],
-      "additionalProperties": false
-    },
-    "IGroupMembership": {
-      "type": "object",
-      "properties": {
-        "group_key": {
-          "type": "string"
-        },
-        "group_name": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "group_key",
-        "group_name"
       ],
       "additionalProperties": false
     },

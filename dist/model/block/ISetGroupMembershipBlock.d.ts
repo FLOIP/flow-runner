@@ -1,7 +1,7 @@
-import { IBlock, IBlockVendorMetadata, IBlockVendorMetadataFloip, IFloipUIMetadata, ISetGroupMembershipBlockConfig } from '../..';
+import { IBlock, IBlockVendorMetadata, IBlockVendorMetadataFloip, IFloipUIMetadata, IGroupMembership, ISetGroupMembershipBlockConfig } from '../..';
 export declare const SET_GROUP_MEMBERSHIP_BLOCK_TYPE = "Core.SetGroupMembership";
 export interface ISetGroupMembershipFloipUiMetadata extends IFloipUIMetadata {
-    user_added_groups?: string[];
+    user_added_groups?: IGroupMembership[];
 }
 export interface ISetGroupMembershipVendorMetadataFloip extends IBlockVendorMetadataFloip {
     ui_metadata: ISetGroupMembershipFloipUiMetadata;
