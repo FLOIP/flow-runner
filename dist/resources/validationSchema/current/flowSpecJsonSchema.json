@@ -399,6 +399,7 @@
       "additionalProperties": false,
       "properties": {
         "property_key": {
+          "minLength": 1,
           "type": "string"
         },
         "property_value": {

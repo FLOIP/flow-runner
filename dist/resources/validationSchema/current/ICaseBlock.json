@@ -144,7 +144,8 @@
       "type": "object",
       "properties": {
         "property_key": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "property_value": {
           "type": "string",
