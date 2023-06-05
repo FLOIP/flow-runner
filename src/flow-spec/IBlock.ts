@@ -58,7 +58,6 @@ export interface IBlockVendorMetadata extends Record<string, any> {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface IBlockVendorMetadataFloip extends Record<string, any> {
   ui_metadata: IFloipUIMetadata
-  edit_block_name?: boolean
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -68,6 +67,7 @@ export interface IFloipUIMetadata extends Record<string, any> {
    * There is a scenario we want to update the block.name when the block.label is changed, in that case we will use this field
    */
   should_auto_update_name?: boolean
+  is_block_name_editable?: boolean
 }
 
 /**
