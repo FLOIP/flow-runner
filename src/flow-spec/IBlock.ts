@@ -67,6 +67,7 @@ export interface IFloipUIMetadata extends Record<string, any> {
    * There is a scenario we want to update the block.name when the block.label is changed, in that case we will use this field
    */
   should_auto_update_name?: boolean
+  is_block_name_editable?: boolean
 }
 
 /**
