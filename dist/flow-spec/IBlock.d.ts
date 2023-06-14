@@ -57,9 +57,10 @@ export interface IBlock<BLOCK_CONFIG = IBlockConfig> {
     /**
      * A human-readable "variable name" for this block.
      * This must be restricted to word characters so that it can be used as a variable name in expressions.
+     * We allow underscores. We restrict the name to start with an alphabet character.
      * When blocks write results output, they write to a variable corresponding the name of the block.
      *
-     * @pattern ^[a-zA-Z_]\w+$
+     * @pattern ^[a-zA-Z][\w_]*$
      */
     name: string;
     /**
