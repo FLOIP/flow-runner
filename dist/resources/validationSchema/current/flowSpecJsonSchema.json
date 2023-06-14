@@ -212,6 +212,9 @@
         "branching_type": {
           "type": "string"
         },
+        "is_block_name_editable": {
+          "type": "boolean"
+        },
         "should_auto_update_name": {
           "description": "There is a scenario we want to update the block.name when the block.label is changed, in that case we will use this field",
           "type": "boolean"
@@ -396,6 +399,7 @@
       "additionalProperties": false,
       "properties": {
         "property_key": {
+          "minLength": 1,
           "type": "string"
         },
         "property_value": {

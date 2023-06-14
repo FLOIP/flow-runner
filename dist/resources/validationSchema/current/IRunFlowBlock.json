@@ -94,6 +94,9 @@
         "should_auto_update_name": {
           "type": "boolean",
           "description": "There is a scenario we want to update the block.name when the block.label is changed, in that case we will use this field"
+        },
+        "is_block_name_editable": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -147,7 +150,8 @@
       "type": "object",
       "properties": {
         "property_key": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "property_value": {
           "type": "string",
